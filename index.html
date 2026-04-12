@@ -6,70 +6,100 @@
   <title>Jonathan Capone — Technical Index</title>
   <style>
     :root {
-      --bg: #f5f4f0;
+      --bg: #fdfdfb;
       --panel: #ffffff;
-      --text: #1a1917;
-      --muted: #706c64;
-      --line: #e0ddd5;
-      --accent: #234c70;
-      --radius: 8px;
-      --max: 1100px;
+      --text: #1a1a1a;
+      --muted: #666666;
+      --line: #eae8e2;
+      --accent: #1a1a1a; /* Clean industrial black */
+      --link: #234c70;
+      --radius: 4px; /* Sharper, professional radius */
+      --max: 1200px;
+      --font-serif: Georgia, serif;
+      --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
     }
 
-    * { box-sizing: border-box; }
+    * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+    
     body {
       margin: 0;
-      font-family: Georgia, "Times New Roman", serif;
+      font-family: var(--font-serif);
       background: var(--bg);
       color: var(--text);
-      line-height: 1.6;
+      line-height: 1.7;
     }
 
-    .wrap { width: min(calc(100% - 3rem), var(--max)); margin: 0 auto; }
+    .wrap { width: min(calc(100% - 4rem), var(--max)); margin: 0 auto; }
 
+    /* --- Navigation --- */
     header {
-      padding: 1.5rem 0;
+      padding: 2rem 0;
       border-bottom: 1px solid var(--line);
-      background: var(--bg);
+      background: rgba(253, 253, 251, 0.8);
+      backdrop-filter: blur(10px);
       position: sticky;
       top: 0;
-      z-index: 100;
+      z-index: 1000;
     }
 
-    .topbar { display: flex; justify-content: space-between; align-items: baseline; }
-    .brand { font-size: 1.1rem; font-weight: bold; letter-spacing: -0.01em; }
+    .topbar { display: flex; justify-content: space-between; align-items: center; }
+    .brand { font-size: 1.2rem; font-weight: 400; letter-spacing: -0.02em; }
     
-    nav { display: flex; gap: 1.5rem; font-family: -apple-system, sans-serif; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; }
-    nav a { color: var(--muted); text-decoration: none; }
+    nav { display: flex; gap: 2rem; font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; }
+    nav a { color: var(--muted); text-decoration: none; transition: color 0.3s; }
     nav a:hover { color: var(--accent); }
 
-    .hero { padding: 8rem 0 5rem; border-bottom: 1px solid var(--line); }
-    .hero-grid { display: grid; grid-template-columns: 1fr 320px; gap: 4rem; align-items: start; }
+    /* --- Hero Section --- */
+    .hero { padding: 10rem 0 6rem; border-bottom: 1px solid var(--line); }
+    .hero-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 6rem; align-items: start; }
     
-    h1 { margin: 0 0 1.5rem; font-size: clamp(2.2rem, 5vw, 3.8rem); line-height: 1.1; font-weight: 400; letter-spacing: -0.02em; }
-    .hero-copy p { margin: 0 0 1.2rem; font-size: 1.15rem; color: #333; max-width: 38rem; }
+    h1 { margin: 0 0 2rem; font-size: clamp(2.5rem, 6vw, 4.5rem); line-height: 1.05; font-weight: 400; letter-spacing: -0.03em; }
+    .hero-copy p { margin: 0 0 1.5rem; font-size: 1.25rem; color: #333; max-width: 42rem; }
 
-    section { padding: 5rem 0; border-bottom: 1px solid var(--line); }
-    .section-header { margin-bottom: 3rem; }
-    .section-title { font-size: 0.85rem; font-family: sans-serif; text-transform: uppercase; letter-spacing: 0.15em; color: var(--muted); margin-bottom: 1rem; }
+    .sidebar-meta { font-family: var(--font-mono); font-size: 0.7rem; color: var(--muted); margin-bottom: 0.5rem; display: block; text-transform: uppercase; }
+    .sidebar-text { font-size: 1rem; color: var(--muted); border-left: 1px solid var(--line); padding-left: 1.5rem; }
 
-    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
-    .card { 
-        background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); 
-        padding: 1.5rem; display: flex; flex-direction: column; text-decoration: none; color: inherit;
-        transition: transform 0.2s ease, border-color 0.2s;
+    /* --- Content Sections --- */
+    section { padding: 6rem 0; border-bottom: 1px solid var(--line); }
+    .section-title { 
+      font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; 
+      letter-spacing: 0.2em; color: var(--muted); margin-bottom: 4rem; display: block;
     }
-    .card:hover { border-color: var(--accent); transform: translateY(-2px); }
-    .card-meta { font-family: sans-serif; font-size: 0.7rem; text-transform: uppercase; color: var(--muted); margin-bottom: 1rem; }
-    .card h3 { margin: 0 0 0.75rem; font-size: 1.3rem; font-weight: 400; line-height: 1.2; }
-    .card p { font-size: 0.95rem; color: #444; flex-grow: 1; margin-bottom: 1.5rem; }
-    .card-link { font-family: sans-serif; font-size: 0.85rem; color: var(--accent); font-weight: bold; }
 
-    footer { padding: 3rem 0; font-family: sans-serif; font-size: 0.8rem; color: var(--muted); }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 2rem; }
+    
+    /* --- The Cards --- */
+    .card { 
+      background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); 
+      padding: 2rem; display: flex; flex-direction: column; text-decoration: none; color: inherit;
+      transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+      position: relative;
+    }
 
-    @media (max-width: 850px) {
-      .hero-grid { grid-template-columns: 1fr; gap: 3rem; }
-      .hero { padding: 4rem 0; }
+    .card:hover { 
+      border-color: var(--accent); 
+      box-shadow: 0 20px 40px rgba(0,0,0,0.04);
+      transform: translateY(-4px); 
+    }
+
+    .card-label { 
+      font-family: var(--font-mono); font-size: 0.65rem; text-transform: uppercase; 
+      letter-spacing: 0.1em; color: var(--muted); margin-bottom: 1.5rem; 
+      display: flex; justify-content: space-between; align-items: center;
+    }
+
+    .card-label span::after { content: " /"; opacity: 0.3; margin-left: 4px; }
+
+    .card h3 { margin: 0 0 1rem; font-size: 1.5rem; font-weight: 400; line-height: 1.2; letter-spacing: -0.01em; }
+    .card p { font-size: 1rem; color: #555; flex-grow: 1; margin-bottom: 2rem; }
+    
+    .card-footer { font-family: var(--font-mono); font-size: 0.7rem; color: var(--accent); font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+
+    footer { padding: 4rem 0; font-family: var(--font-mono); font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; }
+
+    @media (max-width: 900px) {
+      .hero-grid { grid-template-columns: 1fr; gap: 4rem; }
+      .hero { padding: 6rem 0 4rem; }
     }
   </style>
 </head>
@@ -79,9 +109,9 @@
     <div class="wrap topbar">
       <div class="brand">Jonathan Capone</div>
       <nav>
-        <a href="#new-media">New Media</a>
-        <a href="#pedagogy">Teaching</a>
-        <a href="https://jonathancapone.art">Main Site</a>
+        <a href="#systems">New Media</a>
+        <a href="#pedagogy">Pedagogy</a>
+        <a href="https://jonathancapone.art">Art Site</a>
       </nav>
     </div>
   </header>
@@ -90,44 +120,39 @@
     <section class="hero">
       <div class="wrap hero-grid">
         <div class="hero-copy">
-          <h1>Technical systems, field research, and pedagogical frameworks.</h1>
-          <p>This index serves as a functional repository for the engineering and documentation components of my practice—ranging from geospatial sensing tools to experiential learning curricula.</p>
+          <h1>Technical systems & pedagogical frameworks.</h1>
+          <p>A repository for the engineering and documentation components of my practice—from bathymetric survey systems to interdisciplinary STEAM curricula.</p>
         </div>
-        <aside>
-          <div style="border-left: 2px solid var(--accent); padding-left: 1rem;">
-            <p style="font-size: 0.9rem; color: var(--muted); margin: 0;">
-              Primary portfolio, photography, and installation work can be found at <a href="https://jonathancapone.art" style="color: var(--accent);">jonathancapone.art</a>.
-            </p>
-          </div>
+        <aside class="sidebar-text">
+          <span class="sidebar-meta">Primary Portfolio</span>
+          Photography, installation, and project-based work can be found at <a href="https://jonathancapone.art" style="color: var(--accent); text-decoration: underline;">jonathancapone.art</a>.
         </aside>
       </div>
     </section>
 
-    <section id="new-media">
+    <section id="systems">
       <div class="wrap">
-        <div class="section-header">
-          <h2 class="section-title">New Media & Technical Systems</h2>
-        </div>
+        <span class="section-title">New Media & Technical Systems</span>
         <div class="grid">
           <a href="https://jonathancapone.com/Ocean-Sensors" class="card">
-            <div class="card-meta">Field Tool / Geospatial</div>
+            <div class="card-label"><span>01</span><span>Geospatial</span></div>
             <h3>Ocean Sensors</h3>
-            <p>A central hub for underwater sensing, bathymetric mapping, and geospatial visualization workflows.</p>
-            <span class="card-link">View Project →</span>
+            <p>A central hub for underwater sensing, real-time bathymetric mapping, and geospatial visualization workflows.</p>
+            <div class="card-footer">Launch Project &rarr;</div>
           </a>
 
           <a href="https://jonathancapone.art/peter-wallis-sacredmundane" class="card">
-            <div class="card-meta">Interactive Collaboration</div>
+            <div class="card-label"><span>02</span><span>Interactive</span></div>
             <h3>Sacred/Mundane</h3>
-            <p>Technical implementation of motion-sensitive triggers for responsive installation environments.</p>
-            <span class="card-link">Details →</span>
+            <p>Collaborative implementation of motion-sensitive triggers and responsive installation environments.</p>
+            <div class="card-footer">View Documentation &rarr;</div>
           </a>
 
           <a href="https://jonathancapone.art/computer-dreams" class="card">
-            <div class="card-meta">Time-Based Work</div>
+            <div class="card-label"><span>03</span><span>Time-Based</span></div>
             <h3>Computer Dreams</h3>
-            <p>Archive of digital synthesis experiments and technical documentation for moving images.</p>
-            <span class="card-link">Documentation →</span>
+            <p>Archive of digital synthesis experiments and technical workflows for procedural moving imagery.</p>
+            <div class="card-footer">View Documentation &rarr;</div>
           </a>
         </div>
       </div>
@@ -135,50 +160,48 @@
 
     <section id="pedagogy">
       <div class="wrap">
-        <div class="section-header">
-          <h2 class="section-title">Teaching Documentation</h2>
-        </div>
+        <span class="section-title">Teaching Documentation</span>
         <div class="grid">
           <a href="https://jonathancapone.art/steam" class="card">
-            <div class="card-meta">Curriculum</div>
+            <div class="card-label"><span>EDU.01</span><span>Curriculum</span></div>
             <h3>STEAM Integration</h3>
-            <p>Frameworks for interdisciplinary making, engineering, and art/science integration.</p>
-            <span class="card-link">Open →</span>
+            <p>Frameworks for interdisciplinary making, bridging artistic inquiry with applied engineering.</p>
+            <div class="card-footer">Open &rarr;</div>
           </a>
 
           <a href="https://jonathancapone.art/media-arts" class="card">
-            <div class="card-meta">Curriculum</div>
+            <div class="card-label"><span>EDU.02</span><span>Media</span></div>
             <h3>Media Arts</h3>
-            <p>Instructional documentation for digital media, moving image, and technology-based instruction.</p>
-            <span class="card-link">Open →</span>
+            <p>Instructional documentation for digital moving images and technology-based instruction.</p>
+            <div class="card-footer">Open &rarr;</div>
           </a>
 
           <a href="https://jonathancapone.art/experiential-learning" class="card">
-            <div class="card-meta">Methodology</div>
+            <div class="card-label"><span>EDU.03</span><span>Methodology</span></div>
             <h3>Experiential Learning</h3>
-            <p>Project-based documentation focused on inquiry, making, and hands-on experimentation.</p>
-            <span class="card-link">Open →</span>
+            <p>Project-based learning documentation focused on inquiry and hands-on experimentation.</p>
+            <div class="card-footer">Open &rarr;</div>
           </a>
 
           <a href="https://jonathancapone.art/performing-arts" class="card">
-            <div class="card-meta">Instruction</div>
+            <div class="card-label"><span>EDU.04</span><span>Performance</span></div>
             <h3>Performing Arts</h3>
-            <p>Teaching-related work connected to performance, staging, and interdisciplinary production.</p>
-            <span class="card-link">Open →</span>
+            <p>Work connected to performance staging and interdisciplinary media production.</p>
+            <div class="card-footer">Open &rarr;</div>
           </a>
 
           <a href="https://jonathancapone.art/curricula" class="card">
-            <div class="card-meta">Archives</div>
+            <div class="card-label"><span>EDU.05</span><span>Index</span></div>
             <h3>Curricula</h3>
-            <p>A comprehensive index of educational frameworks and course structures.</p>
-            <span class="card-link">Open →</span>
+            <p>A comprehensive collection of educational frameworks and course structures.</p>
+            <div class="card-footer">Open &rarr;</div>
           </a>
 
           <a href="https://jonathancapone.art/students-at-work" class="card">
-            <div class="card-meta">Observation</div>
+            <div class="card-label"><span>EDU.06</span><span>Observation</span></div>
             <h3>Students at Work</h3>
-            <p>Process documentation of classroom activity, making, and project-based development.</p>
-            <span class="card-link">Open →</span>
+            <p>Field notes and visual documentation of classroom process and project development.</p>
+            <div class="card-footer">Open &rarr;</div>
           </a>
         </div>
       </div>
@@ -187,7 +210,7 @@
 
   <footer>
     <div class="wrap">
-      &copy; 2026 Jonathan Capone &mdash; Projects, systems, and resources.
+      Jonathan Capone &mdash; Los Angeles, CA &mdash; 2026
     </div>
   </footer>
 
