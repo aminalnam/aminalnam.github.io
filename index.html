@@ -1,75 +1,130 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Jonathan Capone — Technical Portfolio</title>
-  <meta name="description" content="Technical portfolio of Jonathan Capone featuring OMEGA, geospatial sensing systems, physical computing, experimental media, and public documentation.">
-  <meta name="theme-color" content="#0d1320">
-  <meta property="og:title" content="Jonathan Capone — Technical Portfolio">
-  <meta property="og:description" content="Technical systems, geospatial mapping, physical computing, and public documentation.">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://jonathancapone.com/">
-  <meta name="twitter:card" content="summary_large_image">
+  <meta
+    name="description"
+    content="Technical portfolio of Jonathan Capone: sensing systems, geospatial mapping, physical computing, interactive media, and public documentation."
+  />
+  <meta name="theme-color" content="#0b121a" />
+  <meta property="og:title" content="Jonathan Capone — Technical Portfolio" />
+  <meta
+    property="og:description"
+    content="Technical projects in sensing, mapping, physical computing, and public documentation."
+  />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://raw.githubusercontent.com/aminalnam/OMEGA/main/assets/mapping-diagram.png" />
   <style>
     :root {
-      --bg: #0b1020;
-      --bg-soft: #121b31;
-      --bg-deep: #070b14;
-      --panel: rgba(255,255,255,0.08);
-      --panel-strong: rgba(255,255,255,0.12);
-      --surface: #f5f2ea;
-      --surface-2: #fcfaf5;
-      --text: #f4efe8;
-      --text-dark: #161616;
-      --muted: rgba(244,239,232,0.76);
-      --muted-dark: #5b5852;
-      --line: rgba(255,255,255,0.14);
-      --line-dark: rgba(17,24,39,0.12);
-      --accent: #8fd2ff;
-      --accent-2: #8bf0cf;
-      --accent-3: #cdb8ff;
-      --max: 1180px;
-      --shadow: 0 22px 54px rgba(0,0,0,0.22);
-      --shadow-soft: 0 12px 30px rgba(0,0,0,0.12);
-      --serif: Georgia, "Times New Roman", Times, serif;
-      --sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-      --radius: 22px;
-      --radius-sm: 16px;
+      --bg: #0b121a;
+      --bg-2: #121b27;
+      --panel: #fcfaf6;
+      --panel-soft: #f4efe6;
+      --ink: #141414;
+      --ink-soft: #505157;
+      --line: rgba(20, 20, 20, 0.12);
+      --line-soft: rgba(255,255,255,0.12);
+      --accent: #d94841;
+      --accent-deep: #9f302a;
+      --ocean: #2e5b87;
+      --ocean-soft: #7ea7ce;
+      --gold: #c89c4d;
+      --white: #ffffff;
+      --shadow: 0 2rem 5rem rgba(0, 0, 0, 0.2);
+      --max: 82rem;
+      --radius: 1.25rem;
+      --radius-sm: 0.9rem;
+      --font-sans: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --font-serif: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Georgia, serif;
+      --font-mono: "SFMono-Regular", "Roboto Mono", Consolas, Monaco, monospace;
     }
 
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
+    * {
+      box-sizing: border-box;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       margin: 0;
-      font-family: var(--sans);
+      color: var(--white);
       background:
-        radial-gradient(circle at top left, rgba(143,210,255,0.22), transparent 0 30%),
-        radial-gradient(circle at 85% 8%, rgba(139,240,207,0.13), transparent 0 24%),
-        linear-gradient(180deg, #09101d 0%, #0d1320 42%, #12182a 100%);
-      color: var(--text);
+        radial-gradient(circle at 20% 0%, rgba(126,167,206,0.18), transparent 28%),
+        radial-gradient(circle at 82% 16%, rgba(217,72,65,0.12), transparent 24%),
+        linear-gradient(180deg, #071018 0%, #0b121a 44%, #0f1721 100%);
+      font-family: var(--font-sans);
       line-height: 1.65;
+      min-height: 100vh;
     }
 
-    a { color: inherit; }
-    img { display: block; max-width: 100%; }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+      background-size: 2.2rem 2.2rem;
+      mask-image: linear-gradient(180deg, rgba(0,0,0,0.8), rgba(0,0,0,0.25));
+      pointer-events: none;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      background:
+        radial-gradient(circle at center, transparent 0, transparent 58%, rgba(0,0,0,0.32) 100%);
+      pointer-events: none;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
 
     .wrap {
       width: min(calc(100% - 2rem), var(--max));
       margin: 0 auto;
     }
 
-    .site-header {
+    .skip-link {
+      position: absolute;
+      left: -9999px;
+    }
+
+    .skip-link:focus {
+      left: 1rem;
+      top: 1rem;
+      z-index: 100;
+      background: #fff;
+      color: #000;
+      padding: 0.75rem 1rem;
+      border-radius: 999px;
+    }
+
+    .topbar {
       position: sticky;
       top: 0;
-      z-index: 20;
-      background: rgba(10, 16, 29, 0.82);
+      z-index: 40;
+      backdrop-filter: blur(18px);
+      background: rgba(7, 16, 24, 0.74);
       border-bottom: 1px solid rgba(255,255,255,0.08);
     }
 
-    .site-header .wrap {
-      min-height: 76px;
+    .topbar-inner {
+      min-height: 4.8rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -78,130 +133,112 @@
 
     .brand {
       text-decoration: none;
-      display: flex;
-      align-items: center;
-      gap: 0.9rem;
+      min-width: 0;
     }
 
-    .brand-mark {
-      width: 2.7rem;
-      height: 2.7rem;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.14);
-      background: linear-gradient(135deg, rgba(143,210,255,0.2), rgba(205,184,255,0.12));
-      display: grid;
-      place-items: center;
-      font-family: var(--mono);
-      font-size: 0.82rem;
-      letter-spacing: 0.14em;
-    }
-
-    .brand-copy strong {
+    .brand-title {
       display: block;
-      font-size: 0.95rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      font-weight: 700;
+      font-family: var(--font-serif);
+      font-size: 1.2rem;
+      letter-spacing: -0.03em;
     }
 
-    .brand-copy span {
+    .brand-sub {
       display: block;
-      font-size: 0.73rem;
-      letter-spacing: 0.16em;
+      margin-top: 0.15rem;
+      font-size: 0.68rem;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: var(--muted);
+      color: rgba(255,255,255,0.68);
+      font-family: var(--font-mono);
     }
 
     .nav {
       display: flex;
       flex-wrap: wrap;
-      gap: 1rem;
-      font-size: 0.78rem;
+      justify-content: flex-end;
+      gap: 0.8rem 1.15rem;
+      font-size: 0.73rem;
       letter-spacing: 0.16em;
       text-transform: uppercase;
+      font-family: var(--font-mono);
     }
 
     .nav a {
       text-decoration: none;
-      color: var(--muted);
+      color: rgba(255,255,255,0.78);
+      border-bottom: 1px solid transparent;
+      padding-bottom: 0.15rem;
+      transition: color 0.2s ease, border-color 0.2s ease;
     }
 
     .nav a:hover,
     .nav a:focus-visible {
-      color: var(--text);
+      color: var(--white);
+      border-color: currentColor;
+      outline: none;
     }
 
     .hero {
-      padding: 5.5rem 0 3rem;
+      position: relative;
+      padding: 5.4rem 0 8rem;
+      overflow: clip;
+    }
+
+    .hero::before {
+      content: "OMEGA";
+      position: absolute;
+      right: min(4vw, 2rem);
+      top: 2rem;
+      font-family: var(--font-serif);
+      font-size: min(21vw, 15rem);
+      line-height: 0.85;
+      letter-spacing: -0.08em;
+      color: rgba(255,255,255,0.05);
+      pointer-events: none;
+      user-select: none;
     }
 
     .hero-grid {
       display: grid;
-      grid-template-columns: minmax(0, 1.25fr) minmax(300px, 0.75fr);
-      gap: 1.25rem;
-      align-items: stretch;
-    }
-
-    .hero-main,
-    .hero-side {
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-    }
-
-    .hero-main {
-      padding: clamp(1.5rem, 4vw, 3rem);
-      background:
-        linear-gradient(135deg, rgba(255,255,255,0.07), rgba(255,255,255,0.03)),
-        linear-gradient(180deg, rgba(8,12,21,0.72), rgba(14,18,31,0.9));
-      overflow: hidden;
-      position: relative;
-    }
-
-    .hero-main::after {
-      content: "";
-      position: absolute;
-      right: -8%;
-      top: -10%;
-      width: 280px;
-      height: 280px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(143,210,255,0.18), transparent 68%);
-      pointer-events: none;
+      grid-template-columns: minmax(0, 1.25fr) minmax(18rem, 0.72fr);
+      gap: 2rem;
+      align-items: end;
     }
 
     .eyebrow {
-      display: inline-block;
-      margin-bottom: 1.2rem;
-      padding: 0.5rem 0.8rem;
-      border: 1px solid rgba(255,255,255,0.14);
-      border-radius: 999px;
-      font-family: var(--mono);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.7rem;
+      font-family: var(--font-mono);
       font-size: 0.72rem;
-      letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: var(--accent);
-      background: rgba(255,255,255,0.04);
+      letter-spacing: 0.16em;
+      color: rgba(255,255,255,0.76);
     }
 
-    h1, h2, h3, h4 {
-      margin: 0;
-      font-family: var(--serif);
-      font-weight: 400;
-      line-height: 1.05;
-      letter-spacing: -0.03em;
+    .eyebrow::before {
+      content: "";
+      width: 1.6rem;
+      height: 1px;
+      background: rgba(255,255,255,0.44);
     }
 
     h1 {
-      font-size: clamp(3rem, 7vw, 6.1rem);
-      max-width: 10ch;
+      margin: 1rem 0 1.2rem;
+      max-width: 10.8ch;
+      font-family: var(--font-serif);
+      font-size: clamp(3.6rem, 9vw, 7rem);
+      line-height: 0.9;
+      letter-spacing: -0.07em;
+      font-weight: 400;
     }
 
-    .hero-main p {
-      margin: 1.35rem 0 0;
-      max-width: 44rem;
-      font-size: clamp(1.04rem, 1.9vw, 1.22rem);
-      color: var(--muted);
+    .hero-copy p {
+      max-width: 43rem;
+      margin: 0 0 1rem;
+      font-size: clamp(1.04rem, 1.8vw, 1.22rem);
+      color: rgba(255,255,255,0.86);
     }
 
     .hero-actions {
@@ -211,727 +248,1076 @@
       margin-top: 2rem;
     }
 
-    .button,
-    .button-secondary {
-      min-height: 3.15rem;
-      padding: 0 1.15rem;
-      border-radius: 999px;
-      text-decoration: none;
+    .button {
       display: inline-flex;
       align-items: center;
       justify-content: center;
+      gap: 0.55rem;
+      min-height: 3rem;
+      padding: 0.82rem 1.12rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.2);
+      text-decoration: none;
+      font-family: var(--font-mono);
+      font-size: 0.73rem;
       text-transform: uppercase;
-      font-size: 0.78rem;
       letter-spacing: 0.14em;
-      font-weight: 700;
+      transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
     }
 
-    .button {
-      background: linear-gradient(135deg, var(--accent), #d4f0ff);
-      color: #09111a;
+    .button:hover,
+    .button:focus-visible {
+      transform: translateY(-1px);
+      outline: none;
+    }
+
+    .button-primary {
+      background: var(--accent);
+      border-color: rgba(255,255,255,0.08);
+      color: #fff;
+    }
+
+    .button-primary:hover,
+    .button-primary:focus-visible {
+      background: var(--accent-deep);
     }
 
     .button-secondary {
+      background: rgba(255,255,255,0.06);
+      color: #fff;
+    }
+
+    .button-secondary:hover,
+    .button-secondary:focus-visible {
+      background: rgba(255,255,255,0.12);
+      border-color: rgba(255,255,255,0.28);
+    }
+
+    .hero-panel {
+      position: relative;
+      padding: 1.5rem;
       border: 1px solid rgba(255,255,255,0.14);
-      background: rgba(255,255,255,0.04);
-      color: var(--text);
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.03));
+      box-shadow: 0 1.5rem 3rem rgba(0,0,0,0.18);
     }
 
-    .hero-side {
-      padding: 1.2rem;
-      background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
-      display: grid;
-      gap: 1rem;
-      align-content: start;
+    .hero-panel::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background:
+        linear-gradient(135deg, rgba(126,167,206,0.16), transparent 45%),
+        linear-gradient(315deg, rgba(217,72,65,0.12), transparent 50%);
+      pointer-events: none;
     }
 
-    .stat-block {
-      border: 1px solid rgba(255,255,255,0.11);
-      border-radius: var(--radius-sm);
-      padding: 1rem;
-      background: rgba(8,12,21,0.32);
-    }
-
-    .stat-block strong {
-      display: block;
-      margin-bottom: 0.45rem;
-      font-family: var(--mono);
-      font-size: 0.7rem;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: var(--accent);
-    }
-
-    .stat-block span {
-      display: block;
-      font-size: 1rem;
-      color: var(--text);
-    }
-
-    .tag-row {
-      display: flex;
-      flex-wrap: wrap;
+    .panel-label {
+      position: relative;
+      z-index: 1;
+      display: inline-flex;
+      align-items: center;
       gap: 0.55rem;
-      margin-top: 0.4rem;
-    }
-
-    .tag {
-      padding: 0.42rem 0.72rem;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.1);
-      background: rgba(255,255,255,0.04);
-      font-size: 0.72rem;
+      font-family: var(--font-mono);
+      font-size: 0.69rem;
       text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: rgba(244,239,232,0.9);
+      letter-spacing: 0.16em;
+      color: rgba(255,255,255,0.7);
     }
 
-    .surface-wrap {
-      padding-bottom: 4rem;
+    .panel-label::before {
+      content: "";
+      width: 0.75rem;
+      height: 0.75rem;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 0 0.35rem rgba(217,72,65,0.16);
     }
 
-    .surface {
-      background: linear-gradient(180deg, var(--surface-2), var(--surface));
-      color: var(--text-dark);
-      border-radius: calc(var(--radius) + 4px);
+    .hero-panel h2 {
+      position: relative;
+      z-index: 1;
+      margin: 0.8rem 0 0.9rem;
+      font-size: 1.3rem;
+      line-height: 1.18;
+      font-weight: 600;
+      letter-spacing: -0.03em;
+    }
+
+    .hero-panel p {
+      position: relative;
+      z-index: 1;
+      margin: 0 0 1.15rem;
+      color: rgba(255,255,255,0.84);
+      font-size: 0.98rem;
+    }
+
+    .panel-list {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      gap: 0.9rem;
+      margin: 1.2rem 0 0;
+    }
+
+    .panel-item {
+      padding-top: 0.9rem;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .panel-item strong {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 0.69rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: rgba(255,255,255,0.6);
+      margin-bottom: 0.25rem;
+    }
+
+    .panel-item span {
+      color: rgba(255,255,255,0.92);
+      font-size: 0.97rem;
+    }
+
+    .main-shell {
+      position: relative;
+      margin-top: -3.2rem;
+      margin-bottom: 4rem;
+    }
+
+    .main-inner {
+      background: var(--panel);
+      color: var(--ink);
+      border-radius: 1.5rem;
+      overflow: clip;
       box-shadow: var(--shadow);
-      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.08);
     }
 
     .section {
-      padding: clamp(2.4rem, 5vw, 4.5rem);
-      border-top: 1px solid var(--line-dark);
+      padding: 4rem 0;
+      border-bottom: 1px solid var(--line);
     }
 
-    .section:first-child { border-top: 0; }
+    .section:last-child {
+      border-bottom: none;
+    }
 
     .section-head {
-      display: grid;
-      grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
-      gap: 1.5rem;
-      align-items: end;
       margin-bottom: 2rem;
     }
 
-    .kicker {
-      display: block;
-      margin-bottom: 0.7rem;
-      font-family: var(--mono);
-      font-size: 0.72rem;
-      letter-spacing: 0.18em;
+    .section-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.7rem;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
       text-transform: uppercase;
-      color: #5c6f84;
+      letter-spacing: 0.18em;
+      color: var(--ink-soft);
+    }
+
+    .section-kicker::before {
+      content: "";
+      width: 1.4rem;
+      height: 1px;
+      background: rgba(20,20,20,0.26);
     }
 
     .section-head h2 {
-      font-size: clamp(2rem, 5vw, 4rem);
+      margin: 0.9rem 0 0.75rem;
+      font-family: var(--font-serif);
+      font-size: clamp(2.1rem, 4vw, 3.2rem);
+      line-height: 0.98;
+      letter-spacing: -0.05em;
+      font-weight: 400;
     }
 
     .section-head p {
+      max-width: 48rem;
       margin: 0;
-      max-width: 46rem;
-      color: var(--muted-dark);
-      font-size: 1.04rem;
-    }
-
-    .feature-grid,
-    .project-grid,
-    .resource-grid,
-    .doc-grid,
-    .footer-grid,
-    .workflow {
-      display: grid;
-      gap: 1.1rem;
-    }
-
-    .feature-grid {
-      grid-template-columns: minmax(0, 1.25fr) minmax(300px, 0.75fr);
-      align-items: stretch;
-    }
-
-    .project-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .resource-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-    .doc-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-    .workflow { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-    .footer-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
-
-    .card,
-    .feature-card,
-    .aside-card,
-    .step,
-    .footer-card {
-      border: 1px solid var(--line-dark);
-      border-radius: var(--radius-sm);
-      box-shadow: var(--shadow-soft);
-    }
-
-    .feature-card {
-      padding: clamp(1.4rem, 3vw, 2.3rem);
-      background:
-        radial-gradient(circle at top right, rgba(143,210,255,0.12), transparent 0 32%),
-        linear-gradient(180deg, rgba(255,255,255,0.96), rgba(250,246,237,0.98));
-    }
-
-    .feature-card h3 {
-      font-size: clamp(2rem, 4vw, 3.4rem);
-      max-width: 13ch;
-    }
-
-    .feature-card p {
-      margin: 1rem 0 0;
-      color: var(--muted-dark);
+      color: var(--ink-soft);
       font-size: 1.02rem;
     }
 
-    .metric-grid {
+    .featured {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 0.8rem;
-      margin-top: 1.35rem;
+      grid-template-columns: minmax(0, 1.22fr) minmax(17rem, 0.78fr);
+      gap: 2rem;
+      align-items: start;
     }
 
-    .metric {
-      padding: 0.95rem;
-      border-radius: 14px;
-      border: 1px solid var(--line-dark);
-      background: rgba(17,24,39,0.03);
+    .featured-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      overflow: hidden;
+      background: #fff;
     }
 
-    .metric strong {
-      display: block;
-      margin-bottom: 0.3rem;
-      font-size: 0.72rem;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: #334155;
-      font-family: var(--mono);
-    }
-
-    .metric span { display: block; color: #121826; }
-
-    .aside-card {
+    .featured-image {
+      background: linear-gradient(180deg, #eaf1f6, #ffffff);
+      border-bottom: 1px solid var(--line);
       padding: 1.2rem;
-      background: linear-gradient(180deg, #f7f3e9, #f0e8da);
     }
 
-    .aside-card h3 {
-      font-size: 1.55rem;
-      margin-bottom: 0.95rem;
+    .featured-image img {
+      width: 100%;
+      border-radius: 0.8rem;
+      border: 1px solid rgba(20,20,20,0.08);
+      box-shadow: 0 1.5rem 3rem rgba(13,25,37,0.08);
+    }
+
+    .featured-body {
+      padding: 1.65rem;
+    }
+
+    .featured-body .meta {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--accent);
+    }
+
+    .featured-body h3 {
+      margin: 0.7rem 0 0.9rem;
+      font-family: var(--font-serif);
+      font-size: clamp(2rem, 3vw, 2.9rem);
+      line-height: 0.96;
+      letter-spacing: -0.05em;
+      font-weight: 400;
+    }
+
+    .featured-body p {
+      margin: 0 0 1rem;
+      color: var(--ink-soft);
+      font-size: 1.02rem;
+    }
+
+    .feature-stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.8rem;
+      margin: 1.4rem 0 1.5rem;
+    }
+
+    .stat {
+      padding: 1rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--line);
+      background: var(--panel-soft);
+    }
+
+    .stat strong {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 0.69rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--accent);
+      margin-bottom: 0.35rem;
+    }
+
+    .stat span {
+      display: block;
+      font-size: 0.95rem;
+      color: var(--ink);
+    }
+
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+    }
+
+    .button-light {
+      color: var(--ink);
+      border-color: rgba(20,20,20,0.16);
+      background: #fff;
+    }
+
+    .button-light:hover,
+    .button-light:focus-visible {
+      background: #f3eee6;
+      border-color: rgba(20,20,20,0.26);
+    }
+
+    .button-accent {
+      color: #fff;
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .button-accent:hover,
+    .button-accent:focus-visible {
+      background: var(--accent-deep);
+      border-color: var(--accent-deep);
+    }
+
+    .aside-panel {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, #fff, #f7f2e9);
+      padding: 1.55rem;
+      position: sticky;
+      top: 6rem;
+    }
+
+    .aside-panel h4 {
+      margin: 0;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--ink-soft);
     }
 
     .aside-list {
+      margin: 1rem 0 0;
+      padding: 0;
+      list-style: none;
       display: grid;
       gap: 0.9rem;
     }
 
-    .aside-item {
-      padding-bottom: 0.9rem;
-      border-bottom: 1px solid var(--line-dark);
+    .aside-list li {
+      padding-top: 0.9rem;
+      border-top: 1px solid var(--line);
     }
 
-    .aside-item:last-child {
-      padding-bottom: 0;
-      border-bottom: 0;
-    }
-
-    .aside-item strong {
+    .aside-list strong {
       display: block;
-      margin-bottom: 0.28rem;
-      font-family: var(--mono);
-      font-size: 0.7rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: #4b5563;
+      font-size: 0.96rem;
+      margin-bottom: 0.2rem;
     }
 
-    .aside-item span { color: #111827; }
+    .aside-list span {
+      display: block;
+      color: var(--ink-soft);
+      font-size: 0.95rem;
+    }
 
-    .card {
-      text-decoration: none;
-      color: inherit;
-      padding: 1.25rem;
-      min-height: 17rem;
+    .posts {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1.35rem;
+    }
+
+    .post {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+      overflow: clip;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-      background: rgba(255,255,255,0.82);
-      transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+      min-height: 100%;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
     }
 
-    .card:hover,
-    .card:focus-visible {
-      transform: translateY(-4px);
-      border-color: rgba(17,24,39,0.2);
-      background: #ffffff;
+    .post:hover,
+    .post:focus-within {
+      transform: translateY(-2px);
+      box-shadow: 0 1.5rem 3rem rgba(15, 24, 34, 0.08);
+      border-color: rgba(20,20,20,0.18);
     }
 
-    .meta {
-      margin-bottom: 0.85rem;
-      font-family: var(--mono);
-      font-size: 0.69rem;
-      letter-spacing: 0.16em;
+    .post-visual {
+      position: relative;
+      min-height: 10rem;
+      padding: 1.1rem;
+      overflow: hidden;
+      background:
+        linear-gradient(140deg, rgba(46,91,135,0.96), rgba(13,25,37,0.94)),
+        radial-gradient(circle at top right, rgba(255,255,255,0.28), transparent 32%);
+      color: #fff;
+    }
+
+    .post-visual.alt-1 {
+      background:
+        linear-gradient(140deg, rgba(111, 75, 41, 0.95), rgba(28,20,14,0.92)),
+        radial-gradient(circle at top right, rgba(255,255,255,0.25), transparent 28%);
+    }
+
+    .post-visual.alt-2 {
+      background:
+        linear-gradient(140deg, rgba(40,62,88,0.95), rgba(72,33,55,0.92)),
+        radial-gradient(circle at top right, rgba(255,255,255,0.25), transparent 28%);
+    }
+
+    .post-visual.alt-3 {
+      background:
+        linear-gradient(140deg, rgba(18,91,88,0.95), rgba(9,29,38,0.92)),
+        radial-gradient(circle at top right, rgba(255,255,255,0.24), transparent 28%);
+    }
+
+    .visual-label {
+      display: inline-flex;
+      padding: 0.35rem 0.55rem;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.18);
+      font-family: var(--font-mono);
+      font-size: 0.66rem;
       text-transform: uppercase;
-      color: #66768a;
+      letter-spacing: 0.16em;
     }
 
-    .card h3 {
+    .visual-title {
+      margin-top: 2.1rem;
+      font-family: var(--font-serif);
+      font-size: 2rem;
+      line-height: 0.94;
+      letter-spacing: -0.05em;
+      max-width: 10ch;
+    }
+
+    .visual-grid {
+      position: absolute;
+      inset: auto 1rem 1rem auto;
+      width: 6.4rem;
+      height: 6.4rem;
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 0.85rem;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.11) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.11) 1px, transparent 1px);
+      background-size: 1rem 1rem;
+      transform: rotate(8deg);
+      opacity: 0.7;
+    }
+
+    .post-body {
+      padding: 1.35rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.95rem;
+      flex: 1;
+    }
+
+    .post-body h3 {
+      margin: 0;
+      font-family: var(--font-serif);
       font-size: 1.7rem;
+      line-height: 1;
+      letter-spacing: -0.04em;
+      font-weight: 400;
+    }
+
+    .post-body p {
+      margin: 0;
+      color: var(--ink-soft);
+      font-size: 0.98rem;
+      flex: 1;
+    }
+
+    .repo-grid,
+    .doc-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    .repo-tile,
+    .doc-card {
+      position: relative;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      background: #fff;
+      padding: 1.2rem;
+      text-decoration: none;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+      min-height: 100%;
+    }
+
+    .repo-tile:hover,
+    .repo-tile:focus-visible,
+    .doc-card:hover,
+    .doc-card:focus-visible {
+      transform: translateY(-2px);
+      box-shadow: 0 1.3rem 2.4rem rgba(15, 24, 34, 0.07);
+      border-color: rgba(20,20,20,0.2);
+      outline: none;
+    }
+
+    .tile-kicker {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 0.66rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--accent);
       margin-bottom: 0.75rem;
     }
 
-    .card p {
+    .repo-tile h3,
+    .doc-card h3 {
+      margin: 0 0 0.65rem;
+      font-family: var(--font-serif);
+      font-size: 1.5rem;
+      line-height: 0.98;
+      letter-spacing: -0.045em;
+      font-weight: 400;
+      color: var(--ink);
+    }
+
+    .repo-tile p,
+    .doc-card p {
       margin: 0;
-      color: var(--muted-dark);
-      font-size: 0.98rem;
+      color: var(--ink-soft);
+      font-size: 0.95rem;
     }
 
-    .card-foot {
-      margin-top: 1rem;
+    .split-links {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 1.4rem;
+    }
+
+    .summary-panel,
+    .links-panel {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+      padding: 1.45rem;
+    }
+
+    .summary-panel p {
+      margin: 0 0 1rem;
+      color: var(--ink-soft);
+    }
+
+    .summary-list,
+    .links-list {
+      display: grid;
+      gap: 0.9rem;
+      margin: 1.1rem 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .summary-list li,
+    .links-list li {
       padding-top: 0.9rem;
-      border-top: 1px solid var(--line-dark);
-      font-size: 0.76rem;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: #121826;
+      border-top: 1px solid var(--line);
     }
 
-    .step {
-      padding: 1.35rem;
-      background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(247,242,233,0.98));
+    .summary-list strong,
+    .links-list strong {
+      display: block;
+      font-size: 0.96rem;
+      color: var(--ink);
+      margin-bottom: 0.18rem;
     }
 
-    .step-number {
-      width: 2rem;
-      height: 2rem;
-      border-radius: 999px;
-      display: grid;
-      place-items: center;
-      background: rgba(143,210,255,0.2);
-      color: #19324a;
-      font-family: var(--mono);
-      font-size: 0.76rem;
-      letter-spacing: 0.12em;
-      margin-bottom: 0.95rem;
+    .summary-list span,
+    .links-list span {
+      display: block;
+      font-size: 0.95rem;
+      color: var(--ink-soft);
     }
 
-    .step h3 {
-      font-size: 1.55rem;
-      margin-bottom: 0.65rem;
-    }
-
-    .step p { margin: 0; color: var(--muted-dark); }
-
-    .footer-card {
-      padding: 1.35rem;
-      background: linear-gradient(180deg, #f7f3ea, #efe7da);
-    }
-
-    .footer-card h3 {
-      font-size: 1.8rem;
-      margin-bottom: 0.8rem;
-    }
-
-    .footer-card p {
-      margin: 0 0 0.95rem;
-      color: var(--muted-dark);
-    }
-
-    .link-list {
-      display: grid;
-      gap: 0.7rem;
-      margin-top: 1rem;
-    }
-
-    .link-list a {
+    .inline-link {
       text-decoration: none;
-      padding-bottom: 0.7rem;
-      border-bottom: 1px solid var(--line-dark);
-      color: #111827;
+      border-bottom: 1px solid rgba(20,20,20,0.25);
     }
 
-    .link-list a:last-child {
-      border-bottom: 0;
-      padding-bottom: 0;
+    .inline-link:hover,
+    .inline-link:focus-visible {
+      outline: none;
+      border-color: currentColor;
     }
 
-    .site-footer {
-      padding: 1.5rem 0 3rem;
-      color: rgba(244,239,232,0.74);
-      font-size: 0.78rem;
-      letter-spacing: 0.14em;
+    .footer {
+      padding: 1.2rem 0 3rem;
+      color: rgba(255,255,255,0.66);
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.13em;
       text-transform: uppercase;
     }
 
-    .site-footer .wrap {
+    .footer-inner {
       display: flex;
       flex-wrap: wrap;
+      align-items: center;
       justify-content: space-between;
-      gap: 1rem;
+      gap: 0.8rem 1rem;
+    }
+
+    .footer a {
+      text-decoration: none;
+      border-bottom: 1px solid rgba(255,255,255,0.2);
+      padding-bottom: 0.1rem;
+    }
+
+    .footer a:hover,
+    .footer a:focus-visible {
+      outline: none;
+      border-color: currentColor;
+      color: #fff;
     }
 
     @media (max-width: 1080px) {
       .hero-grid,
-      .section-head,
-      .feature-grid,
-      .project-grid,
-      .resource-grid,
-      .doc-grid,
-      .workflow,
-      .footer-grid {
+      .featured,
+      .split-links {
         grid-template-columns: 1fr;
+      }
+
+      .aside-panel {
+        position: static;
       }
     }
 
-    @media (max-width: 760px) {
-      .site-header .wrap {
-        min-height: auto;
-        padding: 0.9rem 0;
-        flex-direction: column;
-        align-items: flex-start;
+    @media (max-width: 860px) {
+      .posts,
+      .repo-grid,
+      .doc-grid {
+        grid-template-columns: 1fr;
       }
 
-      .nav {
-        gap: 0.7rem 1rem;
+      .feature-stats {
+        grid-template-columns: 1fr;
       }
 
       .hero {
         padding-top: 4.5rem;
       }
+    }
 
-      .metric-grid {
-        grid-template-columns: 1fr;
+    @media (max-width: 720px) {
+      .topbar-inner {
+        padding-block: 0.8rem;
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .nav {
+        justify-content: flex-start;
       }
 
       h1 {
-        max-width: 8.5ch;
+        max-width: 9ch;
+      }
+
+      .hero::before {
+        font-size: 7rem;
+        top: 1.25rem;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      *,
+      *::before,
+      *::after {
+        transition: none !important;
       }
     }
   </style>
 </head>
 <body>
-  <header class="site-header">
-    <div class="wrap">
-      <a class="brand" href="#top" aria-label="Jonathan Capone home">
-        <div class="brand-mark">JC</div>
-        <div class="brand-copy">
-          <strong>Jonathan Capone</strong>
-          <span>Technical Portfolio</span>
-        </div>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="topbar">
+    <div class="wrap topbar-inner">
+      <a class="brand" href="#">
+        <span class="brand-title">Jonathan Capone</span>
+        <span class="brand-sub">Technical Portfolio</span>
       </a>
-      <nav class="nav" aria-label="Primary navigation">
-        <a href="#featured">Featured</a>
+      <nav class="nav" aria-label="Primary">
+        <a href="#overview">Overview</a>
         <a href="#projects">Projects</a>
-        <a href="#resources">Resources</a>
+        <a href="#repository">Repository</a>
         <a href="#documentation">Documentation</a>
-        <a href="https://jonathancapone.art" target="_blank" rel="noopener noreferrer">Artwork</a>
-        <a href="https://jonathancapone.art/contact" target="_blank" rel="noopener noreferrer">Contact</a>
+        <a href="https://jonathancapone.art" target="_blank" rel="noopener">Artwork</a>
       </nav>
     </div>
   </header>
 
-  <main id="top">
-    <section class="hero">
-      <div class="wrap hero-grid">
-        <div class="hero-main">
-          <span class="eyebrow">Geospatial systems · sensing · physical computing</span>
-          <h1>Technical projects for mapping, field capture, and public documentation.</h1>
-          <p>This site presents the technical side of Jonathan Capone’s practice: underwater survey systems, geospatial workflows, physical computing, experimental media, and teaching documentation. It is built to send visitors directly to working code, project pages, documentation, and public materials.</p>
-          <div class="hero-actions">
-            <a class="button" href="#featured">Explore featured work</a>
-            <a class="button-secondary" href="https://github.com/aminalnam/OMEGA" target="_blank" rel="noopener noreferrer">Open OMEGA on GitHub</a>
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <span class="eyebrow">Sensing, mapping, and physical computing</span>
+        <h1>Technical projects with real systems behind them.</h1>
+        <p>
+          This site focuses on geospatial workflows, environmental sensing, Arduino-based logging,
+          Python processing, interactive installation systems, and public documentation.
+        </p>
+        <p>
+          It brings together project overviews, repository structure, hardware and software entry points,
+          technical notes, and selected public documentation.
+        </p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="https://github.com/aminalnam/OMEGA" target="_blank" rel="noopener">Open OMEGA</a>
+          <a class="button button-secondary" href="#projects">Browse Projects</a>
+          <a class="button button-secondary" href="#documentation">Public Documentation</a>
+        </div>
+      </div>
+
+      <aside class="hero-panel" aria-label="Current focus">
+        <span class="panel-label">Current focus</span>
+        <h2>OMEGA: Oceanic Measurement &amp; Environmental Geospatial Array</h2>
+        <p>
+          A compact underwater survey system that records depth, position, and environmental data
+          from a moving ROV and turns those measurements into bathymetric maps and georeferenced outputs.
+        </p>
+        <div class="panel-list">
+          <div class="panel-item">
+            <strong>Capture</strong>
+            <span>GPS, sonar depth, temperature, IMU orientation, SD logging, field filtering</span>
+          </div>
+          <div class="panel-item">
+            <strong>Processing</strong>
+            <span>Python scripts for mapping, interpolation, contour generation, and Earth overlays</span>
+          </div>
+          <div class="panel-item">
+            <strong>Output</strong>
+            <span>Survey-quality datasets, depth maps, contour maps, KML files, and overlays</span>
           </div>
         </div>
-        <aside class="hero-side" aria-label="Portfolio summary">
-          <div class="stat-block">
-            <strong>Featured system</strong>
-            <span>OMEGA — Oceanic Measurement &amp; Environmental Geospatial Array</span>
-          </div>
-          <div class="stat-block">
-            <strong>Primary areas</strong>
-            <div class="tag-row">
-              <span class="tag">Bathymetry</span>
-              <span class="tag">ROV logging</span>
-              <span class="tag">Arduino</span>
-              <span class="tag">Python</span>
-              <span class="tag">Field sensing</span>
-              <span class="tag">Interactive systems</span>
-            </div>
-          </div>
-          <div class="stat-block">
-            <strong>Public destinations</strong>
-            <span>GitHub repository, Hackaday project page, public documentation, and artwork portfolio.</span>
-          </div>
-        </aside>
-      </div>
-    </section>
+      </aside>
+    </div>
+  </section>
 
-    <div class="wrap surface-wrap">
-      <div class="surface">
-        <section class="section" id="featured">
+  <main id="main" class="main-shell">
+    <div class="wrap main-inner">
+
+      <section class="section" id="overview">
+        <div class="wrap">
           <div class="section-head">
-            <div>
-              <span class="kicker">Featured project</span>
-              <h2>OMEGA</h2>
-            </div>
-            <p>OMEGA is a compact underwater survey system that records depth, position, and environmental data from a moving ROV, then transforms those measurements into mapped outputs. The public repository includes the logger code, processing scripts, documentation, example data, and generated visual products.</p>
+            <span class="section-kicker">Featured project</span>
+            <h2>OMEGA brings sensing, filtering, and mapping into one working system.</h2>
+            <p>
+              The project combines an Arduino-based capture device with a Python-based processing workflow.
+              During acquisition, measurements are filtered using GPS quality, fix age, platform orientation,
+              speed, and spacing constraints; afterward, the resulting mapping dataset is converted into
+              depth maps, interpolated surfaces, contour maps, and georeferenced outputs.
+            </p>
           </div>
-          <div class="feature-grid">
-            <article class="feature-card">
-              <span class="kicker">Oceanic Measurement &amp; Environmental Geospatial Array</span>
-              <h3>From field acquisition to mapped surface.</h3>
-              <p>The project combines a hardware capture layer with a processing workflow designed to turn irregular field measurements into usable maps. The system emphasizes stable logging, readable structure, and outputs that can be interpreted quickly in both research and presentation contexts.</p>
-              <div class="metric-grid">
-                <div class="metric">
-                  <strong>Capture</strong>
-                  <span>GPS, depth, temperature, orientation, onboard display, SD logging</span>
-                </div>
-                <div class="metric">
-                  <strong>Processing</strong>
-                  <span>Filtering, interpolation, contours, overlays, KML export</span>
-                </div>
-                <div class="metric">
-                  <strong>Outputs</strong>
-                  <span>Raster maps, contour maps, Google Earth overlays, filtered data products</span>
-                </div>
-                <div class="metric">
-                  <strong>Public material</strong>
-                  <span>Repository, Hackaday project page, documentation, example files</span>
-                </div>
+
+          <div class="featured">
+            <article class="featured-card">
+              <div class="featured-image">
+                <img src="https://raw.githubusercontent.com/aminalnam/OMEGA/main/assets/mapping-diagram.png" alt="OMEGA mapping pipeline diagram showing path, points, filter, interpolation, surface, and map output." />
               </div>
-              <div class="hero-actions" style="margin-top: 1.5rem;">
-                <a class="button" href="https://github.com/aminalnam/OMEGA" target="_blank" rel="noopener noreferrer">Repository</a>
-                <a class="button-secondary" href="https://hackaday.io/project/205502-oceanic-measurement-environmental-geo-arr" target="_blank" rel="noopener noreferrer">Hackaday</a>
+              <div class="featured-body">
+                <div class="meta">Featured system</div>
+                <h3>Oceanic Measurement &amp; Environmental Geospatial Array</h3>
+                <p>
+                  OMEGA is structured to separate capture, validation, and reconstruction into distinct stages.
+                  That architecture makes the project useful both as a field tool and as a clear technical case study.
+                </p>
+                <p>
+                  The public repository includes the Arduino logger, Python mapping scripts, documentation,
+                  example data, and a visual pipeline diagram for the full workflow.
+                </p>
+
+                <div class="feature-stats" aria-label="OMEGA highlights">
+                  <div class="stat">
+                    <strong>Capture</strong>
+                    <span>Arduino logger with GPS, sonar, temperature, IMU, LCD, and SD</span>
+                  </div>
+                  <div class="stat">
+                    <strong>Processing</strong>
+                    <span>CSV parsing, filtering, IDW interpolation, contour generation</span>
+                  </div>
+                  <div class="stat">
+                    <strong>Outputs</strong>
+                    <span>Depth maps, continuous surfaces, KML points, and Earth overlays</span>
+                  </div>
+                </div>
+
+                <div class="button-row">
+                  <a class="button button-accent" href="https://github.com/aminalnam/OMEGA" target="_blank" rel="noopener">GitHub Repository</a>
+                  <a class="button button-light" href="https://github.com/aminalnam/OMEGA/tree/main/arduino" target="_blank" rel="noopener">Arduino Logger</a>
+                  <a class="button button-light" href="https://github.com/aminalnam/OMEGA/tree/main/scripts" target="_blank" rel="noopener">Python Scripts</a>
+                </div>
               </div>
             </article>
-            <aside class="aside-card">
-              <h3>Public project materials</h3>
-              <div class="aside-list">
-                <div class="aside-item">
+
+            <aside class="aside-panel">
+              <h4>System at a glance</h4>
+              <ul class="aside-list">
+                <li>
+                  <strong>Quick start commands</strong>
+                  <span>Depth maps, interpolated maps, contour maps, KML output, and Google Earth overlays are all exposed directly in the repo workflow.</span>
+                </li>
+                <li>
                   <strong>Repository structure</strong>
-                  <span>Arduino logger, docs, scripts, example data, assets, README</span>
-                </div>
-                <div class="aside-item">
-                  <strong>Core hardware</strong>
-                  <span>Arduino Mega, GPS, waterproof ultrasonic sensor, DS18B20, BNO085, LCD, SD module</span>
-                </div>
-                <div class="aside-item">
-                  <strong>Workflow focus</strong>
-                  <span>Collect stable measurements in the field, then convert them into clear mapped outputs</span>
-                </div>
-                <div class="aside-item">
-                  <strong>Useful entry points</strong>
-                  <span>GitHub for code and docs, Hackaday for the public project overview</span>
-                </div>
-              </div>
+                  <span>Code, docs, scripts, and example data are separated cleanly so the project is readable as both software and documentation.</span>
+                </li>
+                <li>
+                  <strong>Method</strong>
+                  <span>Filtering is handled during acquisition, then surface reconstruction is handled during processing.</span>
+                </li>
+                <li>
+                  <strong>Usefulness</strong>
+                  <span>The project is easy to enter at multiple levels: concept, hardware, code, outputs, or data.</span>
+                </li>
+              </ul>
             </aside>
           </div>
-        </section>
+        </div>
+      </section>
 
-        <section class="section" id="projects">
+      <section class="section" id="projects">
+        <div class="wrap">
           <div class="section-head">
-            <div>
-              <span class="kicker">Selected work</span>
-              <h2>Projects and technical pages</h2>
-            </div>
-            <p>The strongest front page is selective. These links point to working repositories, public project pages, and hybrid works where technical systems and media practice overlap.</p>
+            <span class="section-kicker">Selected work</span>
+            <h2>Technical and hybrid projects.</h2>
+            <p>
+              In addition to OMEGA, these pages document installation systems, time-based work,
+              and public-facing project material that sit alongside the core sensing and mapping work.
+            </p>
           </div>
-          <div class="project-grid">
-            <a class="card" href="https://github.com/aminalnam/OMEGA" target="_blank" rel="noopener noreferrer">
-              <div>
-                <div class="meta">System 01 · GitHub</div>
-                <h3>OMEGA Repository</h3>
-                <p>The main source for the underwater survey system, including code, file structure, quick-start steps, docs, scripts, and example data.</p>
+
+          <div class="posts">
+            <article class="post">
+              <div class="post-visual">
+                <span class="visual-label">Responsive installation</span>
+                <div class="visual-title">Sacred / Mundane</div>
+                <div class="visual-grid" aria-hidden="true"></div>
               </div>
-              <div class="card-foot">Open repository</div>
-            </a>
-            <a class="card" href="https://hackaday.io/project/205502-oceanic-measurement-environmental-geo-arr" target="_blank" rel="noopener noreferrer">
-              <div>
-                <div class="meta">System 02 · Hackaday</div>
-                <h3>OMEGA Project Page</h3>
-                <p>A public-facing project page with components, files, gallery material, and a second entry point for people encountering the system outside GitHub.</p>
-              </div>
-              <div class="card-foot">View project page</div>
-            </a>
-            <a class="card" href="https://jonathancapone.art/peter-wallis-sacredmundane" target="_blank" rel="noopener noreferrer">
-              <div>
-                <div class="meta">Project 03 · Interactive installation</div>
+              <div class="post-body">
                 <h3>Sacred/Mundane</h3>
-                <p>An interactive collaboration with Peter Wallis using motion-sensitive triggers and animated landscapes in a gallery context.</p>
+                <p>
+                  Motion-sensitive installation work developed with Peter Wallis, using interactive
+                  systems to transform painted landscapes into responsive environments.
+                </p>
+                <a class="button button-light" href="https://jonathancapone.art/peter-wallis-sacredmundane" target="_blank" rel="noopener">View Project</a>
               </div>
-              <div class="card-foot">Read project page</div>
-            </a>
-            <a class="card" href="https://jonathancapone.art/computer-dreams" target="_blank" rel="noopener noreferrer">
-              <div>
-                <div class="meta">Project 04 · Time-based media</div>
+            </article>
+
+            <article class="post">
+              <div class="post-visual alt-1">
+                <span class="visual-label">Time-based work</span>
+                <div class="visual-title">Computer Dreams</div>
+                <div class="visual-grid" aria-hidden="true"></div>
+              </div>
+              <div class="post-body">
                 <h3>Computer Dreams</h3>
-                <p>A body of software-driven moving-image work that belongs within the technical side of the practice as much as the studio side.</p>
+                <p>
+                  A project space for digital synthesis, moving image experiments, and computationally
+                  inflected visual work.
+                </p>
+                <a class="button button-light" href="https://jonathancapone.art/computer-dreams" target="_blank" rel="noopener">View Project</a>
               </div>
-              <div class="card-foot">View work</div>
-            </a>
-          </div>
-        </section>
-
-        <section class="section" id="resources">
-          <div class="section-head">
-            <div>
-              <span class="kicker">Useful resources</span>
-              <h2>Direct paths into the project</h2>
-            </div>
-            <p>Useful sites reduce friction. These links go straight to the parts of the OMEGA project most likely to matter to visitors: documentation, code, scripts, and data.</p>
-          </div>
-          <div class="resource-grid">
-            <a class="card" href="https://github.com/aminalnam/OMEGA/tree/main/docs" target="_blank" rel="noopener noreferrer">
-              <div>
-                <div class="meta">Docs</div>
-                <h3>System Documentation</h3>
-                <p>Architecture notes, technical documents, and project writing for the mapping system.</p>
-              </div>
-              <div class="card-foot">Open docs</div>
-            </a>
-            <a class="card" href="https://github.com/aminalnam/OMEGA/tree/main/scripts" target="_blank" rel="noopener noreferrer">
-              <div>
-                <div class="meta">Scripts</div>
-                <h3>Processing Workflow</h3>
-                <p>Python tools for interpolation, contour generation, overlays, map export, and data handling.</p>
-              </div>
-              <div class="card-foot">Open scripts</div>
-            </a>
-            <a class="card" href="https://github.com/aminalnam/OMEGA/tree/main/example_data" target="_blank" rel="noopener noreferrer">
-              <div>
-                <div class="meta">Data</div>
-                <h3>Example Survey Data</h3>
-                <p>Sample files for understanding the mapping workflow, output structure, and testable datasets.</p>
-              </div>
-              <div class="card-foot">Open sample data</div>
-            </a>
-            <a class="card" href="https://github.com/aminalnam/OMEGA/tree/main/arduino" target="_blank" rel="noopener noreferrer">
-              <div>
-                <div class="meta">Capture</div>
-                <h3>Arduino Logger</h3>
-                <p>The capture layer that records GPS, depth, temperature, orientation, and onboard logs during field use.</p>
-              </div>
-              <div class="card-foot">Open Arduino code</div>
-            </a>
-          </div>
-        </section>
-
-        <section class="section" id="method">
-          <div class="section-head">
-            <div>
-              <span class="kicker">Working method</span>
-              <h2>Capture, process, publish.</h2>
-            </div>
-            <p>The technical work presented here moves between hardware, software, and presentation. The point is not only to build a system, but to make the system legible once it exists.</p>
-          </div>
-          <div class="workflow">
-            <article class="step">
-              <div class="step-number">01</div>
-              <h3>Capture</h3>
-              <p>Build or adapt a sensing platform, define logging rules, and collect field data that is structured and useful.</p>
             </article>
-            <article class="step">
-              <div class="step-number">02</div>
-              <h3>Process</h3>
-              <p>Filter and interpret raw measurements, then transform them into maps, overlays, documents, and other readable outputs.</p>
+
+            <article class="post">
+              <div class="post-visual alt-2">
+                <span class="visual-label">New media archive</span>
+                <div class="visual-title">Time Based Work</div>
+                <div class="visual-grid" aria-hidden="true"></div>
+              </div>
+              <div class="post-body">
+                <h3>New Media</h3>
+                <p>
+                  A broader index of technology-driven and time-based work, useful as an external
+                  reference point for experiments that sit between art, media, and systems.
+                </p>
+                <a class="button button-light" href="https://jonathancapone.art/time-based-work" target="_blank" rel="noopener">View Archive</a>
+              </div>
             </article>
-            <article class="step">
-              <div class="step-number">03</div>
-              <h3>Publish</h3>
-              <p>Present the work clearly enough that visitors understand what the system does, how it works, and where to go next.</p>
+
+            <article class="post">
+              <div class="post-visual alt-3">
+                <span class="visual-label">Public project log</span>
+                <div class="visual-title">Hackaday</div>
+                <div class="visual-grid" aria-hidden="true"></div>
+              </div>
+              <div class="post-body">
+                <h3>OMEGA on Hackaday</h3>
+                <p>
+                  A public-facing project page for the underwater survey system, documenting development,
+                  hardware decisions, and project context outside the repository itself.
+                </p>
+                <a class="button button-light" href="https://hackaday.io/project/205502-oceanic-measurement-environmental-geo-arr" target="_blank" rel="noopener">View Project</a>
+              </div>
             </article>
           </div>
-        </section>
+        </div>
+      </section>
 
-        <section class="section" id="documentation">
+      <section class="section" id="repository">
+        <div class="wrap">
           <div class="section-head">
-            <div>
-              <span class="kicker">Public documentation</span>
-              <h2>Teaching and interdisciplinary work</h2>
-            </div>
-            <p>These pages broaden the technical portfolio by showing how systems thinking, physical computing, media tools, and project-based research also operate within teaching and curriculum design.</p>
+            <span class="section-kicker">Direct access</span>
+            <h2>Repository entry points.</h2>
+            <p>
+              Direct links to the core parts of the project: overview, hardware logger, processing scripts, example data, and technical documentation.
+            </p>
           </div>
+
+          <div class="repo-grid">
+            <a class="repo-tile" href="https://github.com/aminalnam/OMEGA/blob/main/README.md" target="_blank" rel="noopener">
+              <span class="tile-kicker">Overview</span>
+              <h3>README</h3>
+              <p>Project summary, quick start commands, architecture, data flow, hardware, outputs, and method.</p>
+            </a>
+
+            <a class="repo-tile" href="https://github.com/aminalnam/OMEGA/tree/main/arduino" target="_blank" rel="noopener">
+              <span class="tile-kicker">Capture layer</span>
+              <h3>Arduino</h3>
+              <p>The logging sketch and hardware-side structure for field acquisition and filtered mapping output.</p>
+            </a>
+
+            <a class="repo-tile" href="https://github.com/aminalnam/OMEGA/tree/main/scripts" target="_blank" rel="noopener">
+              <span class="tile-kicker">Processing layer</span>
+              <h3>Scripts</h3>
+              <p>Python tools for scatter maps, interpolation, contours, KML export, and Google Earth overlays.</p>
+            </a>
+
+            <a class="repo-tile" href="https://github.com/aminalnam/OMEGA/tree/main/docs" target="_blank" rel="noopener">
+              <span class="tile-kicker">Technical notes</span>
+              <h3>Docs</h3>
+              <p>Project documentation for the system and the scripts, organized separately from the README.</p>
+            </a>
+
+            <a class="repo-tile" href="https://github.com/aminalnam/OMEGA/tree/main/example_data" target="_blank" rel="noopener">
+              <span class="tile-kicker">Testing</span>
+              <h3>Example Data</h3>
+              <p>Sample mapping files for checking the workflow and generating outputs without new field capture.</p>
+            </a>
+
+            <a class="repo-tile" href="https://github.com/aminalnam/OMEGA/tags" target="_blank" rel="noopener">
+              <span class="tile-kicker">Versions</span>
+              <h3>Tags</h3>
+              <p>Tagged states of the repository for stable reference points and release-oriented browsing.</p>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="documentation">
+        <div class="wrap">
+          <div class="section-head">
+            <span class="section-kicker">Public documentation</span>
+            <h2>Teaching and process documentation.</h2>
+            <p>
+              These pages collect public teaching materials, process notes, and curriculum-facing documentation
+              that extend the technical side of the portfolio.
+            </p>
+          </div>
+
           <div class="doc-grid">
-            <a class="card" href="https://jonathancapone.art/steam" target="_blank" rel="noopener noreferrer">
-              <div>
-                <div class="meta">Documentation</div>
-                <h3>STEAM</h3>
-                <p>Interdisciplinary work connecting art, engineering, science, and making.</p>
-              </div>
-              <div class="card-foot">Open page</div>
+            <a class="doc-card" href="https://jonathancapone.art/students-at-work" target="_blank" rel="noopener">
+              <span class="tile-kicker">Process</span>
+              <h3>Students at Work</h3>
+              <p>Project development, classroom process, and documentation of making in practice.</p>
             </a>
-            <a class="card" href="https://jonathancapone.art/media-arts" target="_blank" rel="noopener noreferrer">
-              <div>
-                <div class="meta">Documentation</div>
-                <h3>Media Arts</h3>
-                <p>Course and project materials focused on digital moving image, new media, and technical art practice.</p>
-              </div>
-              <div class="card-foot">Open page</div>
-            </a>
-            <a class="card" href="https://jonathancapone.art/experiential-learning" target="_blank" rel="noopener noreferrer">
-              <div>
-                <div class="meta">Documentation</div>
-                <h3>Experiential Learning</h3>
-                <p>Project-based learning documentation centered on prototyping, iteration, and inquiry.</p>
-              </div>
-              <div class="card-foot">Open page</div>
-            </a>
-            <a class="card" href="https://jonathancapone.art/performing-arts" target="_blank" rel="noopener noreferrer">
-              <div>
-                <div class="meta">Documentation</div>
-                <h3>Performing Arts</h3>
-                <p>Production, staging, effects, and interdisciplinary performance work in educational contexts.</p>
-              </div>
-              <div class="card-foot">Open page</div>
-            </a>
-            <a class="card" href="https://jonathancapone.art/curricula" target="_blank" rel="noopener noreferrer">
-              <div>
-                <div class="meta">Documentation</div>
-                <h3>Curricula</h3>
-                <p>A broader academic framework collecting course structures, program design, and related material.</p>
-              </div>
-              <div class="card-foot">Open page</div>
-            </a>
-            <a class="card" href="https://jonathancapone.art/students-at-work" target="_blank" rel="noopener noreferrer">
-              <div>
-                <div class="meta">Documentation</div>
-                <h3>Students at Work</h3>
-                <p>Process-oriented documentation showing classroom projects in progress and making workflows.</p>
-              </div>
-              <div class="card-foot">Open page</div>
-            </a>
-          </div>
-        </section>
 
-        <section class="section" id="connect">
-          <div class="footer-grid">
-            <article class="footer-card">
-              <span class="kicker">External links</span>
-              <h3>Additional destinations</h3>
-              <p>For artwork, photography, and selected studio projects, visit the portfolio site. For direct contact, use the contact page.</p>
-              <div class="link-list">
-                <a href="https://jonathancapone.art" target="_blank" rel="noopener noreferrer">jonathancapone.art</a>
-                <a href="https://jonathancapone.art/contact" target="_blank" rel="noopener noreferrer">Contact</a>
-                <a href="https://github.com/aminalnam" target="_blank" rel="noopener noreferrer">GitHub Profile</a>
-              </div>
-            </article>
-            <article class="footer-card">
-              <span class="kicker">Purpose</span>
-              <h3>A useful front page for the technical side of the practice.</h3>
-              <p>This homepage is meant to work as an entry point: it gives a quick sense of the projects, then routes visitors toward repositories, project pages, public documentation, and contact without forcing them to hunt for the next step.</p>
-            </article>
+            <a class="doc-card" href="https://jonathancapone.art/steam" target="_blank" rel="noopener">
+              <span class="tile-kicker">Integration</span>
+              <h3>STEAM</h3>
+              <p>Teaching materials that bridge artistic inquiry with engineering, science, and applied making.</p>
+            </a>
+
+            <a class="doc-card" href="https://jonathancapone.art/media-arts" target="_blank" rel="noopener">
+              <span class="tile-kicker">Instruction</span>
+              <h3>Media Arts</h3>
+              <p>Documentation related to digital moving images, technology-based art, and media literacy.</p>
+            </a>
+
+            <a class="doc-card" href="https://jonathancapone.art/experiential-learning" target="_blank" rel="noopener">
+              <span class="tile-kicker">Method</span>
+              <h3>Experiential Learning</h3>
+              <p>Project-based approaches centered on inquiry, prototyping, iteration, and hands-on experimentation.</p>
+            </a>
+
+            <a class="doc-card" href="https://jonathancapone.art/performing-arts" target="_blank" rel="noopener">
+              <span class="tile-kicker">Production</span>
+              <h3>Performing Arts</h3>
+              <p>Material related to staging, performance systems, and interdisciplinary production work.</p>
+            </a>
+
+            <a class="doc-card" href="https://jonathancapone.art/curricula" target="_blank" rel="noopener">
+              <span class="tile-kicker">Frameworks</span>
+              <h3>Curricula</h3>
+              <p>Course structures, frameworks, and planning materials gathered into a public-facing archive.</p>
+            </a>
           </div>
-        </section>
-      </div>
+        </div>
+      </section>
+
+      <section class="section" id="links">
+        <div class="wrap">
+          <div class="section-head">
+            <span class="section-kicker">External links</span>
+            <h2>Additional public project pages.</h2>
+            <p>
+              Public destinations for technical work, project logs, repositories, selected artwork, and contact.
+            </p>
+          </div>
+
+          <div class="split-links">
+            <div class="summary-panel">
+              <p>
+                This portfolio centers environmental sensing, mapping workflows, physical computing,
+                and installation systems. The links here provide direct access to the main repository,
+                the public project log, selected work, and contact information.
+              </p>
+              <ul class="summary-list">
+                <li>
+                  <strong>OMEGA</strong>
+                  <span>Field capture, processing scripts, documentation, and mapping outputs.</span>
+                </li>
+                <li>
+                  <strong>Hackaday</strong>
+                  <span>A public build log for the project with an additional audience and format.</span>
+                </li>
+                <li>
+                  <strong>Selected work</strong>
+                  <span>Project pages and public documentation across technical, pedagogical, and studio contexts.</span>
+                </li>
+              </ul>
+            </div>
+
+            <div class="links-panel">
+              <ul class="links-list">
+                <li>
+                  <strong><a class="inline-link" href="https://github.com/aminalnam/OMEGA" target="_blank" rel="noopener">OMEGA Repository</a></strong>
+                  <span>Primary public codebase and documentation.</span>
+                </li>
+                <li>
+                  <strong><a class="inline-link" href="https://hackaday.io/project/205502-oceanic-measurement-environmental-geo-arr" target="_blank" rel="noopener">Hackaday Project</a></strong>
+                  <span>Public project page and development log.</span>
+                </li>
+                <li>
+                  <strong><a class="inline-link" href="https://github.com/aminalnam" target="_blank" rel="noopener">GitHub Profile</a></strong>
+                  <span>Additional repositories and versioned project material.</span>
+                </li>
+                <li>
+                  <strong><a class="inline-link" href="https://jonathancapone.art" target="_blank" rel="noopener">Artwork</a></strong>
+                  <span>Selected work, collaborations, works in progress, and archives.</span>
+                </li>
+                <li>
+                  <strong><a class="inline-link" href="https://jonathancapone.art/contact" target="_blank" rel="noopener">Contact</a></strong>
+                  <span>Public contact page.</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
     </div>
   </main>
 
-  <footer class="site-footer">
-    <div class="wrap">
-      <div>Jonathan Capone — Los Angeles</div>
-      <div>Technical Portfolio</div>
+  <footer class="footer">
+    <div class="wrap footer-inner">
+      <div>© 2026 Jonathan Capone</div>
+      <div>
+        Design direction adapted from
+        <a href="https://html5up.net/massively" target="_blank" rel="noopener">Massively by HTML5 UP</a>.
+      </div>
     </div>
   </footer>
 </body>
