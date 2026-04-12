@@ -1,10 +1,510 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Jonathan Capone</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jonathan Capone</title>
+  <meta name="description" content="A central index for Jonathan Capone's projects, websites, and GitHub Pages." />
+  <style>
+    :root {
+      --bg: #f5f5f2;
+      --panel: #ffffff;
+      --text: #1d1d1b;
+      --muted: #66645f;
+      --line: #d8d4cc;
+      --accent: #1f4f7a;
+      --accent-soft: #eaf1f7;
+      --shadow: 0 10px 30px rgba(0,0,0,0.06);
+      --radius: 18px;
+      --max: 1120px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.5;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .wrap {
+      width: min(calc(100% - 2rem), var(--max));
+      margin: 0 auto;
+    }
+
+    header {
+      padding: 2rem 0 1rem;
+      border-bottom: 1px solid var(--line);
+      background: rgba(245,245,242,0.92);
+      backdrop-filter: blur(6px);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      font-size: clamp(1.4rem, 2vw, 1.8rem);
+      letter-spacing: 0.02em;
+    }
+
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 0.95rem;
+      color: var(--muted);
+    }
+
+    nav a:hover { color: var(--accent); }
+
+    .hero {
+      padding: 5.5rem 0 3rem;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 2rem;
+      align-items: start;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      font-family: Arial, Helvetica, sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 0.78rem;
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+
+    h1 {
+      font-size: clamp(2.6rem, 6vw, 4.8rem);
+      line-height: 0.98;
+      margin: 0 0 1rem;
+      font-weight: 400;
+    }
+
+    .hero p {
+      font-size: 1.08rem;
+      max-width: 40rem;
+      margin: 0 0 1.5rem;
+      color: #33312e;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+      margin-top: 1.5rem;
+    }
+
+    .button,
+    .button-secondary {
+      display: inline-block;
+      padding: 0.9rem 1.1rem;
+      border-radius: 999px;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 0.95rem;
+      transition: transform 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+    }
+
+    .button {
+      background: var(--accent);
+      color: white;
+    }
+
+    .button:hover { transform: translateY(-1px); }
+
+    .button-secondary {
+      border: 1px solid var(--line);
+      background: var(--panel);
+      color: var(--text);
+    }
+
+    .button-secondary:hover {
+      transform: translateY(-1px);
+      border-color: #bcb7ad;
+    }
+
+    .hero-panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 1.35rem;
+    }
+
+    .hero-panel h2 {
+      margin: 0 0 0.8rem;
+      font-size: 1rem;
+      font-family: Arial, Helvetica, sans-serif;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+    }
+
+    .hero-panel ul {
+      margin: 0;
+      padding-left: 1rem;
+      color: var(--muted);
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 0.95rem;
+    }
+
+    section {
+      padding: 1.5rem 0 3rem;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 1rem;
+      margin-bottom: 1.2rem;
+    }
+
+    h2.section-title {
+      margin: 0;
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      font-weight: 400;
+    }
+
+    .section-note {
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--muted);
+      font-size: 0.95rem;
+      max-width: 34rem;
+      text-align: right;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 1.1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+      min-height: 250px;
+      transition: transform 0.15s ease, border-color 0.15s ease;
+    }
+
+    .card:hover {
+      border-color: #bdb8af;
+      transform: translateY(-1px);
+    }
+
+    .meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      gap: 0.75rem;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .tag {
+      background: var(--accent-soft);
+      color: var(--accent);
+      border-radius: 999px;
+      padding: 0.28rem 0.55rem;
+      white-space: nowrap;
+    }
+
+    .card h3 {
+      margin: 0;
+      font-size: 1.45rem;
+      line-height: 1.1;
+      font-weight: 400;
+    }
+
+    .card p {
+      margin: 0;
+      color: #3d3a36;
+      font-size: 0.98rem;
+    }
+
+    .links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-top: auto;
+      padding-top: 0.2rem;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 0.92rem;
+    }
+
+    .links a {
+      color: var(--accent);
+    }
+
+    .links a:hover { text-decoration: underline; }
+
+    .about {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .about .card {
+      min-height: auto;
+    }
+
+    footer {
+      border-top: 1px solid var(--line);
+      padding: 1.4rem 0 2.2rem;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid,
+      .about,
+      .cards {
+        grid-template-columns: 1fr;
+      }
+
+      .section-note {
+        text-align: left;
+      }
+
+      .section-head {
+        align-items: start;
+        flex-direction: column;
+      }
+    }
+
+    @media (max-width: 640px) {
+      header {
+        position: static;
+      }
+
+      .hero {
+        padding-top: 3rem;
+      }
+
+      h1 {
+        font-size: 2.6rem;
+      }
+    }
+  </style>
 </head>
 <body>
-    <h1>Welcome to my website</h1>
-    <p>The site is now live on my custom domain!</p>
+  <header>
+    <div class="wrap topbar">
+      <div class="brand">Jonathan Capone</div>
+      <nav>
+        <a href="#projects">Projects</a>
+        <a href="#sites">Sites</a>
+        <a href="#about">About</a>
+        <a href="https://github.com/aminalnam" target="_blank" rel="noopener noreferrer">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div>
+          <span class="eyebrow">Index / Landing Page</span>
+          <h1>Projects, tools, and published pages.</h1>
+          <p>
+            This page functions as the front door for all GitHub Pages projects hosted under this domain.
+            It can be used as a simple directory, portfolio index, or project hub.
+          </p>
+          <p>
+            Update the links below as you publish new pages. The layout is designed to stay clean even as the list grows.
+          </p>
+          <div class="hero-actions">
+            <a class="button" href="#projects">Browse Projects</a>
+            <a class="button-secondary" href="https://github.com/aminalnam/Ocean-Sensors" target="_blank" rel="noopener noreferrer">View GitHub Repo</a>
+          </div>
+        </div>
+
+        <aside class="hero-panel">
+          <h2>How to customize this page</h2>
+          <ul>
+            <li>Edit the project cards in the <strong>Projects</strong> and <strong>Published Pages</strong> sections.</li>
+            <li>Replace placeholder descriptions with your live GitHub Pages URLs.</li>
+            <li>Adjust colors, typography, and section titles to match your main site.</li>
+            <li>Use this page as an index, a portfolio, or a launch page for separate project microsites.</li>
+          </ul>
+        </aside>
+      </div>
+    </section>
+
+    <section id="projects">
+      <div class="wrap">
+        <div class="section-head">
+          <h2 class="section-title">Projects</h2>
+          <div class="section-note">
+            Use these cards for project pages, research tools, interactive experiments, or documentation hubs.
+          </div>
+        </div>
+
+        <div class="cards">
+          <article class="card">
+            <div class="meta">
+              <span>Survey / Mapping</span>
+              <span class="tag">Live Project</span>
+            </div>
+            <h3>Oceanic Geospatial Measurement System</h3>
+            <p>
+              A mobile bathymetric survey system that records depth and position data from a small ROV and reconstructs terrain surfaces through interpolation.
+            </p>
+            <div class="links">
+              <a href="https://github.com/aminalnam/Ocean-Sensors" target="_blank" rel="noopener noreferrer">Repository</a>
+              <a href="https://github.com/aminalnam/Ocean-Sensors/wiki" target="_blank" rel="noopener noreferrer">Wiki</a>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="meta">
+              <span>Project Page</span>
+              <span class="tag">Placeholder</span>
+            </div>
+            <h3>Add Another GitHub Pages Site</h3>
+            <p>
+              Replace this card with your next published page. Add the GitHub Pages URL, a short description, and any supporting links.
+            </p>
+            <div class="links">
+              <a href="#">Live Site</a>
+              <a href="#">Repository</a>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="meta">
+              <span>Documentation</span>
+              <span class="tag">Placeholder</span>
+            </div>
+            <h3>Add a Documentation Hub</h3>
+            <p>
+              Use this section for a documentation site, class resource, workshop page, or technical archive hosted through GitHub Pages.
+            </p>
+            <div class="links">
+              <a href="#">Live Site</a>
+              <a href="#">Repository</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="sites">
+      <div class="wrap">
+        <div class="section-head">
+          <h2 class="section-title">Published Pages</h2>
+          <div class="section-note">
+            A secondary section for smaller microsites, experiments, prototypes, and temporary launches.
+          </div>
+        </div>
+
+        <div class="cards">
+          <article class="card">
+            <div class="meta">
+              <span>Microsite</span>
+              <span class="tag">Placeholder</span>
+            </div>
+            <h3>Prototype Site</h3>
+            <p>
+              A compact page for testing layouts, interactive sketches, maps, or early versions of a project before it moves into a larger site.
+            </p>
+            <div class="links">
+              <a href="#">Open</a>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="meta">
+              <span>Archive</span>
+              <span class="tag">Placeholder</span>
+            </div>
+            <h3>Archived Project</h3>
+            <p>
+              A simple slot for an older published page you still want accessible through the domain.
+            </p>
+            <div class="links">
+              <a href="#">Open</a>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="meta">
+              <span>External Link</span>
+              <span class="tag">Optional</span>
+            </div>
+            <h3>Main Portfolio</h3>
+            <p>
+              You can also use this page to direct people to your main portfolio, artist site, teaching site, or any other primary destination.
+            </p>
+            <div class="links">
+              <a href="https://jonathancapone.com" target="_blank" rel="noopener noreferrer">Visit Site</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="about">
+      <div class="wrap">
+        <div class="section-head">
+          <h2 class="section-title">About This Page</h2>
+          <div class="section-note">
+            A simple landing page can make a scattered set of repositories feel intentional and easier to navigate.
+          </div>
+        </div>
+
+        <div class="about">
+          <article class="card">
+            <h3>Purpose</h3>
+            <p>
+              This index consolidates GitHub Pages projects under a single domain. It works well as a neutral front page when multiple project sites, experiments, or documentation hubs are hosted separately.
+            </p>
+          </article>
+
+          <article class="card">
+            <h3>Editing Notes</h3>
+            <p>
+              To update the page, duplicate or remove cards, change the links, and revise the text. No framework is required. This file can remain a single static HTML document.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      Jonathan Capone — GitHub Pages index
+    </div>
+  </footer>
 </body>
 </html>
