@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Jonathan Capone — Technical Index</title>
-  <meta name="description" content="A repository of technical systems, geospatial tools, and pedagogical documentation." />
   <style>
     :root {
       --bg: #f5f4f0;
@@ -13,7 +12,7 @@
       --muted: #706c64;
       --line: #e0ddd5;
       --accent: #234c70;
-      --radius: 8px; /* Sharper edges feel more intentional/technical */
+      --radius: 8px;
       --max: 1100px;
     }
 
@@ -32,13 +31,16 @@
       padding: 1.5rem 0;
       border-bottom: 1px solid var(--line);
       background: var(--bg);
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
 
     .topbar { display: flex; justify-content: space-between; align-items: baseline; }
     .brand { font-size: 1.1rem; font-weight: bold; letter-spacing: -0.01em; }
     
-    nav { display: flex; gap: 1.5rem; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, sans-serif; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; }
-    nav a { color: var(--muted); transition: color 0.2s; }
+    nav { display: flex; gap: 1.5rem; font-family: -apple-system, sans-serif; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; }
+    nav a { color: var(--muted); text-decoration: none; }
     nav a:hover { color: var(--accent); }
 
     .hero { padding: 8rem 0 5rem; border-bottom: 1px solid var(--line); }
@@ -47,19 +49,6 @@
     h1 { margin: 0 0 1.5rem; font-size: clamp(2.2rem, 5vw, 3.8rem); line-height: 1.1; font-weight: 400; letter-spacing: -0.02em; }
     .hero-copy p { margin: 0 0 1.2rem; font-size: 1.15rem; color: #333; max-width: 38rem; }
 
-    .btn-group { display: flex; gap: 1rem; margin-top: 2rem; }
-    .btn { 
-        font-family: sans-serif; font-size: 0.85rem; padding: 0.75rem 1.25rem; 
-        border: 1px solid var(--line); border-radius: var(--radius); text-decoration: none;
-        background: var(--panel); color: var(--text); transition: all 0.2s;
-    }
-    .btn.primary { background: var(--accent); color: white; border-color: var(--accent); }
-    .btn:hover { border-color: var(--text); transform: translateY(-1px); }
-
-    .sidebar-label { font-family: sans-serif; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 1rem; display: block; }
-    .sidebar-item { font-size: 0.95rem; margin-bottom: 1.5rem; border-left: 2px solid var(--line); padding-left: 1rem; }
-    .sidebar-item strong { display: block; font-size: 0.85rem; margin-bottom: 0.25rem; color: var(--accent); }
-
     section { padding: 5rem 0; border-bottom: 1px solid var(--line); }
     .section-header { margin-bottom: 3rem; }
     .section-title { font-size: 0.85rem; font-family: sans-serif; text-transform: uppercase; letter-spacing: 0.15em; color: var(--muted); margin-bottom: 1rem; }
@@ -67,11 +56,12 @@
     .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
     .card { 
         background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); 
-        padding: 1.5rem; display: flex; flex-direction: column; transition: border-color 0.2s;
+        padding: 1.5rem; display: flex; flex-direction: column; text-decoration: none; color: inherit;
+        transition: transform 0.2s ease, border-color 0.2s;
     }
-    .card:hover { border-color: var(--accent); }
-    .card-meta { font-family: sans-serif; font-size: 0.7rem; text-transform: uppercase; color: var(--muted); margin-bottom: 1rem; display: flex; justify-content: space-between; }
-    .card h3 { margin: 0 0 0.75rem; font-size: 1.4rem; font-weight: 400; line-height: 1.2; }
+    .card:hover { border-color: var(--accent); transform: translateY(-2px); }
+    .card-meta { font-family: sans-serif; font-size: 0.7rem; text-transform: uppercase; color: var(--muted); margin-bottom: 1rem; }
+    .card h3 { margin: 0 0 0.75rem; font-size: 1.3rem; font-weight: 400; line-height: 1.2; }
     .card p { font-size: 0.95rem; color: #444; flex-grow: 1; margin-bottom: 1.5rem; }
     .card-link { font-family: sans-serif; font-size: 0.85rem; color: var(--accent); font-weight: bold; }
 
@@ -89,9 +79,9 @@
     <div class="wrap topbar">
       <div class="brand">Jonathan Capone</div>
       <nav>
-        <a href="#systems">Systems</a>
-        <a href="#pedagogy">Pedagogy</a>
-        <a href="https://jonathancapone.art">Art Site</a>
+        <a href="#new-media">New Media</a>
+        <a href="#pedagogy">Teaching</a>
+        <a href="https://jonathancapone.art">Main Site</a>
       </nav>
     </div>
   </header>
@@ -101,53 +91,44 @@
       <div class="wrap hero-grid">
         <div class="hero-copy">
           <h1>Technical systems, field research, and pedagogical frameworks.</h1>
-          <p>This index aggregates the engineering and documentation components of my practice—ranging from environmental sensing tools to interdisciplinary STEAM curricula.</p>
-          <p>While my primary work lives at <a href="https://jonathancapone.art" style="text-decoration: underline;">jonathancapone.art</a>, this space functions as a functional repository for code, hardware schematics, and instructional resources.</p>
-          <div class="btn-group">
-            <a href="#systems" class="btn primary">View Systems</a>
-            <a href="https://github.com/aminalnam" class="btn">GitHub Profile</a>
-          </div>
+          <p>This index serves as a functional repository for the engineering and documentation components of my practice—ranging from geospatial sensing tools to experiential learning curricula.</p>
         </div>
         <aside>
-          <span class="sidebar-label">Active Focus</span>
-          <div class="sidebar-item">
-            <strong>Geospatial</strong>
-            Bathymetric mapping and real-time environmental data logging.
-          </div>
-          <div class="sidebar-item">
-            <strong>Pedagogy</strong>
-            Project-based learning at the intersection of media arts and engineering.
+          <div style="border-left: 2px solid var(--accent); padding-left: 1rem;">
+            <p style="font-size: 0.9rem; color: var(--muted); margin: 0;">
+              Primary portfolio, photography, and installation work can be found at <a href="https://jonathancapone.art" style="color: var(--accent);">jonathancapone.art</a>.
+            </p>
           </div>
         </aside>
       </div>
     </section>
 
-    <section id="systems">
+    <section id="new-media">
       <div class="wrap">
         <div class="section-header">
-          <h2 class="section-title">Systems & Documentation</h2>
+          <h2 class="section-title">New Media & Technical Systems</h2>
         </div>
         <div class="grid">
-          <article class="card">
-            <div class="card-meta"><span>Field Tool</span><span>v1.0</span></div>
-            <h3>Oceanic Geospatial Measurement System</h3>
-            <p>A mobile bathymetric survey platform utilizing ROV-mounted sensors to reconstruct underwater terrain through real-time interpolation and mapping.</p>
-            <a href="https://github.com/aminalnam/Ocean-Sensors" class="card-link">View Repository →</a>
-          </article>
+          <a href="https://jonathancapone.com/Ocean-Sensors" class="card">
+            <div class="card-meta">Field Tool / Geospatial</div>
+            <h3>Ocean Sensors</h3>
+            <p>A central hub for underwater sensing, bathymetric mapping, and geospatial visualization workflows.</p>
+            <span class="card-link">View Project →</span>
+          </a>
 
-          <article class="card">
-            <div class="card-meta"><span>Installation</span><span>Collaborative</span></div>
-            <h3>Peter Wallis: Sacred/Mundane</h3>
-            <p>Technical implementation of motion-sensitive triggers for responsive landscape imagery in a gallery environment.</p>
-            <a href="https://jonathancapone.art/peter-wallis-sacredmundane" class="card-link">Project Specs →</a>
-          </article>
+          <a href="https://jonathancapone.art/peter-wallis-sacredmundane" class="card">
+            <div class="card-meta">Interactive Collaboration</div>
+            <h3>Sacred/Mundane</h3>
+            <p>Technical implementation of motion-sensitive triggers for responsive installation environments.</p>
+            <span class="card-link">Details →</span>
+          </a>
 
-          <article class="card">
-            <div class="card-meta"><span>Legacy</span><span>Archive</span></div>
+          <a href="https://jonathancapone.art/computer-dreams" class="card">
+            <div class="card-meta">Time-Based Work</div>
             <h3>Computer Dreams</h3>
-            <p>Archive of time-based media experiments and technical workflows for digital synthesis.</p>
-            <a href="https://jonathancapone.art/computer-dreams" class="card-link">Documentation →</a>
-          </article>
+            <p>Archive of digital synthesis experiments and technical documentation for moving images.</p>
+            <span class="card-link">Documentation →</span>
+          </a>
         </div>
       </div>
     </section>
@@ -155,29 +136,50 @@
     <section id="pedagogy">
       <div class="wrap">
         <div class="section-header">
-          <h2 class="section-title">Pedagogical Resources</h2>
+          <h2 class="section-title">Teaching Documentation</h2>
         </div>
         <div class="grid">
-          <article class="card">
-            <div class="card-meta"><span>Framework</span></div>
+          <a href="https://jonathancapone.art/steam" class="card">
+            <div class="card-meta">Curriculum</div>
             <h3>STEAM Integration</h3>
-            <p>Curricula focused on the bridge between artistic inquiry and applied engineering/science.</p>
-            <a href="https://jonathancapone.art/steam" class="card-link">Open Index →</a>
-          </article>
+            <p>Frameworks for interdisciplinary making, engineering, and art/science integration.</p>
+            <span class="card-link">Open →</span>
+          </a>
 
-          <article class="card">
-            <div class="card-meta"><span>Studio Practice</span></div>
+          <a href="https://jonathancapone.art/media-arts" class="card">
+            <div class="card-meta">Curriculum</div>
             <h3>Media Arts</h3>
-            <p>Instructional frameworks for digital moving images, tech-based art, and interactive media.</p>
-            <a href="https://jonathancapone.art/media-arts" class="card-link">Open Index →</a>
-          </article>
+            <p>Instructional documentation for digital media, moving image, and technology-based instruction.</p>
+            <span class="card-link">Open →</span>
+          </a>
 
-          <article class="card">
-            <div class="card-meta"><span>Case Study</span></div>
+          <a href="https://jonathancapone.art/experiential-learning" class="card">
+            <div class="card-meta">Methodology</div>
             <h3>Experiential Learning</h3>
-            <p>Process-driven documentation of project-based classroom environments and hands-on making.</p>
-            <a href="https://jonathancapone.art/experiential-learning" class="card-link">Open Index →</a>
-          </article>
+            <p>Project-based documentation focused on inquiry, making, and hands-on experimentation.</p>
+            <span class="card-link">Open →</span>
+          </a>
+
+          <a href="https://jonathancapone.art/performing-arts" class="card">
+            <div class="card-meta">Instruction</div>
+            <h3>Performing Arts</h3>
+            <p>Teaching-related work connected to performance, staging, and interdisciplinary production.</p>
+            <span class="card-link">Open →</span>
+          </a>
+
+          <a href="https://jonathancapone.art/curricula" class="card">
+            <div class="card-meta">Archives</div>
+            <h3>Curricula</h3>
+            <p>A comprehensive index of educational frameworks and course structures.</p>
+            <span class="card-link">Open →</span>
+          </a>
+
+          <a href="https://jonathancapone.art/students-at-work" class="card">
+            <div class="card-meta">Observation</div>
+            <h3>Students at Work</h3>
+            <p>Process documentation of classroom activity, making, and project-based development.</p>
+            <span class="card-link">Open →</span>
+          </a>
         </div>
       </div>
     </section>
@@ -185,7 +187,7 @@
 
   <footer>
     <div class="wrap">
-      &copy; 2026 Jonathan Capone &mdash; Los Angeles, CA.
+      &copy; 2026 Jonathan Capone &mdash; Projects, systems, and resources.
     </div>
   </footer>
 
