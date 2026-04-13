@@ -599,39 +599,6 @@
       font-size: 0.95rem;
     }
 
-    .project-group {
-      margin-top: 2.5rem;
-    }
-
-    .project-group:first-of-type {
-      margin-top: 0;
-    }
-
-    .group-head {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: end;
-      justify-content: space-between;
-      gap: 0.75rem 1.25rem;
-      margin-bottom: 1rem;
-    }
-
-    .group-head h3 {
-      margin: 0;
-      font-family: var(--font-serif);
-      font-size: 1.9rem;
-      line-height: 1;
-      letter-spacing: -0.04em;
-      font-weight: 400;
-    }
-
-    .group-head p {
-      margin: 0;
-      max-width: 40rem;
-      color: var(--ink-soft);
-      font-size: 0.96rem;
-    }
-
     .posts {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -755,10 +722,6 @@
 
     .post-status.complete::before {
       background: #2e5b87;
-    }
-
-    .post-status.reference::before {
-      background: #5d7f74;
     }
 
     .post-body h3 {
@@ -1139,113 +1102,55 @@
             <span class="section-kicker">Project index</span>
             <h2>Projects.</h2>
             <p>
-              A selection of ongoing and completed projects across environmental sensing,
-              communications systems, geospatial workflows, interactive installations,
-              and public-facing technical documentation.
+              Technical and hybrid projects in environmental sensing, communications systems,
+              geospatial workflows, physical computing, and field-based research.
             </p>
           </div>
 
-          <div class="project-group">
-            <div class="group-head">
-              <h3>Core systems</h3>
-              <p>
-                Major technical projects that form the backbone of this portfolio and will continue to expand over time.
-              </p>
-            </div>
+          <div class="posts">
+            <article class="post">
+              <div class="post-visual">
+                <span class="visual-label">Featured system</span>
+                <div class="visual-title">OMEGA</div>
+                <div class="visual-grid" aria-hidden="true"></div>
+              </div>
+              <div class="post-body">
+                <span class="post-status complete">Featured project</span>
+                <h3>OMEGA</h3>
+                <p>
+                  Oceanic Measurement &amp; Environmental Geospatial Array is a custom underwater
+                  sensing and mapping system built around field data collection, sensor integration,
+                  logging, bathymetric mapping, and geospatial visualization.
+                </p>
+                <div class="post-links">
+                  <a class="button button-light" href="https://github.com/aminalnam/OMEGA" target="_blank" rel="noopener">Open Repository</a>
+                </div>
+              </div>
+            </article>
 
-            <div class="posts">
-              <article class="post">
-                <div class="post-visual">
-                  <span class="visual-label">Featured system</span>
-                  <div class="visual-title">OMEGA: Oceanic Measurement & Environmental Geospatial Array </div>
-                  <div class="visual-grid" aria-hidden="true"></div>
+            <article class="post">
+              <div class="post-visual alt-2">
+                <span class="visual-label">Marine communications</span>
+                <div class="visual-title">OMEGA-Current</div>
+                <div class="visual-grid" aria-hidden="true"></div>
+              </div>
+              <div class="post-body">
+                <span class="post-status in-progress">Work in progress</span>
+                <h3>OMEGA-Current</h3>
+                <p>
+                  The distributed communications and networking branch of OMEGA, focused on resilient
+                  marine and littoral communication between shore systems, buoys, vessels, fixed sensor arrays,
+                  diver-support tools, underwater sensor nodes, and other field devices.
+                </p>
+                <p>
+                  It is being developed as a modular system designed to bridge surface RF links, Wi-Fi,
+                  long-range backhaul, and future underwater acoustic and optical interfaces into one coherent network layer.
+                </p>
+                <div class="post-links">
+                  <a class="button button-light" href="https://github.com/aminalnam/OMEGA" target="_blank" rel="noopener">Project Notes</a>
                 </div>
-                <div class="post-body">
-                  <span class="post-status complete">Featured project</span>
-                  <h3>OMEGA</h3>
-                  <p>
-                    A custom underwater sensing and mapping system built around field data collection,
-                    sensor integration, logging, bathymetric mapping, and geospatial visualization.
-                  </p>
-                  <div class="post-links">
-                    <a class="button button-light" href="https://github.com/aminalnam/OMEGA" target="_blank" rel="noopener">Open Repository</a>
-                  </div>
-                </div>
-              </article>
-
-              <article class="post">
-                <div class="post-visual alt-2">
-                  <span class="visual-label">Marine communications</span>
-                  <div class="visual-title">OMEGA-Current</div>
-                  <div class="visual-grid" aria-hidden="true"></div>
-                </div>
-                <div class="post-body">
-                  <span class="post-status in-progress">Work in progress</span>
-                  <h3>OMEGA-Current</h3>
-                  <p>
-                    The distributed communications and networking branch of OMEGA, focused on resilient
-                    marine and littoral communication between shore systems, buoys, vessels, fixed sensor arrays,
-                    diver-support tools, underwater sensor nodes, and other field devices.
-                  </p>
-                  <p>
-                    It is being developed as a modular system designed to bridge surface RF links, Wi-Fi,
-                    long-range backhaul, and future underwater acoustic and optical interfaces into one coherent network layer.
-                  </p>
-                  <div class="post-links">
-                    <a class="button button-light" href="https://github.com/aminalnam/OMEGA" target="_blank" rel="noopener">Project Notes</a>
-                  </div>
-                </div>
-              </article>
-            </div>
-          </div>
-
-          <div class="project-group">
-            <div class="group-head">
-              <h3>Other projects</h3>
-              <p>
-                Related hybrid work, installation systems, and public-facing project pages.
-              </p>
-            </div>
-
-            <div class="posts">
-              <article class="post">
-                <div class="post-visual alt-1">
-                  <span class="visual-label">Responsive installation</span>
-                  <div class="visual-title">Sacred / Mundane</div>
-                  <div class="visual-grid" aria-hidden="true"></div>
-                </div>
-                <div class="post-body">
-                  <span class="post-status reference">Installation project</span>
-                  <h3>Sacred/Mundane</h3>
-                  <p>
-                    Motion-sensitive installation work developed with Peter Wallis, using interactive
-                    systems to transform painted landscapes into responsive environments.
-                  </p>
-                  <div class="post-links">
-                    <a class="button button-light" href="https://jonathancapone.art/peter-wallis-sacredmundane" target="_blank" rel="noopener">View Project</a>
-                  </div>
-                </div>
-              </article>
-
-              <article class="post">
-                <div class="post-visual alt-3">
-                  <span class="visual-label">Public project log</span>
-                  <div class="visual-title">Hackaday</div>
-                  <div class="visual-grid" aria-hidden="true"></div>
-                </div>
-                <div class="post-body">
-                  <span class="post-status reference">Public log</span>
-                  <h3>OMEGA on Hackaday</h3>
-                  <p>
-                    A public-facing project page for the underwater survey system, documenting development,
-                    hardware decisions, and project context outside the repository itself.
-                  </p>
-                  <div class="post-links">
-                    <a class="button button-light" href="https://hackaday.io/project/205502-oceanic-measurement-environmental-geo-arr" target="_blank" rel="noopener">View Project</a>
-                  </div>
-                </div>
-              </article>
-            </div>
+              </div>
+            </article>
           </div>
         </div>
       </section>
@@ -1324,12 +1229,12 @@
                   <span>Field capture, processing scripts, documentation, and mapping outputs.</span>
                 </li>
                 <li>
-                  <strong>OMEGA Current</strong>
+                  <strong>OMEGA-Current</strong>
                   <span>Distributed communications and networking research within the larger OMEGA project.</span>
                 </li>
                 <li>
-                  <strong>Artwork and documentation</strong>
-                  <span>Studio work, teaching materials, and public-facing project context.</span>
+                  <strong>Public project pages</strong>
+                  <span>Repository links, build logs, artwork, and contact.</span>
                 </li>
               </ul>
             </div>
@@ -1342,7 +1247,7 @@
                 </li>
                 <li>
                   <strong><a class="inline-link" href="https://hackaday.io/project/205502-oceanic-measurement-environmental-geo-arr" target="_blank" rel="noopener">Hackaday Project Log</a></strong>
-                  <span>Public-facing development log and project overview.</span>
+                  <span>Public-facing build log and project overview for OMEGA.</span>
                 </li>
                 <li>
                   <strong><a class="inline-link" href="https://jonathancapone.art" target="_blank" rel="noopener">Artwork Website</a></strong>
