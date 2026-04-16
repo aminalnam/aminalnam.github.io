@@ -340,12 +340,12 @@ if (correctedDepthCm &gt;= 2.0f &amp;&amp; correctedDepthCm &lt;= 800.0f) {
 }
 </code></pre>
       <p>
-        This snippet shows that depth is not simply read and stored. The value is converted, corrected, constrained to a usable range, and then added to the working dataset.
+        This snippet shows that depth value is converted, corrected, constrained to a usable range, and then added to the working dataset.
       </p>
 
       <h3>Why this matters</h3>
       <p>
-        This concept is a strong entry point into underwater sensing because it shows how a physical principle becomes a scientific tool. OMEGA is not touching the bottom directly. It is inferring bottom distance from the behavior of a wave traveling through water.
+        This concept is a strong entry point into underwater sensing because it shows how a physical principle becomes a scientific tool. OMEGA infers the bottom distance from the behavior of a wave traveling through water.
       </p>
       <p>
         It also introduces the idea that an instrument reading is often the result of a model. The depth value depends on assumptions about the medium and on how the signal is processed after it is received.
