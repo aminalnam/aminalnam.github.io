@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>How OMEGA Works</title>
+  <title>OMEGA — Validation</title>
   <style>
     :root {
       --bg: #0d1925;
@@ -412,10 +412,10 @@
   <section class="hero">
     <div class="wrap">
       <span class="eyebrow">OMEGA</span>
-      <h1>How OMEGA works.</h1>
-      <p>A guide to the structure of the system: what the Arduino logger measures, how points are accepted or rejected, and how Python turns those accepted points into bathymetric outputs.</p>
+      <h1>Validation, stability, and point acceptance.</h1>
+      <p>A closer look at the checks that determine whether a measurement becomes part of the mapping dataset: GPS quality, fix age, depth stability, speed, tilt, and spatial spacing.</p>
       <div class="hero-actions">
-        <a class="button button-primary" href="https://github.com/aminalnam/OMEGA">GitHub Repository</a><a class="button button-secondary" href="omega-sensing.html">Sensing and Sound</a><a class="button button-secondary" href="omega-validation.html">Validation Logic</a><a class="button button-secondary" href="omega-mapping.html">Mapping and IDW</a>
+        <a class="button button-primary" href="how-omega-works.html">Back to OMEGA Guide</a><a class="button button-secondary" href="omega-sensing.html">Sensing and Sound</a><a class="button button-secondary" href="omega-mapping.html">Next: Mapping</a>
       </div>
     </div>
   </section>
@@ -426,41 +426,48 @@
 <section class="section">
   <div class="wrap">
     <div class="section-head">
-      <span class="section-kicker">Overview</span>
-      <h2>OMEGA is organized as a measurement pipeline.</h2>
+      <span class="section-kicker">Validation layer</span>
+      <h2>OMEGA decides whether a point is acceptable before it joins the map dataset.</h2>
       <p>
-        The Arduino Mega gathers sensor data in the field, checks whether a reading is usable for mapping,
-        writes both raw and filtered logs to SD, and hands the accepted points to Python scripts that turn
-        those points into map products.
+        Bathymetry depends on where a depth was measured, how stable the platform was at that moment, and whether the
+        sensor values were still trustworthy. The validation logic makes those conditions explicit.
       </p>
     </div>
-    <div class="grid-2">
-      <div class="card">
-        <span class="pill">Workflow</span>
-        <h3>From field reading to map output</h3>
-        <div class="metric-grid">
-          <div class="metric"><strong>1. Capture</strong><span>GPS, sonar, temperature, IMU, UTC time</span></div>
-          <div class="metric"><strong>2. Validate</strong><span>Fix quality, depth stability, motion, spacing</span></div>
-          <div class="metric"><strong>3. Log</strong><span>Full record plus accepted mapping dataset</span></div>
-          <div class="metric"><strong>4. Reconstruct</strong><span>IDW surfaces, contours, KML, KMZ overlays</span></div>
-        </div>
-        <div class="callout">
-          <strong>Why the split matters</strong>
-          <p>
-            OMEGA keeps the complete field record and a cleaner map dataset at the same time. That makes it
-            possible to inspect what happened during the survey without forcing every recorded number into the final surface.
-          </p>
-        </div>
-      </div>
-      <div class="card">
-        <span class="pill">Codebase</span>
-        <h3>Where the logic lives</h3>
-        <ul class="list">
-          <li><code>arduino/rov_logger_mapping.ino</code> handles sensor input, validation, display, and SD logging.</li>
-          <li><code>scripts/csv_to_png_depth_interpolated.py</code> converts accepted points into an interpolated depth surface.</li>
-          <li><code>scripts/csv_to_png_depth_contours.py</code> builds contour plots from the same mapping dataset.</li>
-          <li><code>scripts/csv_to_kmz_depth_overlay.py</code> exports a georeferenced overlay for Google Earth.</li>
-        </ul>
+    <div class="card">
+      <span class="pill">From <code>getMapStatus()</code></span>
+      <div class="code-block"><pre><code>const char* getMapStatus(unsigned long currentMillis) {
+  if (millis() - startupMillis < gpsWarmupTime) return "WARMUP";
+  if (!mapReady || !sdReady || !mapFile) return "NOFILE";
+  if (!gpsDataPresent(currentMillis)) return "NOGPS";
+  if (!gps.location.isValid()) return "NOFIX";
+  if (!gps.date.isValid() || !gps.time.isValid()) return "NOTIME";
+  if (isnan(depthCm)) return "NODEP";
+  if (depthSamplesCollected < 3) return "WARM";
+
+  if (!gps.satellites.isValid()) return "SAT";
+  if (gps.satellites.value() < minMapSats) return "SAT";
+
+  if (!gps.hdop.isValid()) return "HDOP";
+  if (gps.hdop.hdop() > maxMapHdop) return "HDOP";
+
+  if (gps.location.age() > maxMapFixAgeMs) return "STALE";
+  if (!isnan(smoothedSpeed) && smoothedSpeed > maxMapSpeedKmph) return "FAST";
+
+  if (requireLevelForMapping) {
+    if (!imuReady) return "NOIMU";
+    if (!imuOrientationValid) return "IMU?";
+    if (imuAccuracy < minImuAccuracyForMapping) return "CAL";
+    if (fabs(imuPitchDeg) > maxMapPitchDeg || fabs(imuRollDeg) > maxMapRollDeg) return "UNLVL";
+  }
+
+  return "ARMED";
+}</code></pre></div>
+      <div class="callout">
+        <strong>What this function controls</strong>
+        <p>
+          The returned status tells the rest of the system whether the logger is still warming up, missing required data,
+          or fully ready to write a mapping-quality point. The accepted state is <code>ARMED</code>.
+        </p>
       </div>
     </div>
   </div>
@@ -469,65 +476,26 @@
 <section class="section">
   <div class="wrap">
     <div class="section-head">
-      <span class="section-kicker">Key ideas</span>
-      <h2>The project brings several different concepts into one system.</h2>
+      <span class="section-kicker">Why each check exists</span>
+      <h2>The validation rules are really rules about evidence.</h2>
       <p>
-        Each part of OMEGA can be broken out and studied on its own, but the system becomes more useful when those
-        parts are understood together: physics, environmental measurement, data quality, geospatial thinking, and interpolation.
-      </p>
-    </div>
-    <div class="grid-3">
-      <article class="card">
-        <span class="pill">Physics</span>
-        <h3>Acoustic depth sensing</h3>
-        <p>
-          The sonar estimates distance from pulse travel time. That makes depth a time-based measurement that depends on the speed of sound in water.
-        </p>
-        <a class="button button-secondary" href="omega-sensing.html">Open page</a>
-      </article>
-      <article class="card">
-        <span class="pill">Quality control</span>
-        <h3>Validation and point acceptance</h3>
-        <p>
-          GPS quality, motion state, spacing, and depth stability are checked before a point is allowed into the mapping dataset.
-        </p>
-        <a class="button button-secondary" href="omega-validation.html">Open page</a>
-      </article>
-      <article class="card">
-        <span class="pill">Computation</span>
-        <h3>Interpolation and map generation</h3>
-        <p>
-          Python scripts convert accepted points into a continuous surface with inverse distance weighting, then export images and geographic files.
-        </p>
-        <a class="button button-secondary" href="omega-mapping.html">Open page</a>
-      </article>
-    </div>
-  </div>
-</section>
-
-<section class="section">
-  <div class="wrap">
-    <div class="section-head">
-      <span class="section-kicker">Representative values from the current code</span>
-      <h2>The thresholds make the measurement rules visible.</h2>
-      <p>
-        The logger does not just collect sensor output. It defines what counts as an acceptable mapping condition.
-        Those choices show up directly in the constants and helper functions in the Arduino code.
+        Each check asks a different question about the point. Does the system know where it is? Is the fix current?
+        Is the depth stable? Is the vehicle moving too fast or tilted too far? Those questions shape the survey.
       </p>
     </div>
     <div class="table-wrap">
       <table>
         <thead>
-          <tr><th>Parameter</th><th>Current value</th><th>Role in the survey</th></tr>
+          <tr><th>Status</th><th>What it means</th><th>Why it affects mapping</th></tr>
         </thead>
         <tbody>
-          <tr><td><code>sonarCalSoundSpeed</code></td><td>1500.0 m/s</td><td>Baseline sound speed used when correcting sonar range.</td></tr>
-          <tr><td><code>sonarCalTempC</code></td><td>20.0 °C</td><td>Reference temperature tied to that sound-speed baseline.</td></tr>
-          <tr><td><code>maxMapHdop</code></td><td>1.8</td><td>Rejects GPS fixes with poorer horizontal precision.</td></tr>
-          <tr><td><code>maxMapFixAgeMs</code></td><td>2000 ms</td><td>Rejects stale GPS fixes that no longer match the platform position closely.</td></tr>
-          <tr><td><code>maxMapSpeedKmph</code></td><td>8.0 km/h</td><td>Limits mapping when the platform is moving too quickly.</td></tr>
-          <tr><td><code>maxMapPitchDeg</code></td><td>10.0°</td><td>Rejects mapping points when platform tilt exceeds the allowed pitch range.</td></tr>
-          <tr><td><code>maxMapRollDeg</code></td><td>10.0°</td><td>Rejects mapping points when roll exceeds the allowed range.</td></tr>
+          <tr><td><code>NOFIX</code></td><td>No valid GPS position</td><td>A depth without a reliable location cannot be placed correctly in the bathymetric surface.</td></tr>
+          <tr><td><code>HDOP</code></td><td>Horizontal precision is missing or too poor</td><td>Even a good depth can distort the map if the position uncertainty is too large.</td></tr>
+          <tr><td><code>STALE</code></td><td>The GPS fix is too old</td><td>The platform may have moved since the last valid position was reported.</td></tr>
+          <tr><td><code>NODEP</code> / <code>WARM</code></td><td>Depth is unavailable or not yet stabilized</td><td>The logger waits until multiple readings have built a stable working depth.</td></tr>
+          <tr><td><code>FAST</code></td><td>The platform is moving faster than the mapping limit</td><td>Rapid motion reduces how well each depth represents the bottom directly beneath the sensor.</td></tr>
+          <tr><td><code>UNLVL</code></td><td>Pitch or roll exceeds the allowed limit</td><td>Excess tilt changes the geometry of the measurement and weakens the assumption of a near-vertical depth reading.</td></tr>
+          <tr><td><code>ARMED</code></td><td>All required conditions are currently met</td><td>The point is eligible to enter the mapping dataset.</td></tr>
         </tbody>
       </table>
     </div>
@@ -537,19 +505,78 @@
 <section class="section">
   <div class="wrap">
     <div class="section-head">
-      <span class="section-kicker">Suggested structure</span>
-      <h2>This can grow into a larger documentation section without changing the rest of the site.</h2>
+      <span class="section-kicker">Depth stability</span>
+      <h2>OMEGA smooths depth and rejects sharp spikes.</h2>
       <p>
-        The current set of pages works as a compact OMEGA guide. Later, it could expand into pages on hardware integration,
-        bathymetric survey design, file formats, or classroom/lab activities without disturbing the homepage layout.
+        The logger uses a moving average buffer to keep the working depth from jumping around. It also rejects isolated
+        spikes when a new average would jump too far from the previous accepted depth.
       </p>
     </div>
-    <div class="callout">
-      <strong>Next directions</strong>
+    <div class="card">
+      <span class="pill">Depth buffer logic</span>
+      <div class="code-block"><pre><code>void addDepthSample(float sample) {
+  depthReadingsTotal -= depthReadingsBuffer[depthBufferIndex];
+  depthReadingsBuffer[depthBufferIndex] = sample;
+  depthReadingsTotal += sample;
+  depthBufferIndex = (depthBufferIndex + 1) % DEPTH_BUFFER_SIZE;
+
+  if (depthSamplesCollected < DEPTH_BUFFER_SIZE) {
+    depthSamplesCollected++;
+  }
+
+  float newDepth = depthReadingsTotal / depthSamplesCollected;
+
+  // Reject a jump that is too large to trust as the next point.
+  if (!isnan(lastDepthCm) && fabs(newDepth - lastDepthCm) > maxDepthJumpCm) {
+    return;
+  }
+
+  depthCm = newDepth;
+  lastDepthCm = depthCm;
+}</code></pre></div>
+      <div class="callout">
+        <strong>How this changes the dataset</strong>
+        <p>
+          Instead of letting every raw pulse become a survey point, the logger forms a short memory of recent readings and
+          compares the new value to the previous accepted depth. That reduces noise without erasing genuine depth variation.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-kicker">Spacing</span>
+      <h2>The logger also avoids collecting too many nearly identical points.</h2>
       <p>
-        Natural follow-on pages would be a hardware page for the Arduino Mega wiring and I/O layout, a page on CSV structure
-        and outputs, and a page comparing freshwater and seawater correction models.
+        OMEGA checks the distance from the last accepted map point and can hold the next one if the platform has not moved far enough.
+        The minimum spacing is adaptive: it grows with speed inside a constrained range.
       </p>
+    </div>
+    <div class="card">
+      <span class="pill">Adaptive spacing from the mapping logic</span>
+      <div class="code-block"><pre><code>if (hasLastMapPoint) {
+  double distanceMeters = TinyGPSPlus::distanceBetween(
+    gps.location.lat(), gps.location.lng(),
+    lastMapLat, lastMapLng
+  );
+
+  float minSpacing = minMapSpacingMetersBase;
+  if (!isnan(smoothedSpeed)) {
+    minSpacing = constrain(smoothedSpeed * 0.5f, 2.0f, 10.0f);
+  }
+
+  if (distanceMeters < minSpacing) return "HOLD";
+}</code></pre></div>
+      <div class="callout">
+        <strong>Why spacing matters</strong>
+        <p>
+          A map built from a tight cluster of nearly duplicate points is less useful than a map built from points that are spread across the survey path.
+          Spacing helps distribute control points through the area instead of oversampling one small stretch.
+        </p>
+      </div>
     </div>
   </div>
 </section>

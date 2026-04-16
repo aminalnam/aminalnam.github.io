@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>How OMEGA Works</title>
+  <title>OMEGA — Mapping and IDW</title>
   <style>
     :root {
       --bg: #0d1925;
@@ -412,10 +412,10 @@
   <section class="hero">
     <div class="wrap">
       <span class="eyebrow">OMEGA</span>
-      <h1>How OMEGA works.</h1>
-      <p>A guide to the structure of the system: what the Arduino logger measures, how points are accepted or rejected, and how Python turns those accepted points into bathymetric outputs.</p>
+      <h1>Mapping, interpolation, and outputs.</h1>
+      <p>A closer look at how accepted survey points become bathymetric surfaces, contour maps, KML files, and Google Earth overlays through the Python processing scripts.</p>
       <div class="hero-actions">
-        <a class="button button-primary" href="https://github.com/aminalnam/OMEGA">GitHub Repository</a><a class="button button-secondary" href="omega-sensing.html">Sensing and Sound</a><a class="button button-secondary" href="omega-validation.html">Validation Logic</a><a class="button button-secondary" href="omega-mapping.html">Mapping and IDW</a>
+        <a class="button button-primary" href="how-omega-works.html">Back to OMEGA Guide</a><a class="button button-secondary" href="omega-sensing.html">Sensing and Sound</a><a class="button button-secondary" href="omega-validation.html">Validation Logic</a>
       </div>
     </div>
   </section>
@@ -426,41 +426,34 @@
 <section class="section">
   <div class="wrap">
     <div class="section-head">
-      <span class="section-kicker">Overview</span>
-      <h2>OMEGA is organized as a measurement pipeline.</h2>
+      <span class="section-kicker">Geospatial data</span>
+      <h2>Bathymetry begins when depth is tied to location.</h2>
       <p>
-        The Arduino Mega gathers sensor data in the field, checks whether a reading is usable for mapping,
-        writes both raw and filtered logs to SD, and hands the accepted points to Python scripts that turn
-        those points into map products.
+        A single depth value only says how far the bottom was below the sensor at one moment. Bathymetry needs depth plus
+        coordinates so the measurement can become part of a spatial pattern.
       </p>
     </div>
     <div class="grid-2">
-      <div class="card">
-        <span class="pill">Workflow</span>
-        <h3>From field reading to map output</h3>
-        <div class="metric-grid">
-          <div class="metric"><strong>1. Capture</strong><span>GPS, sonar, temperature, IMU, UTC time</span></div>
-          <div class="metric"><strong>2. Validate</strong><span>Fix quality, depth stability, motion, spacing</span></div>
-          <div class="metric"><strong>3. Log</strong><span>Full record plus accepted mapping dataset</span></div>
-          <div class="metric"><strong>4. Reconstruct</strong><span>IDW surfaces, contours, KML, KMZ overlays</span></div>
-        </div>
+      <div class="card prose">
+        <span class="pill">Logged structure</span>
+        <h3>The mapping CSV keeps the context attached</h3>
+        <p>
+          The map file records each accepted point with time, latitude, longitude, depth, temperature, satellite count,
+          HDOP, speed, fix age, pitch, roll, and IMU accuracy. That structure keeps the measurement conditions attached
+          to the point that enters the mapping pipeline.
+        </p>
         <div class="callout">
-          <strong>Why the split matters</strong>
-          <p>
-            OMEGA keeps the complete field record and a cleaner map dataset at the same time. That makes it
-            possible to inspect what happened during the survey without forcing every recorded number into the final surface.
-          </p>
+          <strong>Representative header</strong>
+          <p><code>point,date_utc,time_utc,lat,lng,depth_cm,temp_c,satellites,hdop,speed_kmph,fix_age_ms,pitch_deg,roll_deg,imu_acc</code></p>
         </div>
       </div>
-      <div class="card">
-        <span class="pill">Codebase</span>
-        <h3>Where the logic lives</h3>
-        <ul class="list">
-          <li><code>arduino/rov_logger_mapping.ino</code> handles sensor input, validation, display, and SD logging.</li>
-          <li><code>scripts/csv_to_png_depth_interpolated.py</code> converts accepted points into an interpolated depth surface.</li>
-          <li><code>scripts/csv_to_png_depth_contours.py</code> builds contour plots from the same mapping dataset.</li>
-          <li><code>scripts/csv_to_kmz_depth_overlay.py</code> exports a georeferenced overlay for Google Earth.</li>
-        </ul>
+      <div class="card prose">
+        <span class="pill">Two outputs</span>
+        <h3>Raw logging and mapping logging serve different jobs</h3>
+        <p>
+          The raw data log preserves the complete field record, including conditions that may not be suitable for mapping.
+          The map log contains only accepted points. That separation makes the reconstruction step more predictable and keeps the record transparent.
+        </p>
       </div>
     </div>
   </div>
@@ -469,38 +462,40 @@
 <section class="section">
   <div class="wrap">
     <div class="section-head">
-      <span class="section-kicker">Key ideas</span>
-      <h2>The project brings several different concepts into one system.</h2>
+      <span class="section-kicker">Interpolation</span>
+      <h2>OMEGA uses inverse distance weighting to estimate values between measured points.</h2>
       <p>
-        Each part of OMEGA can be broken out and studied on its own, but the system becomes more useful when those
-        parts are understood together: physics, environmental measurement, data quality, geospatial thinking, and interpolation.
+        The Python mapping scripts build a grid over the survey area and estimate a depth for each grid cell.
+        Nearby measured points receive more weight than distant ones.
       </p>
     </div>
-    <div class="grid-3">
-      <article class="card">
-        <span class="pill">Physics</span>
-        <h3>Acoustic depth sensing</h3>
+    <div class="card">
+      <span class="pill">From <code>csv_to_kmz_depth_overlay.py</code></span>
+      <div class="code-block"><pre><code>def idw_interpolation(x, y, z, xi, yi, power=2.0, epsilon=1e-12):
+    zi = np.zeros_like(xi, dtype=float)
+
+    for row in range(xi.shape[0]):
+        for col in range(xi.shape[1]):
+            dx = x - xi[row, col]
+            dy = y - yi[row, col]
+            dist = np.sqrt(dx * dx + dy * dy)
+
+            if np.any(dist < epsilon):
+                zi[row, col] = z[np.argmin(dist)]
+                continue
+
+            weights = 1.0 / np.power(dist, power)
+            zi[row, col] = np.sum(weights * z) / np.sum(weights)
+
+    return zi</code></pre></div>
+      <div class="callout">
+        <strong>What the algorithm is doing</strong>
         <p>
-          The sonar estimates distance from pulse travel time. That makes depth a time-based measurement that depends on the speed of sound in water.
+          For each grid cell, the script computes the distance to every accepted survey point. It then gives more influence
+          to closer points by using weights of <code>1 / distance^power</code>. The <code>epsilon</code> test preserves exact measured points:
+          if the grid lands directly on a survey point, the script returns that measured depth instead of averaging it.
         </p>
-        <a class="button button-secondary" href="omega-sensing.html">Open page</a>
-      </article>
-      <article class="card">
-        <span class="pill">Quality control</span>
-        <h3>Validation and point acceptance</h3>
-        <p>
-          GPS quality, motion state, spacing, and depth stability are checked before a point is allowed into the mapping dataset.
-        </p>
-        <a class="button button-secondary" href="omega-validation.html">Open page</a>
-      </article>
-      <article class="card">
-        <span class="pill">Computation</span>
-        <h3>Interpolation and map generation</h3>
-        <p>
-          Python scripts convert accepted points into a continuous surface with inverse distance weighting, then export images and geographic files.
-        </p>
-        <a class="button button-secondary" href="omega-mapping.html">Open page</a>
-      </article>
+      </div>
     </div>
   </div>
 </section>
@@ -508,48 +503,63 @@
 <section class="section">
   <div class="wrap">
     <div class="section-head">
-      <span class="section-kicker">Representative values from the current code</span>
-      <h2>The thresholds make the measurement rules visible.</h2>
+      <span class="section-kicker">Grid generation</span>
+      <h2>The interpolation only works after the survey area is turned into a computational grid.</h2>
       <p>
-        The logger does not just collect sensor output. It defines what counts as an acceptable mapping condition.
-        Those choices show up directly in the constants and helper functions in the Arduino code.
+        The script first finds the bounds of the accepted longitude and latitude values, then uses those bounds to generate
+        a regular mesh of locations where estimated depths will be calculated.
+      </p>
+    </div>
+    <div class="card">
+      <span class="pill">Grid setup</span>
+      <div class="code-block"><pre><code>def build_grid(points, grid_size, power):
+    lats = np.array([p["lat"] for p in points], dtype=float)
+    lons = np.array([p["lon"] for p in points], dtype=float)
+    depths = np.array([p["depth_m"] for p in points], dtype=float)
+
+    lon_min, lon_max = lons.min(), lons.max()
+    lat_min, lat_max = lats.min(), lats.max()
+
+    xi_vals = np.linspace(lon_min, lon_max, grid_size)
+    yi_vals = np.linspace(lat_min, lat_max, grid_size)
+    xi, yi = np.meshgrid(xi_vals, yi_vals)
+    zi = idw_interpolation(lons, lats, depths, xi, yi, power=power)
+
+    return zi, lon_min, lon_max, lat_min, lat_max</code></pre></div>
+      <div class="callout">
+        <strong>How the parameters matter</strong>
+        <p>
+          <code>grid_size</code> changes the density of the output surface. A larger grid creates a finer-looking map but increases computation.
+          <code>power</code> controls how quickly distant points lose influence. Higher power makes the surface cling more tightly to nearby points.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-kicker">Outputs</span>
+      <h2>The same accepted points can become several different map products.</h2>
+      <p>
+        OMEGA’s Python scripts use the same mapping dataset to build different kinds of visual and geographic outputs.
+        Each output highlights a different way of reading the survey.
       </p>
     </div>
     <div class="table-wrap">
       <table>
         <thead>
-          <tr><th>Parameter</th><th>Current value</th><th>Role in the survey</th></tr>
+          <tr><th>Script</th><th>Output</th><th>Use</th></tr>
         </thead>
         <tbody>
-          <tr><td><code>sonarCalSoundSpeed</code></td><td>1500.0 m/s</td><td>Baseline sound speed used when correcting sonar range.</td></tr>
-          <tr><td><code>sonarCalTempC</code></td><td>20.0 °C</td><td>Reference temperature tied to that sound-speed baseline.</td></tr>
-          <tr><td><code>maxMapHdop</code></td><td>1.8</td><td>Rejects GPS fixes with poorer horizontal precision.</td></tr>
-          <tr><td><code>maxMapFixAgeMs</code></td><td>2000 ms</td><td>Rejects stale GPS fixes that no longer match the platform position closely.</td></tr>
-          <tr><td><code>maxMapSpeedKmph</code></td><td>8.0 km/h</td><td>Limits mapping when the platform is moving too quickly.</td></tr>
-          <tr><td><code>maxMapPitchDeg</code></td><td>10.0°</td><td>Rejects mapping points when platform tilt exceeds the allowed pitch range.</td></tr>
-          <tr><td><code>maxMapRollDeg</code></td><td>10.0°</td><td>Rejects mapping points when roll exceeds the allowed range.</td></tr>
+          <tr><td><code>csv_to_png_depth_points.py</code></td><td>Point plot</td><td>Shows the accepted survey points directly without surface modeling.</td></tr>
+          <tr><td><code>csv_to_png_depth_interpolated.py</code></td><td>Interpolated depth map</td><td>Shows the continuous surface estimated from the accepted points.</td></tr>
+          <tr><td><code>csv_to_png_depth_contours.py</code></td><td>Contour map</td><td>Turns the surface into depth lines that emphasize shape and slope.</td></tr>
+          <tr><td><code>csv_to_kml_points.py</code></td><td>KML point export</td><td>Places survey points in geospatial viewers.</td></tr>
+          <tr><td><code>csv_to_kmz_depth_overlay.py</code></td><td>KMZ overlay</td><td>Places a raster surface over its geographic footprint in Google Earth.</td></tr>
         </tbody>
       </table>
-    </div>
-  </div>
-</section>
-
-<section class="section">
-  <div class="wrap">
-    <div class="section-head">
-      <span class="section-kicker">Suggested structure</span>
-      <h2>This can grow into a larger documentation section without changing the rest of the site.</h2>
-      <p>
-        The current set of pages works as a compact OMEGA guide. Later, it could expand into pages on hardware integration,
-        bathymetric survey design, file formats, or classroom/lab activities without disturbing the homepage layout.
-      </p>
-    </div>
-    <div class="callout">
-      <strong>Next directions</strong>
-      <p>
-        Natural follow-on pages would be a hardware page for the Arduino Mega wiring and I/O layout, a page on CSV structure
-        and outputs, and a page comparing freshwater and seawater correction models.
-      </p>
     </div>
   </div>
 </section>

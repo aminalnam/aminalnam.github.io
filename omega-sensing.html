@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>How OMEGA Works</title>
+  <title>OMEGA — Sensing and Sound</title>
   <style>
     :root {
       --bg: #0d1925;
@@ -412,10 +412,10 @@
   <section class="hero">
     <div class="wrap">
       <span class="eyebrow">OMEGA</span>
-      <h1>How OMEGA works.</h1>
-      <p>A guide to the structure of the system: what the Arduino logger measures, how points are accepted or rejected, and how Python turns those accepted points into bathymetric outputs.</p>
+      <h1>Sensing, sound speed, and depth.</h1>
+      <p>A closer look at how OMEGA estimates underwater depth, why water temperature changes that estimate, and why salinity matters even though it is not yet part of the current correction model.</p>
       <div class="hero-actions">
-        <a class="button button-primary" href="https://github.com/aminalnam/OMEGA">GitHub Repository</a><a class="button button-secondary" href="omega-sensing.html">Sensing and Sound</a><a class="button button-secondary" href="omega-validation.html">Validation Logic</a><a class="button button-secondary" href="omega-mapping.html">Mapping and IDW</a>
+        <a class="button button-primary" href="how-omega-works.html">Back to OMEGA Guide</a><a class="button button-secondary" href="omega-validation.html">Next: Validation</a><a class="button button-secondary" href="omega-mapping.html">Next: Mapping</a>
       </div>
     </div>
   </section>
@@ -426,41 +426,40 @@
 <section class="section">
   <div class="wrap">
     <div class="section-head">
-      <span class="section-kicker">Overview</span>
-      <h2>OMEGA is organized as a measurement pipeline.</h2>
+      <span class="section-kicker">Acoustic measurement</span>
+      <h2>Depth is being inferred from sound.</h2>
       <p>
-        The Arduino Mega gathers sensor data in the field, checks whether a reading is usable for mapping,
-        writes both raw and filtered logs to SD, and hands the accepted points to Python scripts that turn
-        those points into map products.
+        The sonar transducer sends a pulse through the water, listens for the return from the bottom, and estimates
+        distance from the pulse travel time. In water, the speed of sound is often close to 1500 m/s, but it is not fixed.
       </p>
     </div>
     <div class="grid-2">
-      <div class="card">
-        <span class="pill">Workflow</span>
-        <h3>From field reading to map output</h3>
-        <div class="metric-grid">
-          <div class="metric"><strong>1. Capture</strong><span>GPS, sonar, temperature, IMU, UTC time</span></div>
-          <div class="metric"><strong>2. Validate</strong><span>Fix quality, depth stability, motion, spacing</span></div>
-          <div class="metric"><strong>3. Log</strong><span>Full record plus accepted mapping dataset</span></div>
-          <div class="metric"><strong>4. Reconstruct</strong><span>IDW surfaces, contours, KML, KMZ overlays</span></div>
-        </div>
+      <div class="card prose">
+        <span class="pill">Core equation</span>
+        <h3>Round-trip time has to be cut in half</h3>
+        <p>
+          The travel-time measurement includes the trip down to the bottom and the return trip back to the sensor.
+          The one-way depth is therefore:
+        </p>
         <div class="callout">
-          <strong>Why the split matters</strong>
-          <p>
-            OMEGA keeps the complete field record and a cleaner map dataset at the same time. That makes it
-            possible to inspect what happened during the survey without forcing every recorded number into the final surface.
-          </p>
+          <strong>Depth formula</strong>
+          <p><code>depth = (sound speed × travel time) / 2</code></p>
         </div>
+        <p>
+          That division by two is easy to overlook, but it is fundamental. The instrument never measures one-way depth directly.
+          It measures elapsed time and converts that time into range.
+        </p>
       </div>
-      <div class="card">
-        <span class="pill">Codebase</span>
-        <h3>Where the logic lives</h3>
-        <ul class="list">
-          <li><code>arduino/rov_logger_mapping.ino</code> handles sensor input, validation, display, and SD logging.</li>
-          <li><code>scripts/csv_to_png_depth_interpolated.py</code> converts accepted points into an interpolated depth surface.</li>
-          <li><code>scripts/csv_to_png_depth_contours.py</code> builds contour plots from the same mapping dataset.</li>
-          <li><code>scripts/csv_to_kmz_depth_overlay.py</code> exports a georeferenced overlay for Google Earth.</li>
-        </ul>
+      <div class="card prose">
+        <span class="pill">Why it changes</span>
+        <h3>Sound speed depends on the water itself</h3>
+        <p>
+          Temperature, salinity, and pressure all change how quickly sound moves through water. Warmer water generally raises sound speed.
+          Increased salinity also raises sound speed. Greater pressure at depth raises it as well.
+        </p>
+        <p>
+          Because OMEGA is measuring travel time rather than direct physical contact, any change in sound speed changes the interpretation of the depth reading.
+        </p>
       </div>
     </div>
   </div>
@@ -469,38 +468,42 @@
 <section class="section">
   <div class="wrap">
     <div class="section-head">
-      <span class="section-kicker">Key ideas</span>
-      <h2>The project brings several different concepts into one system.</h2>
+      <span class="section-kicker">Current implementation</span>
+      <h2>The logger applies a temperature-based correction to the sonar range.</h2>
       <p>
-        Each part of OMEGA can be broken out and studied on its own, but the system becomes more useful when those
-        parts are understood together: physics, environmental measurement, data quality, geospatial thinking, and interpolation.
+        In the Arduino code, the sonar uses a baseline reference speed of 1500 m/s at 20 °C. The measured water
+        temperature from the DS18B20 is used to adjust that baseline before the depth enters the mapping pipeline.
       </p>
     </div>
-    <div class="grid-3">
-      <article class="card">
-        <span class="pill">Physics</span>
-        <h3>Acoustic depth sensing</h3>
+    <div class="card">
+      <span class="pill">From <code>rov_logger_mapping.ino</code></span>
+      <div class="code-block"><pre><code>// Baseline reference values used by the logger.
+const float sonarCalSoundSpeed = 1500.0f;  // m/s
+const float sonarCalTempC = 20.0f;         // °C
+
+// Estimate sound speed from water temperature.
+float estimateSoundSpeed(float waterTempC) {
+  float c = sonarCalSoundSpeed;
+
+  if (!isnan(waterTempC)) {
+    c += 4.6f * (waterTempC - sonarCalTempC);
+  }
+
+  return c;
+}
+
+// Rescale the sonar-reported range to match the estimated sound speed.
+float correctSonarRangeCm(float reportedRangeCm, float waterTempC) {
+  float cActual = estimateSoundSpeed(waterTempC);
+  return reportedRangeCm * (cActual / sonarCalSoundSpeed);
+}</code></pre></div>
+      <div class="callout">
+        <strong>What the code is doing</strong>
         <p>
-          The sonar estimates distance from pulse travel time. That makes depth a time-based measurement that depends on the speed of sound in water.
+          The logger starts from a reference calibration, then nudges the sound speed up or down based on the measured water temperature.
+          If the water is colder than the reference condition, the corrected depth will come down slightly. If it is warmer, the corrected depth will rise slightly.
         </p>
-        <a class="button button-secondary" href="omega-sensing.html">Open page</a>
-      </article>
-      <article class="card">
-        <span class="pill">Quality control</span>
-        <h3>Validation and point acceptance</h3>
-        <p>
-          GPS quality, motion state, spacing, and depth stability are checked before a point is allowed into the mapping dataset.
-        </p>
-        <a class="button button-secondary" href="omega-validation.html">Open page</a>
-      </article>
-      <article class="card">
-        <span class="pill">Computation</span>
-        <h3>Interpolation and map generation</h3>
-        <p>
-          Python scripts convert accepted points into a continuous surface with inverse distance weighting, then export images and geographic files.
-        </p>
-        <a class="button button-secondary" href="omega-mapping.html">Open page</a>
-      </article>
+      </div>
     </div>
   </div>
 </section>
@@ -508,28 +511,30 @@
 <section class="section">
   <div class="wrap">
     <div class="section-head">
-      <span class="section-kicker">Representative values from the current code</span>
-      <h2>The thresholds make the measurement rules visible.</h2>
+      <span class="section-kicker">Why salinity is not in the current model</span>
+      <h2>Salinity still matters, but it is not currently being measured by the device.</h2>
       <p>
-        The logger does not just collect sensor output. It defines what counts as an acceptable mapping condition.
-        Those choices show up directly in the constants and helper functions in the Arduino code.
+        The absence of salinity in the correction model does not mean salinity is unimportant. It means the present version of OMEGA is using the variables
+        it can actually measure in the field. Temperature is available directly from the DS18B20, so the code includes a temperature-based correction.
       </p>
     </div>
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr><th>Parameter</th><th>Current value</th><th>Role in the survey</th></tr>
-        </thead>
-        <tbody>
-          <tr><td><code>sonarCalSoundSpeed</code></td><td>1500.0 m/s</td><td>Baseline sound speed used when correcting sonar range.</td></tr>
-          <tr><td><code>sonarCalTempC</code></td><td>20.0 °C</td><td>Reference temperature tied to that sound-speed baseline.</td></tr>
-          <tr><td><code>maxMapHdop</code></td><td>1.8</td><td>Rejects GPS fixes with poorer horizontal precision.</td></tr>
-          <tr><td><code>maxMapFixAgeMs</code></td><td>2000 ms</td><td>Rejects stale GPS fixes that no longer match the platform position closely.</td></tr>
-          <tr><td><code>maxMapSpeedKmph</code></td><td>8.0 km/h</td><td>Limits mapping when the platform is moving too quickly.</td></tr>
-          <tr><td><code>maxMapPitchDeg</code></td><td>10.0°</td><td>Rejects mapping points when platform tilt exceeds the allowed pitch range.</td></tr>
-          <tr><td><code>maxMapRollDeg</code></td><td>10.0°</td><td>Rejects mapping points when roll exceeds the allowed range.</td></tr>
-        </tbody>
-      </table>
+    <div class="grid-2">
+      <div class="card prose">
+        <span class="pill">Freshwater and shallow work</span>
+        <h3>Why the temperature-only model can still be useful</h3>
+        <p>
+          In shallow or modest-precision surveys, especially in freshwater, a temperature correction can remove one of the largest easy-to-measure sources of error
+          without adding more hardware or more operator setup. It is a practical improvement over using a fixed sound speed all the time.
+        </p>
+      </div>
+      <div class="card prose">
+        <span class="pill">Where the limits show up</span>
+        <h3>When a fuller sound-speed model would matter more</h3>
+        <p>
+          In salt water, deeper water, or higher-accuracy survey work, salinity and pressure should be part of the model as well.
+          A future version of OMEGA could add a conductivity or salinity sensor, or use a dedicated sound-speed instrument, to improve the correction.
+        </p>
+      </div>
     </div>
   </div>
 </section>
@@ -537,19 +542,34 @@
 <section class="section">
   <div class="wrap">
     <div class="section-head">
-      <span class="section-kicker">Suggested structure</span>
-      <h2>This can grow into a larger documentation section without changing the rest of the site.</h2>
+      <span class="section-kicker">Depth entry</span>
+      <h2>The reading is corrected before it is accepted.</h2>
       <p>
-        The current set of pages works as a compact OMEGA guide. Later, it could expand into pages on hardware integration,
-        bathymetric survey design, file formats, or classroom/lab activities without disturbing the homepage layout.
+        The sonar value does not go straight from the packet decoder into the map. The code converts the raw packet,
+        applies the temperature correction, rejects implausible depths, and only then passes the value into the smoothing buffer.
       </p>
     </div>
-    <div class="callout">
-      <strong>Next directions</strong>
-      <p>
-        Natural follow-on pages would be a hardware page for the Arduino Mega wiring and I/O layout, a page on CSV structure
-        and outputs, and a page comparing freshwater and seawater correction models.
-      </p>
+    <div class="card">
+      <span class="pill">From the sonar read loop</span>
+      <div class="code-block"><pre><code>// Convert the decoded sonar packet to centimeters.
+float reportedDepthCm = raw / 10.0f;
+
+// Correct that range using the measured water temperature.
+float correctedDepthCm = correctSonarRangeCm(reportedDepthCm, tempC);
+
+// Ignore values outside the operating depth window.
+if (correctedDepthCm >= 2.0f && correctedDepthCm <= 800.0f) {
+  addDepthSample(correctedDepthCm);
+  lastValidDepthMillis = currentMillis;
+  validReading = true;
+}</code></pre></div>
+      <div class="callout">
+        <strong>Why this stage matters</strong>
+        <p>
+          By the time a depth sample reaches the moving average, it has already been interpreted and screened. The measurement
+          pipeline is doing physics and quality control before the mapping logic ever sees the point.
+        </p>
+      </div>
     </div>
   </div>
 </section>

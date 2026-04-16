@@ -961,6 +961,7 @@
         <a href="#overview">Overview</a>
         <a href="#projects">Projects</a>
         <a href="how-omega-works.html">How OMEGA Works</a>
+        <a href="#omega-guide">OMEGA Guide</a>
         <a href="#documentation">Documentation</a>
         <a href="#links">Links</a>
         <a href="https://jonathancapone.art" target="_blank" rel="noopener">Artwork</a>
@@ -1159,59 +1160,127 @@
         </div>
       </section>
 
-      <section class="section" id="documentation">
+
+      <section class="section" id="omega-guide">
         <div class="wrap">
           <div class="section-head">
-            <span class="section-kicker">Documentation</span>
-            <h2>Teaching documentation.</h2>
+            <span class="section-kicker">OMEGA guide</span>
+            <h2>Pages that break down how the system works.</h2>
             <p>
-              Pages related to process, instruction, interdisciplinary learning,
-              and project-based documentation. Please contact for access.
+              These pages focus on the structure of the project itself: how the device measures depth,
+              how mapping points are accepted or rejected, and how the Python scripts turn those accepted
+              points into bathymetric outputs.
             </p>
           </div>
 
           <div class="doc-grid">
-            <a class="doc-card" href="how-omega-works.html">
-              <span class="tile-kicker">OMEGA</span>
+            <article class="doc-card">
+              <div class="doc-type">Overview</div>
               <h3>How OMEGA Works</h3>
-              <p>In-depth material on acoustic depth sensing, validation, temperature correction, geospatial data, and interpolation.</p>
-            </a>
+              <p>
+                A compact guide to the full workflow: capture, validation, logging, and reconstruction.
+              </p>
+              <a href="how-omega-works.html">Open page</a>
+            </article>
 
-            <a class="doc-card" href="https://jonathancapone.art/students-at-work" target="_blank" rel="noopener">
-              <span class="tile-kicker">Process</span>
-              <h3>Students at Work</h3>
-              <p>Project development, classroom process, and documentation of making in practice.</p>
-            </a>
+            <article class="doc-card">
+              <div class="doc-type">Physics</div>
+              <h3>Sensing and Sound</h3>
+              <p>
+                How sonar estimates depth, why the speed of sound matters, why temperature changes the reading,
+                and where salinity fits into the larger picture.
+              </p>
+              <a href="omega-sensing.html">Open page</a>
+            </article>
 
-            <a class="doc-card" href="https://jonathancapone.art/steam" target="_blank" rel="noopener">
-              <span class="tile-kicker">Integration</span>
-              <h3>STEAM</h3>
-              <p>Teaching materials that bridge artistic inquiry with engineering, science, and applied making.</p>
-            </a>
+            <article class="doc-card">
+              <div class="doc-type">Validation</div>
+              <h3>Point Acceptance</h3>
+              <p>
+                How GPS quality, fix age, motion limits, depth stability, and spacing determine whether a point
+                becomes part of the mapping dataset.
+              </p>
+              <a href="omega-validation.html">Open page</a>
+            </article>
 
-            <a class="doc-card" href="https://jonathancapone.art/media-arts" target="_blank" rel="noopener">
-              <span class="tile-kicker">Instruction</span>
-              <h3>Media Arts</h3>
-              <p>Documentation related to digital moving images, technology-based art, and media literacy.</p>
-            </a>
+            <article class="doc-card">
+              <div class="doc-type">Mapping</div>
+              <h3>IDW and Map Outputs</h3>
+              <p>
+                How accepted survey points are turned into interpolated surfaces, contour maps, KML files,
+                and Google Earth overlays.
+              </p>
+              <a href="omega-mapping.html">Open page</a>
+            </article>
+          </div>
+        </div>
+      </section>
 
-            <a class="doc-card" href="https://jonathancapone.art/experiential-learning" target="_blank" rel="noopener">
-              <span class="tile-kicker">Method</span>
-              <h3>Experiential Learning</h3>
-              <p>Project-based approaches centered on inquiry, prototyping, iteration, and hands-on experimentation.</p>
-            </a>
 
-            <a class="doc-card" href="https://jonathancapone.art/performing-arts" target="_blank" rel="noopener">
-              <span class="tile-kicker">Production</span>
-              <h3>Performing Arts</h3>
-              <p>Material related to staging, performance systems, and interdisciplinary production work.</p>
-            </a>
+      <section class="section section-muted" id="documentation">
+        <div class="wrap">
+          <div class="section-head">
+            <span class="section-kicker">Documentation</span>
+            <h2>Project notes, guides, and supporting materials.</h2>
+            <p>
+              Alongside the project pages, this site includes public technical documentation and teaching materials.
+            </p>
+          </div>
 
-            <a class="doc-card" href="https://jonathancapone.art/curricula" target="_blank" rel="noopener">
-              <span class="tile-kicker">Frameworks</span>
-              <h3>Curricula</h3>
-              <p>Course structures, frameworks, and planning materials gathered into a public-facing archive.</p>
-            </a>
+          <div class="doc-grid">
+            <article class="doc-card">
+              <div class="doc-type">Project Guide</div>
+              <h3>How OMEGA Works</h3>
+              <p>
+                A guided overview of the OMEGA workflow with links into sensing, validation, and mapping.
+              </p>
+              <a href="how-omega-works.html">Open guide</a>
+            </article>
+
+            <article class="doc-card">
+              <div class="doc-type">Project Guide</div>
+              <h3>Sensing and Sound</h3>
+              <p>
+                Depth measurement, sound speed, temperature correction, and the role of salinity.
+              </p>
+              <a href="omega-sensing.html">Open page</a>
+            </article>
+
+            <article class="doc-card">
+              <div class="doc-type">Project Guide</div>
+              <h3>Validation and Point Acceptance</h3>
+              <p>
+                GPS precision, fix age, tilt, speed, smoothing, and spacing in the accepted mapping dataset.
+              </p>
+              <a href="omega-validation.html">Open page</a>
+            </article>
+
+            <article class="doc-card">
+              <div class="doc-type">Project Guide</div>
+              <h3>Mapping and IDW</h3>
+              <p>
+                How the Python scripts build interpolated surfaces, contours, and geographic overlays.
+              </p>
+              <a href="omega-mapping.html">Open page</a>
+            </article>
+
+            <article class="doc-card">
+              <div class="doc-type">Teaching Documentation</div>
+              <h3>Programming &amp; Making with micro:bit</h3>
+              <p>
+                Student-facing guides and classroom materials developed around coding, physical computing, and design.
+              </p>
+              <a href="https://jonathancapone.art/documentation.html" target="_blank" rel="noopener">View documentation</a>
+            </article>
+
+            <article class="doc-card">
+              <div class="doc-type">Course Documentation</div>
+              <h3>Maker Arts and Innovation Pages</h3>
+              <p>
+                Selected teaching documentation connected to coding, design, marine science, and fabrication.
+              </p>
+              <a href="https://jonathancapone.art/teaching-documentation.html" target="_blank" rel="noopener">View pages</a>
+            </article>
           </div>
         </div>
       </section>
