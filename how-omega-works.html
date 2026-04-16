@@ -122,7 +122,7 @@
       max-width: 12ch;
     }
     .hero p {
-      max-width: 52rem;
+      max-width: 56rem;
       color: rgba(255,255,255,0.82);
       font-size: 1.04rem;
       margin: 0 0 1rem;
@@ -217,7 +217,7 @@
       font-weight: 400;
     }
     .section-head p {
-      max-width: 52rem;
+      max-width: 56rem;
       margin: 0;
       color: var(--ink-soft);
       font-size: 1.02rem;
@@ -288,11 +288,6 @@
       color: var(--ink);
       font-size: 0.95rem;
     }
-    .prose p {
-      margin: 0 0 1rem;
-      color: var(--ink-soft);
-      font-size: 1rem;
-    }
     .list {
       margin: 0;
       padding-left: 1.1rem;
@@ -319,22 +314,6 @@
       margin: 0;
       color: var(--ink-soft);
     }
-    .code-block {
-      margin: 1rem 0 0.8rem;
-      background: #0f1720;
-      color: #d6deeb;
-      border: 1px solid #1d2938;
-      border-radius: 1rem;
-      overflow: auto;
-    }
-    pre {
-      margin: 0;
-      padding: 1.1rem 1.15rem;
-      font-family: var(--font-mono);
-      font-size: 0.9rem;
-      line-height: 1.55;
-    }
-    code { font-family: var(--font-mono); }
     .table-wrap {
       overflow: auto;
       border: 1px solid var(--line);
@@ -394,7 +373,7 @@
         align-items: flex-start;
       }
     }
-</style>
+  </style>
 </head>
 <body>
   <header class="topbar">
@@ -404,7 +383,12 @@
         <span class="brand-sub">Technical Portfolio</span>
       </a>
       <nav class="nav" aria-label="Primary">
-        <a href="index.html">Home</a><a href="how-omega-works.html">OMEGA Guide</a><a href="omega-sensing.html">Sensing</a><a href="omega-validation.html">Validation</a><a href="omega-mapping.html">Mapping</a><a href="https://jonathancapone.art">Artwork</a>
+        <a href="index.html">Home</a>
+        <a href="how-omega-works.html">OMEGA Guide</a>
+        <a href="omega-sensing.html">Sensing</a>
+        <a href="omega-validation.html">Validation</a>
+        <a href="omega-mapping.html">Mapping</a>
+        <a href="https://jonathancapone.art">Artwork</a>
       </nav>
     </div>
   </header>
@@ -413,131 +397,190 @@
     <div class="wrap">
       <span class="eyebrow">OMEGA</span>
       <h1>How OMEGA works.</h1>
-      <p>A guide to the structure of the system: what the Arduino logger measures, how points are accepted or rejected, and how Python turns those accepted points into bathymetric outputs.</p>
+      <p>
+        OMEGA combines field logging, point validation, and map generation in one workflow. The Arduino Mega records GPS, sonar, water temperature, IMU orientation, and UTC time, writes the full survey record to SD, and produces a filtered mapping dataset that Python converts into bathymetric surfaces and overlays.
+      </p>
       <div class="hero-actions">
-        <a class="button button-primary" href="https://github.com/aminalnam/OMEGA">GitHub Repository</a><a class="button button-secondary" href="omega-sensing.html">Sensing and Sound</a><a class="button button-secondary" href="omega-validation.html">Validation Logic</a><a class="button button-secondary" href="omega-mapping.html">Mapping and IDW</a>
+        <a class="button button-primary" href="https://github.com/aminalnam/OMEGA">GitHub Repository</a>
+        <a class="button button-secondary" href="omega-sensing.html">Sensing and Sound</a>
+        <a class="button button-secondary" href="omega-validation.html">Validation Logic</a>
+        <a class="button button-secondary" href="omega-mapping.html">Mapping and IDW</a>
       </div>
     </div>
   </section>
 
   <main class="main-shell">
     <div class="wrap main-inner">
-      
-<section class="section">
-  <div class="wrap">
-    <div class="section-head">
-      <span class="section-kicker">Overview</span>
-      <h2>OMEGA is organized as a measurement pipeline.</h2>
-      <p>
-        The Arduino Mega gathers sensor data in the field, checks whether a reading is usable for mapping,
-        writes both raw and filtered logs to SD, and hands the accepted points to Python scripts that turn
-        those points into map products.
-      </p>
-    </div>
-    <div class="grid-2">
-      <div class="card">
-        <span class="pill">Workflow</span>
-        <h3>From field reading to map output</h3>
-        <div class="metric-grid">
-          <div class="metric"><strong>1. Capture</strong><span>GPS, sonar, temperature, IMU, UTC time</span></div>
-          <div class="metric"><strong>2. Validate</strong><span>Fix quality, depth stability, motion, spacing</span></div>
-          <div class="metric"><strong>3. Log</strong><span>Full record plus accepted mapping dataset</span></div>
-          <div class="metric"><strong>4. Reconstruct</strong><span>IDW surfaces, contours, KML, KMZ overlays</span></div>
+
+      <section class="section">
+        <div class="wrap">
+          <div class="section-head">
+            <span class="section-kicker">Overview</span>
+            <h2>OMEGA is organized as a measurement pipeline.</h2>
+            <p>
+              The system moves from acquisition to validation, from validation to logging, and from logging to reconstruction. Each stage has a different job, and each stage leaves a record that can be inspected later.
+            </p>
+          </div>
+          <div class="grid-2">
+            <div class="card">
+              <span class="pill">Workflow</span>
+              <h3>From field reading to map output</h3>
+              <div class="metric-grid">
+                <div class="metric"><strong>1. Capture</strong><span>GPS, sonar, temperature, IMU, and UTC time are sampled in the field.</span></div>
+                <div class="metric"><strong>2. Validate</strong><span>Fix quality, fix age, depth stability, motion, and spacing are checked.</span></div>
+                <div class="metric"><strong>3. Log</strong><span>The logger writes the complete record and a cleaner mapping dataset.</span></div>
+                <div class="metric"><strong>4. Reconstruct</strong><span>Python builds depth surfaces, contours, and geographic overlays.</span></div>
+              </div>
+              <div class="callout">
+                <strong>Two records</strong>
+                <p>
+                  The SD card keeps the full survey history and the accepted mapping points. That separation preserves the field record while keeping the surface model tied to a stricter set of conditions.
+                </p>
+              </div>
+            </div>
+            <div class="card">
+              <span class="pill">Codebase</span>
+              <h3>Where the logic lives</h3>
+              <ul class="list">
+                <li><code>arduino/rov_logger_mapping.ino</code> handles sensor input, validation, display, and SD logging.</li>
+                <li><code>scripts/csv_to_png_depth_interpolated.py</code> builds an interpolated depth surface from accepted survey points.</li>
+                <li><code>scripts/csv_to_png_depth_contours.py</code> generates contour plots from the same mapping dataset.</li>
+                <li><code>scripts/csv_to_kmz_depth_overlay.py</code> exports a georeferenced overlay for Google Earth.</li>
+              </ul>
+            </div>
+          </div>
         </div>
-        <div class="callout">
-          <strong>Why the split matters</strong>
-          <p>
-            OMEGA keeps the complete field record and a cleaner map dataset at the same time. That makes it
-            possible to inspect what happened during the survey without forcing every recorded number into the final surface.
-          </p>
+      </section>
+
+      <section class="section">
+        <div class="wrap">
+          <div class="section-head">
+            <span class="section-kicker">System structure</span>
+            <h2>The workflow joins sensing, validation, logging, and mapping.</h2>
+            <p>
+              The sonar estimates distance from acoustic travel time. GPS attaches each reading to location and UTC time. Temperature is used in the sound-speed correction. The IMU tracks platform orientation. Validation logic decides whether a reading enters the mapping dataset. The Python scripts then reconstruct a continuous surface from accepted points.
+            </p>
+          </div>
+          <div class="grid-3">
+            <article class="card">
+              <span class="pill">Sensing</span>
+              <h3>Acoustic depth measurement</h3>
+              <p>
+                Sonar returns a range estimate, not a finished map. The depth value depends on pulse travel time and the assumed speed of sound in water.
+              </p>
+              <a class="button button-secondary" href="omega-sensing.html">Open page</a>
+            </article>
+            <article class="card">
+              <span class="pill">Validation</span>
+              <h3>Accepted points</h3>
+              <p>
+                GPS precision, fix age, motion state, spacing, and depth stability determine whether a reading becomes part of the mapping dataset.
+              </p>
+              <a class="button button-secondary" href="omega-validation.html">Open page</a>
+            </article>
+            <article class="card">
+              <span class="pill">Mapping</span>
+              <h3>IDW reconstruction</h3>
+              <p>
+                Python converts accepted survey points into a gridded surface with inverse distance weighting, then exports map images and geographic files.
+              </p>
+              <a class="button button-secondary" href="omega-mapping.html">Open page</a>
+            </article>
+          </div>
         </div>
-      </div>
-      <div class="card">
-        <span class="pill">Codebase</span>
-        <h3>Where the logic lives</h3>
-        <ul class="list">
-          <li><code>arduino/rov_logger_mapping.ino</code> handles sensor input, validation, display, and SD logging.</li>
-          <li><code>scripts/csv_to_png_depth_interpolated.py</code> converts accepted points into an interpolated depth surface.</li>
-          <li><code>scripts/csv_to_png_depth_contours.py</code> builds contour plots from the same mapping dataset.</li>
-          <li><code>scripts/csv_to_kmz_depth_overlay.py</code> exports a georeferenced overlay for Google Earth.</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
+      </section>
 
-<section class="section">
-  <div class="wrap">
-    <div class="section-head">
-      <span class="section-kicker">Key ideas</span>
-      <h2>The project brings several different concepts into one system.</h2>
-      <p>
-        Each part of OMEGA can be broken out and studied on its own, but the system becomes more useful when those
-        parts are understood together: physics, environmental measurement, data quality, geospatial thinking, and interpolation.
-      </p>
-    </div>
-    <div class="grid-3">
-      <article class="card">
-        <span class="pill">Physics</span>
-        <h3>Acoustic depth sensing</h3>
-        <p>
-          The sonar estimates distance from pulse travel time. That makes depth a time-based measurement that depends on the speed of sound in water.
-        </p>
-        <a class="button button-secondary" href="omega-sensing.html">Open page</a>
-      </article>
-      <article class="card">
-        <span class="pill">Quality control</span>
-        <h3>Validation and point acceptance</h3>
-        <p>
-          GPS quality, motion state, spacing, and depth stability are checked before a point is allowed into the mapping dataset.
-        </p>
-        <a class="button button-secondary" href="omega-validation.html">Open page</a>
-      </article>
-      <article class="card">
-        <span class="pill">Computation</span>
-        <h3>Interpolation and map generation</h3>
-        <p>
-          Python scripts convert accepted points into a continuous surface with inverse distance weighting, then export images and geographic files.
-        </p>
-        <a class="button button-secondary" href="omega-mapping.html">Open page</a>
-      </article>
-    </div>
-  </div>
-</section>
+      <section class="section">
+        <div class="wrap">
+          <div class="section-head">
+            <span class="section-kicker">Current thresholds in the code</span>
+            <h2>Mapping conditions are defined explicitly.</h2>
+            <p>
+              The Arduino code sets limits for GPS quality, fix age, platform motion, and sonar correction. Those values determine whether a point is kept in the accepted mapping dataset.
+            </p>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Parameter</th>
+                  <th>Current value</th>
+                  <th>Role in the survey</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>sonarCalSoundSpeed</code></td>
+                  <td>1500.0 m/s</td>
+                  <td>Baseline sound speed used when correcting sonar range.</td>
+                </tr>
+                <tr>
+                  <td><code>sonarCalTempC</code></td>
+                  <td>20.0 °C</td>
+                  <td>Reference temperature associated with that baseline sound-speed value.</td>
+                </tr>
+                <tr>
+                  <td><code>maxMapHdop</code></td>
+                  <td>1.8</td>
+                  <td>Rejects fixes with poorer horizontal precision.</td>
+                </tr>
+                <tr>
+                  <td><code>maxMapFixAgeMs</code></td>
+                  <td>2000 ms</td>
+                  <td>Rejects stale fixes that may no longer match the platform position closely.</td>
+                </tr>
+                <tr>
+                  <td><code>maxMapSpeedKmph</code></td>
+                  <td>8.0 km/h</td>
+                  <td>Limits mapping when the platform is moving too quickly.</td>
+                </tr>
+                <tr>
+                  <td><code>maxMapPitchDeg</code></td>
+                  <td>10.0°</td>
+                  <td>Rejects mapping points when pitch exceeds the allowed range.</td>
+                </tr>
+                <tr>
+                  <td><code>maxMapRollDeg</code></td>
+                  <td>10.0°</td>
+                  <td>Rejects mapping points when roll exceeds the allowed range.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
 
-<section class="section">
-  <div class="wrap">
-    <div class="section-head">
-      <span class="section-kicker">Representative values from the current code</span>
-      <h2>The thresholds make the measurement rules visible.</h2>
-      <p>
-        The logger does not just collect sensor output. It defines what counts as an acceptable mapping condition.
-        Those choices show up directly in the constants and helper functions in the Arduino code.
-      </p>
-    </div>
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr><th>Parameter</th><th>Current value</th><th>Role in the survey</th></tr>
-        </thead>
-        <tbody>
-          <tr><td><code>sonarCalSoundSpeed</code></td><td>1500.0 m/s</td><td>Baseline sound speed used when correcting sonar range.</td></tr>
-          <tr><td><code>sonarCalTempC</code></td><td>20.0 °C</td><td>Reference temperature tied to that sound-speed baseline.</td></tr>
-          <tr><td><code>maxMapHdop</code></td><td>1.8</td><td>Rejects GPS fixes with poorer horizontal precision.</td></tr>
-          <tr><td><code>maxMapFixAgeMs</code></td><td>2000 ms</td><td>Rejects stale GPS fixes that no longer match the platform position closely.</td></tr>
-          <tr><td><code>maxMapSpeedKmph</code></td><td>8.0 km/h</td><td>Limits mapping when the platform is moving too quickly.</td></tr>
-          <tr><td><code>maxMapPitchDeg</code></td><td>10.0°</td><td>Rejects mapping points when platform tilt exceeds the allowed pitch range.</td></tr>
-          <tr><td><code>maxMapRollDeg</code></td><td>10.0°</td><td>Rejects mapping points when roll exceeds the allowed range.</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</section>
-
-      </p>
-    </div>
-  </div>
-</section>
+      <section class="section">
+        <div class="wrap">
+          <div class="section-head">
+            <span class="section-kicker">Outputs</span>
+            <h2>The same survey supports multiple kinds of analysis.</h2>
+            <p>
+              One field pass can produce several different outputs. The accepted mapping CSV keeps the point dataset. Interpolated PNG maps show the reconstructed surface. Contour plots emphasize slope and relief. KML and KMZ files place the result in geographic space for viewing in tools such as Google Earth.
+            </p>
+          </div>
+          <div class="grid-2">
+            <div class="card">
+              <span class="pill">Data products</span>
+              <h3>What the workflow produces</h3>
+              <ul class="list">
+                <li>Raw or complete survey logs for field review</li>
+                <li>Accepted mapping points for reconstruction</li>
+                <li>Interpolated depth rasters</li>
+                <li>Contour visualizations</li>
+                <li>Georeferenced overlays and KML/KMZ outputs</li>
+              </ul>
+            </div>
+            <div class="card">
+              <span class="pill">Interpretation</span>
+              <h3>What the outputs depend on</h3>
+              <p>
+                Output quality depends on survey spacing, GPS precision, sound-speed assumptions, platform motion, and the interpolation settings used in Python. The map is a reconstruction built from accepted points, not a literal image of the entire bottom.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
 
     </div>
   </main>
