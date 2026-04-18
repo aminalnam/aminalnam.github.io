@@ -174,7 +174,7 @@
 
     .hero {
       position: relative;
-      padding: 4.2rem 0 6.2rem;
+      padding: 4.8rem 0 5.4rem;
       overflow: clip;
     }
 
@@ -194,9 +194,9 @@
 
     .hero-grid {
       display: grid;
-      grid-template-columns: minmax(0, 1.2fr) minmax(18rem, 0.72fr);
-      gap: 1.6rem;
-      align-items: end;
+      grid-template-columns: minmax(0, 1.35fr) minmax(18rem, 0.78fr);
+      gap: 2.4rem;
+      align-items: start;
     }
 
     .eyebrow {
@@ -219,18 +219,22 @@
 
     h1 {
       margin: 0.8rem 0 1rem;
-      max-width: 13ch;
+      max-width: 18ch;
       font-family: var(--font-serif);
-      font-size: clamp(2rem, 4.2vw, 3.7rem);
-      line-height: 0.98;
-      letter-spacing: -0.045em;
+      font-size: clamp(2.2rem, 4.2vw, 3.8rem);
+      line-height: 1.02;
+      letter-spacing: -0.05em;
       font-weight: 400;
     }
 
+    .hero-copy {
+      max-width: 48rem;
+    }
+
     .hero-copy p {
-      max-width: 39rem;
+      max-width: 40rem;
       margin: 0 0 0.95rem;
-      font-size: clamp(0.98rem, 1.35vw, 1.08rem);
+      font-size: clamp(1rem, 1.3vw, 1.08rem);
       color: rgba(255,255,255,0.82);
     }
 
@@ -312,11 +316,12 @@
 
     .hero-panel {
       position: relative;
-      padding: 1.35rem;
+      padding: 1.45rem;
       border: 1px solid rgba(255,255,255,0.14);
       border-radius: var(--radius);
       background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.025));
       box-shadow: 0 1.2rem 2.6rem rgba(0,0,0,0.16);
+      align-self: stretch;
     }
 
     .hero-panel::before {
@@ -400,7 +405,7 @@
 
     .main-shell {
       position: relative;
-      margin-top: -3.2rem;
+      margin-top: -2.2rem;
       margin-bottom: 4rem;
     }
 
@@ -919,7 +924,7 @@
       }
 
       h1 {
-        max-width: 10ch;
+        max-width: 100%;
       }
 
       .hero::before {
@@ -966,21 +971,19 @@
 <section class="hero">
 <div class="wrap hero-grid">
 <div class="hero-copy">
-<span class="eyebrow">Sensing, mapping, and physical computing</span>
-<h1>Technical projects built through fieldwork, research, and making.</h1>
+<span class="eyebrow">Art, technology, and interdisciplinary research</span>
+<h1>This site brings together work across art, technology, and interdisciplinary research.</h1>
 <p>
-          This site brings together projects in environmental sensing, geospatial workflows, Arduino-based logging,
-          mapping, physical computing, and related research.
+          The work collected here grows out of learning through making and experimentation, and is shared openly so others can learn from it, build on it, or teach with it.
         </p>
 <p>
-          It is a place to show the structure of the work, how the systems function, and how the different parts connect.
+          It includes projects, tools, documentation, and educational resources.
         </p>
 <div class="hero-actions">
 <a class="button button-primary" href="https://github.com/aminalnam/OMEGA" rel="noopener" target="_blank">Open OMEGA</a>
-<a class="button button-secondary" href="how-omega-works.html">How OMEGA Works</a>
-<a class="button button-secondary" href="omega-research.html">OMEGA Research</a><a class="button button-secondary" href="omega-data.html">OMEGA Data</a>
-          <a class="button button-secondary" href="#projects">Browse Projects</a>
-<a class="button button-secondary" href="#documentation">Project Documentation</a>
+<a class="button button-secondary" href="how-omega-works.html">OMEGA Guide</a>
+<a class="button button-secondary" href="#projects">Browse Projects</a>
+<a class="button button-secondary" href="teaching-documentation.html">Teaching</a>
 </div>
 </div>
 <aside aria-label="Current focus" class="hero-panel">
