@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Teaching Documentation — Jonathan Capone</title>
+<meta name="description" content="Teaching documentation, course materials, and future educational content by Jonathan Capone."/>
+<style>
+  :root {
+    --bg: #0d1925;
+    --bg-soft: #152433;
+    --panel: #f7f2e9;
+    --panel-soft: #fffdf8;
+    --ink: #141414;
+    --ink-soft: #4f4a45;
+    --line: rgba(20,20,20,0.12);
+    --accent: #d94841;
+    --accent-deep: #b93832;
+    --sea: #2e5b87;
+    --shadow: 0 2rem 4rem rgba(7, 14, 22, 0.18);
+    --radius: 1.1rem;
+    --font-sans: "Inter", "Helvetica Neue", Arial, sans-serif;
+    --font-serif: "Iowan Old Style", "Georgia", "Times New Roman", serif;
+    --font-mono: "SFMono-Regular", "Menlo", "Consolas", monospace;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: var(--font-sans);
+    background:
+      radial-gradient(circle at top, rgba(126,167,206,0.14), transparent 35%),
+      linear-gradient(180deg, #102131 0%, #0d1925 32%, #0d1925 100%);
+    color: #fff;
+    line-height: 1.65;
+  }
+  a { color: inherit; }
+  .wrap { width: min(1120px, calc(100vw - 2.2rem)); margin: 0 auto; }
+  .topbar {
+    position: sticky; top: 0; z-index: 20; backdrop-filter: blur(14px);
+    background: rgba(12, 22, 33, 0.76); border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .topbar-inner {
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0.9rem 0;
+  }
+  .brand { text-decoration: none; display: grid; gap: 0.1rem; }
+  .brand-title { font-family: var(--font-serif); font-size: 1.08rem; letter-spacing: -0.02em; }
+  .brand-sub {
+    font-family: var(--font-mono); font-size: 0.66rem; text-transform: uppercase;
+    letter-spacing: 0.16em; color: rgba(255,255,255,0.66);
+  }
+  .nav {
+    display: flex; flex-wrap: wrap; gap: 0.8rem 1rem; font-family: var(--font-mono);
+    font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.14em;
+  }
+  .nav a { text-decoration: none; color: rgba(255,255,255,0.78); }
+  .nav a:hover, .nav a:focus-visible { color: #fff; outline: none; }
+  .hero { padding: 4.8rem 0 4rem; }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 0.55rem; font-family: var(--font-mono);
+    font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.16em; color: rgba(255,255,255,0.7);
+  }
+  .eyebrow::before { content: ""; width: 1.1rem; height: 1px; background: rgba(255,255,255,0.4); }
+  h1 {
+    margin: 1rem 0 1rem; font-family: var(--font-serif); font-size: clamp(2.6rem, 6vw, 5rem);
+    line-height: 0.95; letter-spacing: -0.06em; font-weight: 400; max-width: 12ch;
+  }
+  .hero p { max-width: 56rem; color: rgba(255,255,255,0.82); font-size: 1.04rem; margin: 0 0 1rem; }
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 1.5rem; }
+  .button {
+    display: inline-flex; align-items: center; justify-content: center; min-height: 2.8rem; padding: 0 1rem;
+    border-radius: 999px; border: 1px solid rgba(255,255,255,0.16); text-decoration: none;
+    font-family: var(--font-mono); font-size: 0.69rem; text-transform: uppercase; letter-spacing: 0.14em;
+    transition: transform 0.18s ease, background 0.18s ease, border-color 0.18s ease;
+  }
+  .button:hover, .button:focus-visible { transform: translateY(-1px); outline: none; }
+  .button-primary { background: var(--accent); border-color: rgba(255,255,255,0.08); color: #fff; }
+  .button-primary:hover, .button-primary:focus-visible { background: var(--accent-deep); }
+  .button-secondary { background: rgba(255,255,255,0.06); color: #fff; }
+  .button-secondary:hover, .button-secondary:focus-visible { background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.26); }
+  .main-shell { margin-bottom: 3.5rem; }
+  .main-inner {
+    background: var(--panel); color: var(--ink); border-radius: 1.4rem; overflow: hidden;
+    box-shadow: var(--shadow); border: 1px solid rgba(255,255,255,0.08);
+  }
+  .section { padding: 3.6rem 0; border-bottom: 1px solid var(--line); }
+  .section:last-child { border-bottom: none; }
+  .section-head { margin-bottom: 1.9rem; }
+  .section-kicker {
+    display: inline-flex; align-items: center; gap: 0.6rem; font-family: var(--font-mono);
+    font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.18em; color: var(--ink-soft);
+  }
+  .section-kicker::before { content: ""; width: 1.2rem; height: 1px; background: rgba(20,20,20,0.24); }
+  .section-head h2 {
+    margin: 0.8rem 0 0.8rem; font-family: var(--font-serif); font-size: clamp(2rem, 4vw, 3.1rem);
+    line-height: 0.97; letter-spacing: -0.05em; font-weight: 400;
+  }
+  .section-head p { max-width: 48rem; color: var(--ink-soft); }
+  .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.1rem; }
+  .card {
+    background: var(--panel-soft); border: 1px solid var(--line); border-radius: var(--radius); padding: 1.2rem;
+    display: flex; flex-direction: column; gap: 0.7rem;
+  }
+  .card h3 { margin: 0; font-family: var(--font-serif); font-size: 1.45rem; font-weight: 400; letter-spacing: -0.03em; }
+  .kicker { font-family: var(--font-mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.14em; color: var(--ink-soft); }
+  .card p { margin: 0; color: var(--ink-soft); }
+  .card a { color: var(--sea); text-decoration: none; }
+  .card a:hover, .card a:focus-visible { text-decoration: underline; }
+  .two-col { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(18rem, 0.85fr); gap: 1.2rem; }
+  .panel {
+    background: var(--panel-soft); border: 1px solid var(--line); border-radius: var(--radius); padding: 1.3rem;
+  }
+  .panel h3 { margin-top: 0; font-family: var(--font-serif); font-size: 1.55rem; font-weight: 400; letter-spacing: -0.03em; }
+  .list { margin: 0; padding-left: 1.1rem; color: var(--ink-soft); }
+  .footer { padding: 0 0 3rem; color: rgba(255,255,255,0.7); }
+  .footer-inner {
+    display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.7rem;
+    font-family: var(--font-mono); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.16em;
+  }
+  @media (max-width: 900px) {
+    .grid, .two-col { grid-template-columns: 1fr; }
+    .topbar-inner { align-items: flex-start; }
+  }
+  @media (max-width: 680px) {
+    .hero { padding-top: 3.9rem; }
+    h1 { max-width: 100%; }
+  }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="wrap topbar-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-title">Jonathan Capone</span>
+      <span class="brand-sub">Teaching Documentation</span>
+    </a>
+    <nav class="nav" aria-label="Primary">
+      <a href="index.html">Home</a>
+      <a href="#current">Current Pages</a>
+      <a href="#future">Future Content</a>
+      <a href="#notes">Notes</a>
+      <a href="how-omega-works.html">OMEGA Guide</a>
+      <a href="https://jonathancapone.art" rel="noopener" target="_blank">Artwork</a>
+    </nav>
+  </div>
+</header>
+<section class="hero">
+  <div class="wrap">
+    <span class="eyebrow">Teaching, curriculum, and documentation</span>
+    <h1>Teaching documentation has its own space.</h1>
+    <p>
+      This page separates educational material from the main technical portfolio while keeping it publicly accessible.
+      It can hold current teaching pages now and expand later into a fuller archive of curriculum, project examples,
+      workshop material, and resource collections.
+    </p>
+    <p>
+      For now, it gathers the existing public teaching links in one place and creates a clear structure for future additions.
+    </p>
+    <div class="hero-actions">
+      <a class="button button-primary" href="#current">Open current pages</a>
+      <a class="button button-secondary" href="#future">Plan future content</a>
+      <a class="button button-secondary" href="index.html">Back to portfolio</a>
+    </div>
+  </div>
+</section>
+<main class="main-shell">
+  <div class="wrap main-inner">
+    <section class="section" id="current">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="section-kicker">Current pages</span>
+          <h2>Existing teaching documentation in one place.</h2>
+          <p>
+            These are the teaching and education-related public pages already live on your art site.
+            Grouping them here gives them a clear home without making the technical portfolio carry all of that material on the front page.
+          </p>
+        </div>
+        <div class="grid">
+          <article class="card">
+            <div class="kicker">Process</div>
+            <h3>Students at Work</h3>
+            <p>Project development, classroom process, and documentation of making in practice.</p>
+            <a href="https://jonathancapone.art/students-at-work" rel="noopener" target="_blank">Open page</a>
+          </article>
+          <article class="card">
+            <div class="kicker">Integration</div>
+            <h3>STEAM</h3>
+            <p>Teaching materials that connect artistic inquiry with engineering, science, and applied making.</p>
+            <a href="https://jonathancapone.art/steam" rel="noopener" target="_blank">Open page</a>
+          </article>
+          <article class="card">
+            <div class="kicker">Instruction</div>
+            <h3>Media Arts</h3>
+            <p>Documentation related to digital moving images, technology-based art, and media literacy.</p>
+            <a href="https://jonathancapone.art/media-arts" rel="noopener" target="_blank">Open page</a>
+          </article>
+          <article class="card">
+            <div class="kicker">Method</div>
+            <h3>Experiential Learning</h3>
+            <p>Project-based approaches centered on inquiry, prototyping, iteration, and hands-on experimentation.</p>
+            <a href="https://jonathancapone.art/experiential-learning" rel="noopener" target="_blank">Open page</a>
+          </article>
+          <article class="card">
+            <div class="kicker">Production</div>
+            <h3>Performing Arts</h3>
+            <p>Material related to staging, performance systems, and interdisciplinary production work.</p>
+            <a href="https://jonathancapone.art/performing-arts" rel="noopener" target="_blank">Open page</a>
+          </article>
+          <article class="card">
+            <div class="kicker">Frameworks</div>
+            <h3>Curricula</h3>
+            <p>Course structures, planning materials, and public-facing educational frameworks.</p>
+            <a href="https://jonathancapone.art/curricula" rel="noopener" target="_blank">Open page</a>
+          </article>
+        </div>
+      </div>
+    </section>
+    <section class="section" id="future">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="section-kicker">Future content</span>
+          <h2>Reserved space for what comes next.</h2>
+          <p>
+            This section gives you a ready-made structure for expanding the teaching side of the site without having to redesign it later.
+          </p>
+        </div>
+        <div class="grid">
+          <article class="card">
+            <div class="kicker">Courses</div>
+            <h3>Course Pages</h3>
+            <p>Dedicated pages for individual classes, syllabi, unit sequences, and semester overviews.</p>
+          </article>
+          <article class="card">
+            <div class="kicker">Projects</div>
+            <h3>Student Project Archives</h3>
+            <p>Selected outcomes, process snapshots, and thematic project groupings over time.</p>
+          </article>
+          <article class="card">
+            <div class="kicker">Resources</div>
+            <h3>Toolkits and Guides</h3>
+            <p>Downloadable references, making guides, media literacy resources, and technical handouts.</p>
+          </article>
+          <article class="card">
+            <div class="kicker">Workshops</div>
+            <h3>Workshop Documentation</h3>
+            <p>Public notes and documentation for talks, demos, special sessions, and community-facing teaching work.</p>
+          </article>
+          <article class="card">
+            <div class="kicker">Assessment</div>
+            <h3>Reflection and Evaluation</h3>
+            <p>Documentation of critique, assessment frameworks, reflection prompts, and iterative learning structures.</p>
+          </article>
+          <article class="card">
+            <div class="kicker">Archive</div>
+            <h3>Longer-Term Teaching Record</h3>
+            <p>A place for older curricula, program development, interdisciplinary collaborations, and evolving methods.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+    <section class="section" id="notes">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="section-kicker">Notes</span>
+          <h2>A cleaner split between technical work and teaching work.</h2>
+        </div>
+        <div class="two-col">
+          <div class="panel">
+            <h3>Why this helps</h3>
+            <p>
+              The main portfolio can stay focused on OMEGA, sensing systems, mapping, communications, and technical documentation.
+              This page gives the teaching material its own frame, which makes both parts of the site feel more intentional.
+            </p>
+          </div>
+          <div class="panel">
+            <h3>Good next additions</h3>
+            <ul class="list">
+              <li>A short teaching statement or overview paragraph</li>
+              <li>One page per course or program area</li>
+              <li>A small archive of project prompts or student outcomes</li>
+              <li>Workshop pages if you begin offering public sessions</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+<footer class="footer">
+  <div class="wrap footer-inner">
+    <span>Jonathan Capone — Teaching Documentation</span>
+    <span><a href="index.html">Portfolio Home</a></span>
+  </div>
+</footer>
+</body>
+</html>
