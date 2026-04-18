@@ -413,7 +413,7 @@
 <div class="wrap">
 <span class="eyebrow">OMEGA</span>
 <h1>Mapping, interpolation, and outputs.</h1>
-<p>A closer look at how accepted survey points become bathymetric surfaces, contour maps, KML files, and Google Earth overlays through the Python processing scripts.</p>
+<p>A closer look at how accepted survey points become bathymetric surfaces, contour maps, KML files, and Google Earth overlays through the Python mapping scripts.</p>
 <div class="hero-actions">
 <a class="button button-primary" href="how-omega-works.html">Back to OMEGA Guide</a><a class="button button-secondary" href="omega-sensing.html">Sensing and Sound</a><a class="button button-secondary" href="omega-validation.html">Validation Logic</a><a class="button button-secondary" href="omega-research.html">OMEGA Research</a><a class="button button-secondary" href="omega-data.html">OMEGA Data</a>
 </div>
@@ -467,7 +467,7 @@
       </p>
 </div>
 <div class="card">
-<span class="pill">From <code>csv_to_kmz_depth_overlay.py</code></span>
+<span class="pill">From <code>google_earth_overlay.py</code></span>
 <div class="code-block"><pre><code>def idw_interpolation(x, y, z, xi, yi, power=2.0, epsilon=1e-12):
     zi = np.zeros_like(xi, dtype=float)
 
@@ -510,7 +510,7 @@
 <span class="pill">Grid setup</span>
 <div class="code-block"><pre><code>def build_grid(points, grid_size, power):
     lats = np.array([p["lat"] for p in points], dtype=float)
-    lons = np.array([p["lon"] for p in points], dtype=float)
+    lons = np.array([p["lng"] for p in points], dtype=float)
     depths = np.array([p["depth_m"] for p in points], dtype=float)
 
     lon_min, lon_max = lons.min(), lons.max()
@@ -548,11 +548,11 @@
 <tr><th>Script</th><th>Output</th><th>Use</th></tr>
 </thead>
 <tbody>
-<tr><td><code>csv_to_png_depth_points.py</code></td><td>Point plot</td><td>Shows the accepted survey points directly without surface modeling.</td></tr>
-<tr><td><code>csv_to_png_depth_interpolated.py</code></td><td>Interpolated depth map</td><td>Shows the continuous surface estimated from the accepted points.</td></tr>
-<tr><td><code>csv_to_png_depth_contours.py</code></td><td>Contour map</td><td>Turns the surface into depth lines that emphasize shape and slope.</td></tr>
-<tr><td><code>csv_to_kml_points.py</code></td><td>KML point export</td><td>Places survey points in geospatial viewers.</td></tr>
-<tr><td><code>csv_to_kmz_depth_overlay.py</code></td><td>KMZ overlay</td><td>Places a raster surface over its geographic footprint in Google Earth.</td></tr>
+<tr><td><code>depth_map.py</code></td><td>Point plot</td><td>Shows the accepted survey points directly without surface modeling.</td></tr>
+<tr><td><code>interpolated_map.py</code></td><td>Interpolated depth map</td><td>Shows the continuous surface estimated from the accepted points.</td></tr>
+<tr><td><code>contour_map.py</code></td><td>Contour map</td><td>Turns the surface into depth lines that emphasize shape and slope.</td></tr>
+<tr><td><code>csv_to_kml.py</code></td><td>KML point export</td><td>Places survey points in geospatial viewers.</td></tr>
+<tr><td><code>google_earth_overlay.py</code></td><td>KMZ overlay</td><td>Places a raster surface over its geographic footprint in Google Earth.</td></tr>
 </tbody>
 </table>
 </div>
