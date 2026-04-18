@@ -76,24 +76,133 @@
       letter-spacing: 0.16em;
       color: rgba(255,255,255,0.66);
     }
+    
     .nav {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.8rem 1rem;
-      font-family: var(--font-mono);
-      font-size: 0.7rem;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 0.7rem 0.95rem;
+      font-size: 0.73rem;
+      letter-spacing: 0.16em;
       text-transform: uppercase;
-      letter-spacing: 0.14em;
+      font-family: var(--font-mono);
     }
-    .nav a {
+
+    .nav a,
+    .nav summary {
       text-decoration: none;
       color: rgba(255,255,255,0.78);
+      border-bottom: 1px solid transparent;
+      padding-bottom: 0.15rem;
+      transition: color 0.2s ease, border-color 0.2s ease;
+      cursor: pointer;
+      list-style: none;
     }
+
     .nav a:hover,
-    .nav a:focus-visible {
-      color: #fff;
+    .nav a:focus-visible,
+    .nav summary:hover,
+    .nav summary:focus-visible {
+      color: var(--white, #fff);
+      border-color: currentColor;
       outline: none;
     }
+
+    .nav details {
+      position: relative;
+    }
+
+    .nav summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .nav summary::after {
+      content: " ▾";
+      font-size: 0.85em;
+    }
+
+    .dropdown-menu {
+      position: absolute;
+      top: calc(100% + 0.7rem);
+      right: 0;
+      min-width: 15rem;
+      padding: 0.5rem;
+      border-radius: 0.9rem;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(9, 17, 26, 0.96);
+      box-shadow: 0 1.2rem 2.5rem rgba(0,0,0,0.24);
+      display: grid;
+      gap: 0.2rem;
+    }
+
+    .dropdown-menu a {
+      border: 0;
+      padding: 0.65rem 0.75rem;
+      border-radius: 0.6rem;
+      color: rgba(255,255,255,0.8);
+      text-transform: none;
+      letter-spacing: 0.04em;
+      font-size: 0.78rem;
+    }
+
+    .dropdown-menu a:hover,
+    .dropdown-menu a:focus-visible {
+      background: rgba(255,255,255,0.08);
+      color: #fff;
+      border: 0;
+    }
+
+    .dropdown-label {
+      padding: 0.35rem 0.75rem 0.2rem;
+      font-size: 0.62rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+      font-family: var(--font-mono);
+    }
+
+    .omega-subnav {
+      margin: 0 0 1.5rem;
+      padding: 0.8rem 1rem;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem 0.8rem;
+      align-items: center;
+      backdrop-filter: blur(10px);
+    }
+
+    .omega-subnav strong {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.66);
+      font-weight: 500;
+    }
+
+    .omega-subnav a {
+      text-decoration: none;
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.78);
+      padding-bottom: 0.12rem;
+      border-bottom: 1px solid transparent;
+    }
+
+    .omega-subnav a:hover,
+    .omega-subnav a:focus-visible,
+    .omega-subnav a.is-current {
+      color: #fff;
+      border-color: currentColor;
+      outline: none;
+    }
+
     .hero {
       padding: 4.8rem 0 4rem;
     }
@@ -395,179 +504,6 @@
         align-items: flex-start;
       }
     }
-
-
-  .nav {
-    align-items: center;
-  }
-  .nav-dropdown {
-    position: relative;
-  }
-  .nav-dropdown summary {
-    list-style: none;
-    cursor: pointer;
-    color: rgba(255,255,255,0.78);
-    border-bottom: 1px solid transparent;
-    padding-bottom: 0.15rem;
-  }
-  .nav-dropdown summary::-webkit-details-marker {
-    display: none;
-  }
-  .nav-dropdown summary::after {
-    content: "▾";
-    margin-left: 0.45rem;
-    font-size: 0.8em;
-  }
-  .nav-dropdown[open] summary,
-  .nav-dropdown summary:hover,
-  .nav-dropdown summary:focus-visible {
-    color: var(--white, #fff);
-    border-color: currentColor;
-    outline: none;
-  }
-  .nav-menu {
-    position: absolute;
-    right: 0;
-    top: calc(100% + 0.8rem);
-    min-width: 16rem;
-    padding: 0.7rem;
-    border-radius: 1rem;
-    background: rgba(10, 17, 24, 0.96);
-    border: 1px solid rgba(255,255,255,0.1);
-    box-shadow: 0 1.4rem 3rem rgba(0,0,0,0.28);
-    display: grid;
-    gap: 0.2rem;
-    z-index: 80;
-  }
-  .nav-menu a {
-    display: block;
-    padding: 0.7rem 0.8rem;
-    border-radius: 0.8rem;
-    border-bottom: 0;
-    color: rgba(255,255,255,0.86);
-    text-decoration: none;
-    font-size: 0.72rem;
-    letter-spacing: 0.12em;
-    line-height: 1.35;
-  }
-  .nav-menu a small {
-    display: block;
-    margin-top: 0.22rem;
-    color: rgba(255,255,255,0.58);
-    font-size: 0.72rem;
-    letter-spacing: 0.04em;
-    text-transform: none;
-  }
-  .nav-menu a:hover,
-  .nav-menu a:focus-visible {
-    background: rgba(255,255,255,0.08);
-    color: #fff;
-    outline: none;
-  }
-  .subnav-shell {
-    border-bottom: 1px solid rgba(255,255,255,0.08);
-    background: rgba(6, 12, 18, 0.56);
-    backdrop-filter: blur(14px);
-  }
-  .subnav {
-    width: min(calc(100% - 2rem), var(--max, 78rem));
-    margin: 0 auto;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.65rem 1rem;
-    padding: 0.9rem 0 1rem;
-    font-family: var(--font-mono, Inter, sans-serif);
-    font-size: 0.72rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-  }
-  .subnav-label {
-    color: rgba(255,255,255,0.52);
-  }
-  .subnav a {
-    color: rgba(255,255,255,0.78);
-    text-decoration: none;
-    border-bottom: 1px solid transparent;
-    padding-bottom: 0.12rem;
-  }
-  .subnav a:hover,
-  .subnav a:focus-visible,
-  .subnav a.is-active {
-    color: #fff;
-    border-color: currentColor;
-    outline: none;
-  }
-  .entry-grid {
-    display: grid;
-    grid-template-columns: 1.15fr 1fr 1fr;
-    gap: 1rem;
-  }
-  .entry-card {
-    background: var(--panel, #fcfaf6);
-    color: var(--ink, #141414);
-    border: 1px solid var(--line, rgba(20,20,20,0.12));
-    border-radius: 1.35rem;
-    padding: 1.5rem;
-    box-shadow: var(--shadow, 0 2rem 5rem rgba(0,0,0,0.18));
-  }
-  .entry-card h3 {
-    margin: 0 0 0.65rem;
-    font-family: var(--font-serif, Georgia, serif);
-    font-size: 1.45rem;
-    line-height: 1.05;
-    letter-spacing: -0.03em;
-    font-weight: 400;
-  }
-  .entry-card p {
-    margin: 0 0 1rem;
-    color: var(--ink-soft, #505157);
-  }
-  .entry-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: grid;
-    gap: 0.65rem;
-  }
-  .entry-list li {
-    padding-top: 0.65rem;
-    border-top: 1px solid var(--line, rgba(20,20,20,0.12));
-  }
-  .entry-list li:first-child {
-    padding-top: 0;
-    border-top: 0;
-  }
-  .entry-list a {
-    text-decoration: none;
-  }
-  .entry-list strong {
-    display: block;
-    margin-bottom: 0.18rem;
-  }
-  .entry-list span {
-    color: var(--ink-soft, #505157);
-  }
-  @media (max-width: 980px) {
-    .entry-grid {
-      grid-template-columns: 1fr;
-    }
-  }
-  @media (max-width: 900px) {
-    .nav {
-      width: 100%;
-      justify-content: flex-start;
-      gap: 0.8rem 1rem;
-    }
-    .nav-dropdown {
-      width: 100%;
-    }
-    .nav-menu {
-      position: static;
-      min-width: 0;
-      margin-top: 0.55rem;
-    }
-  }
-
 </style>
 </head>
 <body>
@@ -575,26 +511,27 @@
 <div class="wrap topbar-inner">
 <a class="brand" href="index.html">
 <span class="brand-title">Jonathan Capone</span>
-<span class="brand-sub">OMEGA Validation</span>
+<span class="brand-sub">Technical Portfolio</span>
 </a>
 <nav aria-label="Primary" class="nav">
 <a href="index.html">Home</a>
-<details class="nav-dropdown">
+<details>
 <summary>Projects</summary>
-<div class="nav-menu">
-<a href="index.html#projects">Project Index<small>Featured and in-progress work on the site.</small></a>
-<a href="how-omega-works.html">OMEGA<small>System overview, workflow, and project entry point.</small></a>
-<a href="omega-wave.html">OMEGA-Wave<small>Marine communications and distributed field networking.</small></a>
+<div class="dropdown-menu">
+<div class="dropdown-label">Projects</div>
+<a href="how-omega-works.html">OMEGA</a>
+<a href="omega-wave.html">OMEGA Wave</a>
 </div>
 </details>
-<details class="nav-dropdown">
+<details>
 <summary>OMEGA</summary>
-<div class="nav-menu">
-<a href="how-omega-works.html">How OMEGA Works</a>
-<a href="omega-sensing.html">Sensing and Sound</a>
-<a href="omega-validation.html">Validation Logic</a>
-<a href="omega-mapping.html">Mapping and IDW</a>
-<a href="omega-research.html">Research Context</a>
+<div class="dropdown-menu">
+<div class="dropdown-label">Documentation</div>
+<a href="how-omega-works.html">Overview</a>
+<a href="omega-sensing.html">Sensing</a>
+<a class="is-current" href="omega-validation.html">Validation</a>
+<a href="omega-mapping.html">Mapping</a>
+<a href="omega-research.html">Research</a>
 <a href="omega-data.html">Data</a>
 </div>
 </details>
@@ -604,24 +541,22 @@
 </nav>
 </div>
 </header>
-<div class="subnav-shell">
-<nav aria-label="OMEGA" class="subnav">
-<span class="subnav-label">OMEGA</span>
-<a href="how-omega-works.html" class="">Overview</a>
-<a href="omega-sensing.html" class="">Sensing</a>
-<a href="omega-validation.html" class="is-active">Validation</a>
-<a href="omega-mapping.html" class="">Mapping</a>
-<a href="omega-research.html" class="">Research</a>
-<a href="omega-data.html" class="">Data</a>
-</nav>
-</div>
-<section class="hero">
+<div class="wrap"><div class="omega-subnav">
+<strong>OMEGA</strong>
+<a href="how-omega-works.html">How It Works</a>
+<a href="omega-sensing.html">Sensing</a>
+<a href="omega-validation.html">Validation</a>
+<a href="omega-mapping.html">Mapping</a>
+<a href="omega-research.html">Research</a>
+<a href="omega-data.html">Data</a>
+</div><\/div>
+>
 <div class="wrap">
 <span class="eyebrow">OMEGA</span>
 <h1>Validation, stability, and point acceptance.</h1>
 <p>A closer look at the checks that determine whether a measurement becomes part of the mapping dataset: GPS quality, fix age, depth stability, speed, tilt, and spatial spacing.</p>
 <div class="hero-actions">
-<a class="button button-primary" href="how-omega-works.html">Back to OMEGA Guide</a><a class="button button-secondary" href="omega-sensing.html">Sensing and Sound</a><a class="button button-secondary" href="omega-mapping.html">Next: Mapping</a><a class="button button-secondary" href="omega-research.html">OMEGA Research</a><a class="button button-secondary" href="omega-data.html">OMEGA Data</a>
+<a class="button button-primary" href="how-omega-works.html">Back to How OMEGA Works</a><a class="button button-secondary" href="omega-sensing.html">Sensing and Sound</a><a class="button button-secondary" href="omega-mapping.html">Next: Mapping</a><a class="button button-secondary" href="omega-research.html">OMEGA Research</a><a class="button button-secondary" href="omega-data.html">OMEGA Data</a>
 </div>
 </div>
 </section>
@@ -787,7 +722,7 @@
 <div class="wrap footer-inner">
 <span>Jonathan Capone — Project Portfolio</span>
 <span><a href="index.html">Home</a></span>
-<span><a href="how-omega-works.html">OMEGA Guide</a></span>
+<span><a href="how-omega-works.html">How OMEGA Works</a></span>
 <span><a href="omega-research.html">Research</a></span>
 <span><a href="omega-sensing.html">Sensing</a></span>
 <span><a href="omega-validation.html">Validation</a></span>
