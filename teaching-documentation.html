@@ -62,8 +62,7 @@
       font-family: var(--font-mono);
     }
 
-    .nav a,
-    .nav summary {
+    .nav a {
       text-decoration: none;
       color: rgba(255,255,255,0.78);
       border-bottom: 1px solid transparent;
@@ -75,67 +74,10 @@
 
     .nav a:hover,
     .nav a:focus-visible,
-    .nav summary:hover,
-    .nav summary:focus-visible {
+    .nav a.is-current {
       color: var(--white, #fff);
       border-color: currentColor;
       outline: none;
-    }
-
-    .nav details {
-      position: relative;
-    }
-
-    .nav summary::-webkit-details-marker {
-      display: none;
-    }
-
-    .nav summary::after {
-      content: " ▾";
-      font-size: 0.85em;
-    }
-
-    .dropdown-menu {
-      display: none;
-      position: absolute;
-      top: calc(100% + 0.7rem);
-      right: 0;
-      min-width: 15rem;
-      padding: 0.5rem;
-      border-radius: 0.9rem;
-      border: 1px solid rgba(255,255,255,0.12);
-      background: rgba(9, 17, 26, 0.96);
-      box-shadow: 0 1.2rem 2.5rem rgba(0,0,0,0.24);
-      gap: 0.2rem;
-    }
-
-    .dropdown-menu a {
-      border: 0;
-      padding: 0.65rem 0.75rem;
-      border-radius: 0.6rem;
-      color: rgba(255,255,255,0.8);
-      text-transform: none;
-      letter-spacing: 0.04em;
-      font-size: 0.78rem;
-    }
-
-    .dropdown-menu a:hover,
-    .dropdown-menu a:focus-visible {
-      background: rgba(255,255,255,0.08);
-      color: #fff;
-      border: 0;
-    }
-
-    .nav details[open] > .dropdown-menu { display: grid; }
-    .nav details > summary { list-style: none; }
-
-    .dropdown-label {
-      padding: 0.35rem 0.75rem 0.2rem;
-      font-size: 0.62rem;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.5);
-      font-family: var(--font-mono);
     }
 
     .omega-subnav {
@@ -255,15 +197,11 @@
 </a>
 <nav aria-label="Primary" class="nav">
 <a href="index.html">Home</a>
-<details>
-<summary>Projects</summary>
-<div class="dropdown-menu">
-<div class="dropdown-label">Projects</div>
-<a href="how-omega-works.html">OMEGA</a>
+<a href="how-omega-works.html">How It Works</a>
+<a href="omega-research.html">Research Context</a>
+<a href="omega-data.html">Data</a>
 <a href="omega-wave.html">OMEGA Wave</a>
-</div>
-</details>
-<a href="teaching-documentation.html">Teaching</a>
+<a href="teaching-documentation.html" class="is-current">Teaching</a>
 <a href="https://jonathancapone.art" rel="noopener" target="_blank">Artwork</a>
 <a href="mailto:jonathancapone@gmail.com">Contact</a>
 </nav>

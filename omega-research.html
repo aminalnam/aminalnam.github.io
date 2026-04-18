@@ -64,17 +64,8 @@
       justify-content: space-between;
     }
     .topbar .nav{display:flex;flex-wrap:wrap;align-items:center;gap:.7rem .95rem;font-size:.73rem;letter-spacing:.14em;text-transform:uppercase;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;width:100%;justify-content:flex-start}
-    .topbar .nav a,.topbar .nav summary{text-decoration:none;color:var(--muted);border-bottom:1px solid transparent;padding-bottom:.15rem;cursor:pointer;list-style:none}
-    .topbar .nav a:hover,.topbar .nav a:focus-visible,.topbar .nav summary:hover,.topbar .nav summary:focus-visible{color:var(--accent);border-color:currentColor;outline:none}
-    .topbar .nav details{position:relative}
-    .topbar .nav summary::-webkit-details-marker{display:none}
-    .topbar .nav summary::after{content:" ▾";font-size:.85em}
-    .topbar .dropdown-menu{position:absolute;top:calc(100% + .7rem);left:0;z-index:60;min-width:15rem;padding:.5rem;border-radius:.9rem;border:1px solid rgba(22,32,42,.12);background:rgba(255,255,255,.96);box-shadow:0 1.2rem 2.5rem rgba(17,34,49,.16);display:none;gap:.2rem}
-    .topbar .dropdown-menu a{border:0;padding:.65rem .75rem;border-radius:.6rem;color:var(--muted);text-transform:none;letter-spacing:.04em;font-size:.78rem}
-    .topbar .dropdown-menu a:hover,.topbar .dropdown-menu a:focus-visible{background:rgba(18,62,87,.08);color:var(--accent);border:0}
-    .topbar .dropdown-label{padding:.35rem .75rem .2rem;font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(22,32,42,.45);font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
-    .topbar .nav details[open] > .dropdown-menu{display:grid}
-    .topbar .nav details > summary{list-style:none}
+    .topbar .nav a{text-decoration:none;color:var(--muted);border-bottom:1px solid transparent;padding-bottom:.15rem;cursor:pointer;list-style:none}
+    .topbar .nav a:hover,.topbar .nav a:focus-visible,.topbar .nav a.is-current{color:var(--accent);border-color:currentColor;outline:none}
     .omega-subnav{margin:0 0 18px;padding:12px 16px;border:1px solid rgba(22,32,42,.08);border-radius:999px;background:rgba(255,255,255,.66);backdrop-filter:blur(10px);display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center}
     .omega-subnav strong,.page-nav strong{font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-weight:600}
     .omega-subnav a,.page-nav a{text-decoration:none;color:var(--muted);font-size:.8rem}
@@ -681,14 +672,10 @@
 <div class="page">
 <nav aria-label="Primary" class="nav">
 <a href="index.html">Home</a>
-<details>
-<summary>Projects</summary>
-<div class="dropdown-menu">
-<div class="dropdown-label">Projects</div>
-<a href="how-omega-works.html">OMEGA</a>
+<a href="how-omega-works.html">How It Works</a>
+<a href="omega-research.html" class="is-current">Research Context</a>
+<a href="omega-data.html">Data</a>
 <a href="omega-wave.html">OMEGA Wave</a>
-</div>
-</details>
 <a href="teaching-documentation.html">Teaching</a>
 <a href="https://jonathancapone.art" rel="noopener" target="_blank">Artwork</a>
 <a href="mailto:jonathancapone@gmail.com">Contact</a>
