@@ -6,10 +6,226 @@
 <title>OMEGA Data</title>
 <style>
 :root{--bg:#0b121a;--panel:#fcfaf6;--panel-soft:#f4efe6;--ink:#141414;--ink-soft:#505157;--line:rgba(20,20,20,0.12);--accent:#d94841;--white:#ffffff;--shadow:0 2rem 5rem rgba(0,0,0,0.18);--max:78rem;--radius:1.25rem;--font-sans:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;--font-serif:"Iowan Old Style","Palatino Linotype","Book Antiqua",Georgia,serif;--font-mono:"SFMono-Regular","Roboto Mono",Consolas,Monaco,monospace;}*{box-sizing:border-box;-webkit-font-smoothing:antialiased}html{scroll-behavior:smooth}body{margin:0;color:var(--white);background:radial-gradient(circle at 20% 0%, rgba(126,167,206,0.18), transparent 28%),radial-gradient(circle at 82% 16%, rgba(217,72,65,0.12), transparent 24%),linear-gradient(180deg, #071018 0%, #0b121a 44%, #0f1721 100%);font-family:var(--font-sans);line-height:1.65;min-height:100vh}a{color:inherit}.wrap{width:min(calc(100% - 2rem), var(--max));margin:0 auto}.topbar{position:sticky;top:0;z-index:40;backdrop-filter:blur(18px);background:rgba(7,16,24,0.74);border-bottom:1px solid rgba(255,255,255,0.08)}.topbar-inner{min-height:4.8rem;display:flex;align-items:center;justify-content:space-between;gap:1rem}.brand{text-decoration:none}.brand-title{display:block;font-family:var(--font-serif);font-size:1.2rem;letter-spacing:-0.03em}.brand-sub{display:block;margin-top:.15rem;font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.68);font-family:var(--font-mono)}.nav{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:.8rem 1.15rem;font-size:.73rem;letter-spacing:.16em;text-transform:uppercase;font-family:var(--font-mono)}.nav a{text-decoration:none;color:rgba(255,255,255,.78);border-bottom:1px solid transparent;padding-bottom:.15rem}.nav a:hover,.nav a:focus-visible{color:var(--white);border-color:currentColor;outline:none}.hero{padding:4.2rem 0 3rem}.eyebrow{display:inline-flex;align-items:center;gap:.55rem;font-family:var(--font-mono);font-size:.68rem;text-transform:uppercase;letter-spacing:.15em;color:rgba(255,255,255,.72)}.eyebrow::before{content:"";width:1.6rem;height:1px;background:rgba(255,255,255,.44)}h1{margin:.8rem 0 1rem;max-width:13ch;font-family:var(--font-serif);font-size:clamp(2rem,4.2vw,3.7rem);line-height:.98;letter-spacing:-.045em;font-weight:400}.hero p{max-width:42rem;margin:0 0 1rem;font-size:1.05rem;color:rgba(255,255,255,.82)}.button-row{display:flex;flex-wrap:wrap;gap:.8rem;margin-top:1.2rem}.button{display:inline-flex;align-items:center;justify-content:center;min-height:2.9rem;padding:0 1rem;border-radius:999px;text-decoration:none;font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;font-family:var(--font-mono);border:1px solid rgba(255,255,255,.12)}.button-primary{background:var(--accent);color:#fff;border-color:transparent}.button-secondary{background:rgba(255,255,255,.08);color:#fff}.section{padding:0 0 2rem}.panel{background:var(--panel);color:var(--ink);border-radius:1.4rem;padding:2rem;box-shadow:var(--shadow)}.panel h2{margin:0 0 .8rem;font-family:var(--font-serif);font-size:clamp(1.6rem,3vw,2.5rem);line-height:1.02;letter-spacing:-.03em;font-weight:400}.panel p{margin:0 0 1rem;color:var(--ink-soft)}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem;margin-top:1.25rem}.card{padding:1.1rem;border-radius:1rem;background:var(--panel-soft);border:1px solid var(--line)} .card strong{display:block;margin-bottom:.45rem}.notice{margin-top:1.2rem;padding:1rem 1.1rem;border-radius:1rem;background:rgba(46,91,135,.08);border:1px solid rgba(46,91,135,.16)}footer{padding:3rem 0 4rem;color:rgba(255,255,255,.72)} .footer-links{display:flex;flex-wrap:wrap;gap:.9rem 1rem;font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;font-family:var(--font-mono)} .footer-links a{text-decoration:none}@media (max-width:900px){.grid{grid-template-columns:1fr}.topbar-inner{align-items:flex-start;padding:.8rem 0}.nav{justify-content:flex-start}}
+
+
+  .nav {
+    align-items: center;
+  }
+  .nav-dropdown {
+    position: relative;
+  }
+  .nav-dropdown summary {
+    list-style: none;
+    cursor: pointer;
+    color: rgba(255,255,255,0.78);
+    border-bottom: 1px solid transparent;
+    padding-bottom: 0.15rem;
+  }
+  .nav-dropdown summary::-webkit-details-marker {
+    display: none;
+  }
+  .nav-dropdown summary::after {
+    content: "▾";
+    margin-left: 0.45rem;
+    font-size: 0.8em;
+  }
+  .nav-dropdown[open] summary,
+  .nav-dropdown summary:hover,
+  .nav-dropdown summary:focus-visible {
+    color: var(--white, #fff);
+    border-color: currentColor;
+    outline: none;
+  }
+  .nav-menu {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 0.8rem);
+    min-width: 16rem;
+    padding: 0.7rem;
+    border-radius: 1rem;
+    background: rgba(10, 17, 24, 0.96);
+    border: 1px solid rgba(255,255,255,0.1);
+    box-shadow: 0 1.4rem 3rem rgba(0,0,0,0.28);
+    display: grid;
+    gap: 0.2rem;
+    z-index: 80;
+  }
+  .nav-menu a {
+    display: block;
+    padding: 0.7rem 0.8rem;
+    border-radius: 0.8rem;
+    border-bottom: 0;
+    color: rgba(255,255,255,0.86);
+    text-decoration: none;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    line-height: 1.35;
+  }
+  .nav-menu a small {
+    display: block;
+    margin-top: 0.22rem;
+    color: rgba(255,255,255,0.58);
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+    text-transform: none;
+  }
+  .nav-menu a:hover,
+  .nav-menu a:focus-visible {
+    background: rgba(255,255,255,0.08);
+    color: #fff;
+    outline: none;
+  }
+  .subnav-shell {
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    background: rgba(6, 12, 18, 0.56);
+    backdrop-filter: blur(14px);
+  }
+  .subnav {
+    width: min(calc(100% - 2rem), var(--max, 78rem));
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem 1rem;
+    padding: 0.9rem 0 1rem;
+    font-family: var(--font-mono, Inter, sans-serif);
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .subnav-label {
+    color: rgba(255,255,255,0.52);
+  }
+  .subnav a {
+    color: rgba(255,255,255,0.78);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    padding-bottom: 0.12rem;
+  }
+  .subnav a:hover,
+  .subnav a:focus-visible,
+  .subnav a.is-active {
+    color: #fff;
+    border-color: currentColor;
+    outline: none;
+  }
+  .entry-grid {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr 1fr;
+    gap: 1rem;
+  }
+  .entry-card {
+    background: var(--panel, #fcfaf6);
+    color: var(--ink, #141414);
+    border: 1px solid var(--line, rgba(20,20,20,0.12));
+    border-radius: 1.35rem;
+    padding: 1.5rem;
+    box-shadow: var(--shadow, 0 2rem 5rem rgba(0,0,0,0.18));
+  }
+  .entry-card h3 {
+    margin: 0 0 0.65rem;
+    font-family: var(--font-serif, Georgia, serif);
+    font-size: 1.45rem;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    font-weight: 400;
+  }
+  .entry-card p {
+    margin: 0 0 1rem;
+    color: var(--ink-soft, #505157);
+  }
+  .entry-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 0.65rem;
+  }
+  .entry-list li {
+    padding-top: 0.65rem;
+    border-top: 1px solid var(--line, rgba(20,20,20,0.12));
+  }
+  .entry-list li:first-child {
+    padding-top: 0;
+    border-top: 0;
+  }
+  .entry-list a {
+    text-decoration: none;
+  }
+  .entry-list strong {
+    display: block;
+    margin-bottom: 0.18rem;
+  }
+  .entry-list span {
+    color: var(--ink-soft, #505157);
+  }
+  @media (max-width: 980px) {
+    .entry-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (max-width: 900px) {
+    .nav {
+      width: 100%;
+      justify-content: flex-start;
+      gap: 0.8rem 1rem;
+    }
+    .nav-dropdown {
+      width: 100%;
+    }
+    .nav-menu {
+      position: static;
+      min-width: 0;
+      margin-top: 0.55rem;
+    }
+  }
+
 </style>
 </head>
 <body>
-<header class="topbar"><div class="wrap topbar-inner"><a class="brand" href="index.html"><span class="brand-title">Jonathan Capone</span><span class="brand-sub">Projects and Documentation</span></a><nav class="nav"><a href="index.html">Home</a><a href="how-omega-works.html">OMEGA Guide</a><a href="omega-sensing.html">Sensing</a><a href="omega-validation.html">Validation</a><a href="omega-mapping.html">Mapping</a><a href="omega-research.html">Research</a><a href="omega-data.html">Data</a></nav></div></header>
+<header class="topbar">
+<div class="wrap topbar-inner">
+<a class="brand" href="index.html">
+<span class="brand-title">Jonathan Capone</span>
+<span class="brand-sub">OMEGA Data</span>
+</a>
+<nav aria-label="Primary" class="nav">
+<a href="index.html">Home</a>
+<details class="nav-dropdown">
+<summary>Projects</summary>
+<div class="nav-menu">
+<a href="index.html#projects">Project Index<small>Featured and in-progress work on the site.</small></a>
+<a href="how-omega-works.html">OMEGA<small>System overview, workflow, and project entry point.</small></a>
+<a href="omega-wave.html">OMEGA-Wave<small>Marine communications and distributed field networking.</small></a>
+</div>
+</details>
+<details class="nav-dropdown">
+<summary>OMEGA</summary>
+<div class="nav-menu">
+<a href="how-omega-works.html">How OMEGA Works</a>
+<a href="omega-sensing.html">Sensing and Sound</a>
+<a href="omega-validation.html">Validation Logic</a>
+<a href="omega-mapping.html">Mapping and IDW</a>
+<a href="omega-research.html">Research Context</a>
+<a href="omega-data.html">Data</a>
+</div>
+</details>
+<a href="teaching-documentation.html">Teaching</a>
+<a href="https://jonathancapone.art" rel="noopener" target="_blank">Artwork</a>
+<a href="mailto:jonathancapone@gmail.com">Contact</a>
+</nav>
+</div>
+</header>
+<div class="subnav-shell">
+<nav aria-label="OMEGA" class="subnav">
+<span class="subnav-label">OMEGA</span>
+<a href="how-omega-works.html" class="">Overview</a>
+<a href="omega-sensing.html" class="">Sensing</a>
+<a href="omega-validation.html" class="">Validation</a>
+<a href="omega-mapping.html" class="">Mapping</a>
+<a href="omega-research.html" class="">Research</a>
+<a href="omega-data.html" class="is-active">Data</a>
+</nav>
+</div>
 <main>
 <section class="hero"><div class="wrap"><span class="eyebrow">OMEGA data</span><h1>Live and downloadable OMEGA data.</h1><p>This page will eventually provide access to current measurements, downloadable datasets, metadata, field definitions, and quality notes for OMEGA.</p><p>For now, it is being added to the site so the OMEGA section has a stable navigation structure while the data interface is built out.</p><div class="button-row"><a class="button button-primary" href="index.html">Back to home</a><a class="button button-secondary" href="omega-research.html">OMEGA Research</a><a class="button button-secondary" href="how-omega-works.html">How OMEGA Works</a></div></div></section>
 <section class="section"><div class="wrap"><div class="panel"><h2>Under construction</h2><p>The final version of this page can include live readings, downloadable logs, processed survey outputs, metadata, and documentation on how to use the data.</p><div class="grid"><div class="card"><strong>Planned section</strong><p>Current conditions and most recent update time.</p></div><div class="card"><strong>Planned section</strong><p>Downloads for raw and processed files.</p></div><div class="card"><strong>Planned section</strong><p>Metadata, field definitions, and quality notes.</p></div></div><div class="notice"><strong>Planned direction</strong><p>This page is intended to become the public entry point for real-time data access, archived survey outputs, and reusable research files.</p></div></div></div></section>

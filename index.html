@@ -945,7 +945,180 @@
         transition: none !important;
       }
     }
-  </style>
+  
+
+  .nav {
+    align-items: center;
+  }
+  .nav-dropdown {
+    position: relative;
+  }
+  .nav-dropdown summary {
+    list-style: none;
+    cursor: pointer;
+    color: rgba(255,255,255,0.78);
+    border-bottom: 1px solid transparent;
+    padding-bottom: 0.15rem;
+  }
+  .nav-dropdown summary::-webkit-details-marker {
+    display: none;
+  }
+  .nav-dropdown summary::after {
+    content: "▾";
+    margin-left: 0.45rem;
+    font-size: 0.8em;
+  }
+  .nav-dropdown[open] summary,
+  .nav-dropdown summary:hover,
+  .nav-dropdown summary:focus-visible {
+    color: var(--white, #fff);
+    border-color: currentColor;
+    outline: none;
+  }
+  .nav-menu {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 0.8rem);
+    min-width: 16rem;
+    padding: 0.7rem;
+    border-radius: 1rem;
+    background: rgba(10, 17, 24, 0.96);
+    border: 1px solid rgba(255,255,255,0.1);
+    box-shadow: 0 1.4rem 3rem rgba(0,0,0,0.28);
+    display: grid;
+    gap: 0.2rem;
+    z-index: 80;
+  }
+  .nav-menu a {
+    display: block;
+    padding: 0.7rem 0.8rem;
+    border-radius: 0.8rem;
+    border-bottom: 0;
+    color: rgba(255,255,255,0.86);
+    text-decoration: none;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    line-height: 1.35;
+  }
+  .nav-menu a small {
+    display: block;
+    margin-top: 0.22rem;
+    color: rgba(255,255,255,0.58);
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+    text-transform: none;
+  }
+  .nav-menu a:hover,
+  .nav-menu a:focus-visible {
+    background: rgba(255,255,255,0.08);
+    color: #fff;
+    outline: none;
+  }
+  .subnav-shell {
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    background: rgba(6, 12, 18, 0.56);
+    backdrop-filter: blur(14px);
+  }
+  .subnav {
+    width: min(calc(100% - 2rem), var(--max, 78rem));
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem 1rem;
+    padding: 0.9rem 0 1rem;
+    font-family: var(--font-mono, Inter, sans-serif);
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .subnav-label {
+    color: rgba(255,255,255,0.52);
+  }
+  .subnav a {
+    color: rgba(255,255,255,0.78);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    padding-bottom: 0.12rem;
+  }
+  .subnav a:hover,
+  .subnav a:focus-visible,
+  .subnav a.is-active {
+    color: #fff;
+    border-color: currentColor;
+    outline: none;
+  }
+  .entry-grid {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr 1fr;
+    gap: 1rem;
+  }
+  .entry-card {
+    background: var(--panel, #fcfaf6);
+    color: var(--ink, #141414);
+    border: 1px solid var(--line, rgba(20,20,20,0.12));
+    border-radius: 1.35rem;
+    padding: 1.5rem;
+    box-shadow: var(--shadow, 0 2rem 5rem rgba(0,0,0,0.18));
+  }
+  .entry-card h3 {
+    margin: 0 0 0.65rem;
+    font-family: var(--font-serif, Georgia, serif);
+    font-size: 1.45rem;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    font-weight: 400;
+  }
+  .entry-card p {
+    margin: 0 0 1rem;
+    color: var(--ink-soft, #505157);
+  }
+  .entry-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 0.65rem;
+  }
+  .entry-list li {
+    padding-top: 0.65rem;
+    border-top: 1px solid var(--line, rgba(20,20,20,0.12));
+  }
+  .entry-list li:first-child {
+    padding-top: 0;
+    border-top: 0;
+  }
+  .entry-list a {
+    text-decoration: none;
+  }
+  .entry-list strong {
+    display: block;
+    margin-bottom: 0.18rem;
+  }
+  .entry-list span {
+    color: var(--ink-soft, #505157);
+  }
+  @media (max-width: 980px) {
+    .entry-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (max-width: 900px) {
+    .nav {
+      width: 100%;
+      justify-content: flex-start;
+      gap: 0.8rem 1rem;
+    }
+    .nav-dropdown {
+      width: 100%;
+    }
+    .nav-menu {
+      position: static;
+      min-width: 0;
+      margin-top: 0.55rem;
+    }
+  }
+
+</style>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
@@ -956,15 +1129,29 @@
 <span class="brand-sub">Technical Portfolio</span>
 </a>
 <nav aria-label="Primary" class="nav">
-<a href="#overview">Overview</a>
-<a href="#projects">Projects</a>
-<a href="how-omega-works.html">OMEGA Guide</a>
-<a href="omega-research.html">OMEGA Research</a>
-<a href="omega-data.html">OMEGA Data</a>
-<a href="#documentation">Project Docs</a>
+<a href="index.html">Home</a>
+<details class="nav-dropdown">
+<summary>Projects</summary>
+<div class="nav-menu">
+<a href="index.html#projects">Project Index<small>Featured and in-progress work on the site.</small></a>
+<a href="how-omega-works.html">OMEGA<small>System overview, workflow, and project entry point.</small></a>
+<a href="omega-wave.html">OMEGA-Wave<small>Marine communications and distributed field networking.</small></a>
+</div>
+</details>
+<details class="nav-dropdown">
+<summary>OMEGA</summary>
+<div class="nav-menu">
+<a href="how-omega-works.html">How OMEGA Works</a>
+<a href="omega-sensing.html">Sensing and Sound</a>
+<a href="omega-validation.html">Validation Logic</a>
+<a href="omega-mapping.html">Mapping and IDW</a>
+<a href="omega-research.html">Research Context</a>
+<a href="omega-data.html">Data</a>
+</div>
+</details>
 <a href="teaching-documentation.html">Teaching</a>
-<a href="#links">Links</a>
 <a href="https://jonathancapone.art" rel="noopener" target="_blank">Artwork</a>
+<a href="mailto:jonathancapone@gmail.com">Contact</a>
 </nav>
 </div>
 </header>
@@ -1254,70 +1441,89 @@
 <section class="section" id="links">
 <div class="wrap">
 <div class="section-head">
-<span class="section-kicker">Links</span>
-<h2>Additional public destinations.</h2>
+<span class="section-kicker">Site entry points</span>
+<h2>Direct paths into the work.</h2>
 <p>
-              Repositories, project pages, selected work, and contact.
+              The home page should help people get where they are going quickly. These grouped links separate featured projects, OMEGA documentation, and external destinations.
             </p>
 </div>
-<div class="split-links">
-<div class="summary-panel">
+<div class="entry-grid">
+<article class="entry-card">
+<h3>Projects</h3>
 <p>
-                This portfolio centers environmental sensing, geospatial workflows, marine communications,
-                physical computing, and project documentation. The links here provide direct access to the
-                main repository, public project pages, artwork, and contact information.
+                Main entry points for the portfolio’s project pages, with OMEGA grouped as its own expandable area in the main navigation.
               </p>
-<ul class="summary-list">
+<ul class="entry-list">
 <li>
-<strong>OMEGA</strong>
-<span>Field capture, processing scripts, documentation, and mapping outputs.</span>
+<a class="inline-link" href="how-omega-works.html"><strong>OMEGA</strong></a>
+<span>The main project page and best starting point for the sensing, validation, and mapping workflow.</span>
 </li>
 <li>
-<strong>OMEGA-Wave</strong>
-<span>An in-progress companion project focused on marine communications and distributed field networking.</span>
+<a class="inline-link" href="omega-wave.html"><strong>OMEGA-Wave</strong></a>
+<span>An in-progress companion project focused on communications, networking, and field data movement.</span>
 </li>
 <li>
-<strong>How OMEGA Works</strong>
-<span>A dedicated page explaining the system through measurement, validation, correction, and mapping concepts.</span>
-</li>
-<li>
-<strong>Teaching</strong>
-<span>A separate page for teaching materials, course documentation, and future educational content.</span>
-</li>
-<li>
-<strong>Public project pages</strong>
-<span>Repository links, build logs, artwork, and contact.</span>
+<a class="inline-link" href="#projects"><strong>Project index on this page</strong></a>
+<span>A quick scan of featured and developing work collected on the site.</span>
 </li>
 </ul>
-</div>
-<div class="links-panel">
-<ul class="links-list">
+</article>
+<article class="entry-card">
+<h3>OMEGA documentation</h3>
+<p>
+                Subsections for OMEGA are better handled as project documentation rather than crowding the main site navigation.
+              </p>
+<ul class="entry-list">
 <li>
-<strong><a class="inline-link" href="https://github.com/aminalnam/OMEGA" rel="noopener" target="_blank">GitHub Repository</a></strong>
-<span>Main codebase, documentation, scripts, and example files.</span>
+<a class="inline-link" href="omega-sensing.html"><strong>Sensing and Sound</strong></a>
+<span>Acoustic depth measurement, temperature correction, and sound-speed context.</span>
 </li>
 <li>
-<strong><a class="inline-link" href="how-omega-works.html">How OMEGA Works</a></strong>
-<span>A concept-based page explaining sensing, data validity, correction, and bathymetric interpolation.</span>
+<a class="inline-link" href="omega-validation.html"><strong>Validation Logic</strong></a>
+<span>How points are accepted or rejected before they become part of the mapping dataset.</span>
 </li>
 <li>
-<strong><a class="inline-link" href="https://hackaday.io/project/205502-oceanic-measurement-environmental-geo-arr" rel="noopener" target="_blank">Hackaday Project Log</a></strong>
-<span>Public-facing build log and project overview for OMEGA.</span>
+<a class="inline-link" href="omega-mapping.html"><strong>Mapping and IDW</strong></a>
+<span>How accepted measurements become surfaces, contours, and georeferenced outputs.</span>
 </li>
 <li>
-<strong><a class="inline-link" href="teaching-documentation.html">Teaching Documentation</a></strong>
-<span>Current teaching pages, educational documentation, and space for future course and workshop material.</span>
+<a class="inline-link" href="omega-research.html"><strong>Research Context</strong></a>
+<span>Scientific background, field questions, and cited research threads related to the system.</span>
 </li>
 <li>
-<strong><a class="inline-link" href="https://jonathancapone.art" rel="noopener" target="_blank">Artwork Website</a></strong>
-<span>Studio work, exhibitions, and related artistic projects.</span>
-</li>
-<li>
-<strong><a class="inline-link" href="mailto:jonathancapone@gmail.com">Contact</a></strong>
-<span>For project inquiries, collaboration, or teaching-related communication.</span>
+<a class="inline-link" href="omega-data.html"><strong>Data</strong></a>
+<span>Live access, files, and supporting notes for datasets and future public data access.</span>
 </li>
 </ul>
-</div>
+</article>
+<article class="entry-card">
+<h3>External links</h3>
+<p>
+                Public destinations outside the portfolio, including the repository, build log, studio site, and contact.
+              </p>
+<ul class="entry-list">
+<li>
+<a class="inline-link" href="https://github.com/aminalnam/OMEGA" rel="noopener" target="_blank"><strong>GitHub Repository</strong></a>
+<span>Main codebase, scripts, documentation, and example files for OMEGA.</span>
+</li>
+<li>
+<a class="inline-link" href="https://hackaday.io/project/205502-oceanic-measurement-environmental-geo-arr" rel="noopener" target="_blank"><strong>Hackaday Project Log</strong></a>
+<span>A public-facing build log and overview of the project as it develops.</span>
+</li>
+<li>
+<a class="inline-link" href="teaching-documentation.html"><strong>Teaching Documentation</strong></a>
+<span>Curriculum-facing documentation, teaching materials, and related educational resources.</span>
+</li>
+<li>
+<a class="inline-link" href="https://jonathancapone.art" rel="noopener" target="_blank"><strong>Artwork Website</strong></a>
+<span>Studio work, exhibitions, and other art projects.</span>
+</li>
+<li>
+<a class="inline-link" href="mailto:jonathancapone@gmail.com"><strong>Contact</strong></a>
+<span>For collaboration, questions, or project-related communication.</span>
+</li>
+</ul>
+</article>
 </div>
 </div>
 </section>
