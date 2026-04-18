@@ -74,6 +74,7 @@ h1{margin:1rem 0 1rem;font-family:var(--font-serif);font-size:clamp(2.6rem,6vw,5
     }
 
     .dropdown-menu {
+      display: none;
       position: absolute;
       top: calc(100% + 0.7rem);
       right: 0;
@@ -83,7 +84,6 @@ h1{margin:1rem 0 1rem;font-family:var(--font-serif);font-size:clamp(2.6rem,6vw,5
       border: 1px solid rgba(255,255,255,0.12);
       background: rgba(9, 17, 26, 0.96);
       box-shadow: 0 1.2rem 2.5rem rgba(0,0,0,0.24);
-      display: grid;
       gap: 0.2rem;
     }
 
@@ -103,6 +103,9 @@ h1{margin:1rem 0 1rem;font-family:var(--font-serif);font-size:clamp(2.6rem,6vw,5
       color: #fff;
       border: 0;
     }
+
+    .nav details[open] > .dropdown-menu { display: grid; }
+    .nav details > summary { list-style: none; }
 
     .dropdown-label {
       padding: 0.35rem 0.75rem 0.2rem;

@@ -123,6 +123,7 @@
     }
 
     .dropdown-menu {
+      display: none;
       position: absolute;
       top: calc(100% + 0.7rem);
       right: 0;
@@ -132,7 +133,6 @@
       border: 1px solid rgba(255,255,255,0.12);
       background: rgba(9, 17, 26, 0.96);
       box-shadow: 0 1.2rem 2.5rem rgba(0,0,0,0.24);
-      display: grid;
       gap: 0.2rem;
     }
 
@@ -152,6 +152,9 @@
       color: #fff;
       border: 0;
     }
+
+    .nav details[open] > .dropdown-menu { display: grid; }
+    .nav details > summary { list-style: none; }
 
     .dropdown-label {
       padding: 0.35rem 0.75rem 0.2rem;
@@ -492,6 +495,12 @@
 .chapter-link span:last-child{color:#51606d;line-height:1.5}
 @media (max-width: 900px){.chapter-links{grid-template-columns:1fr}}
 
+
+.chapter-subnav{margin:1rem auto 0;display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;padding:.75rem 1rem;border:1px solid rgba(20,31,43,.12);border-radius:14px;background:#fff}
+.chapter-subnav strong{font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:#5a6a79;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;margin-right:.35rem}
+.chapter-subnav a{display:inline-block;padding:.45rem .7rem;border-radius:999px;border:1px solid rgba(20,31,43,.12);text-decoration:none;color:#10212f;background:#f7f8fa}
+.chapter-subnav a.current{background:#10212f;color:#fff;border-color:#10212f}
+
 </style>
 </head>
 <body>
@@ -523,6 +532,7 @@
 <a href="omega-research.html">Research Context</a>
 <a href="omega-data.html">Data</a>
 </div></div>
+<div class="wrap"><div class="chapter-subnav"><strong>How It Works</strong><a href="how-omega-works.html" class="current">Overview</a><a href="omega-sensing.html">Sensing</a><a href="omega-validation.html">Validation</a><a href="omega-mapping.html">Mapping</a></div></div>
 <div class="wrap">
 <span class="eyebrow">OMEGA</span>
 <h1>How OMEGA works.</h1>
