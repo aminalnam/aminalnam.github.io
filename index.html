@@ -1,23 +1,17 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Jonathan Capone — Project Portfolio</title>
-  <meta
-    name="description"
-    content="Project portfolio of Jonathan Capone: sensing systems, geospatial mapping, physical computing, communications systems, and documentation of work."
-  />
-  <meta name="theme-color" content="#0b121a" />
-  <meta property="og:title" content="Jonathan Capone — Project Portfolio" />
-  <meta
-    property="og:description"
-    content="Projects in sensing, mapping, communications, physical computing, and public documentation."
-  />
-  <meta property="og:type" content="website" />
-  <meta property="og:image" content="https://raw.githubusercontent.com/aminalnam/OMEGA/main/assets/mapping-diagram.png" />
-
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Jonathan Capone — Project Portfolio</title>
+<meta content="Project portfolio of Jonathan Capone: sensing systems, geospatial mapping, physical computing, communications systems, and documentation of work." name="description"/>
+<meta content="#0b121a" name="theme-color"/>
+<meta content="Jonathan Capone — Project Portfolio" property="og:title"/>
+<meta content="Projects in sensing, mapping, communications, physical computing, and public documentation." property="og:description"/>
+<meta content="website" property="og:type"/>
+<meta content="https://raw.githubusercontent.com/aminalnam/OMEGA/main/assets/mapping-diagram.png" property="og:image"/>
+<style>
     :root {
       --bg: #0b121a;
       --bg-2: #121b27;
@@ -949,415 +943,391 @@
   </style>
 </head>
 <body>
-  <a class="skip-link" href="#main">Skip to content</a>
-
-  <header class="topbar">
-    <div class="wrap topbar-inner">
-      <a class="brand" href="#">
-        <span class="brand-title">Jonathan Capone</span>
-        <span class="brand-sub">Technical Portfolio</span>
-      </a>
-      <nav class="nav" aria-label="Primary">
-        <a href="#overview">Overview</a>
-        <a href="#projects">Projects</a>
-        <a href="how-omega-works.html">How OMEGA Works</a>
-        <a href="#omega-guide">OMEGA Guide</a>
-        <a href="#documentation">Documentation</a>
-        <a href="#links">Links</a>
-        <a href="https://jonathancapone.art" target="_blank" rel="noopener">Artwork</a>
-      </nav>
-    </div>
-  </header>
-
-  <section class="hero">
-    <div class="wrap hero-grid">
-      <div class="hero-copy">
-        <span class="eyebrow">Sensing, mapping, and physical computing</span>
-        <h1>Projects I’ve built across art, technology, and environmental research.</h1>
-        <p>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="topbar">
+<div class="wrap topbar-inner">
+<a class="brand" href="#">
+<span class="brand-title">Jonathan Capone</span>
+<span class="brand-sub">Technical Portfolio</span>
+</a>
+<nav aria-label="Primary" class="nav">
+<a href="#overview">Overview</a>
+<a href="#projects">Projects</a>
+<a href="how-omega-works.html">How OMEGA Works</a><a href="omega-research.html">OMEGA Research</a>
+        
+<a href="#omega-guide">OMEGA Guide</a>
+<a href="#documentation">Documentation</a>
+<a href="#links">Links</a>
+<a href="https://jonathancapone.art" rel="noopener" target="_blank">Artwork</a>
+</nav>
+</div>
+</header>
+<section class="hero">
+<div class="wrap hero-grid">
+<div class="hero-copy">
+<span class="eyebrow">Sensing, mapping, and physical computing</span>
+<h1>Projects I’ve built across art, technology, and environmental research.</h1>
+<p>
           This site brings together technical projects I’ve built over time, including environmental
           sensing systems, geospatial workflows, Arduino-based logging tools, Python data processing, and communications systems.
         </p>
-        <p>
+<p>
           It brings these projects into one place, along with the tools, methods, and documentation that support them.
         </p>
-        <div class="hero-actions">
-          <a class="button button-primary" href="https://github.com/aminalnam/OMEGA" target="_blank" rel="noopener">Open OMEGA</a>
-          <a class="button button-secondary" href="how-omega-works.html">How OMEGA Works</a>
+<div class="hero-actions">
+<a class="button button-primary" href="https://github.com/aminalnam/OMEGA" rel="noopener" target="_blank">Open OMEGA</a>
+<a class="button button-secondary" href="how-omega-works.html">How OMEGA Works</a>
+<a class="button button-secondary" href="omega-research.html">OMEGA Research</a>
           <a class="button button-secondary" href="#projects">Browse Projects</a>
-          <a class="button button-secondary" href="#documentation">Public Documentation</a>
-        </div>
-      </div>
-
-      <aside class="hero-panel" aria-label="Current focus">
-        <span class="panel-label">Current focus</span>
-        <h2>OMEGA: Oceanic Measurement &amp; Environmental Geospatial Array</h2>
-        <p>
+<a class="button button-secondary" href="#documentation">Public Documentation</a>
+</div>
+</div>
+<aside aria-label="Current focus" class="hero-panel">
+<span class="panel-label">Current focus</span>
+<h2>OMEGA: Oceanic Measurement &amp; Environmental Geospatial Array</h2>
+<p>
           A compact underwater survey system that records depth, position, and environmental data
           from a moving ROV and turns those measurements into bathymetric maps and georeferenced outputs.
         </p>
-        <div class="panel-list">
-          <div class="panel-item">
-            <strong>Capture</strong>
-            <span>GPS, sonar depth, temperature, IMU orientation, SD logging, field filtering</span>
-          </div>
-          <div class="panel-item">
-            <strong>Processing</strong>
-            <span>Python scripts for mapping, interpolation, contour generation, and Earth overlays</span>
-          </div>
-          <div class="panel-item">
-            <strong>Output</strong>
-            <span>Survey-quality datasets, depth maps, contour maps, KML files, and overlays</span>
-          </div>
-        </div>
-      </aside>
-    </div>
-  </section>
-
-  <main id="main" class="main-shell">
-    <div class="wrap main-inner">
-
-      <section class="section" id="overview">
-        <div class="wrap">
-          <div class="section-head">
-            <span class="section-kicker">Featured project</span>
-            <h2>OMEGA brings sensing, filtering, and mapping into one working system.</h2>
-            <p>
+<div class="panel-list">
+<div class="panel-item">
+<strong>Capture</strong>
+<span>GPS, sonar depth, temperature, IMU orientation, SD logging, field filtering</span>
+</div>
+<div class="panel-item">
+<strong>Processing</strong>
+<span>Python scripts for mapping, interpolation, contour generation, and Earth overlays</span>
+</div>
+<div class="panel-item">
+<strong>Output</strong>
+<span>Survey-quality datasets, depth maps, contour maps, KML files, and overlays</span>
+</div>
+</div>
+</aside>
+</div>
+</section>
+<main class="main-shell" id="main">
+<div class="wrap main-inner">
+<section class="section" id="overview">
+<div class="wrap">
+<div class="section-head">
+<span class="section-kicker">Featured project</span>
+<h2>OMEGA brings sensing, filtering, and mapping into one working system.</h2>
+<p>
               The project combines an Arduino-based capture device with a Python-based processing workflow.
               During acquisition, measurements are filtered using GPS quality, fix age, platform orientation,
               speed, and spacing constraints; afterward, the resulting mapping dataset is converted into
               depth maps, interpolated surfaces, contour maps, and georeferenced outputs.
             </p>
-          </div>
-
-          <div class="featured">
-            <article class="featured-card">
-              <div class="featured-image">
-                <img
-                  src="https://raw.githubusercontent.com/aminalnam/OMEGA/main/assets/mapping-diagram.png"
-                  alt="OMEGA mapping pipeline diagram showing path, points, filter, interpolation, surface, and map output."
-                />
-              </div>
-              <div class="featured-body">
-                <div class="meta">Featured system</div>
-                <h3>Oceanic Measurement &amp; Environmental Geospatial Array</h3>
-                <p>
+</div>
+<div class="featured">
+<article class="featured-card">
+<div class="featured-image">
+<img alt="OMEGA mapping pipeline diagram showing path, points, filter, interpolation, surface, and map output." src="https://raw.githubusercontent.com/aminalnam/OMEGA/main/assets/mapping-diagram.png"/>
+</div>
+<div class="featured-body">
+<div class="meta">Featured system</div>
+<h3>Oceanic Measurement &amp; Environmental Geospatial Array</h3>
+<p>
                   OMEGA is structured to separate capture, validation, and reconstruction into distinct stages.
                   That architecture makes the project useful both as a field tool and as a clear technical case study.
                 </p>
-                <p>
+<p>
                   The public repository includes the Arduino logger, Python mapping scripts, documentation,
                   example data, and a visual pipeline diagram for the full workflow.
                 </p>
-
-                <div class="feature-stats" aria-label="OMEGA highlights">
-                  <div class="stat">
-                    <strong>Capture</strong>
-                    <span>Arduino logger with GPS, sonar, temperature, IMU, LCD, and SD</span>
-                  </div>
-                  <div class="stat">
-                    <strong>Processing</strong>
-                    <span>CSV parsing, filtering, IDW interpolation, contour generation</span>
-                  </div>
-                  <div class="stat">
-                    <strong>Outputs</strong>
-                    <span>Depth maps, continuous surfaces, KML points, and Earth overlays</span>
-                  </div>
-                </div>
-
-                <div class="button-row">
-                  <a class="button button-accent" href="https://github.com/aminalnam/OMEGA" target="_blank" rel="noopener">GitHub Repository</a>
-                  <a class="button button-light" href="how-omega-works.html">How OMEGA Works</a>
-                  <a class="button button-light" href="https://jonathancapone.com/OMEGA" target="_blank" rel="noopener">Project Page</a>
-                  <a class="button button-light" href="https://github.com/aminalnam/OMEGA/wiki" target="_blank" rel="noopener">Project Wiki</a>
-                  <a class="button button-light" href="https://hackaday.io/project/205502-oceanic-measurement-environmental-geo-arr" target="_blank" rel="noopener">Project Log</a>
-                </div>
-              </div>
-            </article>
-
-            <aside class="aside-panel">
-              <h4>System at a glance</h4>
-              <ul class="aside-list">
-                <li>
-                  <strong>Method</strong>
-                  <span>Filtering is handled during acquisition, then surface reconstruction is handled during processing.</span>
-                </li>
-                <li>
-                  <strong>Architecture</strong>
-                  <span>Capture, validation, mapping, and output are separated into clear stages.</span>
-                </li>
-                <li>
-                  <strong>Use cases</strong>
-                  <span>Environmental surveying, underwater sensing, field logging, and geospatial visualization.</span>
-                </li>
-                <li>
-                  <strong>Entry points</strong>
-                  <span>The featured project links above lead directly to the repository, technical docs, and public build log.</span>
-                </li>
-              </ul>
-            </aside>
-          </div>
-        </div>
-      </section>
-
-      <section class="section" id="projects">
-        <div class="wrap">
-          <div class="section-head">
-            <span class="section-kicker">Project index</span>
-            <h2>Projects.</h2>
-            <p>
+<div aria-label="OMEGA highlights" class="feature-stats">
+<div class="stat">
+<strong>Capture</strong>
+<span>Arduino logger with GPS, sonar, temperature, IMU, LCD, and SD</span>
+</div>
+<div class="stat">
+<strong>Processing</strong>
+<span>CSV parsing, filtering, IDW interpolation, contour generation</span>
+</div>
+<div class="stat">
+<strong>Outputs</strong>
+<span>Depth maps, continuous surfaces, KML points, and Earth overlays</span>
+</div>
+</div>
+<div class="button-row">
+<a class="button button-accent" href="https://github.com/aminalnam/OMEGA" rel="noopener" target="_blank">GitHub Repository</a>
+<a class="button button-light" href="how-omega-works.html">How OMEGA Works</a>
+<a class="button button-light" href="https://jonathancapone.com/OMEGA" rel="noopener" target="_blank">Project Page</a>
+<a class="button button-light" href="https://github.com/aminalnam/OMEGA/wiki" rel="noopener" target="_blank">Project Wiki</a>
+<a class="button button-light" href="https://hackaday.io/project/205502-oceanic-measurement-environmental-geo-arr" rel="noopener" target="_blank">Project Log</a>
+</div>
+</div>
+</article>
+<aside class="aside-panel">
+<h4>System at a glance</h4>
+<ul class="aside-list">
+<li>
+<strong>Method</strong>
+<span>Filtering is handled during acquisition, then surface reconstruction is handled during processing.</span>
+</li>
+<li>
+<strong>Architecture</strong>
+<span>Capture, validation, mapping, and output are separated into clear stages.</span>
+</li>
+<li>
+<strong>Use cases</strong>
+<span>Environmental surveying, underwater sensing, field logging, and geospatial visualization.</span>
+</li>
+<li>
+<strong>Entry points</strong>
+<span>The featured project links above lead directly to the repository, technical docs, and public build log.</span>
+</li>
+</ul>
+</aside>
+</div>
+</div>
+</section>
+<section class="section" id="projects">
+<div class="wrap">
+<div class="section-head">
+<span class="section-kicker">Project index</span>
+<h2>Projects.</h2>
+<p>
               Technical and hybrid projects in environmental sensing, communications systems,
               geospatial workflows, physical computing, and field-based research.
             </p>
-          </div>
-
-          <div class="posts">
-            <article class="post">
-              <div class="post-visual">
-                <span class="visual-label">Featured system</span>
-                <div class="visual-title">OMEGA</div>
-                <div class="visual-grid" aria-hidden="true"></div>
-              </div>
-              <div class="post-body">
-                <span class="post-status complete">Featured project</span>
-                <h3>OMEGA</h3>
-                <p>
+</div>
+<div class="posts">
+<article class="post">
+<div class="post-visual">
+<span class="visual-label">Featured system</span>
+<div class="visual-title">OMEGA</div>
+<div aria-hidden="true" class="visual-grid"></div>
+</div>
+<div class="post-body">
+<span class="post-status complete">Featured project</span>
+<h3>OMEGA</h3>
+<p>
                   Oceanic Measurement &amp; Environmental Geospatial Array is a custom underwater
                   sensing and mapping system built around field data collection, sensor integration,
                   logging, bathymetric mapping, and geospatial visualization.
                 </p>
-                <div class="post-links">
-                  <a class="button button-light" href="https://github.com/aminalnam/OMEGA" target="_blank" rel="noopener">Open Repository</a>
-                  <a class="button button-light" href="how-omega-works.html">How OMEGA Works</a>
-                </div>
-              </div>
-            </article>
-
-            <article class="post">
-              <div class="post-visual alt-2">
-                <span class="visual-label">Marine communications</span>
-                <div class="visual-title">OMEGA-Wave</div>
-                <div class="visual-grid" aria-hidden="true"></div>
-              </div>
-              <div class="post-body">
-                <span class="post-status in-progress">Work in progress</span>
-                <h3>OMEGA-Wave</h3>
-                <p>
+<div class="post-links">
+<a class="button button-light" href="https://github.com/aminalnam/OMEGA" rel="noopener" target="_blank">Open Repository</a>
+<a class="button button-light" href="how-omega-works.html">How OMEGA Works</a>
+</div>
+</div>
+</article>
+<article class="post">
+<div class="post-visual alt-2">
+<span class="visual-label">Marine communications</span>
+<div class="visual-title">OMEGA-Wave</div>
+<div aria-hidden="true" class="visual-grid"></div>
+</div>
+<div class="post-body">
+<span class="post-status in-progress">Work in progress</span>
+<h3>OMEGA-Wave</h3>
+<p>
                   The distributed communications and networking branch of OMEGA, focused on resilient
                   marine and littoral communication between shore systems, buoys, vessels, fixed sensor arrays,
                   diver-support tools, underwater sensor nodes, and other field devices.
                 </p>
-                <p>
+<p>
                   It is being developed as a modular system designed to bridge surface RF links, Wi-Fi,
                   long-range backhaul, and future underwater acoustic and optical interfaces into one coherent network layer.
                 </p>
-                <div class="post-links">
-                  <a class="button button-light" href="https://github.com/aminalnam/OMEGA" target="_blank" rel="noopener">Project Notes</a>
-                </div>
-              </div>
-            </article>
-          </div>
-        </div>
-      </section>
-
-
-      <section class="section" id="omega-guide">
-        <div class="wrap">
-          <div class="section-head">
-            <span class="section-kicker">OMEGA guide</span>
-            <h2>Pages that break down how the system works.</h2>
-            <p>
+<div class="post-links">
+<a class="button button-light" href="https://github.com/aminalnam/OMEGA" rel="noopener" target="_blank">Project Notes</a>
+</div>
+</div>
+</article>
+</div>
+</div>
+</section>
+<section class="section" id="omega-guide">
+<div class="wrap">
+<div class="section-head">
+<span class="section-kicker">OMEGA guide</span>
+<h2>Pages that break down how the system works.</h2>
+<p>
               These pages focus on the structure of the project itself: how the device measures depth,
               how mapping points are accepted or rejected, and how the Python scripts turn those accepted
               points into bathymetric outputs.
             </p>
-          </div>
-
-          <div class="doc-grid">
-            <article class="doc-card">
-              <div class="doc-type">Overview</div>
-              <h3>How OMEGA Works</h3>
-              <p>
+</div>
+<div class="doc-grid">
+<article class="doc-card">
+<div class="doc-type">Overview</div>
+<h3>How OMEGA Works</h3>
+<p>
                 A compact guide to the full workflow: capture, validation, logging, and reconstruction.
               </p>
-              <a href="how-omega-works.html">Open page</a>
-            </article>
-
-            <article class="doc-card">
-              <div class="doc-type">Physics</div>
-              <h3>Sensing and Sound</h3>
-              <p>
+<a href="how-omega-works.html">Open page</a>
+</article>
+<article class="doc-card">
+<div class="doc-type">Physics</div>
+<h3>Sensing and Sound</h3>
+<p>
                 How sonar estimates depth, why the speed of sound matters, why temperature changes the reading,
                 and where salinity fits into the larger picture.
               </p>
-              <a href="omega-sensing.html">Open page</a>
-            </article>
-
-            <article class="doc-card">
-              <div class="doc-type">Validation</div>
-              <h3>Point Acceptance</h3>
-              <p>
+<a href="omega-sensing.html">Open page</a>
+</article>
+<article class="doc-card">
+<div class="doc-type">Validation</div>
+<h3>Point Acceptance</h3>
+<p>
                 How GPS quality, fix age, motion limits, depth stability, and spacing determine whether a point
                 becomes part of the mapping dataset.
               </p>
-              <a href="omega-validation.html">Open page</a>
-            </article>
-
-            <article class="doc-card">
-              <div class="doc-type">Mapping</div>
-              <h3>IDW and Map Outputs</h3>
-              <p>
+<a href="omega-validation.html">Open page</a>
+</article>
+<article class="doc-card">
+<div class="doc-type">Mapping</div>
+<h3>IDW and Map Outputs</h3>
+<p>
                 How accepted survey points are turned into interpolated surfaces, contour maps, KML files,
                 and Google Earth overlays.
               </p>
-              <a href="omega-mapping.html">Open page</a>
-            </article>
-          </div>
-        </div>
-      </section>
-
-
-      <section class="section section-muted" id="documentation">
-        <div class="wrap">
-          <div class="section-head">
-            <span class="section-kicker">Documentation</span>
-            <h2>Project notes, guides, and supporting materials.</h2>
-            <p>
-              Alongside the project pages, this site includes public technical documentation and teaching materials.
-            </p>
-          </div>
-
-          <div class="doc-grid">
-            <article class="doc-card">
-              <div class="doc-type">Project Guide</div>
-              <h3>How OMEGA Works</h3>
-              <p>
-                A guided overview of the OMEGA workflow with links into sensing, validation, and mapping.
-              </p>
-              <a href="how-omega-works.html">Open guide</a>
-            </article>
-
-            <article class="doc-card">
-              <div class="doc-type">Project Guide</div>
-              <h3>Sensing and Sound</h3>
-              <p>
-                Depth measurement, sound speed, temperature correction, and the role of salinity.
-              </p>
-              <a href="omega-sensing.html">Open page</a>
-            </article>
-
-            <article class="doc-card">
-              <div class="doc-type">Project Guide</div>
-              <h3>Validation and Point Acceptance</h3>
-              <p>
-                GPS precision, fix age, tilt, speed, smoothing, and spacing in the accepted mapping dataset.
-              </p>
-              <a href="omega-validation.html">Open page</a>
-            </article>
-
-            <article class="doc-card">
-              <div class="doc-type">Project Guide</div>
-              <h3>Mapping and IDW</h3>
-              <p>
-                How the Python scripts build interpolated surfaces, contours, and geographic overlays.
-              </p>
-              <a href="omega-mapping.html">Open page</a>
-            </article>
-
-            <article class="doc-card">
-              <div class="doc-type">Teaching Documentation</div>
-              <h3>Programming &amp; Making with micro:bit</h3>
-              <p>
-                Student-facing guides and classroom materials developed around coding, physical computing, and design.
-              </p>
-              <a href="https://jonathancapone.art/documentation.html" target="_blank" rel="noopener">View documentation</a>
-            </article>
-
-            <article class="doc-card">
-              <div class="doc-type">Course Documentation</div>
-              <h3>Maker Arts and Innovation Pages</h3>
-              <p>
-                Selected teaching documentation connected to coding, design, marine science, and fabrication.
-              </p>
-              <a href="https://jonathancapone.art/teaching-documentation.html" target="_blank" rel="noopener">View pages</a>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <section class="section" id="links">
-        <div class="wrap">
-          <div class="section-head">
-            <span class="section-kicker">Links</span>
-            <h2>Additional public destinations.</h2>
-            <p>
+<a href="omega-mapping.html">Open page</a>
+</article>
+</div>
+</div>
+</section>
+<section class="section" id="documentation">
+<div class="wrap">
+<div class="section-head">
+<span class="section-kicker">Documentation</span>
+<h2>OMEGA pages and public documentation.</h2>
+<p>
+        A set of linked pages that break OMEGA into overview, sensing, validation, mapping, and research,
+        followed by additional public-facing teaching and studio documentation.
+      </p>
+</div>
+<div class="doc-grid">
+<a class="doc-card" href="how-omega-works.html">
+<span class="tile-kicker">OMEGA</span>
+<h3>How OMEGA Works</h3>
+<p>A hub page for the system workflow, core hardware, data pipeline, logging logic, and linked topic pages.</p>
+</a>
+<a class="doc-card" href="omega-sensing.html">
+<span class="tile-kicker">OMEGA</span>
+<h3>Sensing and Sound</h3>
+<p>Acoustic depth sensing, sound speed, temperature correction, salinity context, and the physics behind the depth estimate.</p>
+</a>
+<a class="doc-card" href="omega-validation.html">
+<span class="tile-kicker">OMEGA</span>
+<h3>Validation Logic</h3>
+<p>How OMEGA tests GPS quality, timing, motion, spacing, and depth stability before a point enters the mapping dataset.</p>
+</a>
+<a class="doc-card" href="omega-mapping.html">
+<span class="tile-kicker">OMEGA</span>
+<h3>Mapping and IDW</h3>
+<p>How accepted survey points become interpolated bathymetric surfaces, contours, and georeferenced outputs.</p>
+</a>
+<a class="doc-card" href="omega-research.html">
+<span class="tile-kicker">OMEGA</span>
+<h3>Research Context</h3>
+<p>Scientific context and inline-cited material on hydrography, underwater acoustics, water-column physics, interpolation, and bottom change.</p>
+</a>
+<a class="doc-card" href="https://jonathancapone.art/students-at-work" rel="noopener" target="_blank">
+<span class="tile-kicker">Process</span>
+<h3>Students at Work</h3>
+<p>Project development, classroom process, and documentation of making in practice.</p>
+</a>
+<a class="doc-card" href="https://jonathancapone.art/steam" rel="noopener" target="_blank">
+<span class="tile-kicker">Integration</span>
+<h3>STEAM</h3>
+<p>Teaching materials that bridge artistic inquiry with engineering, science, and applied making.</p>
+</a>
+<a class="doc-card" href="https://jonathancapone.art/media-arts" rel="noopener" target="_blank">
+<span class="tile-kicker">Instruction</span>
+<h3>Media Arts</h3>
+<p>Documentation related to digital moving images, technology-based art, and media literacy.</p>
+</a>
+<a class="doc-card" href="https://jonathancapone.art/experiential-learning" rel="noopener" target="_blank">
+<span class="tile-kicker">Method</span>
+<h3>Experiential Learning</h3>
+<p>Project-based approaches centered on inquiry, prototyping, iteration, and hands-on experimentation.</p>
+</a>
+<a class="doc-card" href="https://jonathancapone.art/performing-arts" rel="noopener" target="_blank">
+<span class="tile-kicker">Production</span>
+<h3>Performing Arts</h3>
+<p>Material related to staging, performance systems, and interdisciplinary production work.</p>
+</a>
+<a class="doc-card" href="https://jonathancapone.art/curricula" rel="noopener" target="_blank">
+<span class="tile-kicker">Frameworks</span>
+<h3>Curricula</h3>
+<p>Course structures, frameworks, and planning materials gathered into a public-facing archive.</p>
+</a>
+</div>
+</div>
+</section>
+<section class="section" id="links">
+<div class="wrap">
+<div class="section-head">
+<span class="section-kicker">Links</span>
+<h2>Additional public destinations.</h2>
+<p>
               Repositories, project logs, selected work, and contact.
             </p>
-          </div>
-
-          <div class="split-links">
-            <div class="summary-panel">
-              <p>
+</div>
+<div class="split-links">
+<div class="summary-panel">
+<p>
                 This portfolio centers environmental sensing, geospatial workflows, marine communications,
                 physical computing, and installation systems. The links here provide direct access to the
                 main repository, the public project log, selected artwork, and contact information.
               </p>
-              <ul class="summary-list">
-                <li>
-                  <strong>OMEGA</strong>
-                  <span>Field capture, processing scripts, documentation, and mapping outputs.</span>
-                </li>
-                <li>
-                  <strong>OMEGA-Wave</strong>
-                  <span>Distributed communications and networking research within the larger OMEGA project.</span>
-                </li>
-                <li>
-                  <strong>How OMEGA Works</strong>
-                  <span>A dedicated page explaining the system through measurement, validation, correction, and mapping concepts.</span>
-                </li>
-                <li>
-                  <strong>Public project pages</strong>
-                  <span>Repository links, build logs, artwork, and contact.</span>
-                </li>
-              </ul>
-            </div>
-
-            <div class="links-panel">
-              <ul class="links-list">
-                <li>
-                  <strong><a class="inline-link" href="https://github.com/aminalnam/OMEGA" target="_blank" rel="noopener">GitHub Repository</a></strong>
-                  <span>Main codebase, documentation, scripts, and example files.</span>
-                </li>
-                <li>
-                  <strong><a class="inline-link" href="how-omega-works.html">How OMEGA Works</a></strong>
-                  <span>A concept-based page explaining sensing, data validity, correction, and bathymetric interpolation.</span>
-                </li>
-                <li>
-                  <strong><a class="inline-link" href="https://hackaday.io/project/205502-oceanic-measurement-environmental-geo-arr" target="_blank" rel="noopener">Hackaday Project Log</a></strong>
-                  <span>Public-facing build log and project overview for OMEGA.</span>
-                </li>
-                <li>
-                  <strong><a class="inline-link" href="https://jonathancapone.art" target="_blank" rel="noopener">Artwork Website</a></strong>
-                  <span>Studio work, exhibitions, and related artistic projects.</span>
-                </li>
-                <li>
-                  <strong><a class="inline-link" href="mailto:jonathancapone@gmail.com">Contact</a></strong>
-                  <span>For project inquiries, collaboration, or teaching-related communication.</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
-    </div>
-  </main>
-
-  <footer class="footer">
-    <div class="wrap footer-inner">
-      <span>Jonathan Capone — Project Portfolio</span>
-      <span><a href="https://jonathancapone.art" target="_blank" rel="noopener">Artwork</a></span>
-    </div>
-  </footer>
+<ul class="summary-list">
+<li>
+<strong>OMEGA</strong>
+<span>Field capture, processing scripts, documentation, and mapping outputs.</span>
+</li>
+<li>
+<strong>OMEGA-Wave</strong>
+<span>Distributed communications and networking research within the larger OMEGA project.</span>
+</li>
+<li>
+<strong>How OMEGA Works</strong>
+<span>A dedicated page explaining the system through measurement, validation, correction, and mapping concepts.</span>
+</li>
+<li>
+<strong>Public project pages</strong>
+<span>Repository links, build logs, artwork, and contact.</span>
+</li>
+</ul>
+</div>
+<div class="links-panel">
+<ul class="links-list">
+<li>
+<strong><a class="inline-link" href="https://github.com/aminalnam/OMEGA" rel="noopener" target="_blank">GitHub Repository</a></strong>
+<span>Main codebase, documentation, scripts, and example files.</span>
+</li>
+<li>
+<strong><a class="inline-link" href="how-omega-works.html">How OMEGA Works</a></strong>
+<span>A concept-based page explaining sensing, data validity, correction, and bathymetric interpolation.</span>
+</li>
+<li>
+<strong><a class="inline-link" href="https://hackaday.io/project/205502-oceanic-measurement-environmental-geo-arr" rel="noopener" target="_blank">Hackaday Project Log</a></strong>
+<span>Public-facing build log and project overview for OMEGA.</span>
+</li>
+<li>
+<strong><a class="inline-link" href="https://jonathancapone.art" rel="noopener" target="_blank">Artwork Website</a></strong>
+<span>Studio work, exhibitions, and related artistic projects.</span>
+</li>
+<li>
+<strong><a class="inline-link" href="mailto:jonathancapone@gmail.com">Contact</a></strong>
+<span>For project inquiries, collaboration, or teaching-related communication.</span>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+</div>
+</main>
+<footer class="footer">
+<div class="wrap footer-inner">
+<span>Jonathan Capone — Project Portfolio</span>
+<span><a href="https://jonathancapone.art" rel="noopener" target="_blank">Artwork</a></span>
+</div>
+</footer>
 </body>
 </html>

@@ -1,10 +1,11 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>OMEGA — Validation</title>
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>OMEGA — Validation</title>
+<style>
     :root {
       --bg: #0d1925;
       --bg-soft: #152433;
@@ -397,167 +398,162 @@
 </style>
 </head>
 <body>
-  <header class="topbar">
-    <div class="wrap topbar-inner">
-      <a class="brand" href="index.html">
-        <span class="brand-title">Jonathan Capone</span>
-        <span class="brand-sub">Technical Portfolio</span>
-      </a>
-      <nav class="nav" aria-label="Primary">
-        <a href="index.html">Home</a><a href="how-omega-works.html">OMEGA Guide</a><a href="omega-sensing.html">Sensing</a><a href="omega-validation.html">Validation</a><a href="omega-mapping.html">Mapping</a><a href="https://jonathancapone.art">Artwork</a>
-      </nav>
-    </div>
-  </header>
-
-  <section class="hero">
-    <div class="wrap">
-      <span class="eyebrow">OMEGA</span>
-      <h1>Validation, stability, and point acceptance.</h1>
-      <p>A closer look at the checks that determine whether a measurement becomes part of the mapping dataset: GPS quality, fix age, depth stability, speed, tilt, and spatial spacing.</p>
-      <div class="hero-actions">
-        <a class="button button-primary" href="how-omega-works.html">Back to OMEGA Guide</a><a class="button button-secondary" href="omega-sensing.html">Sensing and Sound</a><a class="button button-secondary" href="omega-mapping.html">Next: Mapping</a>
-      </div>
-    </div>
-  </section>
-
-  <main class="main-shell">
-    <div class="wrap main-inner">
-      
+<header class="topbar">
+<div class="wrap topbar-inner">
+<a class="brand" href="index.html">
+<span class="brand-title">Jonathan Capone</span>
+<span class="brand-sub">Technical Portfolio</span>
+</a>
+<nav aria-label="Primary" class="nav">
+<a href="index.html">Home</a><a href="how-omega-works.html">OMEGA Guide</a><a href="omega-sensing.html">Sensing</a><a href="omega-validation.html">Validation</a><a href="omega-mapping.html">Mapping</a><a href="omega-research.html">Research</a>
+<a href="https://jonathancapone.art">Artwork</a>
+</nav>
+</div>
+</header>
+<section class="hero">
+<div class="wrap">
+<span class="eyebrow">OMEGA</span>
+<h1>Validation, stability, and point acceptance.</h1>
+<p>A closer look at the checks that determine whether a measurement becomes part of the mapping dataset: GPS quality, fix age, depth stability, speed, tilt, and spatial spacing.</p>
+<div class="hero-actions">
+<a class="button button-primary" href="how-omega-works.html">Back to OMEGA Guide</a><a class="button button-secondary" href="omega-sensing.html">Sensing and Sound</a><a class="button button-secondary" href="omega-mapping.html">Next: Mapping</a><a class="button button-secondary" href="omega-research.html">Research Context</a>
+</div>
+</div>
+</section>
+<main class="main-shell">
+<div class="wrap main-inner">
 <section class="section">
-  <div class="wrap">
-    <div class="section-head">
-      <span class="section-kicker">Validation layer</span>
-      <h2>OMEGA decides whether a point is acceptable before it joins the map dataset.</h2>
-      <p>
+<div class="wrap">
+<div class="section-head">
+<span class="section-kicker">Validation layer</span>
+<h2>OMEGA decides whether a point is acceptable before it joins the map dataset.</h2>
+<p>
         Bathymetry depends on where a depth was measured, how stable the platform was at that moment, and whether the
         sensor values were still trustworthy. The validation logic makes those conditions explicit.
       </p>
-    </div>
-    <div class="card">
-      <span class="pill">From <code>getMapStatus()</code></span>
-      <div class="code-block"><pre><code>const char* getMapStatus(unsigned long currentMillis) {
-  if (millis() - startupMillis < gpsWarmupTime) return "WARMUP";
+</div>
+<div class="card">
+<span class="pill">From <code>getMapStatus()</code></span>
+<div class="code-block"><pre><code>const char* getMapStatus(unsigned long currentMillis) {
+  if (millis() - startupMillis &lt; gpsWarmupTime) return "WARMUP";
   if (!mapReady || !sdReady || !mapFile) return "NOFILE";
   if (!gpsDataPresent(currentMillis)) return "NOGPS";
   if (!gps.location.isValid()) return "NOFIX";
   if (!gps.date.isValid() || !gps.time.isValid()) return "NOTIME";
   if (isnan(depthCm)) return "NODEP";
-  if (depthSamplesCollected < 3) return "WARM";
+  if (depthSamplesCollected &lt; 3) return "WARM";
 
   if (!gps.satellites.isValid()) return "SAT";
-  if (gps.satellites.value() < minMapSats) return "SAT";
+  if (gps.satellites.value() &lt; minMapSats) return "SAT";
 
   if (!gps.hdop.isValid()) return "HDOP";
-  if (gps.hdop.hdop() > maxMapHdop) return "HDOP";
+  if (gps.hdop.hdop() &gt; maxMapHdop) return "HDOP";
 
-  if (gps.location.age() > maxMapFixAgeMs) return "STALE";
-  if (!isnan(smoothedSpeed) && smoothedSpeed > maxMapSpeedKmph) return "FAST";
+  if (gps.location.age() &gt; maxMapFixAgeMs) return "STALE";
+  if (!isnan(smoothedSpeed) &amp;&amp; smoothedSpeed &gt; maxMapSpeedKmph) return "FAST";
 
   if (requireLevelForMapping) {
     if (!imuReady) return "NOIMU";
     if (!imuOrientationValid) return "IMU?";
-    if (imuAccuracy < minImuAccuracyForMapping) return "CAL";
-    if (fabs(imuPitchDeg) > maxMapPitchDeg || fabs(imuRollDeg) > maxMapRollDeg) return "UNLVL";
+    if (imuAccuracy &lt; minImuAccuracyForMapping) return "CAL";
+    if (fabs(imuPitchDeg) &gt; maxMapPitchDeg || fabs(imuRollDeg) &gt; maxMapRollDeg) return "UNLVL";
   }
 
   return "ARMED";
 }</code></pre></div>
-      <div class="callout">
-        <strong>What this function controls</strong>
-        <p>
+<div class="callout">
+<strong>What this function controls</strong>
+<p>
           The returned status tells the rest of the system whether the logger is still warming up, missing required data,
           or fully ready to write a mapping-quality point. The accepted state is <code>ARMED</code>.
         </p>
-      </div>
-    </div>
-  </div>
+</div>
+</div>
+</div>
 </section>
-
 <section class="section">
-  <div class="wrap">
-    <div class="section-head">
-      <span class="section-kicker">Why each check exists</span>
-      <h2>The validation rules are really rules about evidence.</h2>
-      <p>
+<div class="wrap">
+<div class="section-head">
+<span class="section-kicker">Why each check exists</span>
+<h2>The validation rules are really rules about evidence.</h2>
+<p>
         Each check asks a different question about the point. Does the system know where it is? Is the fix current?
         Is the depth stable? Is the vehicle moving too fast or tilted too far? Those questions shape the survey.
       </p>
-    </div>
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr><th>Status</th><th>What it means</th><th>Why it affects mapping</th></tr>
-        </thead>
-        <tbody>
-          <tr><td><code>NOFIX</code></td><td>No valid GPS position</td><td>A depth without a reliable location cannot be placed correctly in the bathymetric surface.</td></tr>
-          <tr><td><code>HDOP</code></td><td>Horizontal precision is missing or too poor</td><td>Even a good depth can distort the map if the position uncertainty is too large.</td></tr>
-          <tr><td><code>STALE</code></td><td>The GPS fix is too old</td><td>The platform may have moved since the last valid position was reported.</td></tr>
-          <tr><td><code>NODEP</code> / <code>WARM</code></td><td>Depth is unavailable or not yet stabilized</td><td>The logger waits until multiple readings have built a stable working depth.</td></tr>
-          <tr><td><code>FAST</code></td><td>The platform is moving faster than the mapping limit</td><td>Rapid motion reduces how well each depth represents the bottom directly beneath the sensor.</td></tr>
-          <tr><td><code>UNLVL</code></td><td>Pitch or roll exceeds the allowed limit</td><td>Excess tilt changes the geometry of the measurement and weakens the assumption of a near-vertical depth reading.</td></tr>
-          <tr><td><code>ARMED</code></td><td>All required conditions are currently met</td><td>The point is eligible to enter the mapping dataset.</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
+</div>
+<div class="table-wrap">
+<table>
+<thead>
+<tr><th>Status</th><th>What it means</th><th>Why it affects mapping</th></tr>
+</thead>
+<tbody>
+<tr><td><code>NOFIX</code></td><td>No valid GPS position</td><td>A depth without a reliable location cannot be placed correctly in the bathymetric surface.</td></tr>
+<tr><td><code>HDOP</code></td><td>Horizontal precision is missing or too poor</td><td>Even a good depth can distort the map if the position uncertainty is too large.</td></tr>
+<tr><td><code>STALE</code></td><td>The GPS fix is too old</td><td>The platform may have moved since the last valid position was reported.</td></tr>
+<tr><td><code>NODEP</code> / <code>WARM</code></td><td>Depth is unavailable or not yet stabilized</td><td>The logger waits until multiple readings have built a stable working depth.</td></tr>
+<tr><td><code>FAST</code></td><td>The platform is moving faster than the mapping limit</td><td>Rapid motion reduces how well each depth represents the bottom directly beneath the sensor.</td></tr>
+<tr><td><code>UNLVL</code></td><td>Pitch or roll exceeds the allowed limit</td><td>Excess tilt changes the geometry of the measurement and weakens the assumption of a near-vertical depth reading.</td></tr>
+<tr><td><code>ARMED</code></td><td>All required conditions are currently met</td><td>The point is eligible to enter the mapping dataset.</td></tr>
+</tbody>
+</table>
+</div>
+</div>
 </section>
-
 <section class="section">
-  <div class="wrap">
-    <div class="section-head">
-      <span class="section-kicker">Depth stability</span>
-      <h2>OMEGA smooths depth and rejects sharp spikes.</h2>
-      <p>
+<div class="wrap">
+<div class="section-head">
+<span class="section-kicker">Depth stability</span>
+<h2>OMEGA smooths depth and rejects sharp spikes.</h2>
+<p>
         The logger uses a moving average buffer to keep the working depth from jumping around. It also rejects isolated
         spikes when a new average would jump too far from the previous accepted depth.
       </p>
-    </div>
-    <div class="card">
-      <span class="pill">Depth buffer logic</span>
-      <div class="code-block"><pre><code>void addDepthSample(float sample) {
+</div>
+<div class="card">
+<span class="pill">Depth buffer logic</span>
+<div class="code-block"><pre><code>void addDepthSample(float sample) {
   depthReadingsTotal -= depthReadingsBuffer[depthBufferIndex];
   depthReadingsBuffer[depthBufferIndex] = sample;
   depthReadingsTotal += sample;
   depthBufferIndex = (depthBufferIndex + 1) % DEPTH_BUFFER_SIZE;
 
-  if (depthSamplesCollected < DEPTH_BUFFER_SIZE) {
+  if (depthSamplesCollected &lt; DEPTH_BUFFER_SIZE) {
     depthSamplesCollected++;
   }
 
   float newDepth = depthReadingsTotal / depthSamplesCollected;
 
   // Reject a jump that is too large to trust as the next point.
-  if (!isnan(lastDepthCm) && fabs(newDepth - lastDepthCm) > maxDepthJumpCm) {
+  if (!isnan(lastDepthCm) &amp;&amp; fabs(newDepth - lastDepthCm) &gt; maxDepthJumpCm) {
     return;
   }
 
   depthCm = newDepth;
   lastDepthCm = depthCm;
 }</code></pre></div>
-      <div class="callout">
-        <strong>How this changes the dataset</strong>
-        <p>
+<div class="callout">
+<strong>How this changes the dataset</strong>
+<p>
           Instead of letting every raw pulse become a survey point, the logger forms a short memory of recent readings and
           compares the new value to the previous accepted depth. That reduces noise without erasing genuine depth variation.
         </p>
-      </div>
-    </div>
-  </div>
+</div>
+</div>
+</div>
 </section>
-
 <section class="section">
-  <div class="wrap">
-    <div class="section-head">
-      <span class="section-kicker">Spacing</span>
-      <h2>The logger also avoids collecting too many nearly identical points.</h2>
-      <p>
+<div class="wrap">
+<div class="section-head">
+<span class="section-kicker">Spacing</span>
+<h2>The logger also avoids collecting too many nearly identical points.</h2>
+<p>
         OMEGA checks the distance from the last accepted map point and can hold the next one if the platform has not moved far enough.
         The minimum spacing is adaptive: it grows with speed inside a constrained range.
       </p>
-    </div>
-    <div class="card">
-      <span class="pill">Adaptive spacing from the mapping logic</span>
-      <div class="code-block"><pre><code>if (hasLastMapPoint) {
+</div>
+<div class="card">
+<span class="pill">Adaptive spacing from the mapping logic</span>
+<div class="code-block"><pre><code>if (hasLastMapPoint) {
   double distanceMeters = TinyGPSPlus::distanceBetween(
     gps.location.lat(), gps.location.lng(),
     lastMapLat, lastMapLng
@@ -568,27 +564,29 @@
     minSpacing = constrain(smoothedSpeed * 0.5f, 2.0f, 10.0f);
   }
 
-  if (distanceMeters < minSpacing) return "HOLD";
+  if (distanceMeters &lt; minSpacing) return "HOLD";
 }</code></pre></div>
-      <div class="callout">
-        <strong>Why spacing matters</strong>
-        <p>
+<div class="callout">
+<strong>Why spacing matters</strong>
+<p>
           A map built from a tight cluster of nearly duplicate points is less useful than a map built from points that are spread across the survey path.
           Spacing helps distribute control points through the area instead of oversampling one small stretch.
         </p>
-      </div>
-    </div>
-  </div>
+</div>
+</div>
+</div>
 </section>
-
-    </div>
-  </main>
-
-  <footer class="footer">
-    <div class="wrap footer-inner">
-      <span>Jonathan Capone — Project Portfolio</span>
-      <span><a href="index.html">Home</a></span>
-    </div>
-  </footer>
+</div>
+</main>
+<footer class="footer">
+<div class="wrap footer-inner">
+<span>Jonathan Capone — Project Portfolio</span>
+<span><a href="index.html">Home</a></span>
+<span><a href="how-omega-works.html">OMEGA Guide</a></span>
+<span><a href="omega-research.html">Research</a></span>
+<span><a href="omega-sensing.html">Sensing</a></span>
+<span><a href="omega-validation.html">Validation</a></span>
+<span><a href="omega-mapping.html">Mapping</a></span></div>
+</footer>
 </body>
 </html>

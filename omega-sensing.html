@@ -1,10 +1,11 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>OMEGA — Sensing and Sound</title>
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>OMEGA — Sensing and Sound</title>
+<style>
     :root {
       --bg: #0d1925;
       --bg-soft: #152433;
@@ -397,87 +398,84 @@
 </style>
 </head>
 <body>
-  <header class="topbar">
-    <div class="wrap topbar-inner">
-      <a class="brand" href="index.html">
-        <span class="brand-title">Jonathan Capone</span>
-        <span class="brand-sub">Technical Portfolio</span>
-      </a>
-      <nav class="nav" aria-label="Primary">
-        <a href="index.html">Home</a><a href="how-omega-works.html">OMEGA Guide</a><a href="omega-sensing.html">Sensing</a><a href="omega-validation.html">Validation</a><a href="omega-mapping.html">Mapping</a><a href="https://jonathancapone.art">Artwork</a>
-      </nav>
-    </div>
-  </header>
-
-  <section class="hero">
-    <div class="wrap">
-      <span class="eyebrow">OMEGA</span>
-      <h1>Sensing, sound speed, and depth.</h1>
-      <p>A closer look at how OMEGA estimates underwater depth, why water temperature changes that estimate, and why salinity matters even though it is not yet part of the current correction model.</p>
-      <div class="hero-actions">
-        <a class="button button-primary" href="how-omega-works.html">Back to OMEGA Guide</a><a class="button button-secondary" href="omega-validation.html">Next: Validation</a><a class="button button-secondary" href="omega-mapping.html">Next: Mapping</a>
-      </div>
-    </div>
-  </section>
-
-  <main class="main-shell">
-    <div class="wrap main-inner">
-      
+<header class="topbar">
+<div class="wrap topbar-inner">
+<a class="brand" href="index.html">
+<span class="brand-title">Jonathan Capone</span>
+<span class="brand-sub">Technical Portfolio</span>
+</a>
+<nav aria-label="Primary" class="nav">
+<a href="index.html">Home</a><a href="how-omega-works.html">OMEGA Guide</a><a href="omega-sensing.html">Sensing</a><a href="omega-validation.html">Validation</a><a href="omega-mapping.html">Mapping</a><a href="omega-research.html">Research</a>
+<a href="https://jonathancapone.art">Artwork</a>
+</nav>
+</div>
+</header>
+<section class="hero">
+<div class="wrap">
+<span class="eyebrow">OMEGA</span>
+<h1>Sensing, sound speed, and depth.</h1>
+<p>A closer look at how OMEGA estimates underwater depth, why water temperature changes that estimate, and why salinity matters even though it is not yet part of the current correction model.</p>
+<div class="hero-actions">
+<a class="button button-primary" href="how-omega-works.html">Back to OMEGA Guide</a><a class="button button-secondary" href="omega-validation.html">Next: Validation</a><a class="button button-secondary" href="omega-mapping.html">Next: Mapping</a><a class="button button-secondary" href="omega-research.html">Research Context</a>
+</div>
+</div>
+</section>
+<main class="main-shell">
+<div class="wrap main-inner">
 <section class="section">
-  <div class="wrap">
-    <div class="section-head">
-      <span class="section-kicker">Acoustic measurement</span>
-      <h2>Depth is being inferred from sound.</h2>
-      <p>
+<div class="wrap">
+<div class="section-head">
+<span class="section-kicker">Acoustic measurement</span>
+<h2>Depth is being inferred from sound.</h2>
+<p>
         The sonar transducer sends a pulse through the water, listens for the return from the bottom, and estimates
         distance from the pulse travel time. In water, the speed of sound is often close to 1500 m/s, but it is not fixed.
       </p>
-    </div>
-    <div class="grid-2">
-      <div class="card prose">
-        <span class="pill">Core equation</span>
-        <h3>Round-trip time has to be cut in half</h3>
-        <p>
+</div>
+<div class="grid-2">
+<div class="card prose">
+<span class="pill">Core equation</span>
+<h3>Round-trip time has to be cut in half</h3>
+<p>
           The travel-time measurement includes the trip down to the bottom and the return trip back to the sensor.
           The one-way depth is therefore:
         </p>
-        <div class="callout">
-          <strong>Depth formula</strong>
-          <p><code>depth = (sound speed × travel time) / 2</code></p>
-        </div>
-        <p>
+<div class="callout">
+<strong>Depth formula</strong>
+<p><code>depth = (sound speed × travel time) / 2</code></p>
+</div>
+<p>
           That division by two is easy to overlook, but it is fundamental. The instrument never measures one-way depth directly.
           It measures elapsed time and converts that time into range.
         </p>
-      </div>
-      <div class="card prose">
-        <span class="pill">Why it changes</span>
-        <h3>Sound speed depends on the water itself</h3>
-        <p>
+</div>
+<div class="card prose">
+<span class="pill">Why it changes</span>
+<h3>Sound speed depends on the water itself</h3>
+<p>
           Temperature, salinity, and pressure all change how quickly sound moves through water. Warmer water generally raises sound speed.
           Increased salinity also raises sound speed. Greater pressure at depth raises it as well.
         </p>
-        <p>
+<p>
           Because OMEGA is measuring travel time rather than direct physical contact, any change in sound speed changes the interpretation of the depth reading.
         </p>
-      </div>
-    </div>
-  </div>
+</div>
+</div>
+</div>
 </section>
-
 <section class="section">
-  <div class="wrap">
-    <div class="section-head">
-      <span class="section-kicker">Current implementation</span>
-      <h2>The logger applies a temperature-based correction to the sonar range.</h2>
-      <p>
+<div class="wrap">
+<div class="section-head">
+<span class="section-kicker">Current implementation</span>
+<h2>The logger applies a temperature-based correction to the sonar range.</h2>
+<p>
         In the Arduino code, the sonar uses a baseline reference speed of 1500 m/s at 20 °C. The measured water
         temperature from the DS18B20 is used to adjust that baseline before the depth enters the mapping pipeline.
       </p>
-    </div>
-    <div class="card">
-      <span class="pill">From <code>rov_logger_mapping.ino</code></span>
-      <div class="code-block"><pre><code>// Baseline reference values used by the logger.
+</div>
+<div class="card">
+<span class="pill">From <code>rov_logger_mapping.ino</code></span>
+<div class="code-block"><pre><code>// Baseline reference values used by the logger.
 const float sonarCalSoundSpeed = 1500.0f;  // m/s
 const float sonarCalTempC = 20.0f;         // °C
 
@@ -497,91 +495,91 @@ float correctSonarRangeCm(float reportedRangeCm, float waterTempC) {
   float cActual = estimateSoundSpeed(waterTempC);
   return reportedRangeCm * (cActual / sonarCalSoundSpeed);
 }</code></pre></div>
-      <div class="callout">
-        <strong>What the code is doing</strong>
-        <p>
+<div class="callout">
+<strong>What the code is doing</strong>
+<p>
           The logger starts from a reference calibration, then nudges the sound speed up or down based on the measured water temperature.
           If the water is colder than the reference condition, the corrected depth will come down slightly. If it is warmer, the corrected depth will rise slightly.
         </p>
-      </div>
-    </div>
-  </div>
+</div>
+</div>
+</div>
 </section>
-
 <section class="section">
-  <div class="wrap">
-    <div class="section-head">
-      <span class="section-kicker">Why salinity is not in the current model</span>
-      <h2>Salinity still matters, but it is not currently being measured by the device.</h2>
-      <p>
+<div class="wrap">
+<div class="section-head">
+<span class="section-kicker">Why salinity is not in the current model</span>
+<h2>Salinity still matters, but it is not currently being measured by the device.</h2>
+<p>
         The absence of salinity in the correction model does not mean salinity is unimportant. It means the present version of OMEGA is using the variables
         it can actually measure in the field. Temperature is available directly from the DS18B20, so the code includes a temperature-based correction.
       </p>
-    </div>
-    <div class="grid-2">
-      <div class="card prose">
-        <span class="pill">Freshwater and shallow work</span>
-        <h3>Why the temperature-only model can still be useful</h3>
-        <p>
+</div>
+<div class="grid-2">
+<div class="card prose">
+<span class="pill">Freshwater and shallow work</span>
+<h3>Why the temperature-only model can still be useful</h3>
+<p>
           In shallow or modest-precision surveys, especially in freshwater, a temperature correction can remove one of the largest easy-to-measure sources of error
           without adding more hardware or more operator setup. It is a practical improvement over using a fixed sound speed all the time.
         </p>
-      </div>
-      <div class="card prose">
-        <span class="pill">Where the limits show up</span>
-        <h3>When a fuller sound-speed model would matter more</h3>
-        <p>
+</div>
+<div class="card prose">
+<span class="pill">Where the limits show up</span>
+<h3>When a fuller sound-speed model would matter more</h3>
+<p>
           In salt water, deeper water, or higher-accuracy survey work, salinity and pressure should be part of the model as well.
           A future version of OMEGA could add a conductivity or salinity sensor, or use a dedicated sound-speed instrument, to improve the correction.
         </p>
-      </div>
-    </div>
-  </div>
+</div>
+</div>
+</div>
 </section>
-
 <section class="section">
-  <div class="wrap">
-    <div class="section-head">
-      <span class="section-kicker">Depth entry</span>
-      <h2>The reading is corrected before it is accepted.</h2>
-      <p>
+<div class="wrap">
+<div class="section-head">
+<span class="section-kicker">Depth entry</span>
+<h2>The reading is corrected before it is accepted.</h2>
+<p>
         The sonar value does not go straight from the packet decoder into the map. The code converts the raw packet,
         applies the temperature correction, rejects implausible depths, and only then passes the value into the smoothing buffer.
       </p>
-    </div>
-    <div class="card">
-      <span class="pill">From the sonar read loop</span>
-      <div class="code-block"><pre><code>// Convert the decoded sonar packet to centimeters.
+</div>
+<div class="card">
+<span class="pill">From the sonar read loop</span>
+<div class="code-block"><pre><code>// Convert the decoded sonar packet to centimeters.
 float reportedDepthCm = raw / 10.0f;
 
 // Correct that range using the measured water temperature.
 float correctedDepthCm = correctSonarRangeCm(reportedDepthCm, tempC);
 
 // Ignore values outside the operating depth window.
-if (correctedDepthCm >= 2.0f && correctedDepthCm <= 800.0f) {
+if (correctedDepthCm &gt;= 2.0f &amp;&amp; correctedDepthCm &lt;= 800.0f) {
   addDepthSample(correctedDepthCm);
   lastValidDepthMillis = currentMillis;
   validReading = true;
 }</code></pre></div>
-      <div class="callout">
-        <strong>Why this stage matters</strong>
-        <p>
+<div class="callout">
+<strong>Why this stage matters</strong>
+<p>
           By the time a depth sample reaches the moving average, it has already been interpreted and screened. The measurement
           pipeline is doing physics and quality control before the mapping logic ever sees the point.
         </p>
-      </div>
-    </div>
-  </div>
+</div>
+</div>
+</div>
 </section>
-
-    </div>
-  </main>
-
-  <footer class="footer">
-    <div class="wrap footer-inner">
-      <span>Jonathan Capone — Project Portfolio</span>
-      <span><a href="index.html">Home</a></span>
-    </div>
-  </footer>
+</div>
+</main>
+<footer class="footer">
+<div class="wrap footer-inner">
+<span>Jonathan Capone — Project Portfolio</span>
+<span><a href="index.html">Home</a></span>
+<span><a href="how-omega-works.html">OMEGA Guide</a></span>
+<span><a href="omega-research.html">Research</a></span>
+<span><a href="omega-sensing.html">Sensing</a></span>
+<span><a href="omega-validation.html">Validation</a></span>
+<span><a href="omega-mapping.html">Mapping</a></span></div>
+</footer>
 </body>
 </html>

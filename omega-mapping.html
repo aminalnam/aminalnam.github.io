@@ -1,10 +1,11 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>OMEGA — Mapping and IDW</title>
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>OMEGA — Mapping and IDW</title>
+<style>
     :root {
       --bg: #0d1925;
       --bg-soft: #152433;
@@ -397,81 +398,78 @@
 </style>
 </head>
 <body>
-  <header class="topbar">
-    <div class="wrap topbar-inner">
-      <a class="brand" href="index.html">
-        <span class="brand-title">Jonathan Capone</span>
-        <span class="brand-sub">Technical Portfolio</span>
-      </a>
-      <nav class="nav" aria-label="Primary">
-        <a href="index.html">Home</a><a href="how-omega-works.html">OMEGA Guide</a><a href="omega-sensing.html">Sensing</a><a href="omega-validation.html">Validation</a><a href="omega-mapping.html">Mapping</a><a href="https://jonathancapone.art">Artwork</a>
-      </nav>
-    </div>
-  </header>
-
-  <section class="hero">
-    <div class="wrap">
-      <span class="eyebrow">OMEGA</span>
-      <h1>Mapping, interpolation, and outputs.</h1>
-      <p>A closer look at how accepted survey points become bathymetric surfaces, contour maps, KML files, and Google Earth overlays through the Python processing scripts.</p>
-      <div class="hero-actions">
-        <a class="button button-primary" href="how-omega-works.html">Back to OMEGA Guide</a><a class="button button-secondary" href="omega-sensing.html">Sensing and Sound</a><a class="button button-secondary" href="omega-validation.html">Validation Logic</a>
-      </div>
-    </div>
-  </section>
-
-  <main class="main-shell">
-    <div class="wrap main-inner">
-      
+<header class="topbar">
+<div class="wrap topbar-inner">
+<a class="brand" href="index.html">
+<span class="brand-title">Jonathan Capone</span>
+<span class="brand-sub">Technical Portfolio</span>
+</a>
+<nav aria-label="Primary" class="nav">
+<a href="index.html">Home</a><a href="how-omega-works.html">OMEGA Guide</a><a href="omega-sensing.html">Sensing</a><a href="omega-validation.html">Validation</a><a href="omega-mapping.html">Mapping</a><a href="omega-research.html">Research</a>
+<a href="https://jonathancapone.art">Artwork</a>
+</nav>
+</div>
+</header>
+<section class="hero">
+<div class="wrap">
+<span class="eyebrow">OMEGA</span>
+<h1>Mapping, interpolation, and outputs.</h1>
+<p>A closer look at how accepted survey points become bathymetric surfaces, contour maps, KML files, and Google Earth overlays through the Python processing scripts.</p>
+<div class="hero-actions">
+<a class="button button-primary" href="how-omega-works.html">Back to OMEGA Guide</a><a class="button button-secondary" href="omega-sensing.html">Sensing and Sound</a><a class="button button-secondary" href="omega-validation.html">Validation Logic</a><a class="button button-secondary" href="omega-research.html">Research Context</a>
+</div>
+</div>
+</section>
+<main class="main-shell">
+<div class="wrap main-inner">
 <section class="section">
-  <div class="wrap">
-    <div class="section-head">
-      <span class="section-kicker">Geospatial data</span>
-      <h2>Bathymetry begins when depth is tied to location.</h2>
-      <p>
+<div class="wrap">
+<div class="section-head">
+<span class="section-kicker">Geospatial data</span>
+<h2>Bathymetry begins when depth is tied to location.</h2>
+<p>
         A single depth value only says how far the bottom was below the sensor at one moment. Bathymetry needs depth plus
         coordinates so the measurement can become part of a spatial pattern.
       </p>
-    </div>
-    <div class="grid-2">
-      <div class="card prose">
-        <span class="pill">Logged structure</span>
-        <h3>The mapping CSV keeps the context attached</h3>
-        <p>
+</div>
+<div class="grid-2">
+<div class="card prose">
+<span class="pill">Logged structure</span>
+<h3>The mapping CSV keeps the context attached</h3>
+<p>
           The map file records each accepted point with time, latitude, longitude, depth, temperature, satellite count,
           HDOP, speed, fix age, pitch, roll, and IMU accuracy. That structure keeps the measurement conditions attached
           to the point that enters the mapping pipeline.
         </p>
-        <div class="callout">
-          <strong>Representative header</strong>
-          <p><code>point,date_utc,time_utc,lat,lng,depth_cm,temp_c,satellites,hdop,speed_kmph,fix_age_ms,pitch_deg,roll_deg,imu_acc</code></p>
-        </div>
-      </div>
-      <div class="card prose">
-        <span class="pill">Two outputs</span>
-        <h3>Raw logging and mapping logging serve different jobs</h3>
-        <p>
+<div class="callout">
+<strong>Representative header</strong>
+<p><code>point,date_utc,time_utc,lat,lng,depth_cm,temp_c,satellites,hdop,speed_kmph,fix_age_ms,pitch_deg,roll_deg,imu_acc</code></p>
+</div>
+</div>
+<div class="card prose">
+<span class="pill">Two outputs</span>
+<h3>Raw logging and mapping logging serve different jobs</h3>
+<p>
           The raw data log preserves the complete field record, including conditions that may not be suitable for mapping.
           The map log contains only accepted points. That separation makes the reconstruction step more predictable and keeps the record transparent.
         </p>
-      </div>
-    </div>
-  </div>
+</div>
+</div>
+</div>
 </section>
-
 <section class="section">
-  <div class="wrap">
-    <div class="section-head">
-      <span class="section-kicker">Interpolation</span>
-      <h2>OMEGA uses inverse distance weighting to estimate values between measured points.</h2>
-      <p>
+<div class="wrap">
+<div class="section-head">
+<span class="section-kicker">Interpolation</span>
+<h2>OMEGA uses inverse distance weighting to estimate values between measured points.</h2>
+<p>
         The Python mapping scripts build a grid over the survey area and estimate a depth for each grid cell.
         Nearby measured points receive more weight than distant ones.
       </p>
-    </div>
-    <div class="card">
-      <span class="pill">From <code>csv_to_kmz_depth_overlay.py</code></span>
-      <div class="code-block"><pre><code>def idw_interpolation(x, y, z, xi, yi, power=2.0, epsilon=1e-12):
+</div>
+<div class="card">
+<span class="pill">From <code>csv_to_kmz_depth_overlay.py</code></span>
+<div class="code-block"><pre><code>def idw_interpolation(x, y, z, xi, yi, power=2.0, epsilon=1e-12):
     zi = np.zeros_like(xi, dtype=float)
 
     for row in range(xi.shape[0]):
@@ -480,7 +478,7 @@
             dy = y - yi[row, col]
             dist = np.sqrt(dx * dx + dy * dy)
 
-            if np.any(dist < epsilon):
+            if np.any(dist &lt; epsilon):
                 zi[row, col] = z[np.argmin(dist)]
                 continue
 
@@ -488,31 +486,30 @@
             zi[row, col] = np.sum(weights * z) / np.sum(weights)
 
     return zi</code></pre></div>
-      <div class="callout">
-        <strong>What the algorithm is doing</strong>
-        <p>
+<div class="callout">
+<strong>What the algorithm is doing</strong>
+<p>
           For each grid cell, the script computes the distance to every accepted survey point. It then gives more influence
           to closer points by using weights of <code>1 / distance^power</code>. The <code>epsilon</code> test preserves exact measured points:
           if the grid lands directly on a survey point, the script returns that measured depth instead of averaging it.
         </p>
-      </div>
-    </div>
-  </div>
+</div>
+</div>
+</div>
 </section>
-
 <section class="section">
-  <div class="wrap">
-    <div class="section-head">
-      <span class="section-kicker">Grid generation</span>
-      <h2>The interpolation only works after the survey area is turned into a computational grid.</h2>
-      <p>
+<div class="wrap">
+<div class="section-head">
+<span class="section-kicker">Grid generation</span>
+<h2>The interpolation only works after the survey area is turned into a computational grid.</h2>
+<p>
         The script first finds the bounds of the accepted longitude and latitude values, then uses those bounds to generate
         a regular mesh of locations where estimated depths will be calculated.
       </p>
-    </div>
-    <div class="card">
-      <span class="pill">Grid setup</span>
-      <div class="code-block"><pre><code>def build_grid(points, grid_size, power):
+</div>
+<div class="card">
+<span class="pill">Grid setup</span>
+<div class="code-block"><pre><code>def build_grid(points, grid_size, power):
     lats = np.array([p["lat"] for p in points], dtype=float)
     lons = np.array([p["lon"] for p in points], dtype=float)
     depths = np.array([p["depth_m"] for p in points], dtype=float)
@@ -526,52 +523,53 @@
     zi = idw_interpolation(lons, lats, depths, xi, yi, power=power)
 
     return zi, lon_min, lon_max, lat_min, lat_max</code></pre></div>
-      <div class="callout">
-        <strong>How the parameters matter</strong>
-        <p>
-          <code>grid_size</code> changes the density of the output surface. A larger grid creates a finer-looking map but increases computation.
+<div class="callout">
+<strong>How the parameters matter</strong>
+<p>
+<code>grid_size</code> changes the density of the output surface. A larger grid creates a finer-looking map but increases computation.
           <code>power</code> controls how quickly distant points lose influence. Higher power makes the surface cling more tightly to nearby points.
         </p>
-      </div>
-    </div>
-  </div>
+</div>
+</div>
+</div>
 </section>
-
 <section class="section">
-  <div class="wrap">
-    <div class="section-head">
-      <span class="section-kicker">Outputs</span>
-      <h2>The same accepted points can become several different map products.</h2>
-      <p>
+<div class="wrap">
+<div class="section-head">
+<span class="section-kicker">Outputs</span>
+<h2>The same accepted points can become several different map products.</h2>
+<p>
         OMEGA’s Python scripts use the same mapping dataset to build different kinds of visual and geographic outputs.
         Each output highlights a different way of reading the survey.
       </p>
-    </div>
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr><th>Script</th><th>Output</th><th>Use</th></tr>
-        </thead>
-        <tbody>
-          <tr><td><code>csv_to_png_depth_points.py</code></td><td>Point plot</td><td>Shows the accepted survey points directly without surface modeling.</td></tr>
-          <tr><td><code>csv_to_png_depth_interpolated.py</code></td><td>Interpolated depth map</td><td>Shows the continuous surface estimated from the accepted points.</td></tr>
-          <tr><td><code>csv_to_png_depth_contours.py</code></td><td>Contour map</td><td>Turns the surface into depth lines that emphasize shape and slope.</td></tr>
-          <tr><td><code>csv_to_kml_points.py</code></td><td>KML point export</td><td>Places survey points in geospatial viewers.</td></tr>
-          <tr><td><code>csv_to_kmz_depth_overlay.py</code></td><td>KMZ overlay</td><td>Places a raster surface over its geographic footprint in Google Earth.</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
+</div>
+<div class="table-wrap">
+<table>
+<thead>
+<tr><th>Script</th><th>Output</th><th>Use</th></tr>
+</thead>
+<tbody>
+<tr><td><code>csv_to_png_depth_points.py</code></td><td>Point plot</td><td>Shows the accepted survey points directly without surface modeling.</td></tr>
+<tr><td><code>csv_to_png_depth_interpolated.py</code></td><td>Interpolated depth map</td><td>Shows the continuous surface estimated from the accepted points.</td></tr>
+<tr><td><code>csv_to_png_depth_contours.py</code></td><td>Contour map</td><td>Turns the surface into depth lines that emphasize shape and slope.</td></tr>
+<tr><td><code>csv_to_kml_points.py</code></td><td>KML point export</td><td>Places survey points in geospatial viewers.</td></tr>
+<tr><td><code>csv_to_kmz_depth_overlay.py</code></td><td>KMZ overlay</td><td>Places a raster surface over its geographic footprint in Google Earth.</td></tr>
+</tbody>
+</table>
+</div>
+</div>
 </section>
-
-    </div>
-  </main>
-
-  <footer class="footer">
-    <div class="wrap footer-inner">
-      <span>Jonathan Capone — Project Portfolio</span>
-      <span><a href="index.html">Home</a></span>
-    </div>
-  </footer>
+</div>
+</main>
+<footer class="footer">
+<div class="wrap footer-inner">
+<span>Jonathan Capone — Project Portfolio</span>
+<span><a href="index.html">Home</a></span>
+<span><a href="how-omega-works.html">OMEGA Guide</a></span>
+<span><a href="omega-research.html">Research</a></span>
+<span><a href="omega-sensing.html">Sensing</a></span>
+<span><a href="omega-validation.html">Validation</a></span>
+<span><a href="omega-mapping.html">Mapping</a></span></div>
+</footer>
 </body>
 </html>
