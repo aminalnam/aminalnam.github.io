@@ -1,22 +1,26 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>OMEGA Research Context</title>
-<style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Science Behind OMEGA</title>
+  <style>
     :root {
-      --bg: #f4f6f8;
-      --panel: #ffffff;
-      --text: #1f2933;
-      --muted: #52606d;
-      --line: #d9e2ec;
-      --accent: #1f4b63;
-      --accent-2: #486581;
-      --soft: #f8fafc;
-      --code-bg: #0f1720;
-      --code-text: #e6edf3;
+      --bg: #eef3f7;
+      --panel: rgba(255, 255, 255, 0.84);
+      --panel-solid: #ffffff;
+      --text: #16202a;
+      --muted: #556473;
+      --line: rgba(22, 32, 42, 0.1);
+      --accent: #123e57;
+      --accent-2: #1f6c8c;
+      --accent-3: #89c8d8;
+      --soft: #f8fbfd;
+      --dark: #0e1b24;
+      --dark-soft: #152734;
+      --code-text: #eaf4fb;
+      --shadow: 0 22px 48px rgba(17, 34, 49, 0.1);
+      --radius: 26px;
     }
 
     * { box-sizing: border-box; }
@@ -24,178 +28,469 @@
 
     body {
       margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      background: var(--bg);
+      font-family: Inter, Arial, Helvetica, sans-serif;
       color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(137, 200, 216, 0.5), transparent 28%),
+        radial-gradient(circle at top right, rgba(31, 108, 140, 0.14), transparent 24%),
+        linear-gradient(180deg, #f4f8fb 0%, #edf2f6 46%, #eff4f8 100%);
       line-height: 1.72;
     }
 
+    a { color: inherit; }
+
     .page {
-      width: min(1180px, calc(100% - 32px));
+      width: min(1220px, calc(100% - 28px));
       margin: 0 auto;
-      padding: 36px 0 72px;
+      padding: 18px 0 90px;
     }
 
-    .page > header,
-    .page > section,
-    .page > footer {
-      background: var(--panel);
+    .topbar {
+      position: sticky;
+      top: 10px;
+      z-index: 20;
+      margin-bottom: 18px;
+      padding: 10px 14px;
+      border: 1px solid rgba(255,255,255,0.45);
+      border-radius: 999px;
+      background: rgba(255,255,255,0.72);
+      backdrop-filter: blur(14px);
+      box-shadow: 0 16px 36px rgba(17, 34, 49, 0.08);
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      overflow-x: auto;
+    }
+
+    .topbar span {
+      white-space: nowrap;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--accent);
+      padding: 0 6px;
+    }
+
+    .topbar a {
+      white-space: nowrap;
+      text-decoration: none;
+      padding: 9px 13px;
+      border-radius: 999px;
+      font-size: 0.88rem;
+      color: var(--muted);
+      background: rgba(255,255,255,0.7);
+      border: 1px solid rgba(22,32,42,0.06);
+    }
+
+    .hero,
+    .chapter,
+    .reference-panel,
+    footer {
       border: 1px solid var(--line);
-      border-radius: 24px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
     }
 
-    header {
-      padding: 32px;
+    .hero {
+      position: relative;
+      padding: 42px;
+      background:
+        linear-gradient(135deg, rgba(18, 62, 87, 0.96), rgba(27, 83, 110, 0.9) 52%, rgba(76, 138, 160, 0.86)),
+        linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0));
+      color: #f5fbff;
       margin-bottom: 22px;
     }
 
-    section {
-      padding: 30px;
-      margin-top: 20px;
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 18% 20%, rgba(255,255,255,0.18), transparent 24%),
+        radial-gradient(circle at 82% 18%, rgba(255,255,255,0.14), transparent 26%),
+        linear-gradient(120deg, rgba(255,255,255,0.04), rgba(255,255,255,0));
+      pointer-events: none;
     }
 
-    footer {
-      margin-top: 22px;
-      padding: 24px 28px;
-      color: var(--muted);
-      font-size: 0.96rem;
+    .hero-grid {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.9);
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 14px;
+      border: 1px solid rgba(255,255,255,0.16);
     }
 
     h1 {
-      margin: 0 0 12px;
-      font-size: clamp(2.1rem, 4vw, 3.8rem);
-      line-height: 1.04;
-      letter-spacing: -0.03em;
-      max-width: 900px;
+      margin: 0;
+      max-width: 820px;
+      font-size: clamp(2.6rem, 5vw, 5rem);
+      line-height: 0.96;
+      letter-spacing: -0.045em;
     }
 
-    h2 {
-      margin: 0 0 12px;
-      font-size: 1.72rem;
-      letter-spacing: -0.02em;
+    .hero-copy p {
+      margin: 18px 0 0;
+      max-width: 760px;
+      font-size: 1.06rem;
+      color: rgba(245, 251, 255, 0.86);
     }
 
-    h3 {
-      margin: 22px 0 8px;
-      font-size: 1.08rem;
-      color: var(--accent);
-    }
-
-    p { margin: 0 0 14px; }
-
-    ul {
-      margin: 8px 0 14px 20px;
-      padding: 0;
-    }
-
-    li { margin: 0 0 8px; }
-
-    .intro,
-    .lead {
-      color: var(--muted);
-      font-size: 1.05rem;
-      max-width: 1000px;
-    }
-
-    nav {
-      margin-top: 22px;
+    .hero-pills {
+      margin-top: 26px;
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
     }
 
-    nav a {
-      display: inline-block;
-      text-decoration: none;
-      color: var(--accent);
+    .hero-pills span {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
       padding: 10px 14px;
       border-radius: 999px;
-      background: #eef2f6;
-      border: 1px solid var(--line);
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.08);
+      font-size: 0.92rem;
+      color: rgba(255,255,255,0.92);
+    }
+
+    .hero-side {
+      display: grid;
+      gap: 14px;
+    }
+
+    .glass-card {
+      padding: 18px;
+      border-radius: 22px;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(8px);
+    }
+
+    .glass-card strong {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 0.95rem;
+      color: #ffffff;
+    }
+
+    .glass-card p,
+    .glass-card li {
+      color: rgba(245, 251, 255, 0.84);
       font-size: 0.95rem;
     }
 
-    .small-label {
-      display: inline-block;
-      margin-bottom: 10px;
-      font-size: 0.8rem;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
+    .glass-card ul {
+      margin: 10px 0 0 18px;
+      padding: 0;
+    }
+
+    .glass-card li { margin-bottom: 6px; }
+
+    .chapter {
+      position: relative;
+      margin-top: 22px;
+      padding: 34px;
+      background: var(--panel);
+      backdrop-filter: blur(12px);
+    }
+
+    .chapter-dark {
+      background: linear-gradient(180deg, var(--dark) 0%, var(--dark-soft) 100%);
+      color: #eef6fb;
+      border-color: rgba(255,255,255,0.08);
+    }
+
+    .chapter-dark p,
+    .chapter-dark li,
+    .chapter-dark .chapter-intro,
+    .chapter-dark .muted,
+    .chapter-dark .story-main p,
+    .chapter-dark .story-main li {
+      color: rgba(234, 244, 251, 0.82);
+    }
+
+    .chapter-dark .section-label,
+    .chapter-dark h2,
+    .chapter-dark h3,
+    .chapter-dark .story-side strong,
+    .chapter-dark .story-tag,
+    .chapter-dark .story-number,
+    .chapter-dark .chip {
+      color: #ffffff;
+    }
+
+    .chapter-dark .soft-card,
+    .chapter-dark .story-main,
+    .chapter-dark details,
+    .chapter-dark .callout,
+    .chapter-dark .grid-card,
+    .chapter-dark .reading-card,
+    .chapter-dark .mini-reference {
+      background: rgba(255,255,255,0.06);
+      border-color: rgba(255,255,255,0.12);
+      color: rgba(234, 244, 251, 0.86);
+    }
+
+    .chapter-dark summary,
+    .chapter-dark .code-caption,
+    .chapter-dark .equation {
+      color: #ffffff;
+    }
+
+    .chapter-dark .equation {
+      background: rgba(255,255,255,0.08);
+      border-color: rgba(255,255,255,0.12);
+    }
+
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(18, 62, 87, 0.08);
       color: var(--accent-2);
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+      border: 1px solid rgba(18, 62, 87, 0.08);
     }
 
-    .grid {
+    h2 {
+      margin: 0;
+      font-size: clamp(1.9rem, 3vw, 3rem);
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+    }
+
+    .chapter-intro {
+      margin: 14px 0 0;
+      max-width: 860px;
+      font-size: 1.04rem;
+      color: var(--muted);
+    }
+
+    .grid-3,
+    .grid-4,
+    .signal-grid,
+    .question-grid,
+    .reference-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
       gap: 16px;
-      margin-top: 18px;
+      margin-top: 22px;
     }
 
-    .three-col {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 16px;
-      margin-top: 18px;
-    }
+    .grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .grid-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .signal-grid { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+    .question-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .reference-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 
-    .card {
-      padding: 18px;
+    .soft-card,
+    .grid-card,
+    .reading-card,
+    .mini-reference {
+      padding: 20px;
+      border-radius: 22px;
       border: 1px solid var(--line);
-      border-radius: 18px;
-      background: var(--soft);
+      background: rgba(255,255,255,0.76);
     }
 
-    .card strong,
-    .omega-note strong,
-    .level-box strong,
-    .process-step strong {
+    .grid-card strong,
+    .soft-card strong,
+    .reading-card strong,
+    .mini-reference strong {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--accent);
+      font-size: 1rem;
+    }
+
+    .signal-step {
+      position: relative;
+      min-height: 178px;
+      padding: 18px;
+      border-radius: 24px;
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,0.92), rgba(248,251,253,0.9));
+    }
+
+    .signal-step::after {
+      content: "→";
+      position: absolute;
+      right: -12px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.5rem;
+      color: rgba(18, 62, 87, 0.3);
+    }
+
+    .signal-step:last-child::after { display: none; }
+
+    .step-number {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      margin-bottom: 14px;
+      background: linear-gradient(135deg, rgba(18,62,87,1), rgba(31,108,140,1));
+      color: #fff;
+      font-weight: 700;
+      box-shadow: 0 14px 24px rgba(18,62,87,0.18);
+    }
+
+    .signal-step strong {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--accent);
+      font-size: 1rem;
+    }
+
+    .story {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 22px;
+      margin-top: 22px;
+      align-items: start;
+    }
+
+    .story-side {
+      position: sticky;
+      top: 88px;
+      padding: 24px;
+      border-radius: 26px;
+      background: linear-gradient(180deg, rgba(18,62,87,0.96), rgba(31,108,140,0.9));
+      color: #f2f9fd;
+      box-shadow: 0 20px 42px rgba(18,62,87,0.18);
+    }
+
+    .story-number {
+      font-size: 0.88rem;
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      color: rgba(255,255,255,0.72);
+    }
+
+    .story-side strong {
+      display: block;
+      margin: 12px 0 12px;
+      font-size: 1.35rem;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      color: #ffffff;
+    }
+
+    .story-side p {
+      margin: 0;
+      color: rgba(242,249,253,0.84);
+    }
+
+    .story-main {
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: 26px;
+      background: rgba(255,255,255,0.86);
+    }
+
+    .story-tag {
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent-2);
+      margin-bottom: 8px;
+    }
+
+    .story-main h3 {
+      margin: 0 0 10px;
+      font-size: 1.55rem;
+      line-height: 1.12;
+      letter-spacing: -0.02em;
+      color: var(--accent);
+    }
+
+    .story-main p { margin: 0 0 14px; }
+
+    .callout {
+      margin-top: 16px;
+      padding: 16px 18px;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      background: var(--soft);
+      color: var(--muted);
+    }
+
+    .callout strong {
       display: block;
       margin-bottom: 8px;
       color: var(--accent);
     }
 
-    .omega-note {
-      margin-top: 18px;
-      padding: 16px 18px;
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      background: #f9fbfd;
-    }
-
-    .level-box {
-      padding: 18px;
-      border: 1px solid var(--line);
+    .equation {
+      margin: 16px 0 18px;
+      padding: 15px 18px;
       border-radius: 18px;
-      background: #fbfdff;
+      border: 1px solid rgba(18,62,87,0.12);
+      background: rgba(18,62,87,0.05);
+      font-family: Consolas, Monaco, monospace;
+      color: var(--accent);
+      overflow-x: auto;
     }
 
-    .quick-summary {
-      margin-top: 14px;
-      padding: 16px 18px;
-      border-radius: 16px;
-      background: #f8fbfd;
-      border: 1px solid var(--line);
-      color: var(--muted);
+    pre {
+      margin: 16px 0 0;
+      padding: 18px;
+      border-radius: 22px;
+      background: linear-gradient(180deg, #0d1922, #10212d 60%, #0d1820);
+      color: var(--code-text);
+      overflow-x: auto;
+      border: 1px solid rgba(255,255,255,0.05);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
     }
 
-    .details-wrap {
-      margin-top: 16px;
-      display: grid;
-      gap: 12px;
+    code {
+      font-family: Consolas, Monaco, monospace;
+      font-size: 0.92rem;
+      line-height: 1.58;
+    }
+
+    .code-caption {
+      margin-top: 10px;
+      font-size: 0.9rem;
+      color: var(--accent-2);
+      font-weight: 600;
     }
 
     details {
+      margin-top: 14px;
+      border-radius: 18px;
       border: 1px solid var(--line);
-      border-radius: 16px;
-      background: var(--soft);
+      background: rgba(255,255,255,0.66);
       overflow: hidden;
     }
 
     summary {
       cursor: pointer;
       list-style: none;
-      padding: 14px 18px;
-      font-weight: 600;
+      padding: 15px 18px;
+      font-weight: 700;
       color: var(--accent);
     }
 
@@ -203,351 +498,495 @@
 
     details .details-body {
       padding: 0 18px 18px;
-      color: var(--text);
     }
 
-    .bibliography {
-      display: grid;
-      gap: 18px;
-      margin-top: 16px;
+    .chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
     }
 
-    .ref-group {
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      background: var(--soft);
-      padding: 18px;
-    }
-
-    .ref-group h3 { margin-top: 0; }
-    .ref-group ol { margin: 10px 0 0 22px; padding: 0; }
-    .ref-group li { margin-bottom: 10px; }
-
-    pre {
-      margin: 14px 0 0;
-      padding: 16px;
-      border-radius: 16px;
-      background: var(--code-bg);
-      color: var(--code-text);
-      overflow-x: auto;
-      font-size: 0.92rem;
-      line-height: 1.55;
-    }
-
-    code { font-family: Consolas, Monaco, monospace; }
-
-    .section-intro {
-      max-width: 980px;
-      margin-bottom: 10px;
-    }
-
-    .equation {
-      margin-top: 14px;
-      padding: 14px 16px;
-      border-radius: 14px;
-      background: #f3f7fb;
-      border: 1px solid var(--line);
-      font-family: Consolas, Monaco, monospace;
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 12px;
+      border-radius: 999px;
+      background: rgba(18,62,87,0.07);
+      border: 1px solid rgba(18,62,87,0.1);
       color: var(--accent);
-      overflow-x: auto;
+      font-size: 0.9rem;
+      text-decoration: none;
     }
 
-    .process-band {
+    .split-panel {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 12px;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
       margin-top: 20px;
     }
 
-    .process-step {
-      padding: 16px;
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      background: #f8fbfd;
-      font-size: 0.95rem;
-      color: var(--muted);
+    .concept-strip,
+    .mini-grid,
+    .compare-panel,
+    .process-list {
+      margin-top: 20px;
     }
 
-    .code-note {
-      margin-top: 12px;
-      padding: 14px 16px;
+    .concept-strip {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .mini-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .compare-panel {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .concept-card,
+    .compare-card,
+    .process-item {
+      padding: 18px;
+      border-radius: 20px;
+      border: 1px solid var(--line);
+      background: rgba(18,62,87,0.05);
+    }
+
+    .concept-card strong,
+    .compare-card strong {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--accent);
+      font-size: 0.98rem;
+    }
+
+    .process-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .process-item {
+      display: grid;
+      grid-template-columns: 46px 1fr;
+      gap: 14px;
+      align-items: start;
+      background: rgba(255,255,255,0.72);
+    }
+
+    .process-badge {
+      width: 46px;
+      height: 46px;
+      display: grid;
+      place-items: center;
       border-radius: 14px;
-      border: 1px solid var(--line);
-      background: #f8fbfd;
+      background: linear-gradient(135deg, rgba(18,62,87,1), rgba(31,108,140,1));
+      color: #fff;
+      font-weight: 700;
+      box-shadow: 0 12px 22px rgba(18,62,87,0.16);
+    }
+
+    .process-item strong {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--accent);
+    }
+
+    .list-tight {
+      margin: 10px 0 0 18px;
+      padding: 0;
+    }
+
+    .list-tight li { margin-bottom: 6px; }
+
+    .reference-panel {
+      margin-top: 22px;
+      padding: 34px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(248,251,253,0.94));
+    }
+
+    .reading-card p,
+    .mini-reference p {
+      margin: 0 0 10px;
       color: var(--muted);
     }
 
-    .cite {
-      font-size: 0.78em;
-      vertical-align: super;
-      line-height: 0;
-      margin-left: 2px;
-      white-space: nowrap;
+    footer {
+      margin-top: 22px;
+      padding: 26px 30px;
+      background: linear-gradient(180deg, rgba(14,27,36,0.96), rgba(21,39,52,0.95));
+      color: rgba(234,244,251,0.84);
+      border-color: rgba(255,255,255,0.08);
     }
 
-    .cite a {
-      color: var(--accent-2);
-      text-decoration: none;
-      padding: 0 1px;
+    footer strong {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 1rem;
+      color: #ffffff;
     }
 
-    .cite a:hover { text-decoration: underline; }
+    @media (max-width: 1140px) {
+      .signal-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .concept-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .signal-step:nth-child(3)::after,
+      .signal-step:nth-child(6)::after { display: none; }
+    }
 
     @media (max-width: 980px) {
-      .three-col { grid-template-columns: 1fr; }
+      .hero-grid,
+      .story,
+      .split-panel,
+      .question-grid,
+      .reference-grid,
+      .grid-3,
+      .grid-4,
+      .signal-grid,
+      .concept-strip,
+      .mini-grid,
+      .compare-panel {
+        grid-template-columns: 1fr;
+      }
+
+      .story-side {
+        position: static;
+      }
+
+      .signal-step::after { display: none; }
+    }
+
+    @media (max-width: 720px) {
+      .page { width: min(100%, calc(100% - 18px)); }
+      .hero,
+      .chapter,
+      .reference-panel,
+      footer { padding: 24px; border-radius: 22px; }
+      .topbar { top: 6px; }
+      h1 { font-size: clamp(2.2rem, 10vw, 3.6rem); }
     }
   </style>
 </head>
 <body>
-<main class="page">
-<header>
-<h1>OMEGA Research Context</h1>
-<p class="intro">
-        OMEGA is an open bathymetric survey system built to collect local depth data, evaluate the quality of those measurements, and turn them into a usable map of the bottom. Its scientific frame comes from hydrography, underwater acoustics, water-column physics, spatial sampling, and geomorphic change.<sup class="cite"><a href="#ref-1">[1]</a><a href="#ref-2">[2]</a><a href="#ref-3">[3]</a></sup>
-</p>
-<p class="intro">
-        The page follows the same order as the field workflow: setting, measurement, validation, positioning, surface modeling, and interpretation through time. The goal is to show where the concepts in OMEGA come from and why they matter in actual survey work.<sup class="cite"><a href="#ref-1">[1]</a><a href="#ref-2">[2]</a><a href="#ref-10">[10]</a></sup>
-</p>
-<nav class="page-links">
-<a href="index.html">Home</a><a href="how-omega-works.html">OMEGA Guide</a><a href="omega-sensing.html">Sensing</a><a href="omega-validation.html">Validation</a><a href="omega-mapping.html">Mapping</a><a href="omega-research.html">Research</a><a href="omega-data.html">Data</a>
-<a href="how-omega-works.html">OMEGA Guide</a>
-<a href="omega-sensing.html">Sensing</a>
-<a href="omega-validation.html">Validation</a>
-<a href="omega-mapping.html">Mapping</a>
-</nav>
-<nav>
-<a href="#hydrography">Bathymetry and Hydrography</a>
-<a href="#echo">Echo Sounding</a>
-<a href="#validation">Validation and Data Quality</a>
-<a href="#water-column">Water Column and Sound Speed</a>
-<a href="#position">Position, Scale, and Resolution</a>
-<a href="#surface-models">Surface Models</a>
-<a href="#bottom-change">Bottom Change</a>
-<a href="#research-questions">Research Questions</a>
-<a href="#repeat">Repeated Surveys</a>
-<a href="#reading">Selected Reading</a>
-</nav>
-<div class="process-band">
-<div class="process-step">
-<strong>1. Environment</strong>
-          Water properties, bottom material, and site morphology shape the conditions under which the measurement is made.
+  <main class="page">
+    <nav class="topbar">
+      <a href="index.html">Home</a>
+      <span>Research</span>
+      <a href="#questions">Questions</a>
+      <a href="#hydrography">Bathymetry</a>
+      <a href="#echo">Acoustic Depth</a>
+      <a href="#validation">Validation</a>
+      <a href="#water-column">Water Column</a>
+      <a href="#position">Position and Scale</a>
+      <a href="#surface-models">Interpolation</a>
+      <a href="#bottom-change">Bottom Change</a>
+      <a href="#repeat">Repeated Surveys</a>
+      <a href="#field-use">Field Questions</a>
+      <a href="#reading">Reading Trail</a>
+    </nav>
+
+    <header class="hero">
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <div class="eyebrow">Research context for OMEGA</div>
+          <h1>Bathymetry, Acoustics, and Change</h1>
+          <p>
+            This page brings together the scientific ideas that shape OMEGA: hydrography, underwater acoustics, water-column structure, survey validation, spatial uncertainty, interpolation, and geomorphic change in shallow aquatic environments.
+          </p>
+          <div class="hero-pills">
+            <span>Hydrography</span>
+            <span>Sound speed</span>
+            <span>Survey uncertainty</span>
+            <span>Interpolation</span>
+            <span>Sediment movement</span>
+            <span>Repeatability</span>
+          </div>
         </div>
-<div class="process-step">
-<strong>2. Measurement</strong>
-          A sound pulse moves through the water column, reflects from the bed, and returns to the transducer.<sup class="cite"><a href="#ref-5">[5]</a><a href="#ref-6">[6]</a></sup>
-</div>
-<div class="process-step">
-<strong>3. Validation</strong>
-          Position, motion, timing, and field conditions determine which soundings can support interpretation.<sup class="cite"><a href="#ref-1">[1]</a><a href="#ref-8">[8]</a></sup>
-</div>
-<div class="process-step">
-<strong>4. Placement</strong>
-          Accepted soundings become georeferenced observations tied to place and time.
+        <div class="hero-side">
+          <div class="glass-card">
+            <strong>Core questions</strong>
+            <ul>
+              <li>How is depth computed from a sonar return?</li>
+              <li>What makes one sounding more trustworthy than another?</li>
+              <li>How do water properties change the measurement?</li>
+              <li>How does a set of points become a bottom surface?</li>
+            </ul>
+          </div>
+          <div class="glass-card">
+            <strong>What this page holds</strong>
+            <p>
+              It brings together the scientific reasoning, field considerations, and research threads that shape the system.
+            </p>
+          </div>
         </div>
-<div class="process-step">
-<strong>5. Surface</strong>
-          Interpolation estimates the spaces between observations and builds a bathymetric model.<sup class="cite"><a href="#ref-10">[10]</a><a href="#ref-11">[11]</a></sup>
-</div>
-<div class="process-step">
-<strong>6. Interpretation</strong>
-          Repeated surveys connect bottom form to sediment movement, disturbance, and environmental change.<sup class="cite"><a href="#ref-12">[12]</a><a href="#ref-13">[13]</a><a href="#ref-14">[14]</a></sup>
-</div>
-</div>
-<div class="three-col">
-<div class="level-box">
-<strong>Fast overview</strong>
-          Read the first paragraph of each section for the main ideas.
-        </div>
-<div class="level-box">
-<strong>Deeper study</strong>
-          Open the expandable panels for field detail on acoustics, uncertainty, sediment movement, and survey design.
-        </div>
-<div class="level-box">
-<strong>Research context</strong>
-          Use the inline citations and bibliography to follow each concept back to hydrography, acoustics, interpolation, and change-detection work.
-        </div>
-</div>
-<div class="grid" style="margin-top:22px;">
-<div class="card">
-<strong>Bathymetry</strong>
-          Bathymetry measures underwater depth and bottom form, giving shape to submerged landscapes.<sup class="cite"><a href="#ref-1">[1]</a><a href="#ref-2">[2]</a></sup>
-</div>
-<div class="card">
-<strong>Acoustic travel time</strong>
-          Small survey systems estimate depth by measuring how long a sound pulse takes to travel to the bed and return.<sup class="cite"><a href="#ref-5">[5]</a><a href="#ref-6">[6]</a></sup>
-</div>
-<div class="card">
-<strong>Water properties</strong>
-          Temperature, salinity, and pressure change sound speed, so the water column directly influences the depth estimate.<sup class="cite"><a href="#ref-4">[4]</a><a href="#ref-6">[6]</a></sup>
-</div>
-<div class="card">
-<strong>Validity</strong>
-          A recorded number becomes useful survey data when position, motion, timing, and field conditions support interpretation.<sup class="cite"><a href="#ref-1">[1]</a><a href="#ref-8">[8]</a><a href="#ref-9">[9]</a></sup>
-</div>
-<div class="card">
-<strong>Interpolation</strong>
-          A bathymetric surface combines measured points with a spatial model that estimates values between them.<sup class="cite"><a href="#ref-10">[10]</a><a href="#ref-11">[11]</a></sup>
-</div>
-<div class="card">
-<strong>Change through time</strong>
-          Waves, currents, storms, sediment transport, and infrastructure can reorganize the bed across hours, seasons, and years.<sup class="cite"><a href="#ref-12">[12]</a><a href="#ref-13">[13]</a><a href="#ref-14">[14]</a></sup>
-</div>
-</div>
-</header>
-<section id="hydrography">
-<span class="small-label">Field Context</span>
-<h2>Bathymetry sits at the meeting point of physics, geology, and geospatial science</h2>
-<p class="lead section-intro">
-        Depth is one measurement within a larger hydrographic picture. Once depth is tied to location, time, and water level, it begins to describe the shape of an underwater landscape and the processes acting on it.<sup class="cite"><a href="#ref-1">[1]</a><a href="#ref-2">[2]</a><a href="#ref-3">[3]</a></sup>
-</p>
-<div class="quick-summary">
-        A bathymetric map is useful because underwater shape affects circulation, sediment pathways, habitat structure, access, and change through time.<sup class="cite"><a href="#ref-2">[2]</a><a href="#ref-3">[3]</a><a href="#ref-12">[12]</a></sup>
-</div>
-<p>
-        Hydrography provides the broader frame. It includes depth measurement, water levels, the relationship between the water surface and the bed, and the questions that depend on those relationships. In rivers, ponds, estuaries, harbors, wetlands, and nearshore waters, bottom form influences circulation, wave transformation, erosion, deposition, habitat structure, and the movement of nutrients or pollutants.<sup class="cite"><a href="#ref-1">[1]</a><a href="#ref-2">[2]</a><a href="#ref-3">[3]</a></sup>
-</p>
-<p>
-        The submerged landscape also changes. Sandbars migrate, channels shoal, fine sediment settles and resuspends, and storms can scour one zone while filling another. That dynamism makes local bathymetry useful for environmental observation as well as mapping.<sup class="cite"><a href="#ref-12">[12]</a><a href="#ref-13">[13]</a><a href="#ref-14">[14]</a></sup>
-</p>
-<div class="details-wrap">
-<details>
-<summary>Deeper look: why underwater shape matters scientifically</summary>
-<div class="details-body">
-<p>
-              Bottom form helps control velocity distribution, turbulence, wave breaking, bed stress, and depositional patterns. Those processes influence water quality, transport pathways, marsh edge stability, fish habitat, benthic habitat, and the way pollutants or suspended particles move through a system.<sup class="cite"><a href="#ref-2">[2]</a><a href="#ref-3">[3]</a><a href="#ref-12">[12]</a></sup>
-</p>
-<p>
-              In shallow environments, even small changes in elevation can matter. A few centimeters of shoaling can alter circulation in a narrow channel, change how water spreads through a wetland edge, or affect the accessibility of a harbor or pond margin.<sup class="cite"><a href="#ref-2">[2]</a><a href="#ref-3">[3]</a></sup>
-</p>
-</div>
-</details>
-<details>
-<summary>Deeper look: where small local bathymetry is especially useful</summary>
-<div class="details-body">
-<p>
-              Compact survey systems are especially useful in small harbors, shallow embayments, ponds, stormwater basins, lagoons, estuarine edges, restoration sites, and other places where larger survey resources may be infrequent or difficult to deploy. These environments often have active sediment movement and strong spatial variability at local scales.<sup class="cite"><a href="#ref-3">[3]</a><a href="#ref-15">[15]</a><a href="#ref-17">[17]</a></sup>
-</p>
-</div>
-</details>
-</div>
-<div class="omega-note">
-<strong>In OMEGA</strong>
-        OMEGA is most useful when the shape of the bottom is part of the question, whether that question is about circulation, sediment movement, habitat, or change through time.
       </div>
-</section>
-<section id="echo">
-<span class="small-label">Acoustic Measurement</span>
-<h2>Echo sounding measures travel time and converts it into depth</h2>
-<p class="lead section-intro">
-        Echo sounding measures the travel time of sound in water. That travel time becomes depth through a sound-speed estimate and the geometry of a round trip between transducer and bed.<sup class="cite"><a href="#ref-5">[5]</a><a href="#ref-6">[6]</a></sup>
-</p>
-<div class="equation">depth = (travel time × sound speed) / 2</div>
-<p>
-        The division by two matters because the pulse travels from the transducer to the bottom and back again. The instrument measures elapsed time directly. Distance comes from a calculation.<sup class="cite"><a href="#ref-5">[5]</a><a href="#ref-6">[6]</a></sup>
-</p>
-<p>
-        In a single-beam system, each sounding samples one portion of the bed beneath the survey platform. A site becomes a mapped surface only after many soundings are collected across space and organized into a georeferenced dataset.<sup class="cite"><a href="#ref-7">[7]</a><a href="#ref-9">[9]</a></sup>
-</p>
-<pre><code>// Conceptual relationship
-// travel time + sound speed -&gt; depth estimate
+    </header>
+
+    <section class="chapter" id="questions">
+      <div class="section-label">Scientific Questions</div>
+      <h2>The page is organized around the main questions behind the survey</h2>
+      <p class="chapter-intro">
+        These questions shape how the survey is built, how measurements are screened, how surfaces are modeled, and how bottom form is interpreted.
+      </p>
+      <div class="signal-grid">
+        <div class="signal-step">
+          <div class="step-number">1</div>
+          <strong>How is depth measured?</strong>
+          A sonar return provides travel time, and the system converts that travel time into distance using a sound-speed estimate.
+        </div>
+        <div class="signal-step">
+          <div class="step-number">2</div>
+          <strong>What affects the result?</strong>
+          Temperature, salinity, pressure, beam geometry, and bottom character all influence the acoustic path.
+        </div>
+        <div class="signal-step">
+          <div class="step-number">3</div>
+          <strong>Which points count?</strong>
+          Position quality, motion, timing, and expected range shape which observations belong in the mapped dataset.
+        </div>
+        <div class="signal-step">
+          <div class="step-number">4</div>
+          <strong>How do points become terrain?</strong>
+          Interpolation estimates the spaces between accepted soundings and reconstructs bottom form across the site.
+        </div>
+        <div class="signal-step">
+          <div class="step-number">5</div>
+          <strong>What does the terrain mean?</strong>
+          Bottom shape can be read in relation to circulation, sediment transport, storms, infrastructure, and time.
+        </div>
+        <div class="signal-step">
+          <div class="step-number">6</div>
+          <strong>What changes later?</strong>
+          Repeated surveys make it possible to compare surfaces and detect morphological change over time.
+        </div>
+      </div>
+    </section>
+
+    <section class="chapter chapter-dark" id="hydrography">
+      <div class="section-label">Bathymetry in Context</div>
+      <h2>Bathymetry describes the shape of submerged terrain and the processes acting on it</h2>
+      <p class="chapter-intro">
+        Depth becomes scientifically useful when it is understood as part of a landscape. Once soundings are tied to position, they begin to describe slope, channel form, depositional areas, erosional patterns, and relationships between bottom structure and water movement.
+      </p>
+      <div class="split-panel">
+        <div class="grid-card">
+          <strong>What bottom shape can help explain</strong>
+          <ul class="list-tight">
+            <li>How water is likely to circulate through a site</li>
+            <li>Where sediment tends to settle, migrate, or scour</li>
+            <li>Why some areas remain accessible while others shoal</li>
+            <li>How habitat structure may vary across a shallow environment</li>
+          </ul>
+        </div>
+        <div class="grid-card">
+          <strong>Why small-scale surveys matter</strong>
+          <ul class="list-tight">
+            <li>Many shallow sites change faster than they are formally surveyed</li>
+            <li>Local morphology can matter even when regional mapping already exists</li>
+            <li>Repeat observations are often more informative than one-time coverage</li>
+            <li>Open tools make it easier to revisit the same site under comparable methods</li>
+          </ul>
+        </div>
+      </div>
+      <details>
+        <summary>Open the deeper context</summary>
+        <div class="details-body">
+          <p>
+            Shallow basins, lagoons, marsh edges, river mouths, and working waterfronts can change through a combination of tides, runoff, waves, biological activity, dredging, and infrastructure. In those environments, bathymetry is a way to study the interaction between form and process at a scale that is often missed by infrequent large surveys.
+          </p>
+        </div>
+      </details>
+    </section>
+
+    <section class="chapter" id="echo">
+      <div class="story">
+        <aside class="story-side">
+          <div class="story-number">Principle 01</div>
+          <strong>Acoustic depth comes from time, sound speed, and geometry.</strong>
+          <p>
+            The sonar records elapsed time. Depth emerges when that time is combined with a sound-speed estimate and the round-trip path of the pulse.
+          </p>
+        </aside>
+        <div class="story-main">
+          <div class="story-tag">Acoustic measurement</div>
+          <h3>Echo sounding follows a short physical sequence</h3>
+          <p>
+            A pulse leaves the transducer, moves through the water column, reflects from the bed, and returns to the sensor. The measured quantity is elapsed time. The computed quantity is depth.
+          </p>
+          <div class="concept-strip">
+            <div class="concept-card">
+              <strong>1. Emission</strong>
+              The transducer sends an acoustic pulse downward into the water.
+            </div>
+            <div class="concept-card">
+              <strong>2. Propagation</strong>
+              The pulse travels through water whose temperature, salinity, and pressure affect sound speed.
+            </div>
+            <div class="concept-card">
+              <strong>3. Reflection</strong>
+              The bed returns part of that energy, with strength influenced by slope and bottom character.
+            </div>
+            <div class="concept-card">
+              <strong>4. Timing</strong>
+              The instrument records round-trip travel time and the software converts it to depth.
+            </div>
+          </div>
+          <div class="equation">depth = (travel time × sound speed) / 2</div>
+          <div class="mini-grid">
+            <div class="soft-card">
+              <strong>Sound speed</strong>
+              Depth shifts when the assumed speed of sound shifts, even if the same travel time is measured.
+            </div>
+            <div class="soft-card">
+              <strong>Beam footprint</strong>
+              The insonified area widens with depth, so one sounding represents an area, not a mathematical point.
+            </div>
+            <div class="soft-card">
+              <strong>Bottom return</strong>
+              Mud, sand, vegetation, rock, and roughness all influence how clearly the bed reflects energy.
+            </div>
+          </div>
+          <pre><code>// Conceptual relationship
+// travel time + sound speed -> depth estimate
 
 float travelTime = pingSeconds;
 float soundSpeed = estimateSoundSpeed(tempC, salinity, pressure);
 float depth = (travelTime * soundSpeed) / 2.0;</code></pre>
-<div class="code-note">
-        This block shows the core conversion in echo sounding. The sensor measures elapsed time. The program combines that time with a sound-speed estimate and converts the round-trip path into a one-way depth value by dividing by two.<sup class="cite"><a href="#ref-5">[5]</a><a href="#ref-6">[6]</a></sup>
-</div>
-<div class="details-wrap">
-<details>
-<summary>Deeper look: beam footprint and slope</summary>
-<div class="details-body">
-<p>
-              A sonar beam spreads into a footprint whose size grows with depth. That means the measurement integrates reflections across an area, not a mathematical point. On a slope, the earliest strong return may come from a different part of the footprint than the geometric center, which affects how the sounding should be interpreted.<sup class="cite"><a href="#ref-7">[7]</a><a href="#ref-9">[9]</a></sup>
-</p>
-</div>
-</details>
-<details>
-<summary>Deeper look: why bottom material affects the return</summary>
-<div class="details-body">
-<p>
-              Mud, sand, rock, vegetation, shell fragments, bubbles, and suspended sediment all influence reflection and scattering. Some beds return a clean, strong echo. Others produce noisier or more ambiguous behavior. Acoustic measurement is shaped by both geometry and material properties.<sup class="cite"><a href="#ref-5">[5]</a><a href="#ref-6">[6]</a></sup>
-</p>
-</div>
-</details>
-</div>
-<div class="omega-note">
-<strong>In OMEGA</strong>
-        OMEGA uses a single-beam sensor, so survey route, line spacing, slope, and bottom texture all shape what the final map can show.
+          <div class="code-caption">The code mirrors the physics: measure elapsed time, estimate sound speed for the medium, then compute the round-trip distance.</div>
+          <details>
+            <summary>Why slope and footprint matter</summary>
+            <div class="details-body">
+              <p>
+                On a flat bed, the return tends to behave predictably. On a slope, the strongest return can come from a different part of the footprint than the center beneath the platform. That influences how the sounding relates to actual bottom geometry.
+              </p>
+            </div>
+          </details>
+        </div>
       </div>
-</section>
-<section id="validation">
-<span class="small-label">Measurement Quality</span>
-<h2>Validation determines whether a sounding belongs in scientific interpretation</h2>
-<p class="lead section-intro">
-        A survey point matters when its position, timing, and measurement conditions are strong enough to support interpretation. Validation is the step that sorts field observations by quality before they enter the map.<sup class="cite"><a href="#ref-1">[1]</a><a href="#ref-8">[8]</a><a href="#ref-9">[9]</a></sup>
-</p>
-<div class="quick-summary">
-        Validation connects a recorded reading to survey confidence by checking whether the surrounding field conditions support its use.<sup class="cite"><a href="#ref-1">[1]</a><a href="#ref-8">[8]</a></sup>
-</div>
-<p>
-        A field workflow may record thousands of values. Some come from strong conditions and some come from weak ones. Position can drift. Motion can destabilize the transducer. Surface chop can disturb the return. Environmental conditions can shift. Validation provides a disciplined way to separate those cases.<sup class="cite"><a href="#ref-1">[1]</a><a href="#ref-8">[8]</a><a href="#ref-9">[9]</a></sup>
-</p>
-<pre><code>// Conceptual validation logic
+    </section>
 
-bool gpsOk = satellites &gt;= minSatellites &amp;&amp; hdop &lt;= maxHdop;
-bool motionOk = abs(pitch) &lt;= maxPitch &amp;&amp; abs(roll) &lt;= maxRoll;
-bool depthOk = depth &gt; minDepth &amp;&amp; depth &lt; maxDepth;
+    <section class="chapter" id="validation">
+      <div class="story">
+        <aside class="story-side">
+          <div class="story-number">Principle 02</div>
+          <strong>Validation defines the quality of a survey point.</strong>
+          <p>
+            The system evaluates the conditions around each observation and uses those checks to decide whether the sounding belongs in the mapped dataset.
+          </p>
+        </aside>
+        <div class="story-main">
+          <div class="story-tag">Measurement quality</div>
+          <h3>Validation turns field conditions into explicit data rules</h3>
+          <p>
+            A recorded value carries more meaning when it is tied to the conditions in which it was collected. Position quality, platform motion, timing, and expected depth range all shape whether a sounding can support interpretation.
+          </p>
+          <div class="concept-strip">
+            <div class="concept-card">
+              <strong>Position</strong>
+              Satellite count, HDOP, and fix age indicate how confidently a depth can be placed in space.
+            </div>
+            <div class="concept-card">
+              <strong>Motion</strong>
+              Pitch and roll affect beam orientation and influence how the sounding relates to the bed below.
+            </div>
+            <div class="concept-card">
+              <strong>Range</strong>
+              Expected minimum and maximum depths keep the survey aligned with the physical setting of the site.
+            </div>
+            <div class="concept-card">
+              <strong>Timing</strong>
+              Sensor streams need coherent timing so that depth, position, and orientation describe the same moment.
+            </div>
+          </div>
+          <div class="process-list">
+            <div class="process-item">
+              <div class="process-badge">1</div>
+              <div>
+                <strong>Record the observation</strong>
+                Collect depth, position, orientation, and timing data for the same measurement event.
+              </div>
+            </div>
+            <div class="process-item">
+              <div class="process-badge">2</div>
+              <div>
+                <strong>Test the surrounding conditions</strong>
+                Apply thresholds for GNSS quality, motion limits, expected range, and freshness of the fix.
+              </div>
+            </div>
+            <div class="process-item">
+              <div class="process-badge">3</div>
+              <div>
+                <strong>Assign acceptance</strong>
+                Use the combined tests to decide whether the sounding enters the mapping workflow.
+              </div>
+            </div>
+            <div class="process-item">
+              <div class="process-badge">4</div>
+              <div>
+                <strong>Build the surface from accepted points</strong>
+                The final terrain model inherits the logic of these quality checks.
+              </div>
+            </div>
+          </div>
+          <pre><code>// Conceptual validation logic
 
-bool soundingIsValid = gpsOk &amp;&amp; motionOk &amp;&amp; depthOk;</code></pre>
-<div class="code-note">
-        The logic is simple on purpose. Each variable represents one part of measurement quality. GNSS quality supports spatial confidence, pitch and roll describe platform stability, and depth limits keep the system inside the physical range expected for the site. The final boolean collects those checks into one decision about whether a sounding enters later interpretation.<sup class="cite"><a href="#ref-1">[1]</a><a href="#ref-8">[8]</a><a href="#ref-9">[9]</a></sup>
-</div>
-<div class="details-wrap">
-<details>
-<summary>Deeper look: what validation can include</summary>
-<div class="details-body">
-<p>
-              Validation can include GNSS quality thresholds, motion thresholds, acceptable depth ranges, sonar confidence behavior, survey speed limits, time synchronization checks, and environmental awareness such as rapid temperature change, shallow breaking waves, or vegetation-heavy zones.<sup class="cite"><a href="#ref-1">[1]</a><a href="#ref-8">[8]</a><a href="#ref-9">[9]</a></sup>
-</p>
-</div>
-</details>
-<details>
-<summary>Deeper look: why this matters scientifically</summary>
-<div class="details-body">
-<p>
-              A bathymetric surface combines measured values with assumptions about where those values belong and how representative they are. Validation improves the quality of the evidence entering that surface and shapes uncertainty, reproducibility, and the credibility of comparisons across time.<sup class="cite"><a href="#ref-1">[1]</a><a href="#ref-10">[10]</a></sup>
-</p>
-</div>
-</details>
-</div>
-<div class="omega-note">
-<strong>In OMEGA</strong>
-        OMEGA filters soundings through position, motion, and range checks before they move into mapping.
+bool gpsOk = satellites >= minSatellites && hdop <= maxHdop;
+bool motionOk = abs(pitch) <= maxPitch && abs(roll) <= maxRoll;
+bool depthOk = depth > minDepth && depth < maxDepth;
+
+bool soundingIsValid = gpsOk && motionOk && depthOk;</code></pre>
+          <div class="code-caption">Each boolean test expresses a field assumption. The combined result determines which observations shape the map.</div>
+          <div class="compare-panel">
+            <div class="compare-card">
+              <strong>Field meaning</strong>
+              Validation connects every accepted point to a documented set of survey conditions.
+            </div>
+            <div class="compare-card">
+              <strong>Scientific meaning</strong>
+              Validation influences uncertainty, reproducibility, and confidence in change detected through time.
+            </div>
+          </div>
+        </div>
       </div>
-</section>
-<section id="water-column">
-<span class="small-label">Water Properties</span>
-<h2>The water column has structure, and that structure influences sound speed</h2>
-<p class="lead section-intro">
-        Sound speed changes as the water column changes. Temperature, salinity, and pressure therefore enter the depth calculation directly.<sup class="cite"><a href="#ref-4">[4]</a><a href="#ref-5">[5]</a><a href="#ref-6">[6]</a></sup>
-</p>
-<h3>Temperature</h3>
-<p>
-        Warmer water generally allows sound to travel faster than colder water. In shallow environments, temperature can change through the day, across seasons, and between surface and bottom, which makes it one of the most practical correction terms in small survey systems.<sup class="cite"><a href="#ref-4">[4]</a><a href="#ref-6">[6]</a></sup>
-</p>
-<h3>Salinity</h3>
-<p>
-        Saltier water generally increases sound speed. Estuaries, river mouths, coastal lagoons, and mixed freshwater-saltwater systems can develop strong salinity gradients through runoff, tides, evaporation, and restricted circulation.<sup class="cite"><a href="#ref-4">[4]</a><a href="#ref-6">[6]</a></sup>
-</p>
-<h3>Pressure</h3>
-<p>
-        Pressure rises with depth and tends to increase sound speed. Pressure becomes especially important in deeper-water hydrography, while shallow local surveys often show more immediate variability from temperature and salinity.<sup class="cite"><a href="#ref-4">[4]</a><a href="#ref-6">[6]</a></sup>
-</p>
-<h3>Stratification</h3>
-<p>
-        Lakes, estuaries, and sheltered waters can become layered. A thermocline marks a strong temperature transition. A halocline marks a salinity transition. Stratification means a sound pulse may travel through zones with different acoustic behavior from top to bottom.<sup class="cite"><a href="#ref-4">[4]</a><a href="#ref-6">[6]</a></sup>
-</p>
-<pre><code>// Simplified sound-speed idea
+    </section>
+
+    <section class="chapter" id="water-column">
+      <div class="story">
+        <aside class="story-side">
+          <div class="story-number">Principle 03</div>
+          <strong>The water column is part of the instrument.</strong>
+          <p>
+            Temperature, salinity, and pressure change sound speed, so they change the path from travel time to depth.
+          </p>
+        </aside>
+        <div class="story-main">
+          <div class="story-tag">Water properties</div>
+          <h3>Sound speed changes as the water column changes</h3>
+          <p>
+            Water is not a neutral medium. Warmer water generally carries sound faster than colder water. Salinity also raises sound speed, and pressure contributes more as depth increases. In layered or mixed environments, a sound pulse can pass through water with changing acoustic behavior from top to bottom.
+          </p>
+          <div class="grid-3">
+            <div class="soft-card">
+              <strong>Temperature</strong>
+              Often the most practical correction to add in shallow surveys because it can shift quickly over the day, by season, or with stratification.
+            </div>
+            <div class="soft-card">
+              <strong>Salinity</strong>
+              Especially important in estuaries, lagoons, river mouths, and other mixed environments where gradients can be strong.
+            </div>
+            <div class="soft-card">
+              <strong>Pressure</strong>
+              Always present, but most influential in deeper water where the change in pressure is larger across the profile.
+            </div>
+          </div>
+          <pre><code>// Simplified sound-speed idea
 // A full model can include temperature, salinity, and pressure.
 
 float estimateSoundSpeed(float tempC, float salinityPsu, float depthM) {
@@ -558,91 +997,94 @@ float estimateSoundSpeed(float tempC, float salinityPsu, float depthM) {
          + 1.34 * (salinityPsu - 35.0)
          + 0.016 * depthM;
 }</code></pre>
-<div class="code-note">
-        This example shows the structure of a practical sound-speed estimate. Temperature usually drives much of the short-term variability in shallow water, salinity becomes increasingly important in mixed or estuarine environments, and depth contributes through pressure.<sup class="cite"><a href="#ref-4">[4]</a><a href="#ref-6">[6]</a></sup>
-</div>
-<div class="details-wrap">
-<details>
-<summary>Deeper look: why temperature is often the first correction to add</summary>
-<div class="details-body">
-<p>
-              Temperature sensing is relatively affordable, compact, and straightforward to integrate. In many shallow-water deployments, it provides a meaningful improvement to the sound-speed estimate without greatly increasing system complexity.<sup class="cite"><a href="#ref-4">[4]</a></sup>
-</p>
-</div>
-</details>
-<details>
-<summary>Deeper look: why salinity may matter more in some sites than others</summary>
-<div class="details-body">
-<p>
-              Salinity variation may be modest in some small marine survey areas, especially where water is well mixed. In estuaries and river-influenced environments, salinity can shift strongly across short distances and depths, which is why site context matters when choosing what to measure directly.<sup class="cite"><a href="#ref-4">[4]</a><a href="#ref-6">[6]</a></sup>
-</p>
-</div>
-</details>
-<details>
-<summary>Deeper look: what this means for bathymetric interpretation</summary>
-<div class="details-body">
-<p>
-              When the water column changes, the relationship between travel time and depth changes with it. Two surveys collected under different thermal or mixing conditions may therefore require careful comparison, especially when the goal is to detect small morphological change.<sup class="cite"><a href="#ref-4">[4]</a><a href="#ref-13">[13]</a></sup>
-</p>
-</div>
-</details>
-</div>
-<div class="omega-note">
-<strong>In OMEGA</strong>
-        OMEGA records temperature because it gives the system a practical sound-speed correction in shallow water. Conductivity or salinity sensing would extend that correction in estuarine and mixed environments.
+          <div class="code-caption">Pattern in code: when the surrounding medium affects the measurement, the medium belongs inside the measurement model.</div>
+          <details>
+            <summary>Why temperature is often the first correction people add</summary>
+            <div class="details-body">
+              <p>
+                Temperature sensing is inexpensive, compact, and easy to integrate. In many shallow-water deployments it produces a meaningful improvement to the sound-speed estimate without adding much system complexity. That makes it a practical first step in an open and adaptable instrument.
+              </p>
+            </div>
+          </details>
+          <details>
+            <summary>Why local site context still matters</summary>
+            <div class="details-body">
+              <p>
+                Some coastal areas are well mixed and behave fairly consistently over short distances. Estuaries and river-influenced sites can behave very differently. That is why the decision to measure temperature alone, or to extend the system with conductivity or salinity sensing, should follow the actual physics of the site.
+              </p>
+            </div>
+          </details>
+        </div>
       </div>
-</section>
-<section id="position">
-<span class="small-label">Geospatial Reasoning</span>
-<h2>Maps depend on position, spacing, timing, and the scale of the site</h2>
-<p class="lead section-intro">
-        Every sounding is a depth tied to a location and a moment in time. The map depends on how accurate that position is, how far apart the survey lines are, and what scale of bottom form the survey is trying to resolve.<sup class="cite"><a href="#ref-1">[1]</a><a href="#ref-3">[3]</a><a href="#ref-9">[9]</a></sup>
-</p>
-<p>
-        Position and time make comparison possible. Together they allow soundings to be plotted, sequenced, filtered, compared across passes, and revisited later. They also allow multiple sensor streams to be aligned within one field record.<sup class="cite"><a href="#ref-1">[1]</a><a href="#ref-3">[3]</a></sup>
-</p>
-<h3>Spatial uncertainty</h3>
-<p>
-        A stable depth estimate can still be misplaced laterally if position is weak. That reshapes the reconstructed bottom. Narrow channels can shift, slopes can soften, and small depressions can blur or disappear.<sup class="cite"><a href="#ref-1">[1]</a><a href="#ref-9">[9]</a></sup>
-</p>
-<h3>Spacing and site scale</h3>
-<p>
-        Wide spacing may capture broad basin form, while berms, pits, narrow channels, debris, and abrupt edges demand denser observation. Resolution emerges from the interaction between the survey design and the morphology of the environment.<sup class="cite"><a href="#ref-3">[3]</a><a href="#ref-9">[9]</a><a href="#ref-10">[10]</a></sup>
-</p>
-<h3>Time basis</h3>
-<p>
-        UTC or another stable time reference keeps GPS updates, soundings, and environmental measurements aligned. This helps with field logs, repeat surveys, and workflows where multiple data sources are combined.<sup class="cite"><a href="#ref-1">[1]</a><a href="#ref-3">[3]</a></sup>
-</p>
-<div class="details-wrap">
-<details>
-<summary>Deeper look: why scale is one of the most important design questions</summary>
-<div class="details-body">
-<p>
-              Every survey has an intended scale. A system that works well for broad depth trends may miss sharp microtopography. A route that captures a small pond in good detail may be inefficient for a long channel. Scale determines line spacing, survey duration, expected resolution, and the kinds of change the survey can realistically detect.<sup class="cite"><a href="#ref-3">[3]</a><a href="#ref-9">[9]</a><a href="#ref-10">[10]</a></sup>
-</p>
-</div>
-</details>
-</div>
-</section>
-<section id="surface-models">
-<span class="small-label">Spatial Modeling</span>
-<h2>Interpolation turns measured points into a continuous bottom surface</h2>
-<p class="lead section-intro">
-        Interpolation estimates the bed between measured soundings. The resulting surface reflects the field data, the spacing of those data, and the assumptions built into the interpolation method.<sup class="cite"><a href="#ref-10">[10]</a><a href="#ref-11">[11]</a></sup>
-</p>
-<h3>What interpolation does</h3>
-<p>
-        Interpolation fills the spaces between measured locations by using nearby soundings to estimate a value at an unsampled position. That estimated value depends on the method used, the spacing of the observations, and the morphology of the site.<sup class="cite"><a href="#ref-10">[10]</a><a href="#ref-11">[11]</a></sup>
-</p>
-<h3>Why morphology matters</h3>
-<p>
-        Smooth basin floors often reconstruct more easily from moderate spacing. Sharp edges, isolated pits, anthropogenic debris, culverts, scour holes, or complex channel geometry require denser evidence because abrupt changes are harder to infer across wide gaps.<sup class="cite"><a href="#ref-10">[10]</a><a href="#ref-11">[11]</a></sup>
-</p>
-<h3>IDW in compact systems</h3>
-<p>
-        Inverse distance weighting gives more influence to nearby points than to distant ones. It is conceptually transparent, locally responsive, and easy to inspect in smaller bathymetric workflows.<sup class="cite"><a href="#ref-11">[11]</a></sup>
-</p>
-<pre><code>// Conceptual IDW structure
+    </section>
+
+    <section class="chapter" id="position">
+      <div class="story">
+        <aside class="story-side">
+          <div class="story-number">Principle 04</div>
+          <strong>Maps depend on position, spacing, and scale.</strong>
+          <p>
+            A stable depth estimate can still produce a weak map if the survey geometry is not matched to the site.
+          </p>
+        </aside>
+        <div class="story-main">
+          <div class="story-tag">Geospatial reasoning</div>
+          <h3>Every sounding needs to belong to the right place and the right scale</h3>
+          <p>
+            A bathymetric point is only useful as a map element when it is tied to location and time. That geospatial context lets soundings be plotted, sequenced, compared, filtered, and revisited later. It also allows different sensor streams to be aligned in one record.
+          </p>
+          <div class="split-panel">
+            <div class="soft-card">
+              <strong>Spatial uncertainty</strong>
+              A stable depth estimate can still be misplaced laterally if GNSS quality is weak. Small channels can shift, slopes can soften, and local features can blur.
+            </div>
+            <div class="soft-card">
+              <strong>Survey spacing</strong>
+              Broad basin form can be captured with wider line spacing. Pits, berms, debris, abrupt edges, and narrow channels need denser evidence.
+            </div>
+          </div>
+          <div class="callout">
+            <strong>Scale is one of the most important design decisions</strong>
+            The intended scale of the project influences line spacing, route design, survey duration, expected resolution, and the kinds of change that can be detected later.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="chapter" id="surface-models">
+      <div class="story">
+        <aside class="story-side">
+          <div class="story-number">Principle 05</div>
+          <strong>Interpolation shapes the surface between soundings.</strong>
+          <p>
+            The measured points anchor the map. The interpolation method governs how depth is estimated between those anchors.
+          </p>
+        </aside>
+        <div class="story-main">
+          <div class="story-tag">Spatial modeling</div>
+          <h3>IDW builds a continuous surface from local influence</h3>
+          <p>
+            A single-beam survey produces a cloud of discrete soundings. Interpolation converts that cloud into a grid by estimating a value at each cell from nearby observations. In inverse distance weighting, closer soundings contribute more strongly than distant ones.
+          </p>
+          <div class="concept-strip">
+            <div class="concept-card">
+              <strong>Measured points</strong>
+              Start with accepted soundings that each have position and depth.
+            </div>
+            <div class="concept-card">
+              <strong>Neighborhood</strong>
+              For each grid cell, gather the nearby points that will contribute to the estimate.
+            </div>
+            <div class="concept-card">
+              <strong>Weighting</strong>
+              Assign larger weights to closer points and smaller weights to more distant points.
+            </div>
+            <div class="concept-card">
+              <strong>Surface value</strong>
+              Combine the weighted depths to compute the interpolated depth for that grid location.
+            </div>
+          </div>
+          <pre><code>// Conceptual IDW structure
 for each gridCell:
     weightedSum = 0
     weightTotal = 0
@@ -652,201 +1094,202 @@ for each gridCell:
         weightedSum += w * sounding.depth
         weightTotal += w
     gridCell.depth = weightedSum / weightTotal</code></pre>
-<div class="code-note">
-        IDW gives nearby soundings more influence than distant soundings. The power term controls how quickly that influence falls off with distance. Lower power spreads influence more broadly across space. Higher power keeps the estimate more local. Those settings shape how smooth or how locally responsive the reconstructed bottom will appear.<sup class="cite"><a href="#ref-10">[10]</a><a href="#ref-11">[11]</a></sup>
-</div>
-<div class="details-wrap">
-<details>
-<summary>Deeper look: how interpolation methods differ</summary>
-<div class="details-body">
-<p>
-              IDW emphasizes local proximity. Spline methods emphasize smoothness and curvature. Kriging uses an explicit statistical model of spatial dependence. Each method responds differently to sparse data, outliers, abrupt terrain changes, and intended use.<sup class="cite"><a href="#ref-10">[10]</a><a href="#ref-11">[11]</a></sup>
-</p>
-</div>
-</details>
-<details>
-<summary>Deeper look: why interpolation is a scientific choice</summary>
-<div class="details-body">
-<p>
-              Interpolation is part of how a site is interpreted. It affects how edges appear, how pits or ridges are represented, how smooth the surface looks, and how uncertainty spreads across unsampled space.<sup class="cite"><a href="#ref-10">[10]</a><a href="#ref-11">[11]</a></sup>
-</p>
-</div>
-</details>
-</div>
-<div class="omega-note">
-<strong>In OMEGA</strong>
-        OMEGA uses IDW because it keeps the relationship between survey points and the modeled surface easy to inspect.
+          <div class="code-caption">IDW expresses a clear spatial assumption: nearby evidence carries more influence over the estimated surface.</div>
+          <div class="mini-grid">
+            <div class="soft-card">
+              <strong>Lower power</strong>
+              Influence spreads more broadly, which tends to produce smoother transitions across the grid.
+            </div>
+            <div class="soft-card">
+              <strong>Higher power</strong>
+              Influence stays more local, which helps preserve nearby variation where point density is strong.
+            </div>
+            <div class="soft-card">
+              <strong>Wide gaps</strong>
+              Large spaces between lines leave the model with less direct evidence, so surface character becomes more sensitive to method choice.
+            </div>
+          </div>
+          <div class="compare-panel">
+            <div class="compare-card">
+              <strong>Survey design contribution</strong>
+              Line spacing, repeat coverage, and route geometry determine how much measured structure the interpolator receives.
+            </div>
+            <div class="compare-card">
+              <strong>Interpretation contribution</strong>
+              The resulting grid reflects both the measured bathymetry and the mathematical behavior of the interpolation method.
+            </div>
+          </div>
+          <details>
+            <summary>Why IDW fits this workflow</summary>
+            <div class="details-body">
+              <p>
+                IDW is easy to inspect, easy to explain, and closely tied to local proximity. That makes it a strong fit for smaller bathymetric workflows where transparency matters as much as output.
+              </p>
+            </div>
+          </details>
+        </div>
       </div>
-</section>
-<section id="bottom-change">
-<span class="small-label">Marine and Coastal Process</span>
-<h2>The bottom changes because moving water redistributes energy and sediment</h2>
-<p class="lead section-intro">
-        Bathymetry is also a way to read process. Bottom shape shifts as waves, currents, runoff, storms, and infrastructure redistribute energy and sediment.<sup class="cite"><a href="#ref-12">[12]</a><a href="#ref-13">[13]</a><a href="#ref-14">[14]</a></sup>
-</p>
-<h3>Waves</h3>
-<p>
-        In shallow water, wave orbital motion can reach the bed. That interaction can move sediment, smooth features, build bars, and erode margins. Wave climate is central to coastal geomorphology.<sup class="cite"><a href="#ref-12">[12]</a><a href="#ref-13">[13]</a></sup>
-</p>
-<h3>Currents</h3>
-<p>
-        Currents move sediment when bed stress exceeds the threshold needed to mobilize grains. Faster flows can carve channels or scour around structures. Slower zones can become depositional areas where sediment settles and accumulates.<sup class="cite"><a href="#ref-12">[12]</a><a href="#ref-13">[13]</a></sup>
-</p>
-<h3>Storm events</h3>
-<p>
-        Storms can reorganize a site quickly. Sediment may be stripped from one location and deposited in another. Bars can migrate, channels can shoal or deepen, and edges can erode. Event-based change is one of the clearest reasons to repeat local bathymetric surveys.<sup class="cite"><a href="#ref-12">[12]</a><a href="#ref-13">[13]</a><a href="#ref-14">[14]</a></sup>
-</p>
-<h3>Human influence</h3>
-<p>
-        Dredging, moorings, revetments, outfalls, harbor activity, shoreline construction, and runoff influence bottom form directly or indirectly. Many submerged landscapes record the combined effects of natural process and infrastructure.<sup class="cite"><a href="#ref-2">[2]</a><a href="#ref-12">[12]</a><a href="#ref-13">[13]</a></sup>
-</p>
-<div class="details-wrap">
-<details>
-<summary>Deeper look: threshold of motion and grain size</summary>
-<div class="details-body">
-<p>
-              Sediment begins moving when the forces acting on grains exceed the resistance holding them in place. Grain size, grain shape, packing, vegetation, turbulence, and cohesive behavior all influence that threshold. Fine mud, coarse sand, gravel, and shell-rich bottoms respond differently to the same flow conditions.<sup class="cite"><a href="#ref-12">[12]</a><a href="#ref-13">[13]</a></sup>
-</p>
-</div>
-</details>
-<details>
-<summary>Deeper look: why estuaries and nearshore sites are especially dynamic</summary>
-<div class="details-body">
-<p>
-              Estuarine and nearshore systems often combine tides, freshwater inflow, wave action, biological growth, restricted circulation, and human infrastructure. That combination can generate strong gradients in sediment behavior, salinity, water level, and bottom change across short distances.<sup class="cite"><a href="#ref-12">[12]</a><a href="#ref-13">[13]</a></sup>
-</p>
-</div>
-</details>
-</div>
-<div class="omega-note">
-<strong>In OMEGA</strong>
-        OMEGA becomes especially useful when it revisits active sites where sediment and bottom form keep changing.
-      </div>
-</section>
-<section id="research-questions">
-<span class="small-label">Research Use</span>
-<h2>OMEGA can support site-based questions about form, process, and change</h2>
-<p class="lead section-intro">
-        A local system becomes most useful when it can return to the same site and ask comparable questions over time.<sup class="cite"><a href="#ref-12">[12]</a><a href="#ref-13">[13]</a><a href="#ref-15">[15]</a><a href="#ref-17">[17]</a></sup>
-</p>
-<div class="grid">
-<div class="card">
-<strong>Morphology</strong>
-          How deep is the site, how is it shaped, and where are the major breaks in slope, channels, bars, depressions, or shoals?
-        </div>
-<div class="card">
-<strong>Change detection</strong>
-          How does the bed respond after a storm, a strong runoff event, a dredging period, or a seasonal shift in wave climate?
-        </div>
-<div class="card">
-<strong>Water-column context</strong>
-          How do temperature structure, mixing, freshwater inflow, or salinity gradients relate to the measurement process and to environmental interpretation?
-        </div>
-<div class="card">
-<strong>Infrastructure effects</strong>
-          How do docks, culverts, moorings, revetments, or outfalls influence scour, deposition, or channel behavior nearby?
-        </div>
-<div class="card">
-<strong>Method comparison</strong>
-          How do different survey routes, spacing choices, sound-speed corrections, or interpolation methods change the resulting surface?
-        </div>
-<div class="card">
-<strong>Monitoring design</strong>
-          How often does a site need to be surveyed to capture the processes that matter there?
-        </div>
-</div>
-</section>
-<section id="repeat">
-<span class="small-label">Temporal Science</span>
-<h2>Repeated local surveys reveal process through time</h2>
-<p class="lead section-intro">
-        Repeated surveys turn bottom form into a time-based record. That is where a local system can become especially useful.<sup class="cite"><a href="#ref-12">[12]</a><a href="#ref-13">[13]</a><a href="#ref-14">[14]</a><a href="#ref-17">[17]</a></sup>
-</p>
-<p>
-        Repeat bathymetry can reveal migration of bars, shoaling of channels, storm response, sediment redistribution, scour near structures, or seasonal shifts in shallow aquatic environments. In many local contexts, survey frequency can be as important as total survey extent.<sup class="cite"><a href="#ref-12">[12]</a><a href="#ref-13">[13]</a><a href="#ref-14">[14]</a></sup>
-</p>
-<p>
-        Repeat surveys gain strength when method stays stable: similar routes, similar processing, careful environmental awareness, and clear interpretation of whether a change belongs to the site or to the survey conditions.<sup class="cite"><a href="#ref-1">[1]</a><a href="#ref-10">[10]</a></sup>
-</p>
-<div class="details-wrap">
-<details>
-<summary>Deeper look: what repeatability supports scientifically</summary>
-<div class="details-body">
-<p>
-              Repeated site-based surveys support comparison, trend detection, event response analysis, and monitoring design. They can help answer whether a site changes gradually, episodically, seasonally, or in response to specific disturbances.<sup class="cite"><a href="#ref-12">[12]</a><a href="#ref-13">[13]</a><a href="#ref-14">[14]</a></sup>
-</p>
-</div>
-</details>
-</div>
-<div class="omega-note">
-<strong>In OMEGA</strong>
-        OMEGA is well suited to repeat local surveys in places where waves, runoff, storms, and human activity reshape the bed.
-      </div>
-</section>
-<section id="reading">
-<span class="small-label">Selected Reading</span>
-<h2>Research related to the science behind OMEGA</h2>
-<p class="lead section-intro">
-        The references below map onto the concepts used throughout the page. The inline citations above point back here so the page can function as both an explanation and a research guide.
+    </section>
+
+    <section class="chapter chapter-dark" id="bottom-change">
+      <div class="section-label">Process and Change</div>
+      <h2>Bottom form changes because moving water redistributes energy and sediment</h2>
+      <p class="chapter-intro">
+        Bathymetry is also a way of reading process. Waves, currents, runoff, storms, and infrastructure can all reorganize the bed. That means the shape recorded by a survey is part of an ongoing physical story.
       </p>
-<div class="bibliography">
-<div class="ref-group">
-<h3>Hydrography and bathymetry</h3>
-<ol>
-<li id="ref-1">International Hydrographic Organization. <em>S-44: IHO Standards for Hydrographic Surveys</em>.</li>
-<li id="ref-2">NOAA Office of Coast Survey. <em>Hydrographic Surveying</em>.</li>
-<li id="ref-3">Canadian Hydrographic Service. <em>Hydrographic Survey Management Guidelines</em>.</li>
-</ol>
-</div>
-<div class="ref-group">
-<h3>Underwater acoustics and sound-speed correction</h3>
-<ol start="4">
-<li id="ref-4">Makar, A. (2022). <em>Simplified Method of Determination of the Sound Speed in Water on the Basis of Temperature Measurements and Salinity Prediction for Shallow Water Bathymetry</em>.</li>
-<li id="ref-5">NOAA Ocean Service. <em>How does sound in the ocean work?</em></li>
-<li id="ref-6">National Physical Laboratory. <em>Technical Guides on Sound Speed in Sea Water</em>.</li>
-</ol>
-</div>
-<div class="ref-group">
-<h3>Single-beam surveys, motion, and survey design</h3>
-<ol start="7">
-<li id="ref-7">Karadeniz Kartal, S. and collaborators (2022). <em>Modeling and Analysis of Sea-Surface Vehicle System for Underwater Mapping Using Single-Beam Echosounder</em>.</li>
-<li id="ref-8">Alkan, R. M. (2003). <em>Reduction of Heave, Pitch and Roll Effects in Hydrographic Surveying</em>.</li>
-<li id="ref-9"><em>Investigating cost-effective single-beam survey configurations for accurate river bathymetry construction</em> (2025).</li>
-</ol>
-</div>
-<div class="ref-group">
-<h3>Interpolation, uncertainty, and surface modeling</h3>
-<ol start="10">
-<li id="ref-10">Adediran, E. and collaborators (2025). <em>Toward Quantifying Interpolation Uncertainty in Set-Line Spacing Hydrographic Surveys</em>.</li>
-<li id="ref-11">Ohlert, P. L., Bach, M., and Breuer, L. (2023). <em>Accuracy assessment of inverse distance weighting interpolation</em>.</li>
-</ol>
-</div>
-<div class="ref-group">
-<h3>Bottom change through time</h3>
-<ol start="12">
-<li id="ref-12">Ganju, N. K. and collaborators (2017). <em>Quantification of Storm-Induced Bathymetric Change in a Back-Barrier Estuary</em>.</li>
-<li id="ref-13">Geheran, M. P. and collaborators (2024). <em>Estimating Nearshore Morphological Change through Ensemble Optimal Interpolation with Altimetric Data</em>.</li>
-<li id="ref-14">Herrmann, J., Magruder, L., Markel, J., and Parrish, C. (2022). <em>Assessing the Ability to Quantify Bathymetric Change over Time Using Solely Satellite-Based Measurements</em>.</li>
-</ol>
-</div>
-<div class="ref-group">
-<h3>Open aquatic instrumentation</h3>
-<ol start="15">
-<li id="ref-15">Sotelo-Torres, F., Alvarez, L. V., and Roberts, R. C. (2023). <em>An Unmanned Surface Vehicle (USV): Development of an Autonomous Boat with a Sensor Integration System for Bathymetric Surveys</em>.</li>
-<li id="ref-16">Gogendeau, P. and collaborators (2025). <em>An autonomous surface vehicle for acoustic tracking, bathymetric and photogrammetric surveys</em>.</li>
-<li id="ref-17">Benatti, T. A. K. and collaborators (2025). <em>A Low-Cost, Open-Source, Multi-Purpose Autonomous Surface Vehicle</em>.</li>
-<li id="ref-18">Medina, J. D. and collaborators (2022). <em>Open-source low-cost design of a buoy for remote water quality monitoring in fish farming</em>.</li>
-</ol>
-</div>
-</div>
-</section>
-<footer>
-      OMEGA brings acoustics, water-column physics, spatial sampling, sediment movement, and surface modeling into one field workflow. The value of the system comes from how those parts stay connected from measurement through interpretation.
-    
-      
+      <div class="grid-4">
+        <div class="grid-card">
+          <strong>Waves</strong>
+          In shallow settings, orbital motion can reach the bed and move sediment, reshape bars, or smooth local features.
+        </div>
+        <div class="grid-card">
+          <strong>Currents</strong>
+          Faster flows can scour channels and structures. Slower zones can become depositional areas where sediment settles.
+        </div>
+        <div class="grid-card">
+          <strong>Storms</strong>
+          Strong events can reorganize a site quickly, deepening one area while filling another with new material.
+        </div>
+        <div class="grid-card">
+          <strong>Human influence</strong>
+          Dredging, moorings, shoreline structures, runoff systems, and harbor activity can all leave a morphological signature.
+        </div>
+      </div>
+      <details>
+        <summary>Why shallow sites can be especially dynamic</summary>
+        <div class="details-body">
+          <p>
+            Estuaries, lagoons, river mouths, and nearshore environments often combine tides, freshwater inflow, wave action, vegetation, restricted circulation, and human infrastructure. That combination can produce rapid changes in sediment behavior, salinity, water level, and bottom form across short distances.
+          </p>
+        </div>
+      </details>
+    </section>
 
+    <section class="chapter" id="repeat">
+      <div class="section-label">Repeated Surveys</div>
+      <h2>The project becomes more powerful when it returns to the same site</h2>
+      <p class="chapter-intro">
+        A single survey describes a surface. Repeated surveys describe behavior through time. That is where a local system like OMEGA becomes especially interesting.
+      </p>
+      <div class="question-grid">
+        <div class="reading-card">
+          <strong>What repeated surveys can reveal</strong>
+          <ul class="list-tight">
+            <li>Migration of bars and shoals</li>
+            <li>Scour near structures</li>
+            <li>Storm response and post-event recovery</li>
+            <li>Seasonal redistribution of sediment</li>
+            <li>Slow accumulation in channels and basins</li>
+          </ul>
+        </div>
+        <div class="reading-card">
+          <strong>What repeatability depends on</strong>
+          <ul class="list-tight">
+            <li>Comparable routes and spacing</li>
+            <li>Stable correction and processing choices</li>
+            <li>Clear environmental notes from the field</li>
+            <li>Careful interpretation of whether the change belongs to the site or the method</li>
+          </ul>
+        </div>
+      </div>
+      <div class="callout">
+        <strong>Why repeated local surveys matter</strong>
+        Survey frequency can matter as much as total spatial extent. A modest system that returns regularly to a dynamic site can answer questions that a single larger survey cannot.
+      </div>
+    </section>
 
-      <p><a href="index.html">Home</a> · <a href="how-omega-works.html">OMEGA Guide</a> · <a href="omega-sensing.html">Sensing</a> · <a href="omega-validation.html">Validation</a> · <a href="omega-mapping.html">Mapping</a> · <a href="omega-data.html">Data</a></p></footer>
-</main>
+    <section class="chapter" id="field-use">
+      <div class="section-label">Reading a Site</div>
+      <h2>These ideas are most useful when they are applied to real field questions</h2>
+      <p class="chapter-intro">
+        The science on this page becomes more concrete when it is tied to actual site conditions. In practice, bathymetric interpretation often starts with a small set of physical questions about a place and then uses the survey to gather evidence related to those questions.
+      </p>
+      <div class="grid-3">
+        <div class="soft-card">
+          <strong>Tidal channels and inlets</strong>
+          How stable is the channel path? Where is sediment accumulating? Are bends, constrictions, or bars changing after energetic events?
+        </div>
+        <div class="soft-card">
+          <strong>Harbor basins and working edges</strong>
+          Are certain areas shoaling faster than others? Is scour developing near structures, pilings, ramps, or moorings?
+        </div>
+        <div class="soft-card">
+          <strong>Wetland and lagoon margins</strong>
+          How does bottom form relate to circulation, vegetation, deposition, and the movement of sediment into or out of sheltered areas?
+        </div>
+        <div class="soft-card">
+          <strong>Storm response</strong>
+          Which parts of the site lose material, which areas gain it, and how long does it take for the terrain to recover toward its earlier form?
+        </div>
+        <div class="soft-card">
+          <strong>Restoration and intervention</strong>
+          How does the bottom respond after dredging, sediment placement, shoreline work, or habitat reconstruction?
+        </div>
+        <div class="soft-card">
+          <strong>Method comparison</strong>
+          Which differences in the maps belong to the environment, and which differences reflect line spacing, positioning error, interpolation settings, or survey conditions?
+        </div>
+      </div>
+    </section>
+
+    <section class="reference-panel" id="reading">
+      <div class="section-label">Reading Trail</div>
+      <h2>Research that supports the scientific ideas on this page</h2>
+      <p class="chapter-intro">
+        These references can be used as a reading path through the main concepts in OMEGA: hydrography, acoustics, sound-speed correction, survey quality, interpolation, and bottom change through time.
+      </p>
+      <div class="reference-grid">
+        <div class="mini-reference">
+          <strong>Hydrography and bathymetry</strong>
+          <p>International Hydrographic Organization. <em>S-44: Standards for Hydrographic Surveys</em>.</p>
+          <p>NOAA Office of Coast Survey. <em>Hydrographic Surveys Specifications and Deliverables</em>.</p>
+          <p>Canadian Hydrographic Service. <em>Hydrographic Survey Management Guidelines</em>.</p>
+        </div>
+        <div class="mini-reference">
+          <strong>Underwater acoustics and sound-speed correction</strong>
+          <p>Makar, A. (2022). <em>Simplified Method of Determination of the Sound Speed in Water on the Basis of Temperature Measurements and Salinity Prediction for Shallow Water Bathymetry</em>.</p>
+          <p>NOAA Ocean Service. <em>How Does Sound in the Ocean Work?</em></p>
+          <p>Medwin, H., and Clay, C. S. <em>Fundamentals of Acoustical Oceanography</em>.</p>
+        </div>
+        <div class="mini-reference">
+          <strong>Single-beam surveys and field method</strong>
+          <p>Alkan, R. M. (2003). <em>Reduction of Heave, Pitch and Roll Effects in Hydrographic Surveying</em>.</p>
+          <p>Liang, C.-Y., Merwade, V., and Dey, S. (2025). <em>Investigating Cost-Effective Single-Beam Survey Configurations for Accurate River Bathymetry Construction</em>.</p>
+          <p>Bandini, F. and collaborators (2018). <em>Technical Note: Bathymetry Observations of Inland Water Bodies Using a Tethered Single-Beam Sonar Controlled by an Unmanned Aerial Vehicle</em>.</p>
+        </div>
+        <div class="mini-reference">
+          <strong>Interpolation and uncertainty</strong>
+          <p>Ohlert, P. L., Bach, M., and Breuer, L. (2023). <em>Accuracy Assessment of Inverse Distance Weighting Interpolation</em>.</p>
+          <p>Merwade, V., Maidment, D. R., and Goff, J. A. (2006). <em>Anisotropic Considerations While Interpolating River Channel Bathymetry</em>.</p>
+          <p>Amante, C., and Eakins, B. W. (2016). <em>Accuracy of Interpolated Bathymetry in Digital Elevation Models</em>.</p>
+        </div>
+        <div class="mini-reference">
+          <strong>Bottom change through time</strong>
+          <p>Ganju, N. K. and collaborators (2017). <em>Quantification of Storm-Induced Bathymetric Change in a Back-Barrier Estuary</em>.</p>
+          <p>Herrmann, J., Magruder, L., Markel, J., and Parrish, C. (2022). <em>Assessing the Ability to Quantify Bathymetric Change over Time Using Solely Satellite-Based Measurements</em>.</p>
+          <p>Geheran, M. P. and collaborators (2024). <em>Estimating Nearshore Morphological Change through Ensemble Optimal Interpolation with Altimetric Data</em>.</p>
+        </div>
+        <div class="mini-reference">
+          <strong>Open aquatic instrumentation</strong>
+          <p>Sotelo-Torres, F., Alvarez, L. V., and Roberts, R. C. (2023). <em>An Unmanned Surface Vehicle: Development of an Autonomous Boat with a Sensor Integration System for Bathymetric Surveys</em>.</p>
+          <p>Gogendeau, P. and collaborators (2025). <em>An Autonomous Surface Vehicle for Acoustic Tracking, Bathymetric and Photogrammetric Surveys</em>.</p>
+          <p>Benatti, T. A. K. and collaborators (2025). <em>A Low-Cost, Open-Source, Multi-Purpose Autonomous Surface Vehicle</em>.</p>
+          <p>Medina, J. D. and collaborators (2022). <em>Open-Source Low-Cost Design of a Buoy for Remote Water Quality Monitoring in Fish Farming</em>.</p>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <strong>Focus of this page</strong>
+      This page follows the scientific chain behind OMEGA: acoustic measurement, environmental correction, survey validation, spatial modeling, and bottom change through time.
+      <div class="chip-row">
+        <a class="chip" href="index.html">Back to home</a>
+        <a class="chip" href="how-omega-works.html">How OMEGA Works</a>
+        <a class="chip" href="omega-sensing.html">Sensing</a>
+        <a class="chip" href="omega-validation.html">Validation</a>
+        <a class="chip" href="omega-mapping.html">Mapping</a>
+      </div>
+    </footer>
+  </main>
 </body>
 </html>
