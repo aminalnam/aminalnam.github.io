@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1" name="viewport"/>
-  <title>Jonathan Capone — Technical Portfolio (OMEGA-wave)</title>
+  <title>Jonathan Capone — Technical Portfolio</title>
   <style>
     :root {
       --bg: #070b14; --bg-2: #0e1522; --panel: rgba(20, 30, 48, 0.6); --panel-soft: rgba(30, 42, 60, 0.5);
@@ -30,12 +30,14 @@
     .brand-title { display: block; font-family: var(--font-serif); font-size: 1.4rem; color: var(--white); }
     .brand-sub { display: block; font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); font-family: var(--font-mono); }
     
-    /* Global Nav logic replaced by script later, static placeholder here */
-    
-    .hero { padding: 6rem 0 4rem; text-align: center; }
+    .nav { display: flex; flex-wrap: wrap; gap: 1.2rem; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; font-family: var(--font-mono); }
+    .nav a { color: var(--ink-soft); transition: color 0.3s; }
+    .nav a:hover, .nav a.is-current { color: var(--white); }
+
+    .hero { padding: 6rem 0 4rem; text-align: left; }
     .eyebrow { font-family: var(--font-mono); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.2em; color: var(--accent); margin-bottom: 1rem; display: block; }
-    h1 { margin: 0 auto 1.5rem; font-family: var(--font-serif); font-size: clamp(3rem, 7vw, 5rem); font-weight: 400; line-height: 1.1; max-width: 25ch; }
-    .hero p { max-width: 52rem; margin: 0 auto 3rem; font-size: 1.25rem; color: var(--ink-soft); }
+    h1 { margin: 0 0 1.5rem; font-family: var(--font-serif); font-size: clamp(3rem, 7vw, 4.5rem); font-weight: 400; line-height: 1.1; max-width: 25ch; }
+    .hero p { max-width: 48rem; margin: 0 0 3rem; font-size: 1.25rem; color: var(--ink-soft); }
     
     .main-shell { position: relative; margin-bottom: 4rem; }
     .main-inner { background: var(--panel); border-radius: 1.5rem; overflow: clip; box-shadow: var(--shadow); border: 1px solid var(--line); }
@@ -53,6 +55,12 @@
     .panel p { color: var(--ink-soft); font-size: 0.95rem; margin-bottom: 1.5rem; flex-grow: 1;}
     .panel code { background: rgba(10,15,25,0.9); border: 1px solid var(--line); padding: 1rem; border-radius: 8px; font-family: var(--font-mono); font-size: 0.8em; color: #60a5fa; margin-bottom: 1rem; display: block;}
 
+    .btn { display: inline-flex; align-items: center; padding: 0.8rem 1.5rem; border-radius: 999px; font-family: var(--font-mono); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.15em; transition: all 0.2s; margin-right: 0.5rem; margin-bottom: 0.5rem;}
+    .btn-primary { background: var(--accent); color: #fff; border: 1px solid var(--accent); }
+    .btn-primary:hover { background: var(--accent-deep); transform: translateY(-2px); }
+    .btn-secondary { background: rgba(255, 255, 255, 0.05); color: #fff; border: 1px solid rgba(255, 255, 255, 0.2); }
+    .btn-secondary:hover { background: rgba(255, 255, 255, 0.1); transform: translateY(-2px); }
+
     .footer { border-top: 1px solid var(--line); padding: 4rem 0; text-align: center; font-family: var(--font-mono); font-size: 0.8rem; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.15em; }
   </style>
   <script type="module">
@@ -67,8 +75,8 @@
         <span class="brand-title">Jonathan Capone</span>
         <span class="brand-sub">Technical Portfolio</span>
       </a>
-            <nav class="nav">
-        <a href="index.html">Home</a>
+      <nav class="nav">
+        <a href="index.html" class="is-current">Home</a>
         <a href="portal-observe.html">Observe API</a>
         <a href="portal-control.html">Control & JANUS</a>
         <a href="portal-data-science.html">Data Science</a>
@@ -80,38 +88,45 @@
   </header>
 
   <section class="hero wrap">
-    <span class="eyebrow">Project OMEGA-wave</span>
-    <h1>Marine Edge Computing & Mission Control.</h1>
-    <p>OMEGA-wave is a massive, unified telemetry platform. It fuses autonomous fleet tracking, underwater JANUS acoustic protocols, global API data overlays, and resilient DTN mesh networks into a single, comprehensive command portal.</p>
-    
-    <div class="mermaid" style="max-width: 60rem; margin: 0 auto; border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 2rem; background: rgba(20, 30, 48, 0.6); backdrop-filter: blur(10px);">
-      graph TD
-        subgraph Portal [Gateway Mission Control]
-          O[Observe Overlays]
-          D[Data Science & BBS]
-          C[Live Fleet Control]
-          A[Firmware Admin]
-        end
-        subgraph Mesh [DTN Overlay Network]
-          L[LoRa / HaLow]
-          J[JANUS Acoustic]
-        end
-        subgraph Edge [Physical Assets]
-          F[Autonomous Fleet]
-          B[Bathymetry Engine]
-        end
-        Portal <--> Mesh
-        Mesh <--> Edge
-    </div>
+    <span class="eyebrow">Technical Portfolio</span>
+    <h1>Jonathan Capone.</h1>
+    <p>I build complex, distributed systems. My work focuses on autonomous fleets, edge-computing, resilient mesh networks, and fusing remote telemetry with massive global datasets.</p>
   </section>
 
   <main class="main-shell wrap">
     <div class="main-inner">
       
-      <section class="section">
-        <span class="section-kicker">Core Capabilities</span>
-        <h2>The OMEGA-wave Gateway.</h2>
-        <p>Explore the technical architecture, Python backends, and UI paradigms powering the nine core modules of the mission control platform.</p>
+      <section class="section" style="background: rgba(0,0,0,0.4);">
+        <span class="section-kicker">Featured Project</span>
+        <h2>OMEGA-wave</h2>
+        <p>A massive, unified marine telemetry platform. OMEGA-wave fuses autonomous fleet tracking, underwater JANUS acoustic protocols, global API data overlays, and resilient DTN mesh networks into a single, comprehensive mission control portal.</p>
+        
+        <div class="hero-actions" style="margin-bottom: 3rem;">
+          <a class="btn btn-primary" href="https://github.com/aminalnam/OMEGA-wave" target="_blank">View GitHub Repository</a>
+        </div>
+        
+        <div class="mermaid" style="max-width: 60rem; margin: 0 0 4rem 0; border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 2rem; background: rgba(20, 30, 48, 0.6); backdrop-filter: blur(10px);">
+          graph TD
+            subgraph Portal [Gateway Mission Control]
+              O[Observe Overlays]
+              D[Data Science & BBS]
+              C[Live Fleet Control]
+              A[Firmware Admin]
+            end
+            subgraph Mesh [DTN Overlay Network]
+              L[LoRa / HaLow]
+              J[JANUS Acoustic]
+            end
+            subgraph Edge [Physical Assets]
+              F[Autonomous Fleet]
+              B[Bathymetry Engine]
+            end
+            Portal <--> Mesh
+            Mesh <--> Edge
+        </div>
+
+        <span class="section-kicker" style="margin-top: 2rem;">OMEGA-wave Documentation</span>
+        <h3 style="font-family: var(--font-serif); font-size: 1.8rem; margin: 0 0 2rem;">Core Modules</h3>
         
         <div class="grid-3">
           
