@@ -3,17 +3,24 @@
 <head>
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1" name="viewport"/>
-  <title>OMEGA — Validation</title>
+  <title>OMEGA — Validation Logic</title>
   <style>
     :root {
       --bg: #070b14; --bg-2: #0e1522; --panel: rgba(20, 30, 48, 0.6); --panel-soft: rgba(30, 42, 60, 0.5);
       --ink: #ffffff; --ink-soft: #9aa2b1; --line: rgba(255, 255, 255, 0.1); --accent: #3b82f6; --accent-deep: #2563eb;
-      --white: #ffffff; --radius: 1.25rem;
+      --white: #ffffff; --radius: 1.25rem; --radius-sm: 18px;
       --font-sans: Inter, sans-serif; --font-serif: "Iowan Old Style", Georgia, serif; --font-mono: Consolas, monospace;
+      --shadow: 0 22px 48px rgba(0, 0, 0, 0.5);
     }
     * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+    html { scroll-behavior: smooth; }
     body { margin: 0; color: var(--ink); background: var(--bg); font-family: var(--font-sans); line-height: 1.65; }
-    body::before { content: ""; position: fixed; inset: -50%; z-index: -2; background: radial-gradient(circle at 50% 0%, rgba(59, 130, 246, 0.15), transparent 60%); }
+    body::before { content: ""; position: fixed; inset: -50%; z-index: -2; background: radial-gradient(circle at 50% 0%, rgba(59, 130, 246, 0.15), transparent 60%); pointer-events: none;}
+    body::after {
+      content: ""; position: fixed; inset: 0; z-index: -1;
+      background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 2.2rem 2.2rem; mask-image: linear-gradient(180deg, rgba(0,0,0,0.8), rgba(0,0,0,0.25)); pointer-events: none;
+    }
     a { color: inherit; text-decoration: none; }
     .wrap { width: min(calc(100% - 2rem), 82rem); margin: 0 auto; }
     
@@ -23,7 +30,7 @@
     .brand-sub { display: block; font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); font-family: var(--font-mono); }
     .nav { display: flex; flex-wrap: wrap; gap: 1.2rem; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; font-family: var(--font-mono); }
     .nav a { color: var(--ink-soft); transition: color 0.3s; }
-    .nav a:hover, .nav a.is-current { color: var(--white); }
+    .nav a:hover { color: var(--white); }
 
     .omega-subnav { margin: 2rem 0; padding: 1rem 1.5rem; border: 1px solid var(--line); border-radius: 999px; background: rgba(255,255,255,0.03); display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; backdrop-filter: blur(10px); }
     .omega-subnav strong { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink-soft); margin-right: 0.5rem; }
@@ -40,26 +47,33 @@
     .btn-secondary { background: rgba(255, 255, 255, 0.05); color: #fff; border: 1px solid rgba(255, 255, 255, 0.2); }
     .btn-secondary:hover { background: rgba(255, 255, 255, 0.1); transform: translateY(-2px); }
 
-    .section { padding: 4rem 0; border-top: 1px solid var(--line); }
+    .main-shell { position: relative; margin-bottom: 4rem; }
+    .main-inner { background: var(--panel); border-radius: 1.5rem; overflow: clip; box-shadow: var(--shadow); border: 1px solid var(--line); }
+    .section { padding: 4rem; border-bottom: 1px solid var(--line); }
+    .section:last-child { border-bottom: none; }
     .section-kicker { font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent); margin-bottom: 0.8rem; display: block; }
     .section h2 { font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem; max-width: 48rem;}
     .section p { color: var(--ink-soft); font-size: 1.1rem; max-width: 48rem; margin-bottom: 2rem;}
 
-    .panel { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 2rem; display: flex; flex-direction: column; }
+    .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 2rem; }
+    .panel { background: rgba(0,0,0,0.2); border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 2rem; display: flex; flex-direction: column; }
     .panel-kicker { display: inline-block; font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent); padding: 0.2rem 0.6rem; background: rgba(59,130,246,0.1); border-radius: 999px; margin-bottom: 1rem; align-self: flex-start;}
-    .callout { background: rgba(255,255,255,0.03); border: 1px solid var(--line); padding: 1rem; border-radius: 0.75rem; margin-top: auto;}
-    .callout strong { display: block; font-family: var(--font-mono); font-size: 0.7rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 0.5rem;}
-    .callout p { font-size: 0.9rem; color: var(--ink-soft); margin-bottom: 0;}
+    .panel h3 { font-family: var(--font-serif); font-size: 1.5rem; margin: 0 0 1rem; }
+    .panel p { color: var(--ink-soft); font-size: 0.95rem; margin-bottom: 1.5rem; }
     
-    pre { background: rgba(10,15,25,0.9); padding: 1.5rem; border-radius: var(--radius); overflow-x: auto; border: 1px solid var(--line); margin-bottom: 1.5rem; font-family: var(--font-mono); font-size: 0.9rem;}
-    code { font-family: var(--font-mono); color: var(--white); }
+    .callout { background: rgba(255,255,255,0.03); border: 1px solid var(--line); padding: 1.5rem; border-radius: 0.75rem; margin-top: 2rem; border-left: 4px solid var(--accent);}
+    .callout strong { display: block; font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 0.5rem;}
+    .callout p { font-size: 0.95rem; color: var(--ink-soft); margin-bottom: 0; max-width: 100%;}
+    
+    pre { background: rgba(10,15,25,0.9); padding: 1.5rem; border-radius: var(--radius-sm); overflow-x: auto; border: 1px solid var(--line); margin-bottom: 1.5rem; font-family: var(--font-mono); font-size: 0.9rem;}
+    code { font-family: var(--font-mono); color: #e2e8f0; }
+    p code, li code { background: rgba(255,255,255,0.1); padding: 0.2rem 0.4rem; border-radius: 4px; font-size: 0.85em; color: #60a5fa;}
 
-    table { width: 100%; border-collapse: collapse; margin-top: 1rem; background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; display: block;}
-    th, td { padding: 1rem; text-align: left; border-bottom: 1px solid var(--line); }
+    table { width: 100%; border-collapse: collapse; margin-top: 1rem; background: rgba(0,0,0,0.2); border: 1px solid var(--line); border-radius: var(--radius-sm); overflow: hidden; display: block;}
+    th, td { padding: 1rem 1.5rem; text-align: left; border-bottom: 1px solid var(--line); }
     th { font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent); background: rgba(255,255,255,0.03); }
     td { font-size: 0.95rem; color: var(--ink-soft); }
     tr:last-child td { border-bottom: none; }
-    td code { font-family: var(--font-mono); font-weight: bold; color: var(--white);}
 
     .footer { border-top: 1px solid var(--line); padding: 4rem 0; text-align: center; font-family: var(--font-mono); font-size: 0.8rem; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.15em; }
   </style>
@@ -71,97 +85,96 @@
         <span class="brand-title">Jonathan Capone</span>
         <span class="brand-sub">Technical Portfolio</span>
       </a>
-      <nav class="nav" style="display:flex; flex-wrap:wrap; gap:1.2rem; font-size:0.75rem; letter-spacing:0.15em; text-transform:uppercase; font-family:var(--font-mono); justify-content:flex-end;">
+      <nav class="nav">
         <a href="index.html">Home</a>
         <a href="how-omega-works.html">Guide</a>
         <a href="omega-research.html">Research</a>
         <a href="hardware-fleet.html">Fleet</a>
         <a href="mesh-network.html">Mesh</a>
         <a href="data-ingest.html">Data</a>
-        <a href="teaching-documentation.html">Teaching</a>
-        <a href="https://jonathancapone.art" target="_blank" rel="noopener">Artwork</a>
       </nav>
     </div>
   </header>
 
   <div class="wrap">
-    <div class="omega-subnav" style="margin-bottom: 3rem;">
+    <div class="omega-subnav">
       <strong>Sensing Chapters:</strong>
       <a href="how-omega-works.html">Overview</a>
-      <a href="omega-sensing.html">Sensing</a>
-      <a href="omega-validation.html" class="is-current">Validation</a>
-      <a href="omega-mapping.html">Mapping</a>
+      <a href="omega-sensing.html">1. Physics of Sensing</a>
+      <a href="omega-validation.html" class="is-current">2. Validation Logic</a>
+      <a href="omega-mapping.html">3. Map Interpolation</a>
     </div>
   </div>
 
   <section class="hero wrap">
-    <span class="eyebrow">Part 2: Validation</span>
-    <h1>Validation and point acceptance.</h1>
-    <p>A closer look at the checks that determine whether a measurement becomes part of the mapping dataset.</p>
-    <div class="hero-actions" style="justify-content: flex-start;">
-      <a class="btn btn-primary" href="how-omega-works.html">Back to Overview</a>
+    <span class="eyebrow">Part 2: Logic</span>
+    <h1>Edge Validation Algorithms.</h1>
+    <p>A mathematically perfect depth measurement is utterly useless if its geographic coordinate is wrong. This chapter breaks down the C++ state machine used to violently reject compromised data before it reaches the mesh network.</p>
+    <div class="hero-actions">
       <a class="btn btn-secondary" href="omega-sensing.html">Previous: Sensing</a>
-      <a class="btn btn-secondary" href="omega-mapping.html">Next: Mapping</a>
+      <a class="btn btn-primary" href="omega-mapping.html">Next: Map Interpolation</a>
     </div>
   </section>
 
-  <main>
-    <section class="section">
-      <div class="wrap">
-        <span class="section-kicker">Validation layer</span>
+  <main class="main-shell wrap">
+    <div class="main-inner">
+      
+      <section class="section">
+        <span class="section-kicker">The Heuristic Engine</span>
         <h2>Deciding if a point is acceptable.</h2>
-        <p>Bathymetry depends on where a depth was measured, how stable the platform was, and whether the sensors were trustworthy.</p>
+        <p>In bathymetry, the integrity of the spatial anchor (Lat/Lon) and the orientation of the sensor (Pitch/Roll) are just as critical as the depth reading itself. OMEGA executes a series of strict heuristic gates to validate these parameters. If any gate fails, the data point is aborted.</p>
         
-        <div class="panel">
-          <span class="panel-kicker">From getMapStatus()</span>
-<pre><code>const char* getMapStatus(unsigned long currentMillis) {
-  if (millis() - startupMillis &lt; gpsWarmupTime) return "WARMUP";
-  if (!mapReady || !sdReady || !mapFile) return "NOFILE";
-  if (!gpsDataPresent(currentMillis)) return "NOGPS";
-  if (!gps.location.isValid()) return "NOFIX";
-  if (!gps.date.isValid() || !gps.time.isValid()) return "NOTIME";
-  if (isnan(depthCm)) return "NODEP";
-  if (depthSamplesCollected &lt; 3) return "WARM";
-
-  if (!gps.satellites.isValid()) return "SAT";
-  if (gps.satellites.value() &lt; minMapSats) return "SAT";
-  if (!gps.hdop.isValid()) return "HDOP";
-  if (gps.hdop.hdop() &gt; maxMapHdop) return "HDOP";
-  if (gps.location.age() &gt; maxMapFixAgeMs) return "STALE";
-  if (!isnan(smoothedSpeed) &amp;&amp; smoothedSpeed &gt; maxMapSpeedKmph) return "FAST";
-
-  if (requireLevelForMapping) {
-    if (!imuReady) return "NOIMU";
-    if (!imuOrientationValid) return "IMU?";
-    if (imuAccuracy &lt; minImuAccuracyForMapping) return "CAL";
-    if (fabs(imuPitchDeg) &gt; maxMapPitchDeg || fabs(imuRollDeg) &gt; maxMapRollDeg) return "UNLVL";
+        <div class="panel" style="max-width: 100%;">
+          <span class="panel-kicker">C++ State Machine</span>
+          <h3>The getMapStatus() Function</h3>
+<pre><code><span style="color: #c678dd;">const char*</span> <span style="color: #61afef;">getMapStatus</span>(<span style="color: #c678dd;">unsigned long</span> currentMillis) {
+  <span style="color: #98c379;">// 1. Hardware State Checks</span>
+  <span style="color: #c678dd;">if</span> (millis() - startupMillis &lt; gpsWarmupTime) <span style="color: #c678dd;">return</span> <span style="color: #98c379;">"WARMUP"</span>;
+  <span style="color: #c678dd;">if</span> (!gpsDataPresent(currentMillis)) <span style="color: #c678dd;">return</span> <span style="color: #98c379;">"NOGPS"</span>;
+  
+  <span style="color: #98c379;">// 2. Spatial Anchor Checks</span>
+  <span style="color: #c678dd;">if</span> (!gps.location.isValid()) <span style="color: #c678dd;">return</span> <span style="color: #98c379;">"NOFIX"</span>;
+  <span style="color: #c678dd;">if</span> (gps.location.age() &gt; maxMapFixAgeMs) <span style="color: #c678dd;">return</span> <span style="color: #98c379;">"STALE"</span>;
+  <span style="color: #c678dd;">if</span> (!gps.satellites.isValid() || gps.satellites.value() &lt; minMapSats) <span style="color: #c678dd;">return</span> <span style="color: #98c379;">"SAT"</span>;
+  
+  <span style="color: #98c379;">// 3. Precision Checks (HDOP)</span>
+  <span style="color: #c678dd;">if</span> (!gps.hdop.isValid() || gps.hdop.hdop() &gt; maxMapHdop) <span style="color: #c678dd;">return</span> <span style="color: #98c379;">"HDOP"</span>;
+  
+  <span style="color: #98c379;">// 4. Orientation Checks (IMU Pitch/Roll)</span>
+  <span style="color: #c678dd;">if</span> (requireLevelForMapping) {
+    <span style="color: #c678dd;">if</span> (!imuReady) <span style="color: #c678dd;">return</span> <span style="color: #98c379;">"NOIMU"</span>;
+    <span style="color: #c678dd;">if</span> (fabs(imuPitchDeg) &gt; maxMapPitchDeg || fabs(imuRollDeg) &gt; maxMapRollDeg) <span style="color: #c678dd;">return</span> <span style="color: #98c379;">"UNLVL"</span>;
   }
-  return "ARMED";
+  
+  <span style="color: #98c379;">// All gates passed. The data is cleared for transmission.</span>
+  <span style="color: #c678dd;">return</span> <span style="color: #98c379;">"ARMED"</span>;
 }</code></pre>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <section class="section">
-      <div class="wrap">
-        <span class="section-kicker">Evidence Rules</span>
+      <section class="section">
+        <span class="section-kicker">Deep Dive</span>
         <h2>Why each check exists.</h2>
+        <p>The error states returned by the algorithm correspond to specific geometric or physical distortions that ruin topographical map generation.</p>
         
-        <table>
-          <thead>
-            <tr><th>Status</th><th>What it means</th><th>Why it affects mapping</th></tr>
-          </thead>
-          <tbody>
-            <tr><td><code>NOFIX</code></td><td>No valid GPS position</td><td>A depth without a reliable location cannot be mapped.</td></tr>
-            <tr><td><code>HDOP</code></td><td>Horizontal precision too poor</td><td>Even a good depth distorts the map if position uncertainty is large.</td></tr>
-            <tr><td><code>STALE</code></td><td>GPS fix is too old</td><td>The platform moved since the last valid position.</td></tr>
-            <tr><td><code>FAST</code></td><td>Moving too fast</td><td>Rapid motion reduces sensor accuracy.</td></tr>
-            <tr><td><code>UNLVL</code></td><td>Pitch/Roll exceeded limit</td><td>Excess tilt changes the geometry of the vertical reading.</td></tr>
-            <tr><td><code>ARMED</code></td><td>All conditions met</td><td>The point enters the mapping dataset.</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
+        <div class="grid-2">
+          <article class="panel">
+            <span class="panel-kicker">Spatial Blur</span>
+            <h3>The HDOP Threshold</h3>
+            <p><strong>Horizontal Dilution of Precision (HDOP)</strong> measures the geometric quality of the satellite constellation. An HDOP of 1.0 is ideal. If HDOP spikes to 3.0 (e.g., due to atmospheric interference or multipath reflection near a cliff), the GPS fix might wander by 10 meters.</p>
+            <p>If we map a 50-meter depth reading to a coordinate that is 10 meters off, we create a massive "spike" or "hole" in the final 3D surface model. OMEGA enforces a strict `maxMapHdop = 1.8`.</p>
+          </article>
+          
+          <article class="panel">
+            <span class="panel-kicker">Beam Geometry</span>
+            <h3>IMU Pitch and Roll (UNLVL)</h3>
+            <p>Transducers fire a focused cone of sound straight down (the nadir). If the rover pitches violently over a wave, the sonar beam strikes the seafloor at an angle. This measures the hypotenuse of the triangle, not the true vertical depth.</p>
+            <p>OMEGA's onboard IMU tracks pitch and roll in real-time. If the vessel tilts past `12.0°`, the state machine triggers the `UNLVL` flag, instantly rejecting the ping until the vessel stabilizes.</p>
+          </article>
+        </div>
+      </section>
+
+    </div>
   </main>
 
   <footer class="footer wrap">
