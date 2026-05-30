@@ -84,32 +84,108 @@
     </div>
   </div>
 
-    <section class="hero wrap">
+    
+  <section class="hero wrap">
     <span class="eyebrow">OMEGA Data</span>
-    <h1>Access & Export</h1>
-    <p>The complete lifecycle of OMEGA telemetry—from physical sensor capture on the water surface to final bathymetric export formats and public mapping datasets.</p>
+    <h1 style="max-width: 24ch;">External Data Integration</h1>
+    <p>A mission control portal is useless in a vacuum. OMEGA actively merges live fleet telemetry with massive, credential-safe public environmental datasets to create a unified spatial model.</p>
   </section>
 
-  <main class="wrap content-grid">
-    <div class="panel">
-      <h3>The Telemetry Lifecycle</h3>
-      <p>Every depth ping and GPS coordinate follows an unbroken chain: edge validation on the rover, CBOR compression over LoRa mesh, ingestion into SQLite, and final export for IDW interpolation.</p>
-    </div>
-    
-    <div class="panel">
-      <h3>Live API Endpoints</h3>
-      <p>The OMEGA backend exposes RESTful endpoints for programmatic access. Researchers can query specific bounding boxes, depth thresholds, or temporal windows to retrieve raw GeoJSON points.</p>
-    </div>
+  <main class="wrap">
+    <section class="section" style="padding-top: 2rem;">
+      <div class="content-grid">
+        <div class="panel" style="grid-column: 1 / -1; display: flex; flex-direction: column; background: var(--bg-2);">
+          <h3>Contextualizing the Operational Area</h3>
+          <p>Knowing that an ASV rover is currently measuring a depth of 12 meters is helpful. Knowing that there is an active Gale Warning issued by the NWS in that exact grid sector, or that the current NOAA tide prediction is showing an abnormal low, is mission-critical.</p>
+          <p>The OMEGA backend uses a series of asynchronous Python integration scripts (e.g., <code>copernicus_cube.py</code>, <code>global_fishing_watch.py</code>, <code>erddap.py</code>) to pull global context down to the local mesh level.</p>
+          
+          <div class="mermaid" style="width: 100%; max-width: 800px; margin-top: 2rem; border-radius: var(--radius-sm); overflow: hidden;">
+            graph TD
+                %% Nodes
+                API[FastAPI Gateway]:::core
+                NOAA[NOAA CO-OPS & NDBC<br>Tide & Weather]:::external
+                GFW[Global Fishing Watch<br>4Wings API & AIS]:::external
+                Copernicus[Copernicus Marine<br>Currents & Salinity]:::external
+                Portal[React Digital Twin Portal]:::portal
 
-    <div class="panel">
-      <h3>Field Survey Downloads</h3>
-      <p>Currently, the database connections for live portal access are running locally on isolated edge gateways during active field missions, prioritizing immediate operational awareness.</p>
-    </div>
+                %% Links
+                NOAA -->|JSON REST| API
+                GFW -->|Credentialed Auth| API
+                Copernicus -->|NetCDF / ERDDAP| API
+                API -->|Normalized GeoJSON| Portal
 
-    <div class="panel">
-      <h3>Public Datasets</h3>
-      <p>Validated mapping datasets from official OMEGA field trials are compiled and exported as downloadable CSV logs and Google Earth KML overlays for academic review and community validation.</p>
-    </div>
+                %% Styles
+                classDef core fill:#1e293b,stroke:#3b82f6,stroke-width:2px,color:#fff;
+                classDef external fill:#0f172a,stroke:#f59e0b,stroke-width:1px,color:#fff;
+                classDef portal fill:#0f172a,stroke:#10b981,stroke-width:2px,color:#fff;
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Credential-Safe API Proxying</h2>
+      <p>Many high-quality environmental datasets (like Global Fishing Watch's 4Wings API or Stormglass) require private API keys and authentication tokens. OMEGA ensures these credentials are never exposed to the client browser.</p>
+      
+      <div class="content-grid" style="margin-top: 2rem;">
+        <div class="panel">
+          <h3>The Backend Bridge</h3>
+          <p>Instead of the React frontend making requests directly to external providers, it queries the OMEGA FastAPI backend. The backend injects the secure `.env` credentials, negotiates the OAuth or token exchange, and fetches the data on behalf of the client.</p>
+        </div>
+        <div class="panel">
+          <h3>Data Homogenization</h3>
+          <p>External APIs return data in wildly different formats (XML, NetCDF, proprietary JSON). The OMEGA backend parses these varied responses and converts them into a standardized, flat GeoJSON structure before serving them to the portal map.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Exported JSON Structures</h2>
+      <p>Below is an example of the standardized GeoJSON structure that the OMEGA backend outputs after successfully pulling and normalizing data from a NOAA NDBC buoy combined with a local fleet rover.</p>
+      
+      <div class="panel" style="margin-top: 2rem; background: var(--bg-2);">
+        <h3>Normalized GeoJSON Output</h3>
+        
+        <div style="background: #0d1117; padding: 1.5rem; border-radius: var(--radius-sm); border: 1px solid var(--line); overflow-x: auto;">
+<pre><code style="font-family: var(--font-mono); font-size: 0.85rem; color: #c9d1d9;">{
+  <span style="color: #79c0ff;">"type"</span>: <span style="color: #a5d6ff;">"FeatureCollection"</span>,
+  <span style="color: #79c0ff;">"features"</span>: [
+    {
+      <span style="color: #79c0ff;">"type"</span>: <span style="color: #a5d6ff;">"Feature"</span>,
+      <span style="color: #79c0ff;">"geometry"</span>: {
+        <span style="color: #79c0ff;">"type"</span>: <span style="color: #a5d6ff;">"Point"</span>,
+        <span style="color: #79c0ff;">"coordinates"</span>: [-118.2436, 34.0522]
+      },
+      <span style="color: #79c0ff;">"properties"</span>: {
+        <span style="color: #79c0ff;">"source"</span>: <span style="color: #a5d6ff;">"omega_fleet_rover_04"</span>,
+        <span style="color: #79c0ff;">"timestamp_utc"</span>: <span style="color: #a5d6ff;">"2026-05-30T14:30:00Z"</span>,
+        <span style="color: #79c0ff;">"metrics"</span>: {
+          <span style="color: #79c0ff;">"bathymetry_depth_m"</span>: <span style="color: #a5d6ff;">14.2</span>,
+          <span style="color: #79c0ff;">"water_temp_c"</span>: <span style="color: #a5d6ff;">16.5</span>
+        }
+      }
+    },
+    {
+      <span style="color: #79c0ff;">"type"</span>: <span style="color: #a5d6ff;">"Feature"</span>,
+      <span style="color: #79c0ff;">"geometry"</span>: {
+        <span style="color: #79c0ff;">"type"</span>: <span style="color: #a5d6ff;">"Point"</span>,
+        <span style="color: #79c0ff;">"coordinates"</span>: [-118.2500, 34.0600]
+      },
+      <span style="color: #79c0ff;">"properties"</span>: {
+        <span style="color: #79c0ff;">"source"</span>: <span style="color: #a5d6ff;">"noaa_ndbc_station_46025"</span>,
+        <span style="color: #79c0ff;">"timestamp_utc"</span>: <span style="color: #a5d6ff;">"2026-05-30T14:00:00Z"</span>,
+        <span style="color: #79c0ff;">"metrics"</span>: {
+          <span style="color: #79c0ff;">"wave_height_m"</span>: <span style="color: #a5d6ff;">1.2</span>,
+          <span style="color: #79c0ff;">"wind_speed_kts"</span>: <span style="color: #a5d6ff;">15.0</span>
+        }
+      }
+    }
+  ]
+}
+</code></pre>
+        </div>
+      </div>
+    </section>
   </main>
 
   <footer class="footer wrap">

@@ -83,32 +83,95 @@
     </div>
   </header>
 
-    <section class="hero wrap">
+    
+  <section class="hero wrap">
     <span class="eyebrow">OMEGA Architecture</span>
-    <h1>Digital Twin Portal</h1>
-    <p>The web-based command center for OMEGA. A React SPA that provides real-time visualization of the autonomous fleet, dynamic mission planning, and live mapping.</p>
+    <h1 style="max-width: 24ch;">Digital Twin Portal</h1>
+    <p>The interactive "Glass Bridge". A React-based Single Page Application (SPA) providing mission control, live bathymetric surfacing, and predictive wayfinding.</p>
   </section>
 
-  <main class="wrap content-grid">
-    <div class="panel">
-      <h3>Real-Time Fleet Maps</h3>
-      <p>Because the API backend streams data over WebSockets, the portal updates instantly. The "Glass Bridge" map plots the exact geospatial location of every active rover and relay in the mesh.</p>
-    </div>
-    
-    <div class="panel">
-      <h3>Live Bathymetry</h3>
-      <p>As rovers capture depth readings, the portal actively traces their paths, color-coding UI elements based on real-time depth, temperature thermoclines, or LoRa signal strength.</p>
-    </div>
+  <main class="wrap">
+    <section class="section" style="padding-top: 2rem;">
+      <div class="content-grid">
+        <div class="panel" style="grid-column: 1 / -1; display: flex; flex-direction: column; background: var(--bg-2);">
+          <h3>React & Zustand Architecture</h3>
+          <p>The OMEGA-wave portal abandons traditional, clunky mapping frameworks in favor of a hyper-responsive React architecture. By using <strong>Zustand</strong> for state management, the portal synchronizes its internal <code>simulationTime</code> and <code>fleetState</code> across dozens of UI components instantaneously.</p>
+          <p>When the FastAPI backend pushes a new WebSocket frame containing a rover's location, the state updates globally. The central MapLayer component, the left-hand diagnostic panel, and the predictive routing lab all re-render simultaneously to reflect the new data.</p>
+          
+          <div class="mermaid" style="width: 100%; max-width: 800px; margin-top: 2rem; border-radius: var(--radius-sm); overflow: hidden;">
+            graph LR
+                %% Nodes
+                WS((WebSocket Stream))
+                Z[Zustand Global Store<br>useFleetStore]:::store
+                Map[MapGL Component<br>Rover Markers]:::ui
+                Panel[Diagnostic Panel<br>Signal & Battery]:::ui
+                Route[Wayfinding Lab<br>Predictive Pathing]:::ui
 
-    <div class="panel">
-      <h3>Predictive Routing</h3>
-      <p>A simulation lab allows operators to draw predictive survey routes. By analyzing historical current data and node battery life, the UI can simulate optimal pathing before executing commands.</p>
-    </div>
+                %% Links
+                WS -->|JSON Update| Z
+                Z -->|State Change| Map
+                Z -->|State Change| Panel
+                Z -->|State Change| Route
 
-    <div class="panel">
-      <h3>Engineering Deck</h3>
-      <p>A dedicated administrative panel provides deep insights into the mesh network's topology, displaying live packet loss metrics, CBOR compression ratios, and individual node statuses.</p>
-    </div>
+                %% Styles
+                classDef store fill:#1e293b,stroke:#3b82f6,stroke-width:2px,color:#fff;
+                classDef ui fill:#0f172a,stroke:#94a3b8,stroke-width:1px,color:#fff;
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Live Bathymetric Surfacing</h2>
+      <p>As the ASV rovers traverse the water, their discrete depth soundings appear as distinct points on the map. However, the portal doesn't just show dots—it actively interpolates the space between them.</p>
+      
+      <div class="content-grid" style="margin-top: 2rem;">
+        <div class="panel">
+          <h3>Dynamic Interpolation</h3>
+          <p>The frontend pulls the latest <code>bathymetry-depth</code> metrics attached to the GPS trail. It runs a lightweight interpolation algorithm in the browser (or requests a fast raster from the backend) to generate a smooth, color-graded bathymetric layer overlaid atop standard satellite basemaps.</p>
+        </div>
+        <div class="panel">
+          <h3>Real-Time Control</h3>
+          <p>The portal isn't just for viewing; it controls the mesh. Using the Engineering Deck, operators can queue JANUS acoustic commands or issue LoRa parameter changes to individual nodes directly from the browser.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Predictive Wayfinding Code</h2>
+      <p>Modeled after commercial voyage optimization tools, the wayfinding layer allows operators to simulate survey routes before dispatching the ASV. The tool compares the planned route against live environmental constraints (currents, wind, static obstacle polygons).</p>
+      
+      <div class="panel" style="margin-top: 2rem; background: var(--bg-2);">
+        <h3>Zustand State Implementation (React)</h3>
+        
+        <div style="background: #0d1117; padding: 1.5rem; border-radius: var(--radius-sm); border: 1px solid var(--line); overflow-x: auto;">
+<pre><code style="font-family: var(--font-mono); font-size: 0.85rem; color: #c9d1d9;"><span style="color: #ff7b72;">import</span> { create } <span style="color: #ff7b72;">from</span> <span style="color: #a5d6ff;">'zustand'</span>
+
+<span style="color: #ff7b72;">export const</span> useFleetStore = create((set) => ({
+  <span style="color: #8b949e;">// Global state properties</span>
+  rovers: {},
+  activeRoute: <span style="color: #79c0ff;">null</span>,
+  environmentalData: <span style="color: #79c0ff;">null</span>,
+  
+  <span style="color: #8b949e;">// Triggered upon WebSocket telemetry receipt</span>
+  updateRover: (id, telemetry) => set((state) => ({
+    rovers: {
+      ...state.rovers,
+      [id]: { ...state.rovers[id], ...telemetry }
+    }
+  })),
+
+  <span style="color: #8b949e;">// Calculates whether a drawn route intersects dangerous shallow waters</span>
+  simulateRouteSafety: (plannedPath) => {
+    <span style="color: #8b949e;">// Invokes a spatial intersection against the latest bathymetric bounds</span>
+    <span style="color: #ff7b72;">const</span> isSafe = checkPolygonIntersection(plannedPath, state.environmentalData);
+    set({ routeStatus: isSafe ? <span style="color: #a5d6ff;">'SAFE_TO_DEPLOY'</span> : <span style="color: #a5d6ff;">'COLLISION_WARNING'</span> });
+  }
+}))
+</code></pre>
+        </div>
+      </div>
+    </section>
   </main>
 
   <footer class="footer wrap"><span>© Jonathan Capone — Technical Portfolio</span></footer>

@@ -57,32 +57,87 @@
     </div>
   </header>
 
-    <section class="hero wrap">
+    
+  <section class="hero wrap">
     <span class="eyebrow">OMEGA Architecture</span>
     <h1>Wireless Mesh Network</h1>
-    <p>The transport layer binding the autonomous fleet together. OMEGA uses a robust, low-bandwidth radio mesh to push live telemetry back to the central gateway.</p>
+    <p>The transport layer binding the autonomous fleet together. OMEGA uses a robust Reticulum-inspired DTN overlay to push live telemetry back to the central gateway.</p>
   </section>
 
-  <main class="wrap content-grid">
-    <div class="panel">
-      <h3>LoRa & HaLow</h3>
-      <p>Operating in dynamic marine environments requires communications that punch through wave scatter. The fleet relies on LoRa (Long Range) radio and 802.11ah HaLow for a decentralized mesh.</p>
-    </div>
-    
-    <div class="panel">
-      <h3>CBOR Compression</h3>
-      <p>LoRa bandwidth is extremely constrained. OMEGA uses CBOR (Concise Binary Object Representation) to compress JSON telemetry into dense binary streams, transmitting GPS and depth rapidly.</p>
-    </div>
+  <main class="wrap">
+    <section class="section" style="padding-top: 2rem;">
+      <div class="content-grid">
+        <div class="panel" style="grid-column: 1 / -1; display: flex; flex-direction: column; background: var(--bg-2);">
+          <h3>Reticulum-Inspired DTN Overlay</h3>
+          <p>Marine environments are characterized by disrupted connectivity, high latency, and severe bandwidth constraints. Traditional protocols like MQTT—which expect a brokered client/server pattern over reliable TCP/IP streams—fail completely over a LoRa network spanning miles of ocean waves.</p>
+          <p>Instead, OMEGA separates the overlay network from the physical radio bearer. The software architecture utilizes a Delay-Tolerant Network (DTN) model with store-and-forward routing. This means a node doesn't need to reach the shoreline gateway directly; it can pack a telemetry bundle and pass it to a nearby floating relay. That relay will store the bundle and forward it later if the next hop is currently out of range.</p>
+        </div>
+      </div>
+    </section>
 
-    <div class="panel">
-      <h3>Self-Healing Routing</h3>
-      <p>If a relay loses power or a rover drifts out of range, the mesh automatically re-evaluates topology and re-routes telemetry packets through the strongest neighboring node.</p>
-    </div>
+    <section class="section">
+      <h2>Why Not MQTT Everywhere?</h2>
+      <p>A common mistake in IoT sensor networks is trying to force MQTT over every link. In the OMEGA stack, MQTT is strictly reserved for the IP-capable edge (Gateways to Cloud).</p>
+      
+      <div class="content-grid" style="margin-top: 2rem;">
+        <div class="panel">
+          <h3>The MQTT Trap</h3>
+          <p>MQTT relies on TCP/IP. Pushing TCP handshakes over a 915MHz LoRa link with a 1% duty cycle is extremely inefficient and prone to timeouts. It forces tiny microcontrollers to maintain complex routing states and connection keepalives.</p>
+        </div>
+        <div class="panel">
+          <h3>The Gateway Handoff</h3>
+          <p>In OMEGA, sensor nodes send highly compact internal frames. The Shoreline Gateway receives these frames, validates them, and <strong>translates</strong> them into MQTT topics. The Gateway then publishes them (e.g., <code>omega/fleet/rover-01/depth</code>) over standard cellular/Wi-Fi to the web backend.</p>
+        </div>
+      </div>
+    </section>
 
-    <div class="panel">
-      <h3>The Gateway Handoff</h3>
-      <p>At the Shoreline Gateway (Raspberry Pi/Edge PC), the mesh phase ends. The Gateway unpacks the CBOR binary stream into JSON payloads and pushes it asynchronously to the backend API.</p>
-    </div>
+    <section class="section">
+      <h2>CBOR Payload Compression</h2>
+      <p>To maximize the efficiency of the LoRa and acoustic links, JSON data must be aggressively compressed. OMEGA utilizes CBOR (Concise Binary Object Representation) to pack nested telemetry structures into dense byte streams.</p>
+      
+      <div class="panel" style="margin-top: 2rem; background: var(--bg-2);">
+        <h3>Serialization Logic (Python Edge)</h3>
+        <p style="margin-bottom: 1rem;">The following snippet demonstrates how the OMEGA gateway handles the translation between human-readable JSON payloads destined for the FastAPI portal and the raw CBOR streams sent over the LoRa physical bridge.</p>
+        
+        <div style="background: #0d1117; padding: 1.5rem; border-radius: var(--radius-sm); border: 1px solid var(--line); overflow-x: auto;">
+<pre><code style="font-family: var(--font-mono); font-size: 0.85rem; color: #c9d1d9;">import cbor2
+import json
+
+def encode_telemetry_for_lora(json_payload: dict) -> bytes:
+    <span style="color: #8b949e;">"""
+    Compresses standard JSON telemetry into a dense CBOR structure
+    suitable for transmission over the LilyGO T-Beam LoRa link.
+    """</span>
+    <span style="color: #ff7b72;">try</span>:
+        <span style="color: #8b949e;"># Example payload: {"rover_id": 4, "lat": 34.05, "lon": -118.24, "depth": 14.2}</span>
+        cbor_bytes = cbor2.dumps(json_payload)
+        
+        <span style="color: #8b949e;"># Verify payload size is under LoRa MTU (typically 250 bytes)</span>
+        <span style="color: #ff7b72;">if</span> len(cbor_bytes) > 250:
+            <span style="color: #ff7b72;">raise</span> ValueError("Payload exceeds LoRa maximum transmission unit")
+            
+        <span style="color: #ff7b72;">return</span> cbor_bytes
+        
+    <span style="color: #ff7b72;">except</span> Exception <span style="color: #ff7b72;">as</span> e:
+        log_error(f"CBOR Compression failed: {e}")
+        <span style="color: #ff7b72;">return</span> <span style="color: #79c0ff;">b""</span>
+
+def decode_lora_to_api(cbor_bytes: bytes) -> dict:
+    <span style="color: #8b949e;">"""
+    Restores the binary CBOR payload received at the Shoreline Gateway
+    back into a JSON structure for FastAPI ingestion.
+    """</span>
+    decoded_dict = cbor2.loads(cbor_bytes)
+    <span style="color: #ff7b72;">return</span> json.dumps(decoded_dict)
+</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Self-Healing Mesh Topologies</h2>
+      <p>By treating the underlying radio hardware purely as a dumb bearer layer, the software mesh can route around failures dynamically. If a HaLow IP link drops due to distance, the software stack seamlessly downshifts to transmitting smaller CBOR bundles over the LoRa network, ensuring critical health and positional telemetry always makes it back to the portal.</p>
+    </section>
   </main>
 
   <footer class="footer wrap"><span>© Jonathan Capone — Technical Portfolio</span></footer>
