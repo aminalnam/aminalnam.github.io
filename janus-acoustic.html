@@ -156,6 +156,52 @@
             
           </section>
     
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">Acoustic Subsea Frames</span>
+              <h2>JANUS Initialization.</h2>
+              <p>This is a simulated NATO-standard JANUS acoustic frame. The payload defines the <code>center_frequency_hz</code> and the <code>rx_level_db</code>. Because underwater acoustics are incredibly low-bandwidth (often ~80 bps), the actual data transferred via the acoustic gateway is usually limited to initialization vectors and critical emergency stop commands.</p>
+              
+            </div>
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">janus-announce.example.json</span><pre><code class="language-json">{
+  "message_id": "janus-msg-0001",
+  "observed_at": "2026-04-18T19:20:00Z",
+  "link_id": "buoy-02-acoustic",
+  "message_type": "announce",
+  "origin": {
+    "node_id": "urn:omega-wave:node:site-a:buoy-02",
+    "device_id": "acoustic-bridge-main",
+    "role": "surface-gateway"
+  },
+  "destination": {
+    "scope": "broadcast"
+  },
+  "janus": {
+    "class_id": 16,
+    "app_type": "gateway-announce",
+    "cargo_encoding": "json",
+    "cargo": {
+      "capabilities": [
+        "command-envelope",
+        "telemetry-bridge"
+      ],
+      "surface_backhaul": [
+        "lora",
+        "wifi-halow",
+        "cellular"
+      ],
+      "notes": "Buoy bridge ready for sparse telemetry and supervisory commands."
+    }
+  },
+  "transport": {
+    "provider": "software-defined-modem",
+    "center_frequency_hz": 11520,
+    "snr_db": 11.4,
+    "rx_level_db": -78.0
+  }
+}</code></pre></div>
+          </section>
+    
     </div>
   </main>
 

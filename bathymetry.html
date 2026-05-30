@@ -156,6 +156,62 @@
             
           </section>
     
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">Bathymetric Execution</span>
+              <h2>Interpolated Depth Soundings.</h2>
+              <p>This is a raw bathymetry sounding envelope. Note the specific metric <code>bathymetry-depth: 12.4m</code> in the SenML records. The gateway consumes these envelopes, storing them as raw points in SQLite. The portal then queries these points and executes Inverse Distance Weighting (IDW) interpolation in real-time, generating a continuous 3D contour map from discrete sonar pings.</p>
+              
+            </div>
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">bathymetry-sounding.example.json</span><pre><code class="language-json">{
+  "spec": "omega-wave.observation-envelope/1",
+  "message_id": "bathymetry-example-0001",
+  "message_type": "observation",
+  "origin": {
+    "node_id": "urn:omega-wave:node:survey-a:vessel-01",
+    "device_id": "multibeam-sonar-main",
+    "capability_ref": "https://example.invalid/omega-wave/things/survey-a-vessel-01-multibeam.td.json",
+    "firmware_version": "0.2.0"
+  },
+  "routing": {
+    "priority": "normal",
+    "ttl_s": 86400,
+    "ack_mode": "gateway",
+    "max_hops": 8
+  },
+  "sample": {
+    "sampled_at": "2026-04-18T19:00:00Z",
+    "sequence": 1,
+    "location": {
+      "lat": 36.801,
+      "lon": -121.79
+    }
+  },
+  "tags": {
+    "site": "survey-a",
+    "platform": "survey-vessel",
+    "medium": "water",
+    "station_name": "Survey Vessel 01"
+  },
+  "payload": {
+    "mode": "senml",
+    "content_type": "application/senml+json",
+    "schema_ref": "urn:ietf:rfc:8428",
+    "records": [
+      {
+        "bn": "urn:omega-wave:thing:survey-a:vessel-01:multibeam/",
+        "bt": 1776548400
+      },
+      {
+        "n": "bathymetry-depth",
+        "u": "m",
+        "v": 12.4
+      }
+    ]
+  }
+}</code></pre></div>
+          </section>
+    
     </div>
   </main>
 

@@ -171,6 +171,32 @@ def receive_intent(intent: MissionIntent):
             
           </section>
     
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">Fleet Algorithms</span>
+              <h2>Autonomous Relay Deployment Logic.</h2>
+              <p>The ASV autonomously evaluates when to drop floating LoRa relays to extend the mesh network back to shore. The <code>build_relay_chain_plan</code> Python function calculates the Haversine distance between the shore and ASV. Crucially, it triggers a drop if the <code>direct_rssi_dbm</code> falls below the <code>deploy_rssi_dbm</code> threshold, proving that the ASV is reacting to live RF propagation conditions rather than just simple geographic distance.</p>
+              
+            </div>
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">gateway/fleet.py (Snippet)</span><pre><code class="language-python">def build_relay_chain_plan(
+    shore_lat: float, shore_lon: float,
+    asv_lat: float, asv_lon: float,
+    available_relays: int = 6,
+    target_hop_km: float = 4.0,
+    direct_rssi_dbm: float | None = None,
+    deploy_rssi_dbm: float = -112.0,
+) -> dict[str, Any]:
+    distance_km = _haversine_km(shore_lat, shore_lon, asv_lat, asv_lon)
+    distance_trigger = distance_km > target_hop_km
+    rssi_trigger = direct_rssi_dbm is not None and direct_rssi_dbm <= deploy_rssi_dbm
+    
+    deploy_recommended = distance_trigger or rssi_trigger
+    desired_relay_count = max(0, ceil(distance_km / target_hop_km) - 1)
+    relay_count = min(available_relays, desired_relay_count) if deploy_recommended else 0
+    # ... logic continues to interpolate drop points
+</code></pre></div>
+          </section>
+    
     </div>
   </main>
 

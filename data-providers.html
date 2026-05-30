@@ -196,6 +196,77 @@
             
           </section>
     
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">Raw Data Structures</span>
+              <h2>The Observation Envelope Payload.</h2>
+              <p>Here is an actual raw <code>observation-envelope.json</code> used by the fleet. Notice how SenML (Sensor Measurement Lists) is used under the <code>payload.records</code> array. The <code>message_id</code> acts as a distributed UUID, and the <code>ttl_s</code> parameter controls how long the packet lives inside the Delay Tolerant Network before expiring.</p>
+              
+            </div>
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">observation-envelope.example.json</span><pre><code class="language-json">{
+  "spec": "omega-wave.observation-envelope/1",
+  "message_id": "01HSJ9R2XW6T4Q3AP7D3R5K8NE",
+  "message_type": "observation",
+  "origin": {
+    "node_id": "urn:omega-wave:node:site-a:buoy-02",
+    "device_id": "water-quality-probe-main",
+    "capability_ref": "https://example.invalid/omega-wave/things/site-a-buoy-02-water-quality.td.json",
+    "firmware_version": "0.1.0"
+  },
+  "routing": {
+    "priority": "normal",
+    "ttl_s": 86400,
+    "ack_mode": "gateway",
+    "max_hops": 8
+  },
+  "sample": {
+    "sampled_at": "2026-04-18T18:30:00Z",
+    "sequence": 1842,
+    "location": {
+      "lat": 36.8054,
+      "lon": -121.7891,
+      "depth_m": 4.2
+    }
+  },
+  "tags": {
+    "site": "site-a",
+    "platform": "buoy",
+    "medium": "water"
+  },
+  "payload": {
+    "mode": "senml",
+    "content_type": "application/senml+json",
+    "schema_ref": "urn:ietf:rfc:8428",
+    "records": [
+      {
+        "bn": "urn:omega-wave:thing:site-a:buoy-02:water-quality/",
+        "bt": 1776537000
+      },
+      {
+        "n": "temperature",
+        "u": "Cel",
+        "v": 13.42
+      },
+      {
+        "n": "salinity",
+        "u": "psu",
+        "v": 33.91
+      },
+      {
+        "n": "dissolved-oxygen",
+        "u": "mg/L",
+        "v": 8.11
+      },
+      {
+        "n": "battery-voltage",
+        "u": "V",
+        "v": 3.92
+      }
+    ]
+  }
+}</code></pre></div>
+          </section>
+    
     </div>
   </main>
 

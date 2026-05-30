@@ -179,6 +179,33 @@
             
           </section>
     
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">RF Optimization</span>
+              <h2>LoRa CBOR Frame Compression.</h2>
+              <p>This is a <code>compact_observation</code> payload. As a raw JSON string, it consumes ~448 bytes. Over 900MHz LoRa, this would require a massive Time-On-Air (ToA) penalty and high collision probability. The gateway passes this payload through the Python <code>cbor2</code> library, crushing the structural overhead (keys, quotes, spaces) down to a ~180 byte binary buffer, allowing it to fit effortlessly inside a single CSS packet window.</p>
+              
+            </div>
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">lora-cbor-frame.example.json</span><pre><code class="language-json">{
+  "message_id": "lora-asv-health-0001",
+  "message_type": "compact_observation",
+  "node_id": "urn:omega-wave:node:asv:prototype-01",
+  "device_id": "tbeam-1w-lora",
+  "sequence": 1,
+  "timestamp": "2026-04-29T15:35:00Z",
+  "lat": 36.81,
+  "lon": -122.41,
+  "priority": "high",
+  "payload_kind": "system_health",
+  "payload": {
+    "battery-percent": 86,
+    "rssi-dbm": -97,
+    "snr-db": 6.5,
+    "leak-detected": false
+  }
+}</code></pre></div>
+          </section>
+    
     </div>
   </main>
 
