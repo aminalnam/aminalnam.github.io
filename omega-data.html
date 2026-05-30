@@ -3,19 +3,17 @@
 <head>
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1" name="viewport"/>
-  <title>OMEGA — OMEGA Observation Data, Providers & Exports</title>
+  <title>OMEGA — Observation Data, Providers & Exports</title>
   
-  <!-- SEO & Social Metadata -->
   <meta name="description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
-  <meta property="og:title" content="OMEGA — OMEGA Observation Data, Providers & Exports" />
+  <meta property="og:title" content="OMEGA — Observation Data, Providers & Exports" />
   <meta property="og:description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://jonathancapone.com/omega-data.html" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="OMEGA — OMEGA Observation Data, Providers & Exports" />
+  <meta name="twitter:title" content="OMEGA — Observation Data, Providers & Exports" />
   <meta name="twitter:description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
   
-  <!-- Favicon / Title Branding -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌊</text></svg>">
   
   <style>
@@ -48,11 +46,6 @@
     .nav a { color: var(--ink-soft); transition: color 0.3s; }
     .nav a:hover, .nav a.is-current { color: var(--white); }
 
-    .omega-subnav { margin: 2rem 0; padding: 1rem 1.5rem; border: 1px solid var(--line); border-radius: 999px; background: rgba(255,255,255,0.03); display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; backdrop-filter: blur(10px); }
-    .omega-subnav strong { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink-soft); margin-right: 0.5rem; }
-    .omega-subnav a { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink-soft); border-bottom: 1px solid transparent; transition: all 0.2s; }
-    .omega-subnav a:hover, .omega-subnav a.is-current { color: var(--white); border-color: var(--white); }
-
     .hero { padding: 4rem 0 3rem; }
     .eyebrow { font-family: var(--font-mono); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.2em; color: var(--accent); margin-bottom: 1rem; display: block; }
     h1 { margin: 0 0 1.5rem; font-family: var(--font-serif); font-size: clamp(3rem, 6vw, 4.5rem); font-weight: 400; line-height: 1.1; max-width: 25ch; }
@@ -64,8 +57,8 @@
     .btn-secondary:hover { background: rgba(255, 255, 255, 0.1); transform: translateY(-2px); }
 
     .main-shell { position: relative; margin-bottom: 4rem; }
-    .main-inner { background: var(--panel); border-radius: 1.5rem; overflow: clip; box-shadow: var(--shadow); border: 1px solid var(--line); padding: 2rem;}
-    .section { padding: 2rem 0; border-bottom: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 4rem; align-items: flex-start; }
+    .main-inner { background: var(--panel); border-radius: 1.5rem; overflow: clip; box-shadow: var(--shadow); border: 1px solid var(--line); }
+    .section { padding: 4rem; border-bottom: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 4rem; align-items: flex-start; }
     .section:last-child { border-bottom: none; }
     .section-content { flex: 1; min-width: 300px; }
     .section-kicker { font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent); margin-bottom: 0.8rem; display: block; }
@@ -86,6 +79,9 @@
     p code, li code { background: rgba(255,255,255,0.1); padding: 0.2rem 0.4rem; border-radius: 4px; font-size: 0.85em; color: #60a5fa;}
 
     .footer { border-top: 1px solid var(--line); padding: 4rem 0; text-align: center; font-family: var(--font-mono); font-size: 0.8rem; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.15em; }
+    
+    /* Layout fix for Homepage which needs block display instead of flex */
+    .section-block { display: block; padding: 4rem; }
     
     .status-label { font-family: var(--font-mono); font-size: 0.65rem; padding: 0.2rem 0.5rem; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.1em; display: inline-block; margin-bottom: 0.5rem; }
     .status-implemented { background: rgba(16, 185, 129, 0.1); color: var(--accent-green); border: 1px solid rgba(16, 185, 129, 0.3); }
@@ -142,92 +138,22 @@
 
           <section class="section">
             <div class="section-content">
-              <span class="section-kicker">Sensor Noise & Statistics</span>
+              <span class="section-kicker">Data Structures</span>
               <h2>The Observation Envelope.</h2>
-              <p>Raw data from the edge is inherently noisy. GPS modules suffer from atmospheric interference, and MEMS Inertial Measurement Units (IMUs) are highly susceptible to high-frequency vibration from motors and wave chop.</p><p>To extract true vessel state, the edge nodes apply <strong>Kalman Filtering</strong> to mathematically isolate true pitch and roll from the vibration.</p>
-              <div class="callout"><strong>Canonical Observations</strong><p>When the gateway receives a packet, it expands it into a fully validated Observation Envelope, containing cleaned statistics alongside the raw readings.</p></div>
+              <p>Disparate sensors produce chaotic data formats. OMEGA standardizes all incoming telemetry into a strict <strong>Observation Envelope</strong>. This schema guarantees that every measurement has a cryptographic timestamp, an explicitly defined unit, and spatial coordinates.</p><p>By enforcing this envelope at the boundary, downstream systems (like bathymetry processors or QARTOD QC algorithms) do not need to parse different manufacturer formats.</p>
+              
             </div>
-            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">observation-envelope.example.json</span><pre><code class="language-json">{
-  "spec": "omega-wave.observation-envelope/1",
-  "message_id": "01HSJ9R2XW6T4Q3AP7D3R5K8NE",
-  "message_type": "observation",
-  "origin": {
-    "node_id": "urn:omega-wave:node:site-a:buoy-02",
-    "device_id": "water-quality-probe-main",
-    "capability_ref": "https://example.invalid/omega-wave/things/site-a-buoy-02-water-quality.td.json",
-    "firmware_version": "0.1.0"
-  },
-  "routing": {
-    "priority": "normal",
-    "ttl_s": 86400,
-    "ack_mode": "gateway",
-    "max_hops": 8
-  },
-  "sample": {
-    "sampled_at": "2026-04-18T18:30:00Z",
-    "sequence": 1842,
-    "location": {
-      "lat": 36.8054,
-      "lon": -121.7891,
-      "depth_m": 4.2
-    }
-  },
-  "tags": {
-    "site": "site-a",
-    "platform": "buoy",
-    "medium": "water"
-  },
-  "payload": {
-    "mode": "senml",
-    "content_type": "application/senml+json",
-    "schema_ref": "urn:ietf:rfc:8428",
-    "records": [
-      {
-        "bn": "urn:omega-wave:thing:site-a:buoy-02:water-quality/",
-        "bt": 1776537000
-      },
-      {
-        "n": "temperature",
-        "u": "Cel",
-        "v": 13.42
-      },
-      {
-        "n": "salinity",
-        "u": "psu",
-        "v": 33.91
-      },
-      {
-        "n": "dissolved-oxygen",
-        "u": "mg/L",
-        "v": 8.11
-      },
-      {
-        "n": "battery-voltage",
-        "u": "V",
-        "v": 3.92
-      }
-    ]
-  }
-}</code></pre></div>
+            
           </section>
     
           <section class="section">
             <div class="section-content">
-              <span class="section-kicker">Spatial Interpolation</span>
-              <h2>Bathymetry & IDW.</h2>
-              <p>Because a physical vessel cannot sound every single square meter of a lakebed, the system must mathematically infer the depth of the unmapped voids.</p><p>OMEGA utilizes <strong>Inverse Distance Weighting (IDW)</strong> for rapid edge-compute approximation. The depth of an unknown point is calculated as a weighted average of known surrounding points, where the weight decreases exponentially as distance increases.</p>
-              <div class="callout"><strong>cKDTree Optimization</strong><p>This is executed efficiently in Python using scipy.spatial.cKDTree, which organizes the data into a k-dimensional tree for lightning-fast nearest-neighbor lookups.</p></div>
+              <span class="section-kicker">Oceanographic Formats</span>
+              <h2>ERDDAP & NetCDF Structures.</h2>
+              <p>Global oceanographic datasets (Sea Surface Temperature, Salinity) are distributed in <strong>NetCDF (Network Common Data Form)</strong> files. These are massive multidimensional arrays plotting latitude, longitude, depth, and time.</p><p>The OMEGA `erddap.py` adapter queries remote ERDDAP federations, parses tabular payloads, and automatically projects them into standardized GeoJSON so the UI can instantly render massive external deployments alongside native OMEGA mesh data.</p>
+              
             </div>
-            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">Python IDW Implementation</span><pre><code class="language-python">from scipy.spatial import cKDTree
-import numpy as np
-
-def inverse_distance_weighting(x, y, z, xi, yi, power=2):
-    tree = cKDTree(np.c_[x, y])
-    dist, idx = tree.query(np.c_[xi.ravel(), yi.ravel()], k=10)
-    dist = np.maximum(dist, 1e-10)
-    weights = 1.0 / dist**power
-    zi = np.sum(weights * z[idx], axis=1) / np.sum(weights, axis=1)
-    return zi.reshape(xi.shape)</code></pre></div>
+            
           </section>
     
     </div>

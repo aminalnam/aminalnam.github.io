@@ -3,19 +3,17 @@
 <head>
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1" name="viewport"/>
-  <title>OMEGA — OMEGA Copilot, Automation & Analysis</title>
+  <title>OMEGA — Copilot, Automation & Analysis</title>
   
-  <!-- SEO & Social Metadata -->
   <meta name="description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
-  <meta property="og:title" content="OMEGA — OMEGA Copilot, Automation & Analysis" />
+  <meta property="og:title" content="OMEGA — Copilot, Automation & Analysis" />
   <meta property="og:description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://jonathancapone.com/omega-intelligence.html" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="OMEGA — OMEGA Copilot, Automation & Analysis" />
+  <meta name="twitter:title" content="OMEGA — Copilot, Automation & Analysis" />
   <meta name="twitter:description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
   
-  <!-- Favicon / Title Branding -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌊</text></svg>">
   
   <style>
@@ -48,11 +46,6 @@
     .nav a { color: var(--ink-soft); transition: color 0.3s; }
     .nav a:hover, .nav a.is-current { color: var(--white); }
 
-    .omega-subnav { margin: 2rem 0; padding: 1rem 1.5rem; border: 1px solid var(--line); border-radius: 999px; background: rgba(255,255,255,0.03); display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; backdrop-filter: blur(10px); }
-    .omega-subnav strong { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink-soft); margin-right: 0.5rem; }
-    .omega-subnav a { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink-soft); border-bottom: 1px solid transparent; transition: all 0.2s; }
-    .omega-subnav a:hover, .omega-subnav a.is-current { color: var(--white); border-color: var(--white); }
-
     .hero { padding: 4rem 0 3rem; }
     .eyebrow { font-family: var(--font-mono); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.2em; color: var(--accent); margin-bottom: 1rem; display: block; }
     h1 { margin: 0 0 1.5rem; font-family: var(--font-serif); font-size: clamp(3rem, 6vw, 4.5rem); font-weight: 400; line-height: 1.1; max-width: 25ch; }
@@ -64,8 +57,8 @@
     .btn-secondary:hover { background: rgba(255, 255, 255, 0.1); transform: translateY(-2px); }
 
     .main-shell { position: relative; margin-bottom: 4rem; }
-    .main-inner { background: var(--panel); border-radius: 1.5rem; overflow: clip; box-shadow: var(--shadow); border: 1px solid var(--line); padding: 2rem;}
-    .section { padding: 2rem 0; border-bottom: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 4rem; align-items: flex-start; }
+    .main-inner { background: var(--panel); border-radius: 1.5rem; overflow: clip; box-shadow: var(--shadow); border: 1px solid var(--line); }
+    .section { padding: 4rem; border-bottom: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 4rem; align-items: flex-start; }
     .section:last-child { border-bottom: none; }
     .section-content { flex: 1; min-width: 300px; }
     .section-kicker { font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent); margin-bottom: 0.8rem; display: block; }
@@ -86,6 +79,9 @@
     p code, li code { background: rgba(255,255,255,0.1); padding: 0.2rem 0.4rem; border-radius: 4px; font-size: 0.85em; color: #60a5fa;}
 
     .footer { border-top: 1px solid var(--line); padding: 4rem 0; text-align: center; font-family: var(--font-mono); font-size: 0.8rem; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.15em; }
+    
+    /* Layout fix for Homepage which needs block display instead of flex */
+    .section-block { display: block; padding: 4rem; }
     
     .status-label { font-family: var(--font-mono); font-size: 0.65rem; padding: 0.2rem 0.5rem; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.1em; display: inline-block; margin-bottom: 0.5rem; }
     .status-implemented { background: rgba(16, 185, 129, 0.1); color: var(--accent-green); border: 1px solid rgba(16, 185, 129, 0.3); }
@@ -142,17 +138,12 @@
 
           <section class="section">
             <div class="section-content">
-              <span class="section-kicker">Amnesia Prevention & NLP</span>
-              <h2>Honu Copilot Architecture.</h2>
-              <p>Honu (named after the Hawaiian green sea turtle) is the native, context-aware intelligence engine. To prevent "LLM Amnesia" where the model loses track of what the user is currently viewing, the gateway implements a strict <strong>Amnesia Prevention Protocol</strong>. Every prompt is secretly bundled with a <code>[PORTAL CONTEXT]</code> block containing the active map bounding box, selected device, and UI state.</p><p>Honu operates under strict Read-Only constraints. It possesses a Tool Registry of 46 callable API routes. When a user requests an action, Honu uses <code>kind="action"</code> tools to <em>stage</em> the payload for explicit operator confirmation, guaranteeing AI cannot blindly execute physical hardware commands.</p>
-              <div class="callout"><strong>Intent-Based Tool Preprocessing</strong><p>To save tokens and execution time on small local models (Ollama), the gateway parses natural language to detect geographic intent (translating "Monterey Bay" into bounding boxes) and statistical intent (routing to get_measurement_statistics instead of raw row queries).</p></div>
+              <span class="section-kicker">Edge AI</span>
+              <h2>Machine Learning Inferencing (TinyML).</h2>
+              <p>Future fleet iterations will run TinyML models directly on the ESP32 edge nodes. By training a TensorFlow Lite model on baseline vibration profiles, the node will be able to detect motor anomalies (e.g., kelp wrapped around a propeller) and transmit an alarm before critical failure occurs.</p>
+              
             </div>
-            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">gateway/copilot.py Tool Registry</span><pre><code class="language-python">_action_tool(
-    "propose_control_command",
-    "Stage a control command for one node for operator confirmation. "
-    "This does NOT run the command — it stages it for the operator to confirm.",
-    "/v1/control/commands",
-)</code></pre></div>
+            
           </section>
     
     </div>
