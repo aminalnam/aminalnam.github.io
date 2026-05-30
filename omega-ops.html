@@ -188,6 +188,48 @@
 }</code></pre></div>
           </section>
     
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">Coordinate Autonomy</span>
+              <h2>ASV Waypoint Missions.</h2>
+              <p>Autonomous Surface Vehicles (ASVs) can execute strict coordinate waypoint sequences. The Mission Portal builds JSON payloads defining bounding geofences, speeds (in meters per second), and camera polling rates. This allows for complex survey grids during operations.</p>
+              
+            </div>
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">asv-waypoint-mission.example.json</span><pre><code class="language-json">{
+  "mission_type": "waypoint_transit",
+  "name": "Dockside waypoint transit smoke test",
+  "target_node_id": "urn:omega-wave:node:asv:prototype-01",
+  "requested_by": {
+    "operator": "shore-test",
+    "node_id": "urn:omega-wave:node:shore:controller-01",
+    "device_id": "mission-console"
+  },
+  "constraints": {
+    "max_speed_mps": 2.5,
+    "operator_review_required": true,
+    "geofence_id": "dockside-test-box"
+  },
+  "waypoints": [
+    {
+      "lat": 36.8001,
+      "lon": -122.401,
+      "label": "Start gate",
+      "speed_mps": 1.5
+    },
+    {
+      "lat": 36.8025,
+      "lon": -122.406,
+      "label": "Survey turn",
+      "speed_mps": 2
+    }
+  ],
+  "parameters": {
+    "camera_summary_rate_hz": 0.2,
+    "environment_sample_interval_s": 30
+  }
+}</code></pre></div>
+          </section>
+    
     </div>
   </main>
 

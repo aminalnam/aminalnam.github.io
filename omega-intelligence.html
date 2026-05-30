@@ -146,6 +146,22 @@
             
           </section>
     
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">Data Science Workflows</span>
+              <h2>The Honu AI Copilot.</h2>
+              <p>The gateway includes an embedded, offline-capable AI Orchestration engine named Honu. This is a 166KB Python module that routes natural language queries across 46 distinct internal APIs. Because the model holds zero built-in knowledge of the deployment, it uses a strict system prompt to act as a pure analytical and navigational tool, leveraging Live Tool Calls to answer complex oceanographic queries.</p>
+              
+            </div>
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">copilot.py</span><pre><code class="language-python">SYSTEM_PROMPT = """You are Honu, the OMEGA Intelligence Engine — an expert research assistant, data analyst, and interface navigator embedded in the OMEGA open-source marine research portal.
+1. READ-ONLY OPERATIONS: You are strictly an analytical and navigational tool.
+   - You must NEVER send outbound telemetry or execute hardware controls.
+2. DATA PURITY: You hold ZERO built-in knowledge of this deployment.
+   - Every fact must come from a tool call against the gateway's live API.
+3. AMNESIA PREVENTION: You cannot "see" the user's screen.
+   - Before each message, you receive a [PORTAL CONTEXT] block showing the user's current view."""</code></pre></div>
+          </section>
+    
     </div>
   </main>
 

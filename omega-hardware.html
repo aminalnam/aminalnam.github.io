@@ -197,6 +197,23 @@ def receive_intent(intent: MissionIntent):
 </code></pre></div>
           </section>
     
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">OTA Updates</span>
+              <h2>Live Firmware Flasher.</h2>
+              <p>OMEGA allows operators to flash ESP32 nodes directly from the Mission Portal. The Python backend dynamically executes <code>platformio</code> as a subprocess, allowing operators to deploy targeted profiles (like <code>tbeam-supreme-usb-telemetry</code>) over the air or via USB without ever leaving the browser.</p>
+              
+            </div>
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">firmware_flasher.py</span><pre><code class="language-python">def build_firmware_command(target: FirmwareTarget, *, action: FirmwareAction, port: str | None = None) -> list[str]:
+    command = [
+        *_platformio_command(),
+        "run", "-d", str(target.project_dir), "-e", target.environment,
+    ]
+    if action == "upload":
+        command += ["-t", "upload", "--upload-port", port]
+    return command</code></pre></div>
+          </section>
+    
     </div>
   </main>
 
