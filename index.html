@@ -1,17 +1,16 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1" name="viewport"/>
-<title>Jonathan Capone — Project Portfolio</title>
-<meta content="Project portfolio of Jonathan Capone: sensing systems, geospatial mapping, physical computing, communications systems, and documentation of work." name="description"/>
-<meta content="#0b121a" name="theme-color"/>
-<meta content="Jonathan Capone — Project Portfolio" property="og:title"/>
-<meta content="Projects in sensing, mapping, communications, physical computing, and public documentation." property="og:description"/>
-<meta content="website" property="og:type"/>
-<meta content="https://raw.githubusercontent.com/aminalnam/OMEGA/main/assets/mapping-diagram.png" property="og:image"/>
-<style>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <title>Jonathan Capone — Technical Portfolio</title>
+  <meta content="Project portfolio of Jonathan Capone: autonomous marine hardware, resilient mesh networking, and predictive digital twins." name="description"/>
+  <meta content="#0b121a" name="theme-color"/>
+  <meta content="Jonathan Capone — Technical Portfolio" property="og:title"/>
+  <meta content="Autonomous marine hardware, resilient mesh networking, and predictive digital twins." property="og:description"/>
+  <meta content="website" property="og:type"/>
+  
+  <style>
     :root {
       --bg: #070b14;
       --bg-2: #0e1522;
@@ -21,10 +20,8 @@
       --ink: #ffffff;
       --ink-soft: #9aa2b1;
       --line: rgba(255, 255, 255, 0.1);
-      --line-strong: rgba(255, 255, 255, 0.18);
       --accent: #3b82f6;
       --accent-deep: #60a5fa;
-      --ocean: #93c5fd;
       --white: #ffffff;
       --shadow: 0 22px 48px rgba(0, 0, 0, 0.5);
       --max: 82rem;
@@ -35,38 +32,19 @@
       --font-mono: "SFMono-Regular", "Roboto Mono", Consolas, Monaco, monospace;
     }
 
-    * {
-      box-sizing: border-box;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
+    * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+    html { scroll-behavior: smooth; }
     body {
-      margin: 0;
-      color: var(--ink);
-      background: var(--bg);
-      font-family: var(--font-sans);
-      line-height: 1.65;
-      min-height: 100vh;
+      margin: 0; color: var(--ink); background: var(--bg);
+      font-family: var(--font-sans); line-height: 1.65; min-height: 100vh;
     }
-
     body::before {
-      content: "";
-      position: fixed;
-      inset: -50%;
-      z-index: -2;
+      content: ""; position: fixed; inset: -50%; z-index: -2;
       background: radial-gradient(circle at 50% 0%, rgba(59, 130, 246, 0.15), transparent 60%);
       pointer-events: none;
     }
-
     body::after {
-      content: "";
-      position: fixed;
-      inset: 0;
-      z-index: -1;
+      content: ""; position: fixed; inset: 0; z-index: -1;
       background-image:
         linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
         linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
@@ -74,1292 +52,317 @@
       mask-image: linear-gradient(180deg, rgba(0,0,0,0.8), rgba(0,0,0,0.25));
       pointer-events: none;
     }
-
-    a {
-      color: inherit;
-    }
-
-    img {
-      max-width: 100%;
-      display: block;
-    }
-
-    .wrap {
-      width: min(calc(100% - 2rem), var(--max));
-      margin: 0 auto;
-    }
-
-    .skip-link {
-      position: absolute;
-      left: -9999px;
-    }
-
-    .skip-link:focus {
-      left: 1rem;
-      top: 1rem;
-      z-index: 100;
-      background: var(--panel); backdrop-filter: blur(20px);
-      color: #000;
-      padding: 0.75rem 1rem;
-      border-radius: 999px;
-    }
-
-    .topbar {
-      position: sticky;
-      top: 0;
-      z-index: 40;
-      backdrop-filter: blur(18px);
-      background: rgba(7, 16, 24, 0.74);
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-    }
-
-    .topbar-inner {
-      min-height: 4.8rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-    }
-
-    .brand {
-      text-decoration: none;
-      min-width: 0;
-    }
-
-    .brand-title {
-      display: block;
-      font-family: var(--font-serif);
-      font-size: 1.2rem;
-      letter-spacing: -0.03em;
-    }
-
-    .brand-sub {
-      display: block;
-      margin-top: 0.15rem;
-      font-size: 0.68rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.68);
-      font-family: var(--font-mono);
-    }
-
+    a { color: inherit; }
+    img { max-width: 100%; display: block; }
+    .wrap { width: min(calc(100% - 2rem), var(--max)); margin: 0 auto; }
     
+    .topbar {
+      position: sticky; top: 0; z-index: 40; backdrop-filter: blur(18px);
+      background: rgba(7, 16, 24, 0.74); border-bottom: 1px solid var(--line);
+    }
+    .topbar-inner {
+      min-height: 4.8rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    }
+    .brand { text-decoration: none; }
+    .brand-title { display: block; font-family: var(--font-serif); font-size: 1.2rem; }
+    .brand-sub {
+      display: block; font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase;
+      color: rgba(255,255,255,0.68); font-family: var(--font-mono); margin-top: 0.15rem;
+    }
     .nav {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: flex-end;
-      gap: 0.7rem 0.95rem;
-      font-size: 0.73rem;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      font-family: var(--font-mono);
+      display: flex; gap: 1rem; font-size: 0.73rem; letter-spacing: 0.16em;
+      text-transform: uppercase; font-family: var(--font-mono);
     }
+    .nav a { text-decoration: none; color: rgba(255,255,255,0.78); transition: color 0.2s; }
+    .nav a:hover { color: #fff; }
 
-    .nav a {
-      text-decoration: none;
-      color: rgba(255,255,255,0.78);
-      border-bottom: 1px solid transparent;
-      padding-bottom: 0.15rem;
-      transition: color 0.2s ease, border-color 0.2s ease;
-      cursor: pointer;
-      list-style: none;
-    }
-
-    .nav a:hover,
-    .nav a:focus-visible,
-    .nav a.is-current {
-      color: var(--white, #fff);
-      border-color: currentColor;
-      outline: none;
-    }
-
-    .omega-subnav {
-      margin: 0 0 1.5rem;
-      padding: 0.8rem 1rem;
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 999px;
-      background: rgba(255,255,255,0.06);
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem 0.8rem;
-      align-items: center;
-      backdrop-filter: blur(10px);
-    }
-
-    .omega-subnav strong {
-      font-family: var(--font-mono);
-      font-size: 0.68rem;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.66);
-      font-weight: 500;
-    }
-
-    .omega-subnav a {
-      text-decoration: none;
-      font-family: var(--font-mono);
-      font-size: 0.68rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.78);
-      padding-bottom: 0.12rem;
-      border-bottom: 1px solid transparent;
-    }
-
-    .omega-subnav a:hover,
-    .omega-subnav a:focus-visible,
-    .omega-subnav a.is-current {
-      color: #fff;
-      border-color: currentColor;
-      outline: none;
-    }
-
-
-    .hero {
-      position: relative;
-      padding: 4.8rem 0 5.4rem;
-      overflow: clip;
-    }
-
+    .hero { position: relative; padding: 4.8rem 0 5.4rem; overflow: clip; }
     .hero::before {
-      content: "OMEGA";
-      position: absolute;
-      right: 1.5rem;
-      top: 1.4rem;
-      font-family: var(--font-serif);
-      font-size: min(9vw, 6rem);
-      line-height: 0.9;
-      letter-spacing: -0.07em;
-      color: rgba(255,255,255,0.035);
-      pointer-events: none;
-      user-select: none;
+      content: "SYSTEM"; position: absolute; right: 1.5rem; top: 1.4rem;
+      font-family: var(--font-serif); font-size: min(9vw, 6rem); line-height: 0.9;
+      letter-spacing: -0.07em; color: rgba(255,255,255,0.035); pointer-events: none;
     }
-
-    .hero-grid {
-      display: grid;
-      grid-template-columns: minmax(0, 1.35fr) minmax(18rem, 0.78fr);
-      gap: 2.4rem;
-      align-items: start;
-    }
-
     .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.55rem;
-      font-family: var(--font-mono);
-      font-size: 0.68rem;
-      text-transform: uppercase;
-      letter-spacing: 0.15em;
-      color: rgba(255,255,255,0.72);
+      display: inline-flex; align-items: center; gap: 0.55rem; font-family: var(--font-mono);
+      font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.15em; color: rgba(255,255,255,0.72);
     }
-
-    .eyebrow::before {
-      content: "";
-      width: 1.6rem;
-      height: 1px;
-      background: rgba(255,255,255,0.44);
-    }
-
+    .eyebrow::before { content: ""; width: 1.6rem; height: 1px; background: rgba(255,255,255,0.44); }
     h1 {
-      margin: 0.8rem 0 1rem;
-      max-width: 18ch;
-      font-family: var(--font-serif);
-      font-size: clamp(2.2rem, 4.2vw, 3.8rem);
-      line-height: 1.02;
-      letter-spacing: -0.05em;
-      font-weight: 400;
+      margin: 0.8rem 0 1rem; font-family: var(--font-serif);
+      font-size: clamp(2.2rem, 4.2vw, 3.8rem); line-height: 1.02; letter-spacing: -0.05em; font-weight: 400;
     }
-
-    .hero-copy {
-      max-width: 48rem;
-    }
-
-    .hero-copy p {
-      max-width: 40rem;
-      margin: 0 0 0.95rem;
-      font-size: clamp(1rem, 1.3vw, 1.08rem);
-      color: rgba(255,255,255,0.82);
-    }
-
-    .hero-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.8rem;
-      margin-top: 1.5rem;
-    }
+    .hero-copy p { max-width: 48rem; font-size: clamp(1rem, 1.3vw, 1.08rem); color: rgba(255,255,255,0.82); }
 
     .button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-      min-height: 2.8rem;
-      padding: 0.78rem 1rem;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.2);
-      text-decoration: none;
-      font-family: var(--font-mono);
-      font-size: 0.69rem;
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-      transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+      display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+      min-height: 2.8rem; padding: 0.78rem 1rem; border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.2); text-decoration: none; font-family: var(--font-mono);
+      font-size: 0.69rem; text-transform: uppercase; letter-spacing: 0.14em; transition: all 0.2s;
     }
+    .button:hover { transform: translateY(-1px); }
+    .button-primary { background: var(--accent); border-color: rgba(255,255,255,0.08); color: #fff; }
+    .button-primary:hover { background: var(--accent-deep); }
+    .button-secondary { background: rgba(255,255,255,0.06); color: #fff; }
+    .button-secondary:hover { background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.28); }
 
-    .button:hover,
-    .button:focus-visible {
-      transform: translateY(-1px);
-      outline: none;
-    }
-
-    .button-primary {
-      background: var(--accent);
-      border-color: rgba(255,255,255,0.08);
-      color: #fff;
-    }
-
-    .button-primary:hover,
-    .button-primary:focus-visible {
-      background: var(--accent-deep);
-    }
-
-    .button-secondary {
-      background: rgba(255,255,255,0.06);
-      color: #fff;
-    }
-
-    .button-secondary:hover,
-    .button-secondary:focus-visible {
-      background: rgba(255,255,255,0.12);
-      border-color: rgba(255,255,255,0.28);
-    }
-
-    .button-light {
-      color: var(--ink);
-      border-color: rgba(20,20,20,0.16);
-      background: var(--panel); backdrop-filter: blur(20px);
-    }
-
-    .button-light:hover,
-    .button-light:focus-visible {
-      background: #f3eee6;
-      border-color: rgba(20,20,20,0.26);
-    }
-
-    .button-accent {
-      color: #fff;
-      background: var(--accent);
-      border-color: var(--accent);
-    }
-
-    .button-accent:hover,
-    .button-accent:focus-visible {
-      background: var(--accent-deep);
-      border-color: var(--accent-deep);
-    }
-
-    .hero-panel {
-      position: relative;
-      padding: 1.45rem;
-      border: 1px solid rgba(255,255,255,0.14);
-      border-radius: var(--radius);
-      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.025));
-      box-shadow: 0 1.2rem 2.6rem rgba(0,0,0,0.16);
-      align-self: stretch;
-    }
-
-    .hero-panel::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      border-radius: inherit;
-      background:
-        linear-gradient(135deg, rgba(126,167,206,0.16), transparent 45%),
-        linear-gradient(315deg, rgba(217,72,65,0.12), transparent 50%);
-      pointer-events: none;
-    }
-
-    .panel-label {
-      position: relative;
-      z-index: 1;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.55rem;
-      font-family: var(--font-mono);
-      font-size: 0.69rem;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      color: rgba(255,255,255,0.7);
-    }
-
-    .panel-label::before {
-      content: "";
-      width: 0.75rem;
-      height: 0.75rem;
-      border-radius: 50%;
-      background: var(--accent);
-      box-shadow: 0 0 0 0.35rem rgba(217,72,65,0.16);
-    }
-
-    .hero-panel h2 {
-      position: relative;
-      z-index: 1;
-      margin: 0.75rem 0 0.8rem;
-      font-size: 1.18rem;
-      line-height: 1.2;
-      font-weight: 600;
-      letter-spacing: -0.025em;
-    }
-
-    .hero-panel p {
-      position: relative;
-      z-index: 1;
-      margin: 0 0 1rem;
-      color: rgba(255,255,255,0.82);
-      font-size: 0.93rem;
-    }
-
-    .panel-list {
-      position: relative;
-      z-index: 1;
-      display: grid;
-      gap: 0.9rem;
-      margin: 1.2rem 0 0;
-    }
-
-    .panel-item {
-      padding-top: 0.9rem;
-      border-top: 1px solid rgba(255,255,255,0.1);
-    }
-
-    .panel-item strong {
-      display: block;
-      font-family: var(--font-mono);
-      font-size: 0.69rem;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      color: rgba(255,255,255,0.6);
-      margin-bottom: 0.25rem;
-    }
-
-    .panel-item span {
-      color: rgba(255,255,255,0.92);
-      font-size: 0.97rem;
-    }
-
-    .main-shell {
-      position: relative;
-      margin-top: -2.2rem;
-      margin-bottom: 4rem;
-    }
-
+    .main-shell { position: relative; margin-bottom: 4rem; }
     .main-inner {
-      background: var(--panel);
-      color: var(--ink);
-      border-radius: 1.5rem;
-      overflow: clip;
-      box-shadow: var(--shadow);
-      border: 1px solid rgba(255,255,255,0.08);
+      background: var(--panel); border-radius: 1.5rem; overflow: clip;
+      box-shadow: var(--shadow); border: 1px solid var(--line);
     }
-
-    .section {
-      padding: 4rem 0;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .section:last-child {
-      border-bottom: none;
-    }
-
-    .section-head {
-      margin-bottom: 2rem;
-    }
-
-    .section-kicker {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.7rem;
-      font-family: var(--font-mono);
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      letter-spacing: 0.18em;
-      color: var(--ink-soft);
-    }
-
-    .section-kicker::before {
-      content: "";
-      width: 1.4rem;
-      height: 1px;
-      background: rgba(20,20,20,0.26);
-    }
-
+    .section { padding: 4rem 0; border-bottom: 1px solid var(--line); }
+    .section:last-child { border-bottom: none; }
+    .section-head { margin-bottom: 2rem; }
     .section-head h2 {
-      margin: 0.9rem 0 0.75rem;
-      font-family: var(--font-serif);
-      font-size: clamp(2.1rem, 4vw, 3.2rem);
-      line-height: 0.98;
-      letter-spacing: -0.05em;
-      font-weight: 400;
+      margin: 0.9rem 0 0.75rem; font-family: var(--font-serif); font-size: clamp(2.1rem, 4vw, 3.2rem);
+      line-height: 0.98; letter-spacing: -0.05em; font-weight: 400;
     }
+    .section-head p { max-width: 48rem; margin: 0; color: var(--ink-soft); font-size: 1.02rem; }
 
-    .section-head p {
-      max-width: 48rem;
-      margin: 0;
-      color: var(--ink-soft);
-      font-size: 1.02rem;
-    }
-
-    .featured {
-      display: grid;
-      grid-template-columns: minmax(0, 1.22fr) minmax(17rem, 0.78fr);
-      gap: 2rem;
-      align-items: start;
-    }
-
-    .featured-card {
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      overflow: hidden;
-      background: var(--panel); backdrop-filter: blur(20px);
-    }
-
-    .featured-image {
-      background: linear-gradient(180deg, #eaf1f6, #ffffff);
-      border-bottom: 1px solid var(--line);
-      padding: 1.2rem;
-    }
-
-    .featured-image img {
-      width: 100%;
-      border-radius: 0.8rem;
-      border: 1px solid rgba(20,20,20,0.08);
-      box-shadow: 0 1.5rem 3rem rgba(13,25,37,0.08);
-    }
-
-    .featured-body {
-      padding: 1.65rem;
-    }
-
-    .featured-body .meta {
-      font-family: var(--font-mono);
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      color: var(--accent);
-    }
-
-    .featured-body h3 {
-      margin: 0.7rem 0 0.9rem;
-      font-family: var(--font-serif);
-      font-size: clamp(2rem, 3vw, 2.9rem);
-      line-height: 0.96;
-      letter-spacing: -0.05em;
-      font-weight: 400;
-    }
-
-    .featured-body p {
-      margin: 0 0 1rem;
-      color: var(--ink-soft);
-      font-size: 1.02rem;
-    }
-
-    .feature-stats {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 0.8rem;
-      margin: 1.4rem 0 1.5rem;
-    }
-
-    .stat {
-      padding: 1rem;
-      border-radius: var(--radius-sm);
-      border: 1px solid var(--line);
-      background: var(--panel-soft);
-    }
-
-    .stat strong {
-      display: block;
-      font-family: var(--font-mono);
-      font-size: 0.69rem;
-      text-transform: uppercase;
-      letter-spacing: 0.15em;
-      color: var(--accent);
-      margin-bottom: 0.35rem;
-    }
-
-    .stat span {
-      display: block;
-      font-size: 0.95rem;
-      color: var(--ink);
-    }
-
-    .button-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.8rem;
-    }
-
-    .aside-panel {
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: var(--panel); backdrop-filter: blur(20px);
-      padding: 1.55rem;
-      position: sticky;
-      top: 6rem;
-    }
-
-    .aside-panel h4 {
-      margin: 0;
-      font-family: var(--font-mono);
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      color: var(--ink-soft);
-    }
-
-    .aside-list {
-      margin: 1rem 0 0;
-      padding: 0;
-      list-style: none;
-      display: grid;
-      gap: 0.9rem;
-    }
-
-    .aside-list li {
-      padding-top: 0.9rem;
-      border-top: 1px solid var(--line);
-    }
-
-    .aside-list strong {
-      display: block;
-      font-size: 0.96rem;
-      margin-bottom: 0.2rem;
-    }
-
-    .aside-list span {
-      display: block;
-      color: var(--ink-soft);
-      font-size: 0.95rem;
-    }
-
-    .posts {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 1.35rem;
-    }
-
-    .post {
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: var(--panel); backdrop-filter: blur(20px);
-      overflow: clip;
-      display: flex;
-      flex-direction: column;
-      min-height: 100%;
-      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
-    }
-
-    .post:hover,
-    .post:focus-within {
-      transform: translateY(-2px);
-      box-shadow: 0 1.5rem 3rem rgba(15, 24, 34, 0.08);
-      border-color: rgba(20,20,20,0.18);
-    }
-
-    .post-visual {
-      position: relative;
-      min-height: 10rem;
-      padding: 1.1rem;
-      overflow: hidden;
-      background:
-        linear-gradient(140deg, rgba(46,91,135,0.96), rgba(13,25,37,0.94)),
-        radial-gradient(circle at top right, rgba(255,255,255,0.28), transparent 32%);
-      color: #fff;
-    }
-
-    .post-visual.alt-1 {
-      background:
-        linear-gradient(140deg, rgba(111, 75, 41, 0.95), rgba(28,20,14,0.92)),
-        radial-gradient(circle at top right, rgba(255,255,255,0.25), transparent 28%);
-    }
-
-    .post-visual.alt-2 {
-      background:
-        linear-gradient(140deg, rgba(40,62,88,0.95), rgba(72,33,55,0.92)),
-        radial-gradient(circle at top right, rgba(255,255,255,0.25), transparent 28%);
-    }
-
-    .post-visual.alt-3 {
-      background:
-        linear-gradient(140deg, rgba(18,91,88,0.95), rgba(9,29,38,0.92)),
-        radial-gradient(circle at top right, rgba(255,255,255,0.24), transparent 28%);
-    }
-
-    .visual-label {
-      display: inline-flex;
-      padding: 0.35rem 0.55rem;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.12);
-      border: 1px solid rgba(255,255,255,0.18);
-      font-family: var(--font-mono);
-      font-size: 0.66rem;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-    }
-
-    .visual-title {
-      margin-top: 2.1rem;
-      font-family: var(--font-serif);
-      font-size: 2rem;
-      line-height: 0.94;
-      letter-spacing: -0.05em;
-      max-width: 10ch;
-    }
-
-    .visual-grid {
-      position: absolute;
-      inset: auto 1rem 1rem auto;
-      width: 6.4rem;
-      height: 6.4rem;
-      border: 1px solid rgba(255,255,255,0.18);
-      border-radius: 0.85rem;
-      background-image:
-        linear-gradient(rgba(255,255,255,0.11) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.11) 1px, transparent 1px);
-      background-size: 1rem 1rem;
-      transform: rotate(8deg);
-      opacity: 0.7;
-    }
-
-    .post-body {
-      padding: 1.35rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.95rem;
-      flex: 1;
-    }
-
-    .post-status {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.45rem;
-      font-family: var(--font-mono);
-      font-size: 0.67rem;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--ink-soft);
-    }
-
-    .post-status::before {
-      content: "";
-      width: 0.55rem;
-      height: 0.55rem;
-      border-radius: 50%;
-      background: var(--accent);
-      flex: 0 0 auto;
-    }
-
-    .post-status.in-progress::before {
-      background: #c89c4d;
-    }
-
-    .post-status.complete::before {
-      background: #2e5b87;
-    }
-
-    .post-body h3 {
-      margin: 0;
-      font-family: var(--font-serif);
-      font-size: 1.7rem;
-      line-height: 1;
-      letter-spacing: -0.04em;
-      font-weight: 400;
-    }
-
-    .post-body p {
-      margin: 0;
-      color: var(--ink-soft);
-      font-size: 0.98rem;
-      flex: 0 0 auto;
-    }
-
-    .post-links {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.7rem;
-      margin-top: auto;
-      padding-top: 0.35rem;
-    }
-
-    .doc-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 1rem;
-    }
-
+    .doc-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
     .doc-card {
-      position: relative;
-      border: 1px solid var(--line);
-      border-radius: var(--radius-sm);
-      background: var(--panel); backdrop-filter: blur(20px);
-      padding: 1.2rem;
-      text-decoration: none;
-      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
-      min-height: 100%;
+      position: relative; border: 1px solid var(--line); border-radius: var(--radius-sm);
+      background: var(--panel); backdrop-filter: blur(20px); padding: 1.5rem; text-decoration: none;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease; display: flex; flex-direction: column;
     }
-
-    .doc-card:hover,
-    .doc-card:focus-visible {
-      transform: translateY(-2px);
-      box-shadow: 0 1.3rem 2.4rem rgba(15, 24, 34, 0.07);
-      border-color: rgba(20,20,20,0.2);
-      outline: none;
-    }
-
+    .doc-card:hover { transform: translateY(-2px); border-color: rgba(255,255,255,0.2); }
     .tile-kicker {
-      display: inline-block;
-      font-family: var(--font-mono);
-      font-size: 0.66rem;
-      text-transform: uppercase;
-      letter-spacing: 0.15em;
-      color: var(--accent);
-      margin-bottom: 0.75rem;
+      display: inline-block; font-family: var(--font-mono); font-size: 0.66rem; text-transform: uppercase;
+      letter-spacing: 0.15em; color: var(--accent); margin-bottom: 0.75rem;
     }
-
     .doc-card h3 {
-      margin: 0 0 0.65rem;
-      font-family: var(--font-serif);
-      font-size: 1.5rem;
-      line-height: 0.98;
-      letter-spacing: -0.045em;
-      font-weight: 400;
-      color: var(--ink);
+      margin: 0 0 0.65rem; font-family: var(--font-serif); font-size: 1.5rem;
+      line-height: 0.98; letter-spacing: -0.045em; font-weight: 400;
     }
+    .doc-card p { margin: 0; color: var(--ink-soft); font-size: 0.95rem; }
 
-    .doc-card p {
-      margin: 0;
-      color: var(--ink-soft);
-      font-size: 0.95rem;
-    }
-
-    .split-links {
-      display: grid;
-      grid-template-columns: 1.15fr 0.85fr;
-      gap: 1.4rem;
-    }
-
-    .summary-panel,
-    .links-panel {
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: var(--panel); backdrop-filter: blur(20px);
-      padding: 1.45rem;
-    }
-
-    .summary-panel p {
-      margin: 0 0 1rem;
-      color: var(--ink-soft);
-    }
-
-    .summary-list,
-    .links-list {
-      display: grid;
-      gap: 0.9rem;
-      margin: 1.1rem 0 0;
-      padding: 0;
-      list-style: none;
-    }
-
-    .summary-list li,
-    .links-list li {
-      padding-top: 0.9rem;
-      border-top: 1px solid var(--line);
-    }
-
-    .summary-list strong,
-    .links-list strong {
-      display: block;
-      font-size: 0.96rem;
-      color: var(--ink);
-      margin-bottom: 0.18rem;
-    }
-
-    .summary-list span,
-    .links-list span {
-      display: block;
-      font-size: 0.95rem;
-      color: var(--ink-soft);
-    }
-
-    .inline-link {
-      text-decoration: none;
-      border-bottom: 1px solid rgba(20,20,20,0.25);
-    }
-
-    .inline-link:hover,
-    .inline-link:focus-visible {
-      outline: none;
-      border-color: currentColor;
+    .doc-preview {
+      margin-top: 1.5rem; padding: 1rem; border-radius: 8px; background: rgba(0,0,0,0.3);
+      border: 1px solid var(--line); font-size: 0.85rem; color: #a1a1aa; font-family: var(--font-mono);
     }
 
     .footer {
-      padding: 1.2rem 0 3rem;
-      color: rgba(255,255,255,0.66);
-      font-family: var(--font-mono);
-      font-size: 0.68rem;
-      letter-spacing: 0.13em;
-      text-transform: uppercase;
+      padding: 1.2rem 0 3rem; color: rgba(255,255,255,0.66); font-family: var(--font-mono);
+      font-size: 0.68rem; letter-spacing: 0.13em; text-transform: uppercase;
     }
+    .footer-inner { display: flex; justify-content: space-between; align-items: center; }
 
-    .footer-inner {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 0.8rem 1rem;
-    }
-
-    .footer a {
-      text-decoration: none;
-      border-bottom: 1px solid rgba(255,255,255,0.2);
-      padding-bottom: 0.1rem;
-    }
-
-    .footer a:hover,
-    .footer a:focus-visible {
-      outline: none;
-      border-color: currentColor;
-      color: #fff;
-    }
-
-    @media (max-width: 1080px) {
-      .hero-grid,
-      .featured,
-      .split-links {
-        grid-template-columns: 1fr;
-      }
-
-      .aside-panel {
-        position: static;
-      }
-    }
-
-    @media (max-width: 860px) {
-      .posts,
-      .doc-grid,
-      .feature-stats {
-        grid-template-columns: 1fr;
-      }
-
-      .hero {
-        padding-top: 4.5rem;
-      }
-    }
-
-    @media (max-width: 720px) {
-      .topbar-inner {
-        padding-block: 0.8rem;
-        align-items: flex-start;
-        flex-direction: column;
-      }
-
-      .nav {
-        justify-content: flex-start;
-      }
-
-      h1 {
-        max-width: 100%;
-      }
-
-      .hero::before {
-        font-size: 5rem;
-        top: 1rem;
-        right: 1rem;
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      html {
-        scroll-behavior: auto;
-      }
-
-      *,
-      *::before,
-      *::after {
-        transition: none !important;
-      }
-    }
+    @media (max-width: 860px) { .doc-grid { grid-template-columns: 1fr; } }
   </style>
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ startOnLoad: true, theme: 'dark', themeVariables: { fontFamily: 'Inter' } });
+  </script>
 </head>
 <body>
-<a class="skip-link" href="#main">Skip to content</a>
 <header class="topbar">
-<div class="wrap topbar-inner">
-<a class="brand" href="index.html">
-<span class="brand-title">Jonathan Capone</span>
-<span class="brand-sub">Technical Portfolio</span>
-</a>
-<nav aria-label="Primary" class="nav">
-<a href="#projects">Projects</a>
-<a href="#omega-guide">OMEGA Guide</a>
-<a href="#documentation">Documentation</a>
-<a href="#links">Links</a>
-<a href="teaching-documentation.html">Teaching</a>
-</nav>
-</div>
+  <div class="wrap topbar-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-title">Jonathan Capone</span>
+      <span class="brand-sub">Technical Portfolio</span>
+    </a>
+    <nav aria-label="Primary" class="nav">
+      <a href="#omega">The OMEGA System</a>
+      <a href="#bathymetry">Bathymetric Engine</a>
+      <a href="#other-work">Other Work</a>
+    </nav>
+  </div>
 </header>
-<section class="hero">
-<div class="wrap hero-grid">
-<div class="hero-copy">
-<span class="eyebrow">Art, technology, and interdisciplinary research</span>
-<h1>This site brings together work across art, technology, and interdisciplinary research.</h1>
-<p>
-          The work collected here grows out of learning through making and experimentation, and is shared openly so others can learn from it, build on it, or teach with it.
-        </p>
-<p>
-          It includes projects, tools, documentation, and educational resources.
-        </p>
-<div class="hero-actions">
-<a class="button button-primary" href="https://github.com/aminalnam/OMEGA" rel="noopener" target="_blank">Open OMEGA</a>
-<a class="button button-secondary" href="how-omega-works.html">OMEGA Guide</a>
-<a class="button button-secondary" href="#projects">Browse Projects</a>
-<a class="button button-secondary" href="teaching-documentation.html">Teaching</a>
-</div>
-</div>
-<aside aria-label="Current focus" class="hero-panel">
-<span class="panel-label">Current focus</span>
-<h2>OMEGA: Hardware Fleet & Mesh Data Portal</h2>
-<p>
-          An integrated oceanic system covering field capture (ROVs, Relays), wireless mesh networking (LoRa/HaLow),
-          and a predictive data portal (OMEGA-wave) for real-time visualization and bathymetric mapping.
-        </p>
-<div class="panel-list">
-<div class="panel-item">
-<strong>Fleet & Transport</strong>
-<span>Arduino/ESP32 gateways, LoRa mesh, CBOR encoding, GPS/sonar validation</span>
-</div>
-<div class="panel-item">
-<strong>Portal & Processing</strong>
-<span>FastAPI backend, SQLite timeseries, React UX, and Python mapping scripts</span>
-</div>
-<div class="panel-item">
-<strong>Output</strong>
-<span>Real-time dashboard, predictive routing, depth maps, and bathymetric surfaces</span>
-</div>
-</div>
-</aside>
-</div>
+
+<section class="hero wrap">
+  <span class="eyebrow">Featured Marine System</span>
+  <h1>Oceanic Measurement & Environmental Geospatial Array</h1>
+  <div class="hero-copy">
+    <p>
+      OMEGA is a massive, unified marine data system designed for extreme environmental edge-computing. What began as an Arduino logger has evolved into a massively distributed platform encompassing autonomous fleets, resilient mesh networking, and predictive digital twins.
+    </p>
+  </div>
+
+  <div class="mermaid" style="width: 100%; margin-top: 3rem; border-radius: var(--radius-sm); overflow: hidden; border: 1px solid var(--line); background: var(--bg-2); padding: 2rem;">
+    graph LR
+        %% Nodes
+        Fleet[Autonomous Fleet<br>ESP32 / Pixhawk]:::fleet
+        Relay[LoRa/HaLow Relays<br>Mesh Overlay]:::mesh
+        Gate[Shoreline Gateway<br>FastAPI / SQLite]:::gate
+        Portal[Digital Twin Portal<br>React / Zustand]:::portal
+        External[External APIs<br>NOAA / Copernicus]:::ext
+
+        %% Links
+        Fleet -->|CBOR over LoRa| Relay
+        Relay -->|DTN Store & Forward| Gate
+        Gate -->|WebSockets| Portal
+        External -->|JSON Auth Proxy| Gate
+
+        %% Styles
+        classDef fleet fill:#0f172a,stroke:#10b981,stroke-width:2px,color:#fff;
+        classDef mesh fill:#0f172a,stroke:#3b82f6,stroke-width:2px,color:#fff;
+        classDef gate fill:#1e293b,stroke:#8b5cf6,stroke-width:2px,color:#fff;
+        classDef portal fill:#0f172a,stroke:#f59e0b,stroke-width:2px,color:#fff;
+        classDef ext fill:#0f172a,stroke:#ef4444,stroke-width:2px,color:#fff;
+  </div>
+  
+  <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+    <a class="button button-primary" href="https://github.com/aminalnam/OMEGA" target="_blank">View on GitHub</a>
+    <a class="button button-secondary" href="#omega">Explore The Stack</a>
+  </div>
 </section>
+
 <main class="main-shell" id="main">
-<div class="wrap main-inner">
-<section class="section" id="overview">
-<div class="wrap">
-<div class="section-head">
-<span class="section-kicker">Featured project</span>
-<h2>OMEGA unifies autonomous fleets, resilient mesh networks, and digital twin visualization.</h2>
-<p>
-              The project encompasses the complete data lifecycle: physical capture via rovers and LoRa/HaLow relays, high-performance ingestion via FastAPI and SQLite, and real-time visualization through a React-based predictive mapping portal. Bathymetric mapping is just one output of this massive distributed system.
-            </p>
-</div>
-<div class="featured">
-<article class="featured-card">
-<div class="featured-image">
-<img alt="OMEGA mapping pipeline diagram showing path, points, filter, interpolation, surface, and map output." src="https://raw.githubusercontent.com/aminalnam/OMEGA/main/assets/mapping-diagram.png"/>
-</div>
-<div class="featured-body">
-<div class="meta">Featured system</div>
-<h3>Oceanic Measurement &amp; Environmental Geospatial Array</h3>
-<p>
-                  OMEGA is organized around three stages: capture, validation, and reconstruction.
-                  That structure makes it useful both as a practical field system and as a way of explaining how the larger workflow operates.
-                </p>
-<p>
-                  The public repository includes the Arduino logger, Python mapping scripts, documentation,
-                  example data, and a visual diagram of the overall pipeline.
-                </p>
-<div aria-label="OMEGA highlights" class="feature-stats">
-<div class="stat">
-<strong>Fleet & Mesh</strong>
-<span>Autonomous rovers, HaLow/LoRa overlays, and DTN store-and-forward routing.</span>
-</div>
-<div class="stat">
-<strong>The Gateway</strong>
-<span>FastAPI ingestion, SQLite timeseries, and real-time data normalization.</span>
-</div>
-<div class="stat">
-<strong>The Portal</strong>
-<span>React SPA, Zustand state, live map surfacing, and predictive routing.</span>
-</div>
-</div>
-<div class="button-row">
-<a class="button button-accent" href="https://github.com/aminalnam/OMEGA" rel="noopener" target="_blank">GitHub Repository</a>
-<a class="button button-light" href="how-omega-works.html">OMEGA Overview</a>
-<a class="button button-light" href="https://jonathancapone.com/OMEGA" rel="noopener" target="_blank">Project Page</a>
-<a class="button button-light" href="https://github.com/aminalnam/OMEGA/wiki" rel="noopener" target="_blank">Project Wiki</a><a class="button button-light" href="omega-data.html">OMEGA Data</a>
-<a class="button button-light" href="https://hackaday.io/project/205502-oceanic-measurement-environmental-geo-arr" rel="noopener" target="_blank">Project Log</a>
-</div>
-</div>
-</article>
-<aside class="aside-panel">
-<h4>System at a glance</h4>
-<ul class="aside-list">
-<li>
-<strong>Method</strong>
-<span>Filtering is handled during acquisition, then surface reconstruction is handled during processing.</span>
-</li>
-<li>
-<strong>Architecture</strong>
-<span>Capture, validation, mapping, and output are separated into clear stages.</span>
-</li>
-<li>
-<strong>Use cases</strong>
-<span>Environmental surveying, underwater sensing, field logging, and geospatial visualization.</span>
-</li>
-<li>
-<strong>Entry points</strong>
-<span>The featured project links above lead directly to the repository, technical docs, and public build log.</span>
-</li>
-</ul>
-</aside>
-</div>
-</div>
-</section>
-<section class="section" id="projects">
-<div class="wrap">
-<div class="section-head">
-<span class="section-kicker">Project index</span>
-<h2>Projects.</h2>
-<p>
-              Projects in environmental sensing, geospatial mapping, communications, physical computing,
-              and adjacent research-driven work.
-            </p>
-</div>
-<div class="posts">
-<article class="post" style="grid-column: 1 / -1;">
-<div class="post-visual">
-<span class="visual-label">Featured System</span>
-<div class="visual-title">OMEGA</div>
-<div aria-hidden="true" class="visual-grid"></div>
-</div>
-<div class="post-body">
-<span class="post-status complete">Active Development</span>
-<h3>The OMEGA System</h3>
-<p>
-                  OMEGA (Oceanic Measurement &amp; Environmental Geospatial Array) is a comprehensive marine system that encompasses autonomous field hardware, a resilient LoRa/HaLow mesh network, and a predictive digital twin portal.
-                </p>
-<p>
-                  Originally designed as an Arduino-based bathymetric logging device, OMEGA has evolved into a massively distributed platform. It now features a synchronized fleet of autonomous rovers and relay nodes, live telemetry ingestion via FastAPI and SQLite, and a React-based web portal for real-time visualization and mission planning.
-                </p>
-<div class="post-links">
-<a class="button button-light" href="https://github.com/aminalnam/OMEGA" rel="noopener" target="_blank">Open Repository</a>
-<a class="button button-light" href="omega-wave.html">Portal UX</a>
-<a class="button button-light" href="mesh-network.html">Mesh Network</a>
-<a class="button button-light" href="hardware-fleet.html">Hardware Fleet</a>
-<a class="button button-light" href="data-ingest.html">Data Backend</a>
-<a class="button button-light" href="how-omega-works.html">Sensing Guide</a>
-</div>
-</div>
-</article>
-</div>
-</div>
-</section>
-<section class="section" id="omega-guide">
-<div class="wrap">
-<div class="section-head">
-<span class="section-kicker">OMEGA guide</span>
-<h2>The Bathymetric Sensing Engine.</h2>
-<p>
-              Bathymetric mapping is a primary feature of the OMEGA system. These legacy documents explore the physics, point validation logic, and mathematical modeling used to turn raw transducer pings into continuous spatial surfaces.
-            </p>
-</div>
-<div class="doc-grid">
-<article class="doc-card">
-<div class="doc-type">Overview</div>
-<h3>How OMEGA Works</h3>
-<p>
-                A compact guide to the full workflow: capture, validation, logging, and reconstruction.
-              </p>
-<a href="how-omega-works.html">Open page</a>
-</article>
-<article class="doc-card">
-<div class="doc-type">Physics</div>
-<h3>Sensing and Sound</h3>
-<p>
-                How sonar estimates depth, why the speed of sound matters, why temperature changes the reading,
-                and where salinity fits into the larger picture.
-              </p>
-<a href="omega-sensing.html">Open page</a>
-</article>
-<article class="doc-card">
-<div class="doc-type">Validation</div>
-<h3>Point Acceptance</h3>
-<p>
-                How GPS quality, fix age, motion limits, depth stability, and spacing determine whether a point
-                becomes part of the mapping dataset.
-              </p>
-<a href="omega-validation.html">Open page</a>
-</article>
-<article class="doc-card">
-<div class="doc-type">Mapping</div>
-<h3>IDW and Map Outputs</h3>
-<p>
-                How accepted survey points are turned into interpolated surfaces, contour maps, KML files,
-                and Google Earth overlays.
-              </p>
-<a href="omega-mapping.html">Open page</a>
-</article>
-<article class="doc-card">
-<div class="doc-type">Data</div>
-<h3>OMEGA Data</h3>
-<p>
-                A dedicated page explaining how live fleet telemetry is merged with NOAA, Copernicus, and Global Fishing Watch APIs.
-              </p>
-<a href="omega-data.html">Open page</a>
-</article>
-</div>
-</div>
-</section>
-<section class="section" id="documentation">
-<div class="wrap">
-<div class="section-head">
-<span class="section-kicker">Project documentation</span>
-<h2>Documentation for OMEGA and related work.</h2>
-<p>
-        Entry points for the main OMEGA documentation, research context, and data pages.
-        Teaching material now lives on its own page so the main portfolio can stay focused on technical projects and documentation.
-      </p>
-</div>
-<div class="doc-grid">
-<a class="doc-card" href="how-omega-works.html">
-<span class="tile-kicker">OMEGA</span>
-<h3>How OMEGA Works</h3>
-<p>A hub page for the system workflow, core hardware, data pipeline, logging logic, and linked topic pages.</p>
-</a>
-<a class="doc-card" href="omega-sensing.html">
-<span class="tile-kicker">OMEGA</span>
-<h3>Sensing and Sound</h3>
-<p>Acoustic depth sensing, sound speed, temperature correction, salinity context, and the physics behind the depth estimate.</p>
-</a>
-<a class="doc-card" href="omega-validation.html">
-<span class="tile-kicker">OMEGA</span>
-<h3>Validation Logic</h3>
-<p>How OMEGA tests GPS quality, timing, motion, spacing, and depth stability before a point enters the mapping dataset.</p>
-</a>
-<a class="doc-card" href="omega-mapping.html">
-<span class="tile-kicker">OMEGA</span>
-<h3>Mapping and IDW</h3>
-<p>How accepted survey points become interpolated bathymetric surfaces, contours, and georeferenced outputs.</p>
-</a>
-<a class="doc-card" href="omega-research.html">
-<span class="tile-kicker">OMEGA</span>
-<h3>OMEGA Research</h3>
-<p>Scientific context and inline-cited material on hydrography, underwater acoustics, water-column physics, interpolation, and bottom change.</p>
-</a>
-<a class="doc-card" href="omega-data.html">
-<span class="tile-kicker">OMEGA</span>
-<h3>External Data</h3>
-<p>Merging live fleet telemetry with NOAA, Copernicus, and Global Fishing Watch APIs via credential-safe proxy endpoints.</p>
-</a>
-<a class="doc-card" href="hardware-fleet.html">
-<span class="tile-kicker">OMEGA</span>
-<h3>Hardware Fleet</h3>
-<p>The transition from a single Arduino mega to a synchronized fleet of rovers and relays.</p>
-</a>
-<a class="doc-card" href="mesh-network.html">
-<span class="tile-kicker">OMEGA</span>
-<h3>Mesh Network</h3>
-<p>LoRa/HaLow network architecture, payload compression via CBOR, and field telemetry transport.</p>
-</a>
-<a class="doc-card" href="data-ingest.html">
-<span class="tile-kicker">OMEGA</span>
-<h3>Data Ingest & Backend</h3>
-<p>SQLite storage, TimescaleDB integrations, and REST API access for portal visualizations.</p>
-</a>
-<a class="doc-card" href="teaching-documentation.html">
-<span class="tile-kicker">Teaching</span>
-<h3>Teaching Documentation</h3>
-<p>A dedicated page for current teaching materials, course documentation, and future curriculum, workshop, and resource content.</p>
-</a>
-</div>
-</div>
-</section>
-<section class="section" id="links">
-<div class="wrap">
-<div class="section-head">
-<span class="section-kicker">Site entry points</span>
-<h2>Additional public destinations.</h2>
-<p>
-              Repositories, project pages, selected work, and contact.
-            </p>
-</div>
-<div class="split-links">
-<div class="summary-panel">
-<p>
-                This portfolio centers environmental sensing, geospatial workflows, marine communications,
-                physical computing, and project documentation. This section brings together the main entry points into the
-                main repository, public project pages, artwork, and contact information.
-              </p>
-<ul class="summary-list">
-<li>
-<strong>OMEGA</strong>
-<span>Field capture, processing scripts, documentation, and mapping outputs.</span>
-</li>
-<li>
-<strong>Digital Twin Portal</strong>
-<span>The interactive React-based portal providing mission control, live bathymetric surfacing, and predictive wayfinding.</span>
-</li>
-<li>
-<strong>How OMEGA Works</strong>
-<span>A dedicated page explaining the system through measurement, validation, correction, and mapping concepts.</span>
-</li>
-<li>
-<strong>Teaching</strong>
-<span>A separate page for teaching materials, course documentation, and future educational content.</span>
-</li>
-<li>
-<strong>Public project pages</strong>
-<span>Project pages, OMEGA documentation, artwork, and contact.</span>
-</li>
-</ul>
-</div>
-<div class="links-panel">
-<ul class="links-list">
-<li>
-<strong><a class="inline-link" href="https://github.com/aminalnam/OMEGA" rel="noopener" target="_blank">GitHub Repository</a></strong>
-<span>Main codebase, documentation, scripts, and example files.</span>
-</li>
-<li>
-<strong><a class="inline-link" href="how-omega-works.html">OMEGA overview</a></strong>
-<span>A concept-based page explaining sensing, data validity, correction, and bathymetric interpolation.</span>
-</li>
-<li>
-<strong><a class="inline-link" href="https://hackaday.io/project/205502-oceanic-measurement-environmental-geo-arr" rel="noopener" target="_blank">Hackaday Project Log</a></strong>
-<span>Public-facing build log and project overview for OMEGA.</span>
-</li>
-<li>
-<strong><a class="inline-link" href="teaching-documentation.html">Teaching Documentation</a></strong>
-<span>Current teaching pages, educational documentation, and space for future course and workshop material.</span>
-</li>
-<li>
-<strong><a class="inline-link" href="https://jonathancapone.art" rel="noopener" target="_blank">Artwork Website</a></strong>
-<span>Studio work, exhibitions, and related artistic projects.</span>
-</li>
-<li>
-<strong><a class="inline-link" href="mailto:jonathancapone@gmail.com">Contact</a></strong>
-<span>For project inquiries, collaboration, or teaching-related communication.</span>
-</li>
-</ul>
-</div>
-</div>
-</div>
-</section>
-</div>
+  <div class="wrap main-inner">
+    
+    <!-- THE OMEGA STACK -->
+    <section class="section" id="omega">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="eyebrow" style="color: var(--accent); font-size: 0.8rem;">Core Architecture</span>
+          <h2>The OMEGA Stack</h2>
+          <p>The four pillars of the OMEGA system. From physical data capture on the water surface down to the React-based predictive mapping portal.</p>
+        </div>
+        <div class="doc-grid">
+          
+          <a class="doc-card" href="hardware-fleet.html">
+            <span class="tile-kicker">Physical Layer</span>
+            <h3>Hardware Fleet</h3>
+            <p>The transition from a single Arduino mega to a synchronized fleet of rovers and disposable LoRa relays.</p>
+            <div class="doc-preview">
+              > Pixhawk Jetson Baseboard<br>
+              > Jetson Orin NX<br>
+              > LilyGO T-Beam Supreme (LoRa)<br>
+              > Heltec Wi-Fi HaLow
+            </div>
+          </a>
+
+          <a class="doc-card" href="mesh-network.html">
+            <span class="tile-kicker">Transport Layer</span>
+            <h3>Mesh Network</h3>
+            <p>Why we use a Delay-Tolerant Network (DTN) overlay instead of MQTT for long-range marine hops.</p>
+            <div class="doc-preview">
+              <span style="color: #c678dd;">import</span> cbor2<br>
+              cbor_bytes = cbor2.dumps(json_payload)<br>
+              <span style="color: #98c379;"># Compressed for 250-byte LoRa MTU</span>
+            </div>
+          </a>
+
+          <a class="doc-card" href="data-ingest.html">
+            <span class="tile-kicker">Storage Layer</span>
+            <h3>Data Ingestion Backend</h3>
+            <p>The high-performance FastAPI engine that bridges the mesh to the database, utilizing edge SQLite.</p>
+            <div class="doc-preview">
+              <span style="color: #61afef;">@router.post</span>(<span style="color: #98c379;">"/api/v1/telemetry"</span>)<br>
+              <span style="color: #c678dd;">async def</span> ingest_telemetry(payload):<br>
+              &nbsp;&nbsp;<span style="color: #c678dd;">await</span> db_insert_telemetry(db, payload)
+            </div>
+          </a>
+
+          <a class="doc-card" href="omega-wave.html">
+            <span class="tile-kicker">Application Layer</span>
+            <h3>Digital Twin Portal</h3>
+            <p>The "Glass Bridge". A highly responsive React SPA using Zustand to manage predictive wayfinding.</p>
+            <div class="doc-preview">
+              <span style="color: #c678dd;">const</span> useFleetStore = create((set) => ({<br>
+              &nbsp;&nbsp;rovers: {},<br>
+              &nbsp;&nbsp;activeRoute: null<br>
+              }))
+            </div>
+          </a>
+
+          <a class="doc-card" href="omega-data.html" style="grid-column: 1 / -1; display: flex; flex-direction: row; gap: 2rem; align-items: center;">
+            <div style="flex: 1;">
+              <span class="tile-kicker">Context Layer</span>
+              <h3>External Data Integrations</h3>
+              <p>Merging live fleet telemetry with NOAA, Copernicus, and Global Fishing Watch APIs via credential-safe proxy endpoints.</p>
+            </div>
+            <div class="doc-preview" style="flex: 1; margin: 0;">
+              {<br>
+              &nbsp;&nbsp;"source": "noaa_ndbc_46025",<br>
+              &nbsp;&nbsp;"wave_height_m": 1.2,<br>
+              &nbsp;&nbsp;"wind_speed_kts": 15.0<br>
+              }
+            </div>
+          </a>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- THE BATHYMETRIC ENGINE -->
+    <section class="section" id="bathymetry">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="eyebrow" style="color: var(--accent); font-size: 0.8rem;">Feature Spotlight</span>
+          <h2>The Bathymetric Sensing Engine</h2>
+          <p>Bathymetric mapping is one of OMEGA's primary outputs. These legacy documents explore the physics and mathematical modeling used to turn raw transducer pings into continuous spatial surfaces.</p>
+        </div>
+        <div class="doc-grid" style="grid-template-columns: repeat(3, 1fr);">
+          <a class="doc-card" href="how-omega-works.html">
+            <span class="tile-kicker">Overview</span>
+            <h3>How OMEGA Works</h3>
+            <p>A hub page explaining the older pipeline for field logging and reconstruction.</p>
+          </a>
+          <a class="doc-card" href="omega-sensing.html">
+            <span class="tile-kicker">Physics</span>
+            <h3>Sensing and Sound</h3>
+            <p>Acoustic depth sensing, sound speed, temperature correction, and salinity context.</p>
+          </a>
+          <a class="doc-card" href="omega-validation.html">
+            <span class="tile-kicker">Logic</span>
+            <h3>Point Validation</h3>
+            <p>Testing GPS quality, timing, and depth stability before a point enters the dataset.</p>
+          </a>
+          <a class="doc-card" href="omega-mapping.html">
+            <span class="tile-kicker">Mathematics</span>
+            <h3>Mapping & IDW</h3>
+            <p>How discrete survey points become interpolated bathymetric surfaces and contours.</p>
+          </a>
+          <a class="doc-card" href="omega-research.html" style="grid-column: span 2;">
+            <span class="tile-kicker">Academia</span>
+            <h3>Scientific Research</h3>
+            <p>Inline-cited material on hydrography, underwater acoustics, and interpolation methods.</p>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- OTHER WORK & LINKS -->
+    <section class="section" id="other-work">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="eyebrow" style="color: #10b981; font-size: 0.8rem;">Beyond OMEGA</span>
+          <h2>Other Work & Links</h2>
+          <p>Additional portfolio links covering teaching, documentation, and interdisciplinary artwork.</p>
+        </div>
+        <div class="doc-grid" style="grid-template-columns: repeat(3, 1fr);">
+          
+          <a class="doc-card" href="teaching-documentation.html" style="border-color: rgba(16, 185, 129, 0.3);">
+            <span class="tile-kicker" style="color: #10b981;">Education</span>
+            <h3>Teaching</h3>
+            <p>Course documentation, syllabi, and educational materials for physical computing.</p>
+          </a>
+
+          <a class="doc-card" href="https://jonathancapone.art" target="_blank" style="border-color: rgba(16, 185, 129, 0.3);">
+            <span class="tile-kicker" style="color: #10b981;">Studio</span>
+            <h3>Artwork</h3>
+            <p>Exhibitions, sculptural installations, and interdisciplinary studio research.</p>
+          </a>
+
+          <a class="doc-card" href="https://hackaday.io/project/205502-oceanic-measurement-environmental-geo-arr" target="_blank" style="border-color: rgba(16, 185, 129, 0.3);">
+            <span class="tile-kicker" style="color: #10b981;">Community</span>
+            <h3>Hackaday Logs</h3>
+            <p>Public-facing build logs and technical deep-dives into the OMEGA hardware.</p>
+          </a>
+
+        </div>
+      </div>
+    </section>
+
+  </div>
 </main>
-<footer class="footer">
-<div class="wrap footer-inner">
-<span>Jonathan Capone — Project Portfolio</span>
-<span><a href="https://jonathancapone.art" rel="noopener" target="_blank">Artwork</a></span>
-</div>
+
+<footer class="footer wrap">
+  <div class="footer-inner">
+    <span>© Jonathan Capone — Technical Portfolio</span>
+    <span><a href="mailto:jonathancapone@gmail.com">Contact</a></span>
+  </div>
 </footer>
 </body>
 </html>
