@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1" name="viewport"/>
-  <title>OMEGA — Physics of Sensing</title>
+  <title>OMEGA-wave — Wayfinding & Plan</title>
   <style>
     :root {
       --bg: #070b14; --bg-2: #0e1522; --panel: rgba(20, 30, 48, 0.6); --panel-soft: rgba(30, 42, 60, 0.5);
@@ -28,9 +28,11 @@
     .topbar-inner { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
     .brand-title { display: block; font-family: var(--font-serif); font-size: 1.4rem; color: var(--white); }
     .brand-sub { display: block; font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); font-family: var(--font-mono); }
+    
+    /* NAV WILL BE INJECTED BY SECOND SCRIPT */
     .nav { display: flex; flex-wrap: wrap; gap: 1.2rem; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; font-family: var(--font-mono); }
     .nav a { color: var(--ink-soft); transition: color 0.3s; }
-    .nav a:hover { color: var(--white); }
+    .nav a:hover, .nav a.is-current { color: var(--white); }
 
     .omega-subnav { margin: 2rem 0; padding: 1rem 1.5rem; border: 1px solid var(--line); border-radius: 999px; background: rgba(255,255,255,0.03); display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; backdrop-filter: blur(10px); }
     .omega-subnav strong { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink-soft); margin-right: 0.5rem; }
@@ -71,6 +73,10 @@
 
     .footer { border-top: 1px solid var(--line); padding: 4rem 0; text-align: center; font-family: var(--font-mono); font-size: 0.8rem; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.15em; }
   </style>
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ startOnLoad: true, theme: 'dark', themeVariables: { fontFamily: 'Inter' } });
+  </script>
 </head>
 <body>
   <header class="topbar">
@@ -93,99 +99,41 @@
 
   <div class="wrap">
     <div class="omega-subnav">
-      <strong>Sensing Chapters:</strong>
-      <a href="how-omega-works.html">Overview</a>
-      <a href="omega-sensing.html" class="is-current">1. Physics of Sensing</a>
-      <a href="omega-validation.html">2. Validation Logic</a>
-      <a href="omega-mapping.html">3. Map Interpolation</a>
+      <strong>Portal Features:</strong>
+      <a href="portal-observe.html" class="">Observe API</a>
+      <a href="portal-control.html" class="">Control/Janus</a>
+      <a href="portal-data-science.html" class="">Data Science</a>
+      <a href="portal-admin.html" class="">Firmware Admin</a>
+      <a href="portal-plan.html" class="is-current">Wayfinding Plan</a>
     </div>
   </div>
 
   <section class="hero wrap">
-    <span class="eyebrow">Part 1: Physics</span>
-    <h1>Acoustics & Thermodynamics.</h1>
-    <p>A transducer does not measure depth; it measures time. This chapter explores the thermodynamic math required to convert acoustic time-of-flight into an accurate geographic spatial anchor.</p>
+    <span class="eyebrow">Portal Workspace: Plan</span>
+    <h1>Route Scenarios & Kinematics.</h1>
+    <p>Obstacle-aware wayfinding and route generation, layering Copernicus current fields and bathymetric clearance to build safe transit scenarios for autonomous vessels.</p>
     <div class="hero-actions">
-      <a class="btn btn-secondary" href="how-omega-works.html">Back to Overview</a>
-      <a class="btn btn-primary" href="omega-validation.html">Next: Validation Logic</a>
+      <a class="btn btn-primary" href="https://github.com/aminalnam/OMEGA-wave" target="_blank">View GitHub Repository</a>
+      <a class="btn btn-secondary" href="index.html">Back to Mission Control</a>
     </div>
   </section>
 
   <main class="main-shell wrap">
     <div class="main-inner">
-      
-      <section class="section">
-        <span class="section-kicker">Acoustic Fundamentals</span>
-        <h2>The Time-of-Flight Equation.</h2>
-        <p>The core mechanism of any active sonar system is Time-of-Flight (ToF). A piezo-electric transducer physically strikes the water, emitting an acoustic pulse. It then acts as a microphone, listening for the echo rebounding off the substrate.</p>
-        
-        <div class="grid-2">
-          <article class="panel">
-            <span class="panel-kicker">Mathematical Model</span>
-            <h3>Solving for Z</h3>
-            <p>The time recorded by the microcontroller is the *round-trip* duration. To find the one-way depth (Z), we must divide by two and multiply by the acoustic velocity of the medium.</p>
-            <div class="callout" style="background: rgba(0,0,0,0.5); border-color: #60a5fa; margin-top: 1rem;">
-              <strong>Equation</strong>
-              <p style="font-family: var(--font-mono); font-size: 1.1rem; color: #fff; margin-top: 0.5rem; text-align: center;">Z = (v × t) / 2</p>
-            </div>
-            <p style="margin-top: 1rem;">Where <code>Z</code> is Depth, <code>v</code> is the speed of sound in water, and <code>t</code> is the total travel time.</p>
-          </article>
-          
-          <article class="panel">
-            <span class="panel-kicker">The Hidden Variable</span>
-            <h3>The Problem with Velocity</h3>
-            <p>In standard hobbyist electronics, the speed of sound in air is relatively stable. In marine environments, however, the velocity <code>v</code> is a highly dynamic variable that shifts based on the thermodynamic state of the water column.</p>
-          </article>
-        </div>
-      </section>
 
       <section class="section">
-        <span class="section-kicker">Applied Physics</span>
-        <h2>The Mackenzie Equation.</h2>
-        <p>To accurately solve for depth, OMEGA must continuously recalculate the speed of sound. The industry standard for shallow-water acoustics is the nine-term Mackenzie equation, which calculates velocity based on Temperature, Salinity, and Depth/Pressure.</p>
+        <span class="section-kicker">Scenario Generation</span>
+        <h2>Obstacle-Aware Routing.</h2>
+        <p>Autonomous Surface Vehicles (ASVs) cannot blindly draw straight lines between waypoints. The Plan workspace is a dedicated studio for generating safe transit routes. It assesses departure-window timing against predictive environmental models.</p>
         
         <div class="panel" style="max-width: 100%;">
-          <span class="panel-kicker">Thermodynamic Sensitivity</span>
-          <h3>Why Temperature Dominates</h3>
-          <p>Of the three variables in the Mackenzie equation, temperature has the most volatile impact in shallow coastal waters. A change from 10°C to 20°C can shift the speed of sound by over 30 meters per second. Over a 50-meter depth ping, failing to correct for this temperature swing results in a massive topological error.</p>
+          <span class="panel-kicker">Kinematic Profiling</span>
+          <h3>Wayfinding Extension</h3>
+          <p>The gateway's wayfinding logic generates route candidates based on the physical kinematic limits of the vessel (e.g., maximum turn radius, cruising speed). It then overlays these paths against environmental data grids (Copernicus ocean currents, wind forecasts) to calculate the energy expenditure and estimated time of arrival (ETA) for each scenario.</p>
           
           <div class="callout">
-            <strong>Hardware Architecture</strong>
-            <p>To solve this, OMEGA autonomous rovers are equipped with a waterproof DS18B20 digital temperature probe mounted directly adjacent to the sonar transducer. This allows the edge-compute node to capture a synchronized thermal reading at the exact moment the ping is fired.</p>
-          </div>
-        </div>
-      </section>
-
-      <section class="section">
-        <span class="section-kicker">Code Walkthrough</span>
-        <h2>Real-Time C++ Correction.</h2>
-        <p>Because full Mackenzie calculation is computationally expensive for an edge microcontroller, OMEGA uses a linearized heuristic correction centered around a baseline calibration.</p>
-        
-        <div class="panel" style="max-width: 100%;">
-          <span class="panel-kicker">Arduino Edge Logic</span>
-<pre><code><span style="color: #98c379;">// Baseline reference values used by the OMEGA edge logger.</span>
-<span style="color: #c678dd;">const float</span> sonarCalSoundSpeed = <span style="color: #d19a66;">1500.0f</span>;  <span style="color: #98c379;">// m/s (approximate fresh water at 20C)</span>
-<span style="color: #c678dd;">const float</span> sonarCalTempC = <span style="color: #d19a66;">20.0f</span>;         <span style="color: #98c379;">// Celsius</span>
-
-<span style="color: #98c379;">// Function: Linear approximation of velocity shift based on temp delta</span>
-<span style="color: #c678dd;">float</span> <span style="color: #61afef;">estimateSoundSpeed</span>(<span style="color: #c678dd;">float</span> waterTempC) {
-  <span style="color: #c678dd;">float</span> c = sonarCalSoundSpeed;
-  <span style="color: #c678dd;">if</span> (!isnan(waterTempC)) {
-    <span style="color: #98c379;">// For every 1 degree C shift, sound speed changes by approx 4.6 m/s</span>
-    c += <span style="color: #d19a66;">4.6f</span> * (waterTempC - sonarCalTempC);
-  }
-  <span style="color: #c678dd;">return</span> c;
-}
-
-<span style="color: #98c379;">// Function: Rescale the raw hardware output</span>
-<span style="color: #c678dd;">float</span> <span style="color: #61afef;">correctSonarRangeCm</span>(<span style="color: #c678dd;">float</span> reportedRangeCm, <span style="color: #c678dd;">float</span> waterTempC) {
-  <span style="color: #c678dd;">float</span> cActual = estimateSoundSpeed(waterTempC);
-  <span style="color: #98c379;">// Apply the ratio of Actual Velocity vs Calibrated Velocity</span>
-  <span style="color: #c678dd;">return</span> reportedRangeCm * (cActual / sonarCalSoundSpeed);
-}</code></pre>
-          <div class="callout">
-            <strong>Algorithm Breakdown</strong>
-            <p>Instead of sending raw time-of-flight data over the mesh network (which would require the server to do the math), the ESP32 calculates the velocity ratio <code>(cActual / sonarCalSoundSpeed)</code> locally. It applies this scalar to the hardware's raw distance output, generating an environmentally-corrected Depth (Z) before the packet even leaves the boat.</p>
+            <strong>GeoJSON Export</strong>
+            <p>Once an operator approves a candidate route, the Plan module exports the sequence as a standard GeoJSON overlay. This is immediately visible on the Observe map, and the waypoint coordinates are queued in the Control deck to be pushed to the ASV.</p>
           </div>
         </div>
       </section>
