@@ -244,6 +244,27 @@ def receive_intent(intent: MissionIntent):
             
           </section>
     
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">Deterministic Builds</span>
+              <h2>PlatformIO Matrices.</h2>
+              <p>OMEGA firmware explicitly rejects the standard Arduino IDE. By utilizing PlatformIO (<code>platformio.ini</code>), the project defines strict build environments for different ESP32 hardware profiles (e.g., T-Beam vs Heltec). Compiler flags like <code>-DOMEGA_RADIO_KIND_LR1121=1</code> dynamically instruct the C++ preprocessor to compile the correct SPI pinouts for the Semtech LR1121 vs the SX1262.</p>
+              
+            </div>
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">platformio.ini</span><pre><code class="language-ini">[env:gateway_t3_s3_lr1121_subghz]
+platform = espressif32
+board = esp32-s3-devkitc-1
+framework = arduino
+build_flags =
+  -DARDUINO_USB_CDC_ON_BOOT=1
+  -DOMEGA_ENABLE_RADIOLIB=1
+  -DOMEGA_RADIO_KIND_LR1121=1
+  -DOMEGA_LORA_FREQ_MHZ=915.0
+  -DOMEGA_LORA_TX_DBM=17
+  -DRADIO_NSS=7
+  -DRADIO_DIO1=36</code></pre></div>
+          </section>
+    
     </div>
   </main>
 

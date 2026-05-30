@@ -171,6 +171,21 @@
     
           <section class="section">
             <div class="section-content">
+              <span class="section-kicker">Long-Range Wi-Fi</span>
+              <h2>IEEE 802.11ah HaLow Bridging.</h2>
+              <p>Standard LoRa is restricted to a few hundred bytes per second—useless for streaming video. OMEGA integrates the T-HaLow ESP32-S3 boards. By configuring one node as <code>ap-root</code> and another as <code>sta-client</code>, it creates a transparent TCP/IP network over sub-GHz frequencies (900MHz), allowing the ASV to stream live RTSP camera feeds to the shore gateway from over a kilometer away.</p>
+              
+            </div>
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">thalow_gateway_control/platformio.ini</span><pre><code class="language-ini">[env:t_halow_ap_companion]
+build_flags =
+  -DOMEGA_NODE_ID="urn:omega-wave:node:shore-gateway:thalow-ap"
+  -DOMEGA_DEVICE_ID="t-halow-ap-companion"
+  -DOMEGA_HALOW_ROLE="ap-root"
+  -DOMEGA_HALOW_PEER_HINT="asv-or-buoy-sta"</code></pre></div>
+          </section>
+    
+          <section class="section">
+            <div class="section-content">
               <span class="section-kicker">Protocol Bridging</span>
               <h2>Meshtastic Piggybacking.</h2>
               <p>OMEGA does not reinvent the wheel. While it has its own routing logic, it includes a robust Python bridge to <strong>Meshtastic</strong>.</p><p>If operators have existing consumer Meshtastic LoRa radios, the OMEGA Gateway can serialize its outbox payloads and push them over the Meshtastic serial API. This allows OMEGA to hijack established consumer meshes to bounce encrypted telemetry packets across vast distances for free.</p>
