@@ -3,11 +3,12 @@
 <head>
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1" name="viewport"/>
-  <title>OMEGA-wave — Data Science & BBS</title>
+  <title>OMEGA-wave — Hardware & Edge</title>
   <style>
     :root {
       --bg: #070b14; --bg-2: #0e1522; --panel: rgba(20, 30, 48, 0.6); --panel-soft: rgba(30, 42, 60, 0.5);
       --ink: #ffffff; --ink-soft: #9aa2b1; --line: rgba(255, 255, 255, 0.1); --accent: #3b82f6; --accent-deep: #2563eb;
+      --accent-green: #10b981;
       --white: #ffffff; --radius: 1.25rem; --radius-sm: 18px;
       --font-sans: Inter, sans-serif; --font-serif: "Iowan Old Style", Georgia, serif; --font-mono: Consolas, monospace;
       --shadow: 0 22px 48px rgba(0, 0, 0, 0.5);
@@ -29,7 +30,6 @@
     .brand-title { display: block; font-family: var(--font-serif); font-size: 1.4rem; color: var(--white); }
     .brand-sub { display: block; font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); font-family: var(--font-mono); }
     
-    /* NAV WILL BE INJECTED BY SECOND SCRIPT */
     .nav { display: flex; flex-wrap: wrap; gap: 1.2rem; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; font-family: var(--font-mono); }
     .nav a { color: var(--ink-soft); transition: color 0.3s; }
     .nav a:hover, .nav a.is-current { color: var(--white); }
@@ -41,7 +41,7 @@
 
     .hero { padding: 4rem 0 3rem; }
     .eyebrow { font-family: var(--font-mono); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.2em; color: var(--accent); margin-bottom: 1rem; display: block; }
-    h1 { margin: 0 0 1.5rem; font-family: var(--font-serif); font-size: clamp(3rem, 6vw, 4.5rem); font-weight: 400; line-height: 1.1; max-width: 20ch; }
+    h1 { margin: 0 0 1.5rem; font-family: var(--font-serif); font-size: clamp(3rem, 6vw, 4.5rem); font-weight: 400; line-height: 1.1; max-width: 25ch; }
     .hero p { max-width: 48rem; margin: 0 0 2.5rem; font-size: 1.25rem; color: var(--ink-soft); }
     .btn { display: inline-flex; align-items: center; padding: 0.8rem 1.5rem; border-radius: 999px; font-family: var(--font-mono); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.15em; transition: all 0.2s; margin-right: 0.5rem; margin-bottom: 0.5rem;}
     .btn-primary { background: var(--accent); color: #fff; border: 1px solid var(--accent); }
@@ -51,23 +51,22 @@
 
     .main-shell { position: relative; margin-bottom: 4rem; }
     .main-inner { background: var(--panel); border-radius: 1.5rem; overflow: clip; box-shadow: var(--shadow); border: 1px solid var(--line); }
-    .section { padding: 4rem; border-bottom: 1px solid var(--line); }
-    .section:last-child { border-bottom: none; }
+    .section { padding: 4rem; border-bottom: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 4rem; align-items: flex-start; }
+    .section-content { flex: 1; min-width: 300px; }
     .section-kicker { font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent); margin-bottom: 0.8rem; display: block; }
-    .section h2 { font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem; max-width: 48rem;}
-    .section p { color: var(--ink-soft); font-size: 1.1rem; max-width: 48rem; margin-bottom: 2rem;}
+    .section h2 { font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem; }
+    .section p { color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem;}
 
-    .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 2rem; }
-    .panel { background: rgba(0,0,0,0.2); border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 2rem; display: flex; flex-direction: column; }
-    .panel-kicker { display: inline-block; font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent); padding: 0.2rem 0.6rem; background: rgba(59,130,246,0.1); border-radius: 999px; margin-bottom: 1rem; align-self: flex-start;}
-    .panel h3 { font-family: var(--font-serif); font-size: 1.5rem; margin: 0 0 1rem; }
-    .panel p { color: var(--ink-soft); font-size: 0.95rem; margin-bottom: 1.5rem; }
+    .section-visual { flex: 1; min-width: 300px; background: rgba(0,0,0,0.3); border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 2rem; }
+    .section-visual img { width: 100%; border-radius: 8px; border: 1px solid var(--line); box-shadow: var(--shadow); }
+    
+    .panel-kicker { display: inline-block; font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent); padding: 0.2rem 0.6rem; background: rgba(59,130,246,0.1); border-radius: 999px; margin-bottom: 1rem; }
     
     .callout { background: rgba(255,255,255,0.03); border: 1px solid var(--line); padding: 1.5rem; border-radius: 0.75rem; margin-top: 2rem; border-left: 4px solid var(--accent);}
     .callout strong { display: block; font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 0.5rem;}
-    .callout p { font-size: 0.95rem; color: var(--ink-soft); margin-bottom: 0; max-width: 100%;}
+    .callout p { font-size: 0.95rem; color: var(--ink-soft); margin-bottom: 0; }
     
-    pre { background: rgba(10,15,25,0.9); padding: 1.5rem; border-radius: var(--radius-sm); overflow-x: auto; border: 1px solid var(--line); margin-bottom: 1.5rem; font-family: var(--font-mono); font-size: 0.9rem;}
+    pre { background: rgba(10,15,25,0.9); padding: 1.5rem; border-radius: var(--radius-sm); overflow-x: auto; border: 1px solid var(--line); margin-bottom: 1.5rem; font-family: var(--font-mono); font-size: 0.85rem; line-height: 1.4;}
     code { font-family: var(--font-mono); color: #e2e8f0; }
     p code, li code { background: rgba(255,255,255,0.1); padding: 0.2rem 0.4rem; border-radius: 4px; font-size: 0.85em; color: #60a5fa;}
 
@@ -85,35 +84,35 @@
         <span class="brand-title">Jonathan Capone</span>
         <span class="brand-sub">Technical Portfolio</span>
       </a>
-                  <nav class="nav">
+      <nav class="nav">
         <a href="index.html">Home</a>
-        <a href="omega-transport.html">Transport</a>
-        <a href="omega-hardware.html">Hardware</a>
-        <a href="omega-data.html">Data</a>
-        <a href="omega-ops.html">Operations</a>
-        <a href="omega-observe.html">Observe</a>
+        <a href="omega-transport.html" class="">Transport</a>
+        <a href="omega-hardware.html" class="is-current">Hardware</a>
+        <a href="omega-data.html" class="">Data</a>
+        <a href="omega-ops.html" class="">Operations</a>
+        <a href="omega-observe.html" class="">Observe</a>
       </nav>
     </div>
   </header>
 
   <div class="wrap">
     <div class="omega-subnav">
-      <strong>Portal Features:</strong>
-      <a href="portal-observe.html" class="">Observe API</a>
-      <a href="portal-control.html" class="">Control/Janus</a>
-      <a href="portal-data-science.html" class="is-current">Data Science</a>
-      <a href="portal-admin.html" class="">Firmware Admin</a>
-      <a href="portal-plan.html" class="">Wayfinding Plan</a>
+      <strong>Technical Domains:</strong>
+      <a href="omega-transport.html" class="">Network & Transport</a>
+      <a href="omega-hardware.html" class="is-current">Hardware & Edge</a>
+      <a href="omega-data.html" class="">Data & Analytics</a>
+      <a href="omega-ops.html" class="">Mission & Ops</a>
+      <a href="omega-observe.html" class="">API Observation</a>
     </div>
   </div>
 
   <section class="hero wrap">
-    <span class="eyebrow">Portal Workspace: Data</span>
-    <h1>Data Science & Inspection.</h1>
-    <p>Transforming raw telemetry into actionable intelligence. The Data workspace features a Live Tiles dashboard, outcome-oriented Quick Actions, and an integrated BBS/Data Library.</p>
+    <span class="eyebrow">Domain 02: Hardware</span>
+    <h1>Fleet & Edge Compute.</h1>
+    <p>Managing the physical reality of the mesh. This domain handles Over-The-Air (OTA) firmware flashing, hardware profile enforcement, and USB health monitoring for the LilyGO boards.</p>
     <div class="hero-actions">
       <a class="btn btn-primary" href="https://github.com/aminalnam/OMEGA-wave" target="_blank">View GitHub Repository</a>
-      <a class="btn btn-secondary" href="index.html">Back to Mission Control</a>
+      <a class="btn btn-secondary" href="index.html">Back to Portfolio</a>
     </div>
   </section>
 
@@ -121,43 +120,19 @@
     <div class="main-inner">
 
       <section class="section">
-        <span class="section-kicker">Live Dashboard</span>
-        <h2>The Inspect Tab.</h2>
-        <p>Operators don't have time to write SQL queries during active deployments. The Data -> Inspect panel was completely rebuilt around a "Live Tiles" viewport-fit dashboard. It polls `v1/measurements/latest` every 5 seconds, displaying the freshest samples in massive, highly legible UI cards.</p>
-        
-        <div class="grid-2">
-          <article class="panel">
-            <span class="panel-kicker">UI/UX</span>
-            <h3>Stale-State Boundaries</h3>
-            <p>Live Tiles aren't just numbers. They include hardcoded stale-state thresholds. If a GPS reading is older than 30 seconds, or an environmental reading older than 120 seconds, the tile automatically renders an amber warning border. Status is obvious at a glance.</p>
-          </article>
-          
-          <article class="panel">
-            <span class="panel-kicker">Drill-Down</span>
-            <h3>Modal Queries</h3>
-            <p>Clicking a Live Tile summons a modal with a Custom Query pre-filled for that specific metric. The operator transitions from a high-level visual summary directly into raw tabular data rows in a single click.</p>
-          </article>
-        </div>
-      </section>
-
-      <section class="section">
-        <span class="section-kicker">Outcome-Oriented</span>
-        <h2>Quick Actions.</h2>
-        <p>The top of the Inspect panel leads with one-click "Quick Actions" to immediately surface high-value insights without manual filtering.</p>
-        
-        <div class="panel" style="max-width: 100%;">
-          <span class="panel-kicker">Pre-configured Routings</span>
-<pre><code><span style="color: #98c379;">// Quick Action routing payloads in portal.js</span>
-const quickActions = {
-  <span style="color: #98c379;">"My gateway right now"</span>: { endpoint: <span style="color: #98c379;">"latest-measurements"</span>, limit: <span style="color: #d19a66;">25</span> },
-  <span style="color: #98c379;">"Where are my nodes?"</span>:  { endpoint: <span style="color: #98c379;">"stations"</span>, format: <span style="color: #98c379;">"geojson"</span> },
-  <span style="color: #98c379;">"Map layers registered"</span>:{ endpoint: <span style="color: #98c379;">"map-layers"</span>, limit: <span style="color: #d19a66;">200</span> },
-  <span style="color: #98c379;">"Bathymetry summary"</span>:   { endpoint: <span style="color: #98c379;">"bathymetry-summary"</span>, limit: <span style="color: #d19a66;">25</span> }
-};</code></pre>
+        <div class="section-content">
+          <span class="section-kicker">Device Administration</span>
+          <h2>Over-The-Air Flashing.</h2>
+          <p>Maintaining a fleet of autonomous nodes requires robust lifecycle management. The OMEGA-wave Admin panel exposes a complete firmware flashing pipeline, allowing operators to push compiled <code>firmware.bin</code> files directly to target nodes over the DTN mesh.</p>
+          <p>The gateway backend strictly enforces hardware profiles. A <code>T3-S3 MVSR SX1280</code> payload cannot accidentally be flashed to a <code>LilyGO T-HaLow</code> board.</p>
           <div class="callout">
-            <strong>The BBS & Data Library</strong>
-            <p>Beyond raw metrics, OMEGA-wave acts as a central repository. The BBS (Bulletin Board System) allows operators to pin specific data snapshots, share them across the mesh network, and build an accessible Data Library for post-mission analysis in Pandas or Jupyter.</p>
+            <strong>Owner Protection</strong>
+            <p>All endpoints modifying the firmware state (<code>/v1/gateway/firmware/jobs</code>) require the <code>X-OMEGA-API-Key</code> owner secret. The gateway aggressively rejects unauthorized probe or flash requests.</p>
           </div>
+        </div>
+        <div class="section-visual">
+          <span class="panel-kicker">Firmware Flashing UI</span>
+          <img src="images/ui-firmware.png" alt="Firmware Flashing Interface" style="width: 100%; border-radius: 8px; border: 1px solid var(--line);">
         </div>
       </section>
 

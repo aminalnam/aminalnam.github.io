@@ -47,13 +47,12 @@
     .section h2 { font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem; max-width: 48rem;}
     .section p { color: var(--ink-soft); font-size: 1.1rem; max-width: 48rem; margin-bottom: 2rem;}
 
-    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
+    .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 2rem; }
     .panel { background: rgba(0,0,0,0.2); border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 2rem; display: flex; flex-direction: column; transition: transform 0.2s, background 0.2s; }
     .panel:hover { background: rgba(255,255,255,0.03); transform: translateY(-4px); border-color: rgba(255,255,255,0.2);}
     .panel-kicker { display: inline-block; font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent); padding: 0.2rem 0.6rem; background: rgba(59,130,246,0.1); border-radius: 999px; margin-bottom: 1rem; align-self: flex-start;}
     .panel h3 { font-family: var(--font-serif); font-size: 1.5rem; margin: 0 0 1rem; }
     .panel p { color: var(--ink-soft); font-size: 0.95rem; margin-bottom: 1.5rem; flex-grow: 1;}
-    .panel code { background: rgba(10,15,25,0.9); border: 1px solid var(--line); padding: 1rem; border-radius: 8px; font-family: var(--font-mono); font-size: 0.8em; color: #60a5fa; margin-bottom: 1rem; display: block;}
 
     .btn { display: inline-flex; align-items: center; padding: 0.8rem 1.5rem; border-radius: 999px; font-family: var(--font-mono); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.15em; transition: all 0.2s; margin-right: 0.5rem; margin-bottom: 0.5rem;}
     .btn-primary { background: var(--accent); color: #fff; border: 1px solid var(--accent); }
@@ -77,12 +76,11 @@
       </a>
       <nav class="nav">
         <a href="index.html" class="is-current">Home</a>
-        <a href="portal-observe.html">Observe API</a>
-        <a href="portal-control.html">Control & JANUS</a>
-        <a href="portal-data-science.html">Data Science</a>
-        <a href="portal-admin.html">Firmware</a>
-        <a href="portal-plan.html">Wayfinding</a>
-        <a href="how-omega-works.html">Bathymetry</a>
+        <a href="omega-transport.html">Transport</a>
+        <a href="omega-hardware.html">Hardware</a>
+        <a href="omega-data.html">Data</a>
+        <a href="omega-ops.html">Operations</a>
+        <a href="omega-observe.html">Observe</a>
       </nav>
     </div>
   </header>
@@ -105,92 +103,39 @@
           <a class="btn btn-primary" href="https://github.com/aminalnam/OMEGA-wave" target="_blank">View GitHub Repository</a>
         </div>
         
-        <div class="mermaid" style="max-width: 60rem; margin: 0 0 4rem 0; border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 2rem; background: rgba(20, 30, 48, 0.6); backdrop-filter: blur(10px);">
-          graph TD
-            subgraph Portal [Gateway Mission Control]
-              O[Observe Overlays]
-              D[Data Science & BBS]
-              C[Live Fleet Control]
-              A[Firmware Admin]
-            end
-            subgraph Mesh [DTN Overlay Network]
-              L[LoRa / HaLow]
-              J[JANUS Acoustic]
-            end
-            subgraph Edge [Physical Assets]
-              F[Autonomous Fleet]
-              B[Bathymetry Engine]
-            end
-            Portal <--> Mesh
-            Mesh <--> Edge
-        </div>
-
-        <span class="section-kicker" style="margin-top: 2rem;">OMEGA-wave Documentation</span>
-        <h3 style="font-family: var(--font-serif); font-size: 1.8rem; margin: 0 0 2rem;">Core Modules</h3>
+        <span class="section-kicker" style="margin-top: 2rem;">Technical Guidebook</span>
+        <h3 style="font-family: var(--font-serif); font-size: 1.8rem; margin: 0 0 2rem;">The 5 Master Domains</h3>
         
-        <div class="grid-3">
+        <div class="grid-2">
           
-          <a href="portal-observe.html" class="panel">
-            <span class="panel-kicker">Workspace</span>
-            <h3>Observe: API Overlays</h3>
-            <p>Fusing Global Fishing Watch 4Wings data, Copernicus Marine forecasts, and NASA GIBS imagery into unified map overlays.</p>
-            <code>GET /v1/observe/overlays/gfw</code>
+          <a href="omega-transport.html" class="panel">
+            <span class="panel-kicker">Domain 01</span>
+            <h3>Network & Transport</h3>
+            <p>Deep-dive into the Delay Tolerant Network (DTN) overlay, LoRa CBOR frame compression, and NATO-standard JANUS acoustic protocol bridges.</p>
           </a>
 
-          <a href="portal-data-science.html" class="panel">
-            <span class="panel-kicker">Workspace</span>
-            <h3>Data Science & BBS</h3>
-            <p>Live Polling Tiles, one-click Quick Actions, and an integrated Bulletin Board System for sharing datasets.</p>
-            <code>GET /v1/measurements/latest</code>
+          <a href="omega-hardware.html" class="panel">
+            <span class="panel-kicker">Domain 02</span>
+            <h3>Hardware & Edge Compute</h3>
+            <p>Deep-dive into the physical fleet, ESP32 MCU profiles, Over-The-Air (OTA) firmware pipelines, and USB health monitors.</p>
           </a>
 
-          <a href="portal-control.html" class="panel">
-            <span class="panel-kicker">Workspace</span>
-            <h3>Live Control & JANUS</h3>
-            <p>DTN command queuing, `X-OMEGA-API-Key` owner authentication, and NATO-standard JANUS acoustic protocol bridges.</p>
-            <code>POST /v1/control/commands</code>
+          <a href="omega-data.html" class="panel">
+            <span class="panel-kicker">Domain 03</span>
+            <h3>Data & Analytics</h3>
+            <p>Deep-dive into the telemetry ingestion pipeline, the Live Tiles dashboard, the Data Library BBS, and the Inverse Distance Weighting bathymetry engine.</p>
           </a>
 
-          <a href="portal-admin.html" class="panel">
-            <span class="panel-kicker">Workspace</span>
-            <h3>Firmware Admin</h3>
-            <p>Over-the-air binary flashing, hardware profile management, and ESP32 USB health snapshots.</p>
-            <code>GET /v1/gateway/firmware/jobs</code>
+          <a href="omega-ops.html" class="panel">
+            <span class="panel-kicker">Domain 04</span>
+            <h3>Mission & Operations</h3>
+            <p>Deep-dive into kinematic wayfinding scenario generation, obstacle-aware routing, and secure live hardware command queues.</p>
           </a>
 
-          <a href="mesh-network.html" class="panel">
-            <span class="panel-kicker">Transport</span>
-            <h3>Resilient Mesh</h3>
-            <p>A bearer-agnostic store-and-forward architecture operating over LoRa, HaLow, and MQTT.</p>
-            <code>import cbor2</code>
-          </a>
-
-          <a href="portal-plan.html" class="panel">
-            <span class="panel-kicker">Workspace</span>
-            <h3>Wayfinding Plan</h3>
-            <p>Obstacle-aware routing scenarios layering vessel kinematics against ocean current models.</p>
-            <code>Export GeoJSON Path</code>
-          </a>
-
-          <a href="hardware-fleet.html" class="panel">
-            <span class="panel-kicker">Hardware</span>
-            <h3>Autonomous Fleet</h3>
-            <p>The physical rovers, featuring ESP32 edge-compute nodes, dual-band telemetry, and sensor suites.</p>
-            <code>#define maxMapPitchDeg 12.0</code>
-          </a>
-
-          <a href="data-ingest.html" class="panel">
-            <span class="panel-kicker">Backend</span>
-            <h3>Data Ingestion</h3>
-            <p>The FastAPI pipeline validating incoming CBOR payloads from the physical mesh interface.</p>
-            <code>@app.post("/v1/telemetry")</code>
-          </a>
-
-          <a href="how-omega-works.html" class="panel">
-            <span class="panel-kicker">Legacy Module</span>
-            <h3>Bathymetry Engine</h3>
-            <p>The original mapping engine: underwater acoustics, edge-heuristics, and Inverse Distance Weighting interpolation.</p>
-            <code>scipy.spatial.cKDTree</code>
+          <a href="omega-observe.html" class="panel">
+            <span class="panel-kicker">Domain 05</span>
+            <h3>Observation & Overlays</h3>
+            <p>Deep-dive into proxying massive external datasets: Copernicus Marine forecasts, NASA GIBS, and Global Fishing Watch 4Wings API fusion.</p>
           </a>
 
         </div>
@@ -201,7 +146,7 @@
         <h2>Other Work & Links.</h2>
         <p>Documentation for my teaching, artwork, and community logs.</p>
         
-        <div class="grid-3">
+        <div class="grid-2" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));">
           <a href="teaching-documentation.html" class="panel" style="border-left: 2px solid var(--accent-green);">
             <h3>Teaching Docs</h3>
             <p>Curriculum and notes.</p>

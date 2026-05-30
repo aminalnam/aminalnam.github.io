@@ -3,17 +3,25 @@
 <head>
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1" name="viewport"/>
-  <title>OMEGA Data</title>
+  <title>OMEGA-wave — Data & Analytics</title>
   <style>
     :root {
       --bg: #070b14; --bg-2: #0e1522; --panel: rgba(20, 30, 48, 0.6); --panel-soft: rgba(30, 42, 60, 0.5);
       --ink: #ffffff; --ink-soft: #9aa2b1; --line: rgba(255, 255, 255, 0.1); --accent: #3b82f6; --accent-deep: #2563eb;
-      --white: #ffffff; --radius: 1.25rem;
+      --accent-green: #10b981;
+      --white: #ffffff; --radius: 1.25rem; --radius-sm: 18px;
       --font-sans: Inter, sans-serif; --font-serif: "Iowan Old Style", Georgia, serif; --font-mono: Consolas, monospace;
+      --shadow: 0 22px 48px rgba(0, 0, 0, 0.5);
     }
     * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+    html { scroll-behavior: smooth; }
     body { margin: 0; color: var(--ink); background: var(--bg); font-family: var(--font-sans); line-height: 1.65; }
-    body::before { content: ""; position: fixed; inset: -50%; z-index: -2; background: radial-gradient(circle at 50% 0%, rgba(59, 130, 246, 0.15), transparent 60%); }
+    body::before { content: ""; position: fixed; inset: -50%; z-index: -2; background: radial-gradient(circle at 50% 0%, rgba(59, 130, 246, 0.15), transparent 60%); pointer-events: none;}
+    body::after {
+      content: ""; position: fixed; inset: 0; z-index: -1;
+      background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 2.2rem 2.2rem; mask-image: linear-gradient(180deg, rgba(0,0,0,0.8), rgba(0,0,0,0.25)); pointer-events: none;
+    }
     a { color: inherit; text-decoration: none; }
     .wrap { width: min(calc(100% - 2rem), 82rem); margin: 0 auto; }
     
@@ -21,6 +29,7 @@
     .topbar-inner { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
     .brand-title { display: block; font-family: var(--font-serif); font-size: 1.4rem; color: var(--white); }
     .brand-sub { display: block; font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); font-family: var(--font-mono); }
+    
     .nav { display: flex; flex-wrap: wrap; gap: 1.2rem; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; font-family: var(--font-mono); }
     .nav a { color: var(--ink-soft); transition: color 0.3s; }
     .nav a:hover, .nav a.is-current { color: var(--white); }
@@ -32,7 +41,7 @@
 
     .hero { padding: 4rem 0 3rem; }
     .eyebrow { font-family: var(--font-mono); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.2em; color: var(--accent); margin-bottom: 1rem; display: block; }
-    h1 { margin: 0 0 1.5rem; font-family: var(--font-serif); font-size: clamp(3rem, 6vw, 4.5rem); font-weight: 400; line-height: 1.1; max-width: 20ch; }
+    h1 { margin: 0 0 1.5rem; font-family: var(--font-serif); font-size: clamp(3rem, 6vw, 4.5rem); font-weight: 400; line-height: 1.1; max-width: 25ch; }
     .hero p { max-width: 48rem; margin: 0 0 2.5rem; font-size: 1.25rem; color: var(--ink-soft); }
     .btn { display: inline-flex; align-items: center; padding: 0.8rem 1.5rem; border-radius: 999px; font-family: var(--font-mono); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.15em; transition: all 0.2s; margin-right: 0.5rem; margin-bottom: 0.5rem;}
     .btn-primary { background: var(--accent); color: #fff; border: 1px solid var(--accent); }
@@ -40,21 +49,33 @@
     .btn-secondary { background: rgba(255, 255, 255, 0.05); color: #fff; border: 1px solid rgba(255, 255, 255, 0.2); }
     .btn-secondary:hover { background: rgba(255, 255, 255, 0.1); transform: translateY(-2px); }
 
-    .section { padding: 4rem 0; border-top: 1px solid var(--line); }
-    .section h2 { font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem; max-width: 48rem;}
-    .section p { color: var(--ink-soft); font-size: 1.1rem; max-width: 48rem; margin-bottom: 2rem;}
+    .main-shell { position: relative; margin-bottom: 4rem; }
+    .main-inner { background: var(--panel); border-radius: 1.5rem; overflow: clip; box-shadow: var(--shadow); border: 1px solid var(--line); }
+    .section { padding: 4rem; border-bottom: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 4rem; align-items: flex-start; }
+    .section-content { flex: 1; min-width: 300px; }
+    .section-kicker { font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent); margin-bottom: 0.8rem; display: block; }
+    .section h2 { font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem; }
+    .section p { color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem;}
 
-    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
-    .panel { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 2rem; display: flex; flex-direction: column; }
-    .panel h3 { font-family: var(--font-serif); font-size: 1.5rem; margin: 0 0 1rem; }
-    .panel p { color: var(--ink-soft); font-size: 0.95rem; margin-bottom: 1.5rem; }
+    .section-visual { flex: 1; min-width: 300px; background: rgba(0,0,0,0.3); border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 2rem; }
+    .section-visual img { width: 100%; border-radius: 8px; border: 1px solid var(--line); box-shadow: var(--shadow); }
     
-    .callout { background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.2); padding: 1.5rem; border-radius: var(--radius); margin-top: 2rem;}
-    .callout strong { display: block; font-family: var(--font-mono); font-size: 0.7rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 0.5rem;}
-    .callout p { font-size: 1rem; color: var(--ink-soft); margin-bottom: 0;}
+    .panel-kicker { display: inline-block; font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent); padding: 0.2rem 0.6rem; background: rgba(59,130,246,0.1); border-radius: 999px; margin-bottom: 1rem; }
+    
+    .callout { background: rgba(255,255,255,0.03); border: 1px solid var(--line); padding: 1.5rem; border-radius: 0.75rem; margin-top: 2rem; border-left: 4px solid var(--accent);}
+    .callout strong { display: block; font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 0.5rem;}
+    .callout p { font-size: 0.95rem; color: var(--ink-soft); margin-bottom: 0; }
+    
+    pre { background: rgba(10,15,25,0.9); padding: 1.5rem; border-radius: var(--radius-sm); overflow-x: auto; border: 1px solid var(--line); margin-bottom: 1.5rem; font-family: var(--font-mono); font-size: 0.85rem; line-height: 1.4;}
+    code { font-family: var(--font-mono); color: #e2e8f0; }
+    p code, li code { background: rgba(255,255,255,0.1); padding: 0.2rem 0.4rem; border-radius: 4px; font-size: 0.85em; color: #60a5fa;}
 
     .footer { border-top: 1px solid var(--line); padding: 4rem 0; text-align: center; font-family: var(--font-mono); font-size: 0.8rem; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.15em; }
   </style>
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ startOnLoad: true, theme: 'dark', themeVariables: { fontFamily: 'Inter' } });
+  </script>
 </head>
 <body>
   <header class="topbar">
@@ -63,128 +84,142 @@
         <span class="brand-title">Jonathan Capone</span>
         <span class="brand-sub">Technical Portfolio</span>
       </a>
-            <nav class="nav">
+      <nav class="nav">
         <a href="index.html">Home</a>
-        <a href="portal-observe.html">Observe API</a>
-        <a href="portal-control.html">Control & JANUS</a>
-        <a href="portal-data-science.html">Data Science</a>
-        <a href="portal-admin.html">Firmware</a>
-        <a href="portal-plan.html">Wayfinding</a>
-        <a href="how-omega-works.html">Bathymetry</a>
+        <a href="omega-transport.html" class="">Transport</a>
+        <a href="omega-hardware.html" class="">Hardware</a>
+        <a href="omega-data.html" class="is-current">Data</a>
+        <a href="omega-ops.html" class="">Operations</a>
+        <a href="omega-observe.html" class="">Observe</a>
       </nav>
     </div>
   </header>
 
   <div class="wrap">
-    <div class="omega-subnav" style="margin-bottom: 3rem;">
-      <strong>Context & Data:</strong>
-      <a href="omega-research.html">Research Context</a>
-      <a href="omega-data.html" class="is-current">Data Access</a>
+    <div class="omega-subnav">
+      <strong>Technical Domains:</strong>
+      <a href="omega-transport.html" class="">Network & Transport</a>
+      <a href="omega-hardware.html" class="">Hardware & Edge</a>
+      <a href="omega-data.html" class="is-current">Data & Analytics</a>
+      <a href="omega-ops.html" class="">Mission & Ops</a>
+      <a href="omega-observe.html" class="">API Observation</a>
     </div>
   </div>
 
-    
   <section class="hero wrap">
-    <span class="eyebrow">OMEGA Data</span>
-    <h1 style="max-width: 24ch;">External Data Integration</h1>
-    <p>A mission control portal is useless in a vacuum. OMEGA actively merges live fleet telemetry with massive, credential-safe public environmental datasets to create a unified spatial model.</p>
+    <span class="eyebrow">Domain 03: Data Science</span>
+    <h1>Ingestion & Interpolation.</h1>
+    <p>Transforming raw, asynchronous telemetry into actionable intelligence. Featuring a Live Tiles dashboard, the Data Library BBS, and the legacy Bathymetric interpolation engine.</p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="https://github.com/aminalnam/OMEGA-wave" target="_blank">View GitHub Repository</a>
+      <a class="btn btn-secondary" href="index.html">Back to Portfolio</a>
+    </div>
   </section>
 
-  <main class="wrap">
-    <section class="section" style="padding-top: 2rem;">
-      <div class="content-grid">
-        <div class="panel" style="grid-column: 1 / -1; display: flex; flex-direction: column; background: var(--bg-2);">
-          <h3>Contextualizing the Operational Area</h3>
-          <p>Knowing that an ASV rover is currently measuring a depth of 12 meters is helpful. Knowing that there is an active Gale Warning issued by the NWS in that exact grid sector, or that the current NOAA tide prediction is showing an abnormal low, is mission-critical.</p>
-          <p>The OMEGA backend uses a series of asynchronous Python integration scripts (e.g., <code>copernicus_cube.py</code>, <code>global_fishing_watch.py</code>, <code>erddap.py</code>) to pull global context down to the local mesh level.</p>
+  <main class="main-shell wrap">
+    <div class="main-inner">
+
+      <section class="section">
+        <div class="section-content">
+          <span class="section-kicker">Telemetry Processing</span>
+          <h2>The Observation Envelope.</h2>
+          <p>When the gateway successfully decodes a packet from the mesh, it expands it into a fully validated Observation Envelope. This payload includes high-precision coordinates, sensor arrays (temperature, depth, battery), and the exact hardware footprint of the reporting node.</p>
           
-          <div class="mermaid" style="width: 100%; max-width: 800px; margin-top: 2rem; border-radius: var(--radius-sm); overflow: hidden;">
-            graph TD
-                %% Nodes
-                API[FastAPI Gateway]:::core
-                NOAA[NOAA CO-OPS & NDBC<br>Tide & Weather]:::external
-                GFW[Global Fishing Watch<br>4Wings API & AIS]:::external
-                Copernicus[Copernicus Marine<br>Currents & Salinity]:::external
-                Portal[React Digital Twin Portal]:::portal
-
-                %% Links
-                NOAA -->|JSON REST| API
-                GFW -->|Credentialed Auth| API
-                Copernicus -->|NetCDF / ERDDAP| API
-                API -->|Normalized GeoJSON| Portal
-
-                %% Styles
-                classDef core fill:#1e293b,stroke:#3b82f6,stroke-width:2px,color:#fff;
-                classDef external fill:#0f172a,stroke:#f59e0b,stroke-width:1px,color:#fff;
-                classDef portal fill:#0f172a,stroke:#10b981,stroke-width:2px,color:#fff;
-          </div>
+          <img src="images/ui-data.png" alt="Live Data Tiles Dashboard" style="width: 100%; border-radius: 8px; margin-top: 2rem; border: 1px solid var(--line);">
         </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <h2>Credential-Safe API Proxying</h2>
-      <p>Many high-quality environmental datasets (like Global Fishing Watch's 4Wings API or Stormglass) require private API keys and authentication tokens. OMEGA ensures these credentials are never exposed to the client browser.</p>
-      
-      <div class="content-grid" style="margin-top: 2rem;">
-        <div class="panel">
-          <h3>The Backend Bridge</h3>
-          <p>Instead of the React frontend making requests directly to external providers, it queries the OMEGA FastAPI backend. The backend injects the secure `.env` credentials, negotiates the OAuth or token exchange, and fetches the data on behalf of the client.</p>
-        </div>
-        <div class="panel">
-          <h3>Data Homogenization</h3>
-          <p>External APIs return data in wildly different formats (XML, NetCDF, proprietary JSON). The OMEGA backend parses these varied responses and converts them into a standardized, flat GeoJSON structure before serving them to the portal map.</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <h2>Exported JSON Structures</h2>
-      <p>Below is an example of the standardized GeoJSON structure that the OMEGA backend outputs after successfully pulling and normalizing data from a NOAA NDBC buoy combined with a local fleet rover.</p>
-      
-      <div class="panel" style="margin-top: 2rem; background: var(--bg-2);">
-        <h3>Normalized GeoJSON Output</h3>
-        
-        <div style="background: #0d1117; padding: 1.5rem; border-radius: var(--radius-sm); border: 1px solid var(--line); overflow-x: auto;">
-<pre><code style="font-family: var(--font-mono); font-size: 0.85rem; color: #c9d1d9;">{
-  <span style="color: #79c0ff;">"type"</span>: <span style="color: #a5d6ff;">"FeatureCollection"</span>,
-  <span style="color: #79c0ff;">"features"</span>: [
-    {
-      <span style="color: #79c0ff;">"type"</span>: <span style="color: #a5d6ff;">"Feature"</span>,
-      <span style="color: #79c0ff;">"geometry"</span>: {
-        <span style="color: #79c0ff;">"type"</span>: <span style="color: #a5d6ff;">"Point"</span>,
-        <span style="color: #79c0ff;">"coordinates"</span>: [-118.2436, 34.0522]
-      },
-      <span style="color: #79c0ff;">"properties"</span>: {
-        <span style="color: #79c0ff;">"source"</span>: <span style="color: #a5d6ff;">"omega_fleet_rover_04"</span>,
-        <span style="color: #79c0ff;">"timestamp_utc"</span>: <span style="color: #a5d6ff;">"2026-05-30T14:30:00Z"</span>,
-        <span style="color: #79c0ff;">"metrics"</span>: {
-          <span style="color: #79c0ff;">"bathymetry_depth_m"</span>: <span style="color: #a5d6ff;">14.2</span>,
-          <span style="color: #79c0ff;">"water_temp_c"</span>: <span style="color: #a5d6ff;">16.5</span>
-        }
-      }
-    },
-    {
-      <span style="color: #79c0ff;">"type"</span>: <span style="color: #a5d6ff;">"Feature"</span>,
-      <span style="color: #79c0ff;">"geometry"</span>: {
-        <span style="color: #79c0ff;">"type"</span>: <span style="color: #a5d6ff;">"Point"</span>,
-        <span style="color: #79c0ff;">"coordinates"</span>: [-118.2500, 34.0600]
-      },
-      <span style="color: #79c0ff;">"properties"</span>: {
-        <span style="color: #79c0ff;">"source"</span>: <span style="color: #a5d6ff;">"noaa_ndbc_station_46025"</span>,
-        <span style="color: #79c0ff;">"timestamp_utc"</span>: <span style="color: #a5d6ff;">"2026-05-30T14:00:00Z"</span>,
-        <span style="color: #79c0ff;">"metrics"</span>: {
-          <span style="color: #79c0ff;">"wave_height_m"</span>: <span style="color: #a5d6ff;">1.2</span>,
-          <span style="color: #79c0ff;">"wind_speed_kts"</span>: <span style="color: #a5d6ff;">15.0</span>
-        }
-      }
+        <div class="section-visual" style="max-height: 800px; overflow-y: auto;">
+          <span class="panel-kicker">observation-envelope.example.json</span>
+<pre><code>{
+  "spec": "omega-wave.observation-envelope/1",
+  "message_id": "01HSJ9R2XW6T4Q3AP7D3R5K8NE",
+  "message_type": "observation",
+  "origin": {
+    "node_id": "urn:omega-wave:node:site-a:buoy-02",
+    "device_id": "water-quality-probe-main",
+    "capability_ref": "https://example.invalid/omega-wave/things/site-a-buoy-02-water-quality.td.json",
+    "firmware_version": "0.1.0"
+  },
+  "routing": {
+    "priority": "normal",
+    "ttl_s": 86400,
+    "ack_mode": "gateway",
+    "max_hops": 8
+  },
+  "sample": {
+    "sampled_at": "2026-04-18T18:30:00Z",
+    "sequence": 1842,
+    "location": {
+      "lat": 36.8054,
+      "lon": -121.7891,
+      "depth_m": 4.2
     }
-  ]
-}
-</code></pre>
+  },
+  "tags": {
+    "site": "site-a",
+    "platform": "buoy",
+    "medium": "water"
+  },
+  "payload": {
+    "mode": "senml",
+    "content_type": "application/senml+json",
+    "schema_ref": "urn:ietf:rfc:8428",
+    "records": [
+      {
+        "bn": "urn:omega-wave:thing:site-a:buoy-02:water-quality/",
+        "bt": 1776537000
+      },
+      {
+        "n": "temperature",
+        "u": "Cel",
+        "v": 13.42
+      },
+      {
+        "n": "salinity",
+        "u": "psu",
+        "v": 33.91
+      },
+      {
+        "n": "dissolved-oxygen",
+        "u": "mg/L",
+        "v": 8.11
+      },
+      {
+        "n": "battery-voltage",
+        "u": "V",
+        "v": 3.92
+      }
+    ]
+  }
+}</code></pre>
         </div>
-      </div>
-    </section>
+      </section>
+
+      <section class="section">
+        <div class="section-content">
+          <span class="section-kicker">Spatial Interpolation</span>
+          <h2>Bathymetry Engine.</h2>
+          <p>A core feature of the Data Domain is the bathymetric mapping engine. Because a physical vessel cannot touch every square meter of a lakebed, we must mathematically infer the depth of unmapped areas.</p>
+          <p>OMEGA-wave achieves this using <strong>Inverse Distance Weighting (IDW)</strong> powered by <code>scipy.spatial.cKDTree</code>. This allows the backend to instantly calculate topological meshes from sparse data points gathered by the fleet.</p>
+        </div>
+        <div class="section-visual">
+          <span class="panel-kicker">Python IDW Implementation</span>
+<pre><code class="language-python">from scipy.spatial import cKDTree
+import numpy as np
+
+def inverse_distance_weighting(x, y, z, xi, yi, power=2):
+    dist, idx = tree.query(np.c_[xi.ravel(), yi.ravel()], k=10)
+    
+    # Avoid division by zero
+    dist = np.maximum(dist, 1e-10)
+    weights = 1.0 / dist**power
+    
+    # Calculate weighted average
+    zi = np.sum(weights * z[idx], axis=1) / np.sum(weights, axis=1)
+    return zi.reshape(xi.shape)</code></pre>
+        </div>
+      </section>
+
+    </div>
   </main>
 
   <footer class="footer wrap">
