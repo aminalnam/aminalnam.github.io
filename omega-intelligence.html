@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1" name="viewport"/>
-  <title>OMEGA-wave — Mission & Operations</title>
+  <title>OMEGA-wave — Honu Copilot</title>
   <style>
     :root {
       --bg: #070b14; --bg-2: #0e1522; --panel: rgba(20, 30, 48, 0.6); --panel-soft: rgba(30, 42, 60, 0.5);
@@ -89,9 +89,9 @@
         <a href="omega-transport.html" class="">Transport</a>
         <a href="omega-hardware.html" class="">Hardware</a>
         <a href="omega-data.html" class="">Data</a>
-        <a href="omega-ops.html" class="is-current">Ops</a>
+        <a href="omega-ops.html" class="">Ops</a>
         <a href="omega-observe.html" class="">Observe</a>
-        <a href="omega-intelligence.html" class="">AI</a>
+        <a href="omega-intelligence.html" class="is-current">AI</a>
         <a href="omega-simulation.html" class="">Sims</a>
         <a href="omega-science.html" class="">QC</a>
         <a href="omega-external.html" class="">Fed</a>
@@ -105,9 +105,9 @@
       <a href="omega-transport.html" class="">Network & Transport</a>
       <a href="omega-hardware.html" class="">Hardware & Edge</a>
       <a href="omega-data.html" class="">Data & Analytics</a>
-      <a href="omega-ops.html" class="is-current">Mission & Ops</a>
+      <a href="omega-ops.html" class="">Mission & Ops</a>
       <a href="omega-observe.html" class="">API Observation</a>
-      <a href="omega-intelligence.html" class="">Honu Copilot</a>
+      <a href="omega-intelligence.html" class="is-current">Honu Copilot</a>
       <a href="omega-simulation.html" class="">Digital Twins</a>
       <a href="omega-science.html" class="">QC & Calibration</a>
       <a href="omega-external.html" class="">ERDDAP Federation</a>
@@ -115,9 +115,9 @@
   </div>
 
   <section class="hero wrap">
-    <span class="eyebrow">Domain 04: Operations</span>
-    <h1>Kinematics & Control.</h1>
-    <p>The tactical execution arm. Calculating route scenarios through vector mathematics and fluid dynamics, and issuing secure live hardware commands.</p>
+    <span class="eyebrow">Domain 06: Intelligence</span>
+    <h1>Context-Aware AI.</h1>
+    <p>Honu is the native intelligence engine. It translates natural language into structured tool calls while strictly adhering to read-only constraints.</p>
     <div class="hero-actions">
       <a class="btn btn-primary" href="https://github.com/aminalnam/OMEGA-wave" target="_blank">View GitHub Repository</a>
       <a class="btn btn-secondary" href="index.html">Back to Portfolio</a>
@@ -129,39 +129,22 @@
 
       <section class="section">
         <div class="section-content">
-          <span class="section-kicker">Fluid Dynamics & Vector Math</span>
-          <h2>Wayfinding Scenarios.</h2>
-          <p>An ASV operates on the surface of a moving fluid. If it points its bow directly at a target (its <strong>Heading</strong>), but a strong cross-current pushes against the hull, its actual path over the Earth (its <strong>Course-Over-Ground, or COG</strong>) will drift significantly off-target.</p><p>The Wayfinder module models the vessel's kinematics as one vector, and imports real-time ocean current data as an environmental vector field to calculate the necessary "crab angle".</p>
+          <span class="section-kicker">Amnesia Prevention & NLP</span>
+          <h2>Honu Copilot Architecture.</h2>
+          <p>Honu (named after the Hawaiian green sea turtle) is the native, context-aware intelligence engine. To prevent "LLM Amnesia" where the model loses track of what the user is currently viewing, the gateway implements a strict <strong>Amnesia Prevention Protocol</strong>. Every prompt is secretly bundled with a <code>[PORTAL CONTEXT]</code> block containing the active map bounding box, selected device, and UI state.</p><p>Honu operates under strict Read-Only constraints. It possesses a Tool Registry of 46 callable API routes. When a user requests an action, Honu uses <code>kind="action"</code> tools to <em>stage</em> the payload for explicit operator confirmation, guaranteeing AI cannot blindly execute physical hardware commands.</p>
           <div class="callout">
-            <strong>Secure Live Control</strong>
-            <p>Operators can push commands directly into the DTN queue. Every request is protected by an X-OMEGA-API-Key header to prevent unauthorized hijacking.</p>
+            <strong>Intent-Based Tool Preprocessing</strong>
+            <p>To save tokens and execution time on small local models (Ollama), the gateway parses natural language to detect geographic intent (translating "Monterey Bay" into bounding boxes) and statistical intent (routing to get_measurement_statistics instead of raw row queries).</p>
           </div>
         </div>
         <div class="section-visual" style="max-height: 800px; overflow-y: auto;">
-          <span class="panel-kicker">wayfinding-plan.example.json</span>
-          <pre><code class="language-json">{
-  "origin": {
-    "lat": 36.7998,
-    "lon": -121.7902,
-    "label": "Harbor A"
-  },
-  "destination": {
-    "lat": 36.806,
-    "lon": -121.7808,
-    "label": "Survey Line 1"
-  },
-  "objective": "balanced",
-  "routing": {
-    "speeds_knots": [3, 5, 7],
-    "route_offsets_nm": [-2.5, 0, 2.5],
-    "min_water_depth_m": 12.0
-  },
-  "environment": {
-    "site": "wayfinding-a",
-    "stale_after_s": 21600,
-    "influence_radius_nm": 20.0
-  }
-}</code></pre>
+          <span class="panel-kicker">gateway/copilot.py Tool Registry</span>
+          <pre><code class="language-python">_action_tool(
+    "propose_control_command",
+    "Stage a control command for one node for operator confirmation. "
+    "This does NOT run the command — it stages it for the operator to confirm.",
+    "/v1/control/commands",
+)</code></pre>
         </div>
       </section>
 

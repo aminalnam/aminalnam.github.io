@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1" name="viewport"/>
-  <title>OMEGA-wave — Mission & Operations</title>
+  <title>OMEGA-wave — Science & QC</title>
   <style>
     :root {
       --bg: #070b14; --bg-2: #0e1522; --panel: rgba(20, 30, 48, 0.6); --panel-soft: rgba(30, 42, 60, 0.5);
@@ -89,11 +89,11 @@
         <a href="omega-transport.html" class="">Transport</a>
         <a href="omega-hardware.html" class="">Hardware</a>
         <a href="omega-data.html" class="">Data</a>
-        <a href="omega-ops.html" class="is-current">Ops</a>
+        <a href="omega-ops.html" class="">Ops</a>
         <a href="omega-observe.html" class="">Observe</a>
         <a href="omega-intelligence.html" class="">AI</a>
         <a href="omega-simulation.html" class="">Sims</a>
-        <a href="omega-science.html" class="">QC</a>
+        <a href="omega-science.html" class="is-current">QC</a>
         <a href="omega-external.html" class="">Fed</a>
       </nav>
     </div>
@@ -105,19 +105,19 @@
       <a href="omega-transport.html" class="">Network & Transport</a>
       <a href="omega-hardware.html" class="">Hardware & Edge</a>
       <a href="omega-data.html" class="">Data & Analytics</a>
-      <a href="omega-ops.html" class="is-current">Mission & Ops</a>
+      <a href="omega-ops.html" class="">Mission & Ops</a>
       <a href="omega-observe.html" class="">API Observation</a>
       <a href="omega-intelligence.html" class="">Honu Copilot</a>
       <a href="omega-simulation.html" class="">Digital Twins</a>
-      <a href="omega-science.html" class="">QC & Calibration</a>
+      <a href="omega-science.html" class="is-current">QC & Calibration</a>
       <a href="omega-external.html" class="">ERDDAP Federation</a>
     </div>
   </div>
 
   <section class="hero wrap">
-    <span class="eyebrow">Domain 04: Operations</span>
-    <h1>Kinematics & Control.</h1>
-    <p>The tactical execution arm. Calculating route scenarios through vector mathematics and fluid dynamics, and issuing secure live hardware commands.</p>
+    <span class="eyebrow">Domain 08: Data Quality</span>
+    <h1>QARTOD & Calibration.</h1>
+    <p>Rigorous mathematical quality control enforcing IOOS QARTOD standards, and hardware drift-correction via Argo float calibration.</p>
     <div class="hero-actions">
       <a class="btn btn-primary" href="https://github.com/aminalnam/OMEGA-wave" target="_blank">View GitHub Repository</a>
       <a class="btn btn-secondary" href="index.html">Back to Portfolio</a>
@@ -129,39 +129,23 @@
 
       <section class="section">
         <div class="section-content">
-          <span class="section-kicker">Fluid Dynamics & Vector Math</span>
-          <h2>Wayfinding Scenarios.</h2>
-          <p>An ASV operates on the surface of a moving fluid. If it points its bow directly at a target (its <strong>Heading</strong>), but a strong cross-current pushes against the hull, its actual path over the Earth (its <strong>Course-Over-Ground, or COG</strong>) will drift significantly off-target.</p><p>The Wayfinder module models the vessel's kinematics as one vector, and imports real-time ocean current data as an environmental vector field to calculate the necessary "crab angle".</p>
+          <span class="section-kicker">QARTOD Standards & Drift Correction</span>
+          <h2>Quality Control & Calibration.</h2>
+          <p>Raw oceanographic data requires rigorous quality control before it can be trusted. OMEGA-wave implements the <strong>IOOS QARTOD</strong> (Quality Assurance / Quality Control of Real-Time Oceanographic Data) standards directly in the gateway.</p><p>The QC engine (`gateway/qc.py`) evaluates incoming data using statistical mathematics: calculating the <strong>Median Absolute Deviation (MAD)</strong> to derive a Robust Sigma for spike detection, flat-line checks, and gross-range violations. Points are flagged from 1 (Pass) to 4 (Fail) or 9 (Missing).</p><p>For hardware drift over time, the <strong>Argo Calibration Engine</strong> mathematically matches raw readings from local nodes against certified IFREMER Argo floats operating in the same spatial volume to generate dynamic calibration offsets.</p>
           <div class="callout">
-            <strong>Secure Live Control</strong>
-            <p>Operators can push commands directly into the DTN queue. Every request is protected by an X-OMEGA-API-Key header to prevent unauthorized hijacking.</p>
+            <strong>Threshold Bundles & Sigma Multipliers</strong>
+            <p>Thresholds are dynamically calculated per-station. A spike is flagged as "suspect" if it deviates by 3-sigma from the center, and "fail" if it exceeds 6-sigma.</p>
           </div>
         </div>
         <div class="section-visual" style="max-height: 800px; overflow-y: auto;">
-          <span class="panel-kicker">wayfinding-plan.example.json</span>
-          <pre><code class="language-json">{
-  "origin": {
-    "lat": 36.7998,
-    "lon": -121.7902,
-    "label": "Harbor A"
-  },
-  "destination": {
-    "lat": 36.806,
-    "lon": -121.7808,
-    "label": "Survey Line 1"
-  },
-  "objective": "balanced",
-  "routing": {
-    "speeds_knots": [3, 5, 7],
-    "route_offsets_nm": [-2.5, 0, 2.5],
-    "min_water_depth_m": 12.0
-  },
-  "environment": {
-    "site": "wayfinding-a",
-    "stale_after_s": 21600,
-    "influence_radius_nm": 20.0
-  }
-}</code></pre>
+          <span class="panel-kicker">gateway/qc.py Robust Sigma</span>
+          <pre><code class="language-python">def _robust_sigma(values: list[float]) -> float | None:
+    if len(values) < 4:
+        return None
+    center = median(values)
+    mad = _median_absolute_deviation(values, center)
+    sigma = mad * 1.4826  # Scale factor for normal distribution
+    return sigma if sigma > 0 else None</code></pre>
         </div>
       </section>
 

@@ -89,20 +89,28 @@
         <a href="omega-transport.html" class="">Transport</a>
         <a href="omega-hardware.html" class="is-current">Hardware</a>
         <a href="omega-data.html" class="">Data</a>
-        <a href="omega-ops.html" class="">Operations</a>
+        <a href="omega-ops.html" class="">Ops</a>
         <a href="omega-observe.html" class="">Observe</a>
+        <a href="omega-intelligence.html" class="">AI</a>
+        <a href="omega-simulation.html" class="">Sims</a>
+        <a href="omega-science.html" class="">QC</a>
+        <a href="omega-external.html" class="">Fed</a>
       </nav>
     </div>
   </header>
 
   <div class="wrap">
     <div class="omega-subnav">
-      <strong>Technical Domains:</strong>
+      <strong>Domains:</strong>
       <a href="omega-transport.html" class="">Network & Transport</a>
       <a href="omega-hardware.html" class="is-current">Hardware & Edge</a>
       <a href="omega-data.html" class="">Data & Analytics</a>
       <a href="omega-ops.html" class="">Mission & Ops</a>
       <a href="omega-observe.html" class="">API Observation</a>
+      <a href="omega-intelligence.html" class="">Honu Copilot</a>
+      <a href="omega-simulation.html" class="">Digital Twins</a>
+      <a href="omega-science.html" class="">QC & Calibration</a>
+      <a href="omega-external.html" class="">ERDDAP Federation</a>
     </div>
   </div>
 
@@ -123,29 +131,19 @@
         <div class="section-content">
           <span class="section-kicker">Thermodynamics & RF Physics</span>
           <h2>Edge Node Engineering.</h2>
-          <p>Deploying microcontrollers like the ESP32 into marine environments introduces severe hardware constraints. Nodes must be encased in completely sealed, IP67+ waterproof enclosures. However, the ESP32 and accompanying LoRa amplifiers (like the SX1262) generate significant heat during active transmission.</p>
-          <p>Without active ventilation, the system relies entirely on <strong>passive thermal conduction</strong> through the enclosure walls to the surrounding air or water. If duty cycles are not strictly managed by the firmware, the internal ambient temperature will rise until the silicon reaches its thermal throttling limit, leading to unpredictable system halts.</p>
-          <p>Furthermore, RF antenna design on floating vessels is highly complex. An antenna requires a stable ground plane to shape its radiation pattern effectively. On a small ASV, the ocean itself acts as a massive, shifting, conductive ground plane. Pitch and roll caused by wave action constantly changes the antenna's orientation relative to this plane, creating dynamic dead zones in the transmission field. The firmware must account for this by utilizing the DTN to retry transmissions during optimal wave crests.</p>
-          
+          <p>Deploying microcontrollers into marine environments introduces severe hardware constraints. Nodes must be encased in completely sealed, IP67+ waterproof enclosures. However, the ESP32 and accompanying LoRa amplifiers generate significant heat.</p><p>Without active ventilation, the system relies entirely on <strong>passive thermal conduction</strong> through the enclosure walls. If duty cycles are not strictly managed by the firmware, the internal ambient temperature will rise until the silicon reaches its thermal throttling limit.</p>
           <div class="callout">
             <strong>Over-The-Air (OTA) Flashing</strong>
-            <p>Because physical access to a deployed fleet is impossible, the gateway implements a full OTA pipeline. Operators can push compiled <code>firmware.bin</code> files to target nodes over the DTN mesh. The backend strictly enforces hardware profiles, ensuring a <code>T3-S3 MVSR</code> payload is never flashed to a <code>LilyGO T-HaLow</code> board, which would permanently brick the device.</p>
+            <p>Because physical access to a deployed fleet is impossible, the gateway implements a full OTA pipeline over the DTN mesh. The backend strictly enforces hardware profiles to prevent bricking devices.</p>
           </div>
         </div>
-        <div class="section-visual">
+        <div class="section-visual" style="max-height: 800px; overflow-y: auto;">
           <span class="panel-kicker">Firmware Verification Logic</span>
-<pre><code class="language-python"># gateway/api/firmware.py
-@app.post("/v1/gateway/firmware/jobs")
+          <pre><code class="language-python">@app.post("/v1/gateway/firmware/jobs")
 def queue_flash_job(job: FlashJob, hardware_registry: Dict):
     target_node = hardware_registry.get(job.node_id)
-    
-    # Strict MCU profile enforcement
     if target_node.mcu_profile != job.binary_profile:
-        raise HTTPException(
-            status_code=400, 
-            detail=f"Profile mismatch. Attempted to flash {job.binary_profile} to a {target_node.mcu_profile} board."
-        )
-        
+        raise HTTPException(status_code=400, detail="Profile mismatch.")
     return DTN.queue_payload(job.node_id, job.binary_data)</code></pre>
         </div>
       </section>

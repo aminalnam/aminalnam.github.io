@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1" name="viewport"/>
-  <title>OMEGA-wave — Mission & Operations</title>
+  <title>OMEGA-wave — Simulation & Twins</title>
   <style>
     :root {
       --bg: #070b14; --bg-2: #0e1522; --panel: rgba(20, 30, 48, 0.6); --panel-soft: rgba(30, 42, 60, 0.5);
@@ -89,10 +89,10 @@
         <a href="omega-transport.html" class="">Transport</a>
         <a href="omega-hardware.html" class="">Hardware</a>
         <a href="omega-data.html" class="">Data</a>
-        <a href="omega-ops.html" class="is-current">Ops</a>
+        <a href="omega-ops.html" class="">Ops</a>
         <a href="omega-observe.html" class="">Observe</a>
         <a href="omega-intelligence.html" class="">AI</a>
-        <a href="omega-simulation.html" class="">Sims</a>
+        <a href="omega-simulation.html" class="is-current">Sims</a>
         <a href="omega-science.html" class="">QC</a>
         <a href="omega-external.html" class="">Fed</a>
       </nav>
@@ -105,19 +105,19 @@
       <a href="omega-transport.html" class="">Network & Transport</a>
       <a href="omega-hardware.html" class="">Hardware & Edge</a>
       <a href="omega-data.html" class="">Data & Analytics</a>
-      <a href="omega-ops.html" class="is-current">Mission & Ops</a>
+      <a href="omega-ops.html" class="">Mission & Ops</a>
       <a href="omega-observe.html" class="">API Observation</a>
       <a href="omega-intelligence.html" class="">Honu Copilot</a>
-      <a href="omega-simulation.html" class="">Digital Twins</a>
+      <a href="omega-simulation.html" class="is-current">Digital Twins</a>
       <a href="omega-science.html" class="">QC & Calibration</a>
       <a href="omega-external.html" class="">ERDDAP Federation</a>
     </div>
   </div>
 
   <section class="hero wrap">
-    <span class="eyebrow">Domain 04: Operations</span>
-    <h1>Kinematics & Control.</h1>
-    <p>The tactical execution arm. Calculating route scenarios through vector mathematics and fluid dynamics, and issuing secure live hardware commands.</p>
+    <span class="eyebrow">Domain 07: Simulation</span>
+    <h1>Synthetic Mesh States.</h1>
+    <p>Procedurally generating massive marine scenarios and maintaining state-coherent Digital Twins across disconnected DTN links.</p>
     <div class="hero-actions">
       <a class="btn btn-primary" href="https://github.com/aminalnam/OMEGA-wave" target="_blank">View GitHub Repository</a>
       <a class="btn btn-secondary" href="index.html">Back to Portfolio</a>
@@ -129,39 +129,23 @@
 
       <section class="section">
         <div class="section-content">
-          <span class="section-kicker">Fluid Dynamics & Vector Math</span>
-          <h2>Wayfinding Scenarios.</h2>
-          <p>An ASV operates on the surface of a moving fluid. If it points its bow directly at a target (its <strong>Heading</strong>), but a strong cross-current pushes against the hull, its actual path over the Earth (its <strong>Course-Over-Ground, or COG</strong>) will drift significantly off-target.</p><p>The Wayfinder module models the vessel's kinematics as one vector, and imports real-time ocean current data as an environmental vector field to calculate the necessary "crab angle".</p>
+          <span class="section-kicker">Synthetic Datasets & Mesh State</span>
+          <h2>Simulation Harness & Digital Twins.</h2>
+          <p>Testing a disconnected DTN mesh network is impossible with a single static JSON file. OMEGA-wave includes a massive Simulation Harness that procedurally generates stationary water-quality buoys, moving drifters, ROV tracks, and JANUS acoustic activity across defined time steps.</p><p>Furthermore, the edge nodes are modeled as <strong>Digital Twins</strong>. Because a node may go offline for days, the portal maintains a decoupled state model (<code>validate_sync_request</code>). The twin tracks variables across states like <code>pending</code>, <code>synced</code>, and <code>drift</code>, ensuring the operator knows whether a hardware parameter shown in the UI has actually reached the physical node.</p>
           <div class="callout">
-            <strong>Secure Live Control</strong>
-            <p>Operators can push commands directly into the DTN queue. Every request is protected by an X-OMEGA-API-Key header to prevent unauthorized hijacking.</p>
+            <strong>Time-Step Procedural Generation</strong>
+            <p>The simulator can fast-forward days of simulated time, seeding measurements with realistic statistical noise and drift patterns to stress-test the UI.</p>
           </div>
         </div>
         <div class="section-visual" style="max-height: 800px; overflow-y: auto;">
-          <span class="panel-kicker">wayfinding-plan.example.json</span>
-          <pre><code class="language-json">{
-  "origin": {
-    "lat": 36.7998,
-    "lon": -121.7902,
-    "label": "Harbor A"
-  },
-  "destination": {
-    "lat": 36.806,
-    "lon": -121.7808,
-    "label": "Survey Line 1"
-  },
-  "objective": "balanced",
-  "routing": {
-    "speeds_knots": [3, 5, 7],
-    "route_offsets_nm": [-2.5, 0, 2.5],
-    "min_water_depth_m": 12.0
-  },
-  "environment": {
-    "site": "wayfinding-a",
-    "stale_after_s": 21600,
-    "influence_radius_nm": 20.0
-  }
-}</code></pre>
+          <span class="panel-kicker">gateway/digital_twin.py Validation</span>
+          <pre><code class="language-python">ALLOWED_TWIN_STATUSES = {"pending", "synced", "drift", "reported", "failed"}
+def validate_sync_request(payload: dict[str, Any]) -> dict[str, Any]:
+    variables = payload.get("variables")
+    for item in variables:
+        status = _optional_string(item, "status")
+        if status not in ALLOWED_TWIN_STATUSES:
+            raise DigitalTwinValidationError(f"variables.status must be one of {ALLOWED_TWIN_STATUSES}")</code></pre>
         </div>
       </section>
 

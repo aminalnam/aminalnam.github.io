@@ -47,7 +47,7 @@
     .section h2 { font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem; max-width: 48rem;}
     .section p { color: var(--ink-soft); font-size: 1.1rem; max-width: 48rem; margin-bottom: 2rem;}
 
-    .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 2rem; }
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
     .panel { background: rgba(0,0,0,0.2); border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 2rem; display: flex; flex-direction: column; transition: transform 0.2s, background 0.2s; }
     .panel:hover { background: rgba(255,255,255,0.03); transform: translateY(-4px); border-color: rgba(255,255,255,0.2);}
     .panel-kicker { display: inline-block; font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent); padding: 0.2rem 0.6rem; background: rgba(59,130,246,0.1); border-radius: 999px; margin-bottom: 1rem; align-self: flex-start;}
@@ -79,8 +79,12 @@
         <a href="omega-transport.html">Transport</a>
         <a href="omega-hardware.html">Hardware</a>
         <a href="omega-data.html">Data</a>
-        <a href="omega-ops.html">Operations</a>
+        <a href="omega-ops.html">Ops</a>
         <a href="omega-observe.html">Observe</a>
+        <a href="omega-intelligence.html">AI</a>
+        <a href="omega-simulation.html">Sims</a>
+        <a href="omega-science.html">QC</a>
+        <a href="omega-external.html">Fed</a>
       </nav>
     </div>
   </header>
@@ -104,9 +108,9 @@
         </div>
         
         <span class="section-kicker" style="margin-top: 2rem;">Technical Guidebook</span>
-        <h3 style="font-family: var(--font-serif); font-size: 1.8rem; margin: 0 0 2rem;">The 5 Master Domains</h3>
+        <h3 style="font-family: var(--font-serif); font-size: 1.8rem; margin: 0 0 2rem;">The 9 Master Domains</h3>
         
-        <div class="grid-2">
+        <div class="grid-3">
           
           <a href="omega-transport.html" class="panel">
             <span class="panel-kicker">Domain 01</span>
@@ -123,19 +127,43 @@
           <a href="omega-data.html" class="panel">
             <span class="panel-kicker">Domain 03</span>
             <h3>Data & Analytics</h3>
-            <p>Deep-dive into the telemetry ingestion pipeline, the Live Tiles dashboard, the Data Library BBS, and the Inverse Distance Weighting bathymetry engine.</p>
+            <p>Deep-dive into the telemetry ingestion pipeline, Kalman Filtering, and the Inverse Distance Weighting bathymetry engine.</p>
           </a>
 
           <a href="omega-ops.html" class="panel">
             <span class="panel-kicker">Domain 04</span>
             <h3>Mission & Operations</h3>
-            <p>Deep-dive into kinematic wayfinding scenario generation, obstacle-aware routing, and secure live hardware command queues.</p>
+            <p>Deep-dive into kinematic wayfinding scenario generation, fluid dynamics, and secure live hardware command queues.</p>
           </a>
 
           <a href="omega-observe.html" class="panel">
             <span class="panel-kicker">Domain 05</span>
             <h3>Observation & Overlays</h3>
-            <p>Deep-dive into proxying massive external datasets: Copernicus Marine forecasts, NASA GIBS, and Global Fishing Watch 4Wings API fusion.</p>
+            <p>Deep-dive into Earth observation physics and proxying massive external datasets: Copernicus Marine forecasts and NASA GIBS.</p>
+          </a>
+
+          <a href="omega-intelligence.html" class="panel">
+            <span class="panel-kicker">Domain 06</span>
+            <h3>Honu Copilot & AI</h3>
+            <p>Deep-dive into the native intelligence engine, intent-based NLP tool preprocessing, and Amnesia Prevention protocols.</p>
+          </a>
+
+          <a href="omega-simulation.html" class="panel">
+            <span class="panel-kicker">Domain 07</span>
+            <h3>Simulation & Twins</h3>
+            <p>Deep-dive into the procedural generation harness and maintaining state-coherent Digital Twins across disconnected meshes.</p>
+          </a>
+
+          <a href="omega-science.html" class="panel">
+            <span class="panel-kicker">Domain 08</span>
+            <h3>Quality Control</h3>
+            <p>Deep-dive into IOOS QARTOD statistical compliance (Robust Sigma) and hardware drift-correction via Argo float calibration.</p>
+          </a>
+
+          <a href="omega-external.html" class="panel">
+            <span class="panel-kicker">Domain 09</span>
+            <h3>External Federation</h3>
+            <p>Deep-dive into translating ERDDAP tabledap protocols into seamless GeoJSON maps to unlock petabytes of institutional data.</p>
           </a>
 
         </div>
@@ -146,7 +174,7 @@
         <h2>Other Work & Links.</h2>
         <p>Documentation for my teaching, artwork, and community logs.</p>
         
-        <div class="grid-2" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));">
+        <div class="grid-3">
           <a href="teaching-documentation.html" class="panel" style="border-left: 2px solid var(--accent-green);">
             <h3>Teaching Docs</h3>
             <p>Curriculum and notes.</p>
