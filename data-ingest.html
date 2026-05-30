@@ -57,31 +57,31 @@
     </div>
   </header>
 
-  <section class="hero wrap">
-    <span class="eyebrow">Data Intelligence</span>
-    <h1>Environmental Context</h1>
-    <p>Ingesting, normalizing, and structuring both local field sensor readings and credentialed global datasets into a unified spatial model.</p>
+    <section class="hero wrap">
+    <span class="eyebrow">OMEGA Architecture</span>
+    <h1>Data Ingestion & Backend</h1>
+    <p>The software architecture that receives live telemetry from the mesh gateway, normalizes it, and stores it for real-time visualization and bathymetric mapping.</p>
   </section>
 
   <main class="wrap content-grid">
     <div class="panel">
-      <h3>Observation Normalization</h3>
-      <p>The gateway ingests canonical observation envelopes over HTTP and normalizes measurements into an SQLite backend. This exposes an online-friendly REST/JSON and OpenAPI interface, allowing simple querying without worrying about the radio specifics.</p>
+      <h3>FastAPI Engine</h3>
+      <p>The core ingestion engine is written in Python using FastAPI. It exposes RESTful API endpoints and WebSockets that immediately broadcast incoming data to connected clients with zero latency.</p>
     </div>
     
     <div class="panel">
-      <h3>Public Ocean & Weather</h3>
-      <p>OMEGA actively pulls in public context from NOAA NDBC buoys, NOAA CO-OPS tide products, Open-Meteo marine models, and NWS weather alerts. This allows users to combine live sensor readings with massive public forecast structures.</p>
+      <h3>SQLite Timeseries</h3>
+      <p>OMEGA utilizes lightweight SQLite for edge-deployments. The schema is optimized for time-series querying, allowing instant retrieval of fleet tracks, depth profiles, and sensor states.</p>
     </div>
 
     <div class="panel">
-      <h3>Global Fishing Watch (GFW)</h3>
-      <p>A credential-safe provider pipeline seamlessly injects the 4Wings API for real heatmap overlays, apparent fishing effort, vessel presence (AIS), and satellite SAR detections into the map portal—without exposing your tokens to the client browser.</p>
+      <h3>Data Normalization</h3>
+      <p>The backend performs real-time data cleaning, normalizing timestamps across disparate nodes, applying temperature sound-speed corrections to sonar pings, and generating standard GeoJSON.</p>
     </div>
 
     <div class="panel">
-      <h3>Commercial Data Providers</h3>
-      <p>Direct integration for platforms like Stormglass (marine weather), Copernicus Marine, NASA EarthData, and AISStream, bridging commercial and research-grade data down into the localized operational mesh map.</p>
+      <h3>Public & Export APIs</h3>
+      <p>At the end of a mission, operators can query the API to export CSVs or KML files containing corrected mapping points. These files are fed into Python scripts for IDW bathymetric surfacing.</p>
     </div>
   </main>
 

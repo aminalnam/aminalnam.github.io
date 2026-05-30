@@ -83,55 +83,31 @@
     </div>
   </header>
 
-  <section class="hero wrap">
-    <span class="eyebrow">OMEGA-wave</span>
-    <h1>The Map Portal</h1>
-    <p>A lightweight spatial portal inspired by top environmental sensor maps. Designed for operational awareness, data visualization, and mesh routing control.</p>
+    <section class="hero wrap">
+    <span class="eyebrow">OMEGA Architecture</span>
+    <h1>Digital Twin Portal</h1>
+    <p>The web-based command center for OMEGA. A React SPA that provides real-time visualization of the autonomous fleet, dynamic mission planning, and live mapping.</p>
   </section>
 
   <main class="wrap content-grid">
     <div class="panel">
-      <h3>Interactive Mapping</h3>
-      <p>The core of the portal is a map-first interface for exploring stations and fleets.</p>
-      <ul>
-        <li>Switchable basemaps (street, topo, satellite).</li>
-        <li>Color-by-metric and freshness-aware styling.</li>
-        <li>Density-grid aggregations for quick regional pattern scanning.</li>
-        <li>NOAA chart and research-overlay selectors.</li>
-        <li>Direct CSV data downloads directly from the portal view.</li>
-      </ul>
+      <h3>Real-Time Fleet Maps</h3>
+      <p>Because the API backend streams data over WebSockets, the portal updates instantly. The "Glass Bridge" map plots the exact geospatial location of every active rover and relay in the mesh.</p>
     </div>
     
     <div class="panel">
-      <h3>Bathymetry & Sub-surface</h3>
-      <p>OMEGA-wave can construct first-pass bathymetric maps dynamically from standard observation envelopes with depth soundings.</p>
-      <ul>
-        <li>Ingests `bathymetry-depth` metrics attached to GPS coordinates.</li>
-        <li>Generates an interpolated grid map layer.</li>
-        <li>Exports raw sounding point queries to CSV.</li>
-      </ul>
+      <h3>Live Bathymetry</h3>
+      <p>As rovers capture depth readings, the portal actively traces their paths, color-coding UI elements based on real-time depth, temperature thermoclines, or LoRa signal strength.</p>
     </div>
 
     <div class="panel">
-      <h3>Wayfinding & Routing</h3>
-      <p>Modeled after voyage optimization flows, the wayfinding layer allows robust path planning.</p>
-      <ul>
-        <li>Scenario comparison (offsets, speeds, departure windows).</li>
-        <li>Scores scenarios against the latest environmental observation data (currents, waves, wind).</li>
-        <li>Land-aware routing utilizing uploaded obstacle polygons.</li>
-        <li>Planned vs. actual track analysis.</li>
-      </ul>
+      <h3>Predictive Routing</h3>
+      <p>A simulation lab allows operators to draw predictive survey routes. By analyzing historical current data and node battery life, the UI can simulate optimal pathing before executing commands.</p>
     </div>
 
     <div class="panel">
-      <h3>Control Center & Diagnostics</h3>
-      <p>The portal isn't just for viewing—it controls the mesh.</p>
-      <ul>
-        <li>Live parameter changes and supervisory command dispatch.</li>
-        <li>Mesh operations panels monitoring interfaces, delivery queues, and packets.</li>
-        <li>JANUS test composer and acoustic command queueing tools.</li>
-        <li>Built-in visualization studio (histograms, diagnostics, statistics).</li>
-      </ul>
+      <h3>Engineering Deck</h3>
+      <p>A dedicated administrative panel provides deep insights into the mesh network's topology, displaying live packet loss metrics, CBOR compression ratios, and individual node statuses.</p>
     </div>
   </main>
 

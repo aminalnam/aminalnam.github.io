@@ -84,44 +84,32 @@
     </div>
   </div>
 
-  <section class="hero wrap">
+    <section class="hero wrap">
     <span class="eyebrow">OMEGA Data</span>
-    <h1>Live and downloadable OMEGA data.</h1>
-    <p>This page will eventually provide access to current measurements, downloadable datasets, metadata, field definitions, and quality notes.</p>
-    <div class="hero-actions" style="justify-content: flex-start;">
-      <a class="btn btn-primary" href="index.html#research">Back to Index</a>
-    </div>
+    <h1>Access & Export</h1>
+    <p>The complete lifecycle of OMEGA telemetry—from physical sensor capture on the water surface to final bathymetric export formats and public mapping datasets.</p>
   </section>
 
-  <main>
-    <section class="section">
-      <div class="wrap">
-        <h2>Under construction</h2>
-        <p>The final version of this page will integrate with the new SQLite backend to serve live readings, downloadable logs, processed survey outputs, and metadata.</p>
-        
-        <div class="grid-3">
-          <article class="panel">
-            <h3>Live Telemetry</h3>
-            <p>Current conditions and most recent update time from the ASV gateway and relay network.</p>
-          </article>
-          
-          <article class="panel">
-            <h3>Downloads</h3>
-            <p>Direct downloads for raw CBOR/JSONL logs and processed bathymetric mapping files.</p>
-          </article>
+  <main class="wrap content-grid">
+    <div class="panel">
+      <h3>The Telemetry Lifecycle</h3>
+      <p>Every depth ping and GPS coordinate follows an unbroken chain: edge validation on the rover, CBOR compression over LoRa mesh, ingestion into SQLite, and final export for IDW interpolation.</p>
+    </div>
+    
+    <div class="panel">
+      <h3>Live API Endpoints</h3>
+      <p>The OMEGA backend exposes RESTful endpoints for programmatic access. Researchers can query specific bounding boxes, depth thresholds, or temporal windows to retrieve raw GeoJSON points.</p>
+    </div>
 
-          <article class="panel">
-            <h3>Metadata</h3>
-            <p>Comprehensive metadata, field definitions, and quality notes for integration.</p>
-          </article>
-        </div>
+    <div class="panel">
+      <h3>Field Survey Downloads</h3>
+      <p>Currently, the database connections for live portal access are running locally on isolated edge gateways during active field missions, prioritizing immediate operational awareness.</p>
+    </div>
 
-        <div class="callout">
-          <strong>Planned Direction</strong>
-          <p>This page is intended to become the public entry point for real-time data access, archived survey outputs, and reusable research files derived from the OMEGA fleet.</p>
-        </div>
-      </div>
-    </section>
+    <div class="panel">
+      <h3>Public Datasets</h3>
+      <p>Validated mapping datasets from official OMEGA field trials are compiled and exported as downloadable CSV logs and Google Earth KML overlays for academic review and community validation.</p>
+    </div>
   </main>
 
   <footer class="footer wrap">

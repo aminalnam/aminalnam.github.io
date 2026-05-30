@@ -57,31 +57,31 @@
     </div>
   </header>
 
-  <section class="hero wrap">
-    <span class="eyebrow">Mesh Core</span>
-    <h1>Robust Data Routing</h1>
-    <p>A first-pass mesh control plane managing interfaces, neighbors, and packet histories across diverse bearers including TCP, LoRa, and Meshtastic.</p>
+    <section class="hero wrap">
+    <span class="eyebrow">OMEGA Architecture</span>
+    <h1>Wireless Mesh Network</h1>
+    <p>The transport layer binding the autonomous fleet together. OMEGA uses a robust, low-bandwidth radio mesh to push live telemetry back to the central gateway.</p>
   </section>
 
   <main class="wrap content-grid">
     <div class="panel">
-      <h3>Mesh Interface Registry</h3>
-      <p>Maintains interface presence, neighbor tracking, and gateway-boundary duplicate packet protection. Features a store-and-forward outbox architecture that handles retries and prevents infinite loops on failed links.</p>
+      <h3>LoRa & HaLow</h3>
+      <p>Operating in dynamic marine environments requires communications that punch through wave scatter. The fleet relies on LoRa (Long Range) radio and 802.11ah HaLow for a decentralized mesh.</p>
     </div>
     
     <div class="panel">
-      <h3>LoRa CBOR Bridge</h3>
-      <p>The primary sub-GHz data bearer utilizing a compact lora-cbor-v1 codec over T-Beam hardware. Supports framed compact CBOR and CRC validation on serial frames, ideal for telemetry and route beacons.</p>
+      <h3>CBOR Compression</h3>
+      <p>LoRa bandwidth is extremely constrained. OMEGA uses CBOR (Concise Binary Object Representation) to compress JSON telemetry into dense binary streams, transmitting GPS and depth rapidly.</p>
     </div>
 
     <div class="panel">
-      <h3>TCP JSONL Bridge</h3>
-      <p>A deterministic lab and backhaul link running TCP JSONL. Coupled with a Reticulum-inspired AutoInterface daemon, it allows zero-config local IP mesh segment setup.</p>
+      <h3>Self-Healing Routing</h3>
+      <p>If a relay loses power or a rover drifts out of range, the mesh automatically re-evaluates topology and re-routes telemetry packets through the strongest neighboring node.</p>
     </div>
 
     <div class="panel">
-      <h3>Meshtastic Piggybacking</h3>
-      <p>OMEGA doesn't replace Meshtastic—it leverages it. The python-based meshtastic bridge routes inbound packets into the OMEGA control plane and forwards outbox items through the Meshtastic Python API.</p>
+      <h3>The Gateway Handoff</h3>
+      <p>At the Shoreline Gateway (Raspberry Pi/Edge PC), the mesh phase ends. The Gateway unpacks the CBOR binary stream into JSON payloads and pushes it asynchronously to the backend API.</p>
     </div>
   </main>
 

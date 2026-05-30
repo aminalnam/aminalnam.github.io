@@ -57,31 +57,31 @@
     </div>
   </header>
 
-  <section class="hero wrap">
-    <span class="eyebrow">Hardware Nodes</span>
-    <h1>The Fleet</h1>
-    <p>Mobile gateways, shore controllers, and deployable relay structures making up the physical layer of the OMEGA mesh network.</p>
+    <section class="hero wrap">
+    <span class="eyebrow">OMEGA Architecture</span>
+    <h1>The Hardware Fleet</h1>
+    <p>OMEGA has transitioned from a single Arduino survey device into a synchronized, distributed fleet of autonomous rovers and relay nodes.</p>
   </section>
 
   <main class="wrap content-grid">
     <div class="panel">
-      <h3>ASV Mobile Gateway</h3>
-      <p>The first deployable node profile acts as an Autonomous Surface Vehicle (ASV) and mobile gateway. It utilizes a Pixhawk Jetson Baseboard Bundle with a Jetson Orin NX for local autonomy and edge-compute tasks (sensor fusion, bathymetry, compression).</p>
+      <h3>Surface Rovers</h3>
+      <p>Active, mobile survey platforms built around ESP32 microcontrollers. Equipped with Ping sonar transducers, GPS modules, IMUs, and temperature sensors to capture localized bathymetric telemetry.</p>
     </div>
     
     <div class="panel">
-      <h3>Mixed-Bearer Hardware</h3>
-      <p>The ASV carries multiple radios for redundancy: LilyGO T-HaLow for IP backhaul, LilyGO T-Beam Supreme for GNSS/IMU/Telemetry, and LilyGO T-Beam 1W for strong sub-GHz LoRa transmission, plus LTE support.</p>
+      <h3>Shoreline Relays</h3>
+      <p>Deployed along the shoreline or on buoys, these transport nodes do not capture data. Instead, they form a resilient backbone, receiving telemetry from rovers and routing it to the Gateway.</p>
     </div>
 
     <div class="panel">
-      <h3>Disposable LoRa Relay Chains</h3>
-      <p>When the direct shore link loses margin, the ASV can drop cheap floating LoRa relays to preserve the control chain. The planner calculates desired spacing, hop targets, and RSSI triggers to create a path like `shore -> relay-01 -> ASV`.</p>
+      <h3>Edge Validation</h3>
+      <p>Before telemetry is transmitted over the mesh network, the rover's onboard processor validates GPS fix age, positional drift, and depth stability, rejecting anomalous readings to conserve bandwidth.</p>
     </div>
 
     <div class="panel">
-      <h3>Shore Controller</h3>
-      <p>Handles the shore-to-ASV bring-up plan, providing the gateway API, shore HaLow AutoInterface, and LoRa CBOR bridge. The safety boundary ensures OMEGA-wave only sends mission intents, while Pixhawk retains manual override control.</p>
+      <h3>Power & Autonomy</h3>
+      <p>The fleet is designed for low power consumption. ESP32 sleep states and LoRa/HaLow transmission allow extended missions. Field validation ensures only high-confidence data is pushed over the air.</p>
     </div>
   </main>
 
