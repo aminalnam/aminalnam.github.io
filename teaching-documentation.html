@@ -1,320 +1,131 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Teaching Documentation — Jonathan Capone</title>
-<meta name="description" content="Teaching documentation, course materials, and future educational content by Jonathan Capone."/>
-<style>
-  :root {
-    --bg: #0d1925;
-    --bg-soft: #152433;
-    --panel: #f7f2e9;
-    --panel-soft: #fffdf8;
-    --ink: #141414;
-    --ink-soft: #4f4a45;
-    --line: rgba(20,20,20,0.12);
-    --accent: #d94841;
-    --accent-deep: #b93832;
-    --sea: #2e5b87;
-    --shadow: 0 2rem 4rem rgba(7, 14, 22, 0.18);
-    --radius: 1.1rem;
-    --font-sans: "Inter", "Helvetica Neue", Arial, sans-serif;
-    --font-serif: "Iowan Old Style", "Georgia", "Times New Roman", serif;
-    --font-mono: "SFMono-Regular", "Menlo", "Consolas", monospace;
-  }
-  * { box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
-  body {
-    margin: 0;
-    font-family: var(--font-sans);
-    background:
-      radial-gradient(circle at top, rgba(126,167,206,0.14), transparent 35%),
-      linear-gradient(180deg, #102131 0%, #0d1925 32%, #0d1925 100%);
-    color: #fff;
-    line-height: 1.65;
-  }
-  a { color: inherit; }
-  .wrap { width: min(1120px, calc(100vw - 2.2rem)); margin: 0 auto; }
-  .topbar {
-    position: sticky; top: 0; z-index: 20; backdrop-filter: blur(14px);
-    background: rgba(12, 22, 33, 0.76); border-bottom: 1px solid rgba(255,255,255,0.08);
-  }
-  .topbar-inner {
-    display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0.9rem 0;
-  }
-  .brand { text-decoration: none; display: grid; gap: 0.1rem; }
-  .brand-title { font-family: var(--font-serif); font-size: 1.08rem; letter-spacing: -0.02em; }
-  .brand-sub {
-    font-family: var(--font-mono); font-size: 0.66rem; text-transform: uppercase;
-    letter-spacing: 0.16em; color: rgba(255,255,255,0.66);
-  }
-  
-    .nav {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: flex-end;
-      gap: 0.7rem 0.95rem;
-      font-size: 0.73rem;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      font-family: var(--font-mono);
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <title>OMEGA Educational Guide</title>
+  <style>
+    :root {
+      --bg: #070b14; --bg-2: #0e1522; --panel: rgba(20, 30, 48, 0.6); --panel-soft: rgba(30, 42, 60, 0.5);
+      --ink: #ffffff; --ink-soft: #9aa2b1; --line: rgba(255, 255, 255, 0.1); --accent: #3b82f6;
+      --white: #ffffff; --radius: 1.25rem;
+      --font-sans: Inter, sans-serif; --font-serif: "Iowan Old Style", Georgia, serif; --font-mono: Consolas, monospace;
     }
+    * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+    body { margin: 0; color: var(--ink); background: var(--bg); font-family: var(--font-sans); line-height: 1.65; }
+    body::before { content: ""; position: fixed; inset: -50%; z-index: -2; background: radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.1), transparent 50%); }
+    a { color: inherit; text-decoration: none; }
+    .wrap { width: min(calc(100% - 2rem), 82rem); margin: 0 auto; }
+    .topbar { position: sticky; top: 0; z-index: 40; backdrop-filter: blur(20px); background: rgba(7, 11, 20, 0.75); border-bottom: 1px solid var(--line); padding: 1.5rem 0; }
+    .topbar-inner { display: flex; align-items: center; justify-content: space-between; }
+    .brand-title { display: block; font-family: var(--font-serif); font-size: 1.4rem; color: var(--white); }
+    .brand-sub { display: block; font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); font-family: var(--font-mono); }
+    .nav { display: flex; gap: 1.5rem; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; font-family: var(--font-mono); }
+    .nav a { color: var(--ink-soft); transition: color 0.3s; }
+    .nav a:hover, .nav a.is-current { color: var(--white); }
+    
+    .hero { padding: 6rem 0 4rem; text-align: center; }
+    .eyebrow { font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.2em; color: var(--accent); margin-bottom: 1rem; display: block; }
+    h1 { margin: 0 auto 1.5rem; font-family: var(--font-serif); font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 400; }
+    .hero p { max-width: 48rem; margin: 0 auto; font-size: 1.2rem; color: var(--ink-soft); }
 
-    .nav a {
-      text-decoration: none;
-      color: rgba(255,255,255,0.78);
-      border-bottom: 1px solid transparent;
-      padding-bottom: 0.15rem;
-      transition: color 0.2s ease, border-color 0.2s ease;
-      cursor: pointer;
-      list-style: none;
-    }
-
-    .nav a:hover,
-    .nav a:focus-visible,
-    .nav a.is-current {
-      color: var(--white, #fff);
-      border-color: currentColor;
-      outline: none;
-    }
-
-    .omega-subnav {
-      margin: 0 0 1.5rem;
-      padding: 0.8rem 1rem;
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 999px;
-      background: rgba(255,255,255,0.06);
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem 0.8rem;
-      align-items: center;
-      backdrop-filter: blur(10px);
-    }
-
-    .omega-subnav strong {
-      font-family: var(--font-mono);
-      font-size: 0.68rem;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.66);
-      font-weight: 500;
-    }
-
-    .omega-subnav a {
-      text-decoration: none;
-      font-family: var(--font-mono);
-      font-size: 0.68rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.78);
-      padding-bottom: 0.12rem;
-      border-bottom: 1px solid transparent;
-    }
-
-    .omega-subnav a:hover,
-    .omega-subnav a:focus-visible,
-    .omega-subnav a.is-current {
-      color: #fff;
-      border-color: currentColor;
-      outline: none;
-    }
-
-  .eyebrow::before { content: ""; width: 1.1rem; height: 1px; background: rgba(255,255,255,0.4); }
-  h1 {
-    margin: 1rem 0 1rem; font-family: var(--font-serif); font-size: clamp(2.6rem, 6vw, 5rem);
-    line-height: 0.95; letter-spacing: -0.06em; font-weight: 400; max-width: 12ch;
-  }
-  .hero p { max-width: 56rem; color: rgba(255,255,255,0.82); font-size: 1.04rem; margin: 0 0 1rem; }
-  .hero-actions { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 1.5rem; }
-  .button {
-    display: inline-flex; align-items: center; justify-content: center; min-height: 2.8rem; padding: 0 1rem;
-    border-radius: 999px; border: 1px solid rgba(255,255,255,0.16); text-decoration: none;
-    font-family: var(--font-mono); font-size: 0.69rem; text-transform: uppercase; letter-spacing: 0.14em;
-    transition: transform 0.18s ease, background 0.18s ease, border-color 0.18s ease;
-  }
-  .button:hover, .button:focus-visible { transform: translateY(-1px); outline: none; }
-  .button-primary { background: var(--accent); border-color: rgba(255,255,255,0.08); color: #fff; }
-  .button-primary:hover, .button-primary:focus-visible { background: var(--accent-deep); }
-  .button-secondary { background: rgba(255,255,255,0.06); color: #fff; }
-  .button-secondary:hover, .button-secondary:focus-visible { background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.26); }
-  .main-shell { margin-bottom: 3.5rem; }
-  .main-inner {
-    background: var(--panel); color: var(--ink); border-radius: 1.4rem; overflow: hidden;
-    box-shadow: var(--shadow); border: 1px solid rgba(255,255,255,0.08);
-  }
-  .section { padding: 3.6rem 0; border-bottom: 1px solid var(--line); }
-  .section:last-child { border-bottom: none; }
-  .section-head { margin-bottom: 1.9rem; }
-  .section-kicker {
-    display: inline-flex; align-items: center; gap: 0.6rem; font-family: var(--font-mono);
-    font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.18em; color: var(--ink-soft);
-  }
-  .section-kicker::before { content: ""; width: 1.2rem; height: 1px; background: rgba(20,20,20,0.24); }
-  .section-head h2 {
-    margin: 0.8rem 0 0.8rem; font-family: var(--font-serif); font-size: clamp(2rem, 4vw, 3.1rem);
-    line-height: 0.97; letter-spacing: -0.05em; font-weight: 400;
-  }
-  .section-head p { max-width: 48rem; color: var(--ink-soft); }
-  .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.1rem; }
-  .card {
-    background: var(--panel-soft); border: 1px solid var(--line); border-radius: var(--radius); padding: 1.2rem;
-    display: flex; flex-direction: column; gap: 0.7rem;
-  }
-  .card h3 { margin: 0; font-family: var(--font-serif); font-size: 1.45rem; font-weight: 400; letter-spacing: -0.03em; }
-  .kicker { font-family: var(--font-mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.14em; color: var(--ink-soft); }
-  .card p { margin: 0; color: var(--ink-soft); }
-  .card a { color: var(--sea); text-decoration: none; }
-  .card a:hover, .card a:focus-visible { text-decoration: underline; }
-  .two-col { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(18rem, 0.85fr); gap: 1.2rem; }
-  .panel {
-    background: var(--panel-soft); border: 1px solid var(--line); border-radius: var(--radius); padding: 1.3rem;
-  }
-  .panel h3 { margin-top: 0; font-family: var(--font-serif); font-size: 1.55rem; font-weight: 400; letter-spacing: -0.03em; }
-  .list { margin: 0; padding-left: 1.1rem; color: var(--ink-soft); }
-  .footer { padding: 0 0 3rem; color: rgba(255,255,255,0.7); }
-  .footer-inner {
-    display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.7rem;
-    font-family: var(--font-mono); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.16em;
-  }
-  @media (max-width: 900px) {
-    .grid, .two-col { grid-template-columns: 1fr; }
-    .topbar-inner { align-items: flex-start; }
-  }
-  @media (max-width: 680px) {
-    .hero { padding-top: 3.9rem; }
-    h1 { max-width: 100%; }
-  }
-</style>
+    .content-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-bottom: 5rem; }
+    @media (max-width: 900px) { .content-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 600px) { .content-grid { grid-template-columns: 1fr; } }
+    .panel { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 2rem; transition: transform 0.3s, border-color 0.3s; }
+    .panel:hover { transform: translateY(-5px); border-color: rgba(59, 130, 246, 0.3); }
+    .panel-kicker { font-family: var(--font-mono); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent); margin-bottom: 0.5rem; display: block; }
+    .panel h3 { font-family: var(--font-serif); font-size: 1.5rem; margin: 0 0 1rem; }
+    .panel p { color: var(--ink-soft); font-size: 0.95rem; margin-bottom: 1.5rem; }
+    .panel a.link-btn { display: inline-flex; font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent); border: 1px solid var(--accent); padding: 0.5rem 1rem; border-radius: 999px; transition: all 0.2s; }
+    .panel a.link-btn:hover { background: var(--accent); color: #fff; }
+    
+    .section-title { font-family: var(--font-serif); font-size: 2rem; margin: 0 0 2rem; border-bottom: 1px solid var(--line); padding-bottom: 1rem; }
+    .footer { border-top: 1px solid var(--line); padding: 3rem 0; font-family: var(--font-mono); font-size: 0.75rem; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.15em;}
+  </style>
 </head>
 <body>
-<header class="topbar">
-<div class="wrap topbar-inner">
-<a class="brand" href="index.html">
-<span class="brand-title">Jonathan Capone</span>
-<span class="brand-sub">Technical Portfolio</span>
-</a>
-<nav aria-label="Primary" class="nav">
-<a href="index.html">Home</a>
-<a href="how-omega-works.html">How It Works</a>
-<a href="omega-research.html">Research Context</a>
-<a href="omega-data.html">Data</a>
-<a href="omega-wave.html">OMEGA Wave</a>
-<a href="teaching-documentation.html" class="is-current">Teaching</a>
-<a href="https://jonathancapone.art" rel="noopener" target="_blank">Artwork</a>
-<a href="mailto:jonathancapone@gmail.com">Contact</a>
-</nav>
-</div>
-</header>
-
-<section class="hero">
-  <div class="wrap">
-    <span class="eyebrow">Teaching documentation</span>
-    <h1>Teaching-related documentation and resources.</h1>
-    <p>
-      This page collects teaching-related documentation from across the site.
-    </p>
-    <p>
-      It includes curriculum, classroom projects, course materials, and links to related projects and resources.
-    </p>
-    <div class="hero-actions">
-      <a class="button button-primary" href="#current">View teaching pages</a>
-      <a class="button button-secondary" href="#future">Future sections</a>
-      <a class="button button-secondary" href="index.html">Back to portfolio</a>
+  <header class="topbar">
+    <div class="wrap topbar-inner">
+      <a class="brand" href="index.html">
+        <span class="brand-title">Jonathan Capone</span>
+        <span class="brand-sub">Technical Portfolio</span>
+      </a>
+      <nav class="nav">
+        <a href="index.html">Home</a>
+        <a href="index.html#omega">OMEGA Project</a>
+        <a href="teaching-documentation.html" class="is-current">Teaching</a>
+        <a href="https://jonathancapone.art" target="_blank" rel="noopener">Artwork</a>
+        <a href="mailto:jonathancapone@gmail.com">Contact</a>
+      </nav>
     </div>
-  </div>
-</section>
+  </header>
 
-<main class="main-shell">
-  <div class="wrap main-inner">
-    <section class="section" id="current">
-      <div class="wrap">
-        <div class="section-head">
-          <span class="section-kicker">Current pages</span>
-          <h2>Current teaching pages.</h2>
-          <p>
-            These pages document different parts of my teaching practice, from classroom process and curricula to interdisciplinary and media-based work.
-            Bringing them together here gives them a more focused home within the broader site.
-          </p>
-        </div>
-        <div class="grid">
-          <article class="card">
-            <div class="kicker">Process</div>
-            <h3>Students at Work</h3>
-            <p>Project development, classroom process, and documentation of making in practice.</p>
-            <a href="https://jonathancapone.art/students-at-work" rel="noopener" target="_blank">Open page</a>
-          </article>
-          <article class="card">
-            <div class="kicker">Integration</div>
-            <h3>STEAM</h3>
-            <p>Teaching materials that connect artistic inquiry with engineering, science, and applied making.</p>
-            <a href="https://jonathancapone.art/steam" rel="noopener" target="_blank">Open page</a>
-          </article>
-          <article class="card">
-            <div class="kicker">Instruction</div>
-            <h3>Media Arts</h3>
-            <p>Documentation related to digital moving images, technology-based art, and media literacy.</p>
-            <a href="https://jonathancapone.art/media-arts" rel="noopener" target="_blank">Open page</a>
-          </article>
-          <article class="card">
-            <div class="kicker">Method</div>
-            <h3>Experiential Learning</h3>
-            <p>Project-based approaches centered on inquiry, prototyping, iteration, and hands-on experimentation.</p>
-            <a href="https://jonathancapone.art/experiential-learning" rel="noopener" target="_blank">Open page</a>
-          </article>
-          <article class="card">
-            <div class="kicker">Production</div>
-            <h3>Performing Arts</h3>
-            <p>Material related to staging, performance systems, and interdisciplinary production work.</p>
-            <a href="https://jonathancapone.art/performing-arts" rel="noopener" target="_blank">Open page</a>
-          </article>
-          <article class="card">
-            <div class="kicker">Frameworks</div>
-            <h3>Curricula</h3>
-            <p>Course structures, planning materials, and public-facing educational frameworks.</p>
-            <a href="https://jonathancapone.art/curricula" rel="noopener" target="_blank">Open page</a>
-          </article>
-        </div>
-      </div>
-    </section>
+  <section class="hero wrap">
+    <span class="eyebrow">Educational Guide</span>
+    <h1>Learning with OMEGA</h1>
+    <p>OMEGA serves as a technical blueprint and an educational platform. Here you will find resources bridging hardware engineering, data science, and classroom-ready STEAM materials.</p>
+  </section>
 
-    <section class="section" id="future">
-      <div class="wrap">
-        <div class="section-head">
-          <span class="section-kicker">Additional sections</span>
-          <h2>Areas for future expansion.</h2>
-          <p>
-            This page can continue to grow with course archives, workshop material, project documentation, and public-facing teaching resources.
-          </p>
-        </div>
-        <div class="grid">
-          <article class="card">
-            <div class="kicker">Courses</div>
-            <h3>Course Pages</h3>
-            <p>Dedicated pages for individual classes, syllabi, unit sequences, and semester overviews.</p>
-          </article>
-          <article class="card">
-            <div class="kicker">Projects</div>
-            <h3>Student Project Archives</h3>
-            <p>Selected outcomes, process snapshots, and thematic project groupings.</p>
-          </article>
-          <article class="card">
-            <div class="kicker">Resources</div>
-            <h3>Toolkits and Guides</h3>
-            <p>Downloadable references, making guides, media literacy resources, and technical handouts.</p>
-          </article>
-        </div>
-      </div>
-    </section>
-  </div>
-</main>
+  <main class="wrap">
+    <h2 class="section-title">STEAM & Interdisciplinary Teaching</h2>
+    <div class="content-grid">
+      <article class="panel">
+        <span class="panel-kicker">Integration</span>
+        <h3>STEAM Curricula</h3>
+        <p>Teaching materials that connect artistic inquiry with engineering, environmental science, and applied making.</p>
+        <a href="https://jonathancapone.art/steam" class="link-btn" target="_blank" rel="noopener">Open Page</a>
+      </article>
 
-<footer class="footer">
-  <div class="wrap footer-inner">
-    <span>Jonathan Capone — Teaching Documentation</span>
-    <span><a href="index.html">Portfolio Home</a></span>
-  </div>
-</footer>
+      <article class="panel">
+        <span class="panel-kicker">Process</span>
+        <h3>Students at Work</h3>
+        <p>Project development, classroom process, and documentation of making in practice.</p>
+        <a href="https://jonathancapone.art/students-at-work" class="link-btn" target="_blank" rel="noopener">Open Page</a>
+      </article>
+
+      <article class="panel">
+        <span class="panel-kicker">Method</span>
+        <h3>Experiential Learning</h3>
+        <p>Project-based approaches centered on inquiry, prototyping, iteration, and hands-on experimentation.</p>
+        <a href="https://jonathancapone.art/experiential-learning" class="link-btn" target="_blank" rel="noopener">Open Page</a>
+      </article>
+
+      <article class="panel">
+        <span class="panel-kicker">Instruction</span>
+        <h3>Media Arts</h3>
+        <p>Documentation related to digital moving images, technology-based art, and media literacy.</p>
+        <a href="https://jonathancapone.art/media-arts" class="link-btn" target="_blank" rel="noopener">Open Page</a>
+      </article>
+      
+      <article class="panel">
+        <span class="panel-kicker">Production</span>
+        <h3>Performing Arts</h3>
+        <p>Material related to staging, performance systems, and interdisciplinary production work.</p>
+        <a href="https://jonathancapone.art/performing-arts" class="link-btn" target="_blank" rel="noopener">Open Page</a>
+      </article>
+    </div>
+
+    <h2 class="section-title">OMEGA System Guides (Coming Soon)</h2>
+    <div class="content-grid">
+      <article class="panel">
+        <span class="panel-kicker">Hardware</span>
+        <h3>Building a Mesh Relay</h3>
+        <p>A step-by-step guide to flashing LilyGO T-Beam hardware and deploying your first floating relay.</p>
+      </article>
+      <article class="panel">
+        <span class="panel-kicker">Software</span>
+        <h3>API & Data Integration</h3>
+        <p>Tutorials on connecting external data sources and extracting normalized data from the SQLite backend.</p>
+      </article>
+      <article class="panel">
+        <span class="panel-kicker">Analysis</span>
+        <h3>Bathymetry Basics</h3>
+        <p>Learn how raw soundings become interpolated spatial maps and how to interpret the results.</p>
+      </article>
+    </div>
+  </main>
+
+  <footer class="footer wrap"><span>© Jonathan Capone — Technical Portfolio</span></footer>
 </body>
 </html>

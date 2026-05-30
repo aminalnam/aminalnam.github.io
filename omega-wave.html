@@ -1,127 +1,137 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>OMEGA Wave</title>
-<style>
-:root {
-  --bg:#0d1925; --panel:#f7f2e9; --panel-soft:#fffdf8; --ink:#141414; --ink-soft:#4f4a45;
-  --line:rgba(20,20,20,0.12); --accent:#d94841; --accent-deep:#b93832; --sea:#2e5b87;
-  --radius:1.1rem; --shadow:0 2rem 4rem rgba(7,14,22,0.18);
-  --font-sans:"Inter","Helvetica Neue",Arial,sans-serif; --font-serif:"Iowan Old Style","Georgia","Times New Roman",serif;
-  --font-mono:"SFMono-Regular","Menlo","Consolas",monospace;
-}
-*{box-sizing:border-box} html{scroll-behavior:smooth}
-body{margin:0;font-family:var(--font-sans);background:radial-gradient(circle at top, rgba(126,167,206,0.14), transparent 35%),linear-gradient(180deg,#102131 0%,#0d1925 32%,#0d1925 100%);color:#fff;line-height:1.65}
-a{color:inherit}.wrap{width:min(1120px,calc(100vw - 2.2rem));margin:0 auto}
-.topbar{position:sticky;top:0;z-index:20;backdrop-filter:blur(14px);background:rgba(12,22,33,0.76);border-bottom:1px solid rgba(255,255,255,0.08)}
-.topbar-inner{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:0.9rem 0}
-.brand{text-decoration:none;display:grid;gap:0.1rem}.brand-title{font-family:var(--font-serif);font-size:1.08rem;letter-spacing:-0.02em}.brand-sub{font-family:var(--font-mono);font-size:0.66rem;text-transform:uppercase;letter-spacing:0.16em;color:rgba(255,255,255,0.66)}
-.nav{display:flex;flex-wrap:wrap;gap:0.8rem 1rem;font-family:var(--font-mono);font-size:0.7rem;text-transform:uppercase;letter-spacing:0.14em}.nav a{text-decoration:none;color:rgba(255,255,255,0.78)}.nav a:hover,.nav a:focus-visible{color:#fff;outline:none}
-.hero{padding:4.8rem 0 4rem}.eyebrow{display:inline-flex;align-items:center;gap:0.55rem;font-family:var(--font-mono);font-size:0.7rem;text-transform:uppercase;letter-spacing:0.16em;color:rgba(255,255,255,0.7)}.eyebrow::before{content:"";width:1.1rem;height:1px;background:rgba(255,255,255,0.4)}
-h1{margin:1rem 0 1rem;font-family:var(--font-serif);font-size:clamp(2.6rem,6vw,5rem);line-height:0.95;letter-spacing:-0.06em;font-weight:400;max-width:12ch}.hero p{max-width:56rem;color:rgba(255,255,255,0.82);font-size:1.04rem;margin:0 0 1rem}
-.hero-actions{display:flex;flex-wrap:wrap;gap:0.8rem;margin-top:1.5rem}.button{display:inline-flex;align-items:center;justify-content:center;min-height:2.8rem;padding:0 1rem;border-radius:999px;border:1px solid rgba(255,255,255,0.16);text-decoration:none;font-family:var(--font-mono);font-size:0.69rem;text-transform:uppercase;letter-spacing:0.14em;transition:transform 0.18s ease, background 0.18s ease, border-color 0.18s ease}.button:hover,.button:focus-visible{transform:translateY(-1px);outline:none}.button-primary{background:var(--accent);border-color:rgba(255,255,255,0.08);color:#fff}.button-primary:hover,.button-primary:focus-visible{background:var(--accent-deep)}.button-secondary{background:rgba(255,255,255,0.06);color:#fff}.button-secondary:hover,.button-secondary:focus-visible{background:rgba(255,255,255,0.12);border-color:rgba(255,255,255,0.26)}
-.main-shell{margin-bottom:3.5rem}.main-inner{background:var(--panel);color:var(--ink);border-radius:1.4rem;overflow:hidden;box-shadow:var(--shadow);border:1px solid rgba(255,255,255,0.08)}
-.section{padding:3.6rem 0;border-bottom:1px solid var(--line)}.section:last-child{border-bottom:none}.section-head{margin-bottom:1.9rem}.section-kicker{display:inline-flex;align-items:center;gap:0.6rem;font-family:var(--font-mono);font-size:0.7rem;text-transform:uppercase;letter-spacing:0.18em;color:var(--ink-soft)}.section-kicker::before{content:"";width:1.2rem;height:1px;background:rgba(20,20,20,0.24)}.section-head h2{margin:0.8rem 0 0.8rem;font-family:var(--font-serif);font-size:clamp(2rem,4vw,3.1rem);line-height:0.97;letter-spacing:-0.05em;font-weight:400}.section-head p{max-width:48rem;color:var(--ink-soft)}
-.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.1rem}.card,.panel{background:var(--panel-soft);border:1px solid var(--line);border-radius:var(--radius);padding:1.25rem}.card h3,.panel h3{margin:0 0 0.6rem;font-family:var(--font-serif);font-size:1.45rem;font-weight:400;letter-spacing:-0.03em}.card p,.panel p{margin:0;color:var(--ink-soft)}
-.footer{padding:0 0 3rem;color:rgba(255,255,255,0.7)}.footer-inner{display:flex;flex-wrap:wrap;justify-content:space-between;gap:0.7rem;font-family:var(--font-mono);font-size:0.7rem;text-transform:uppercase;letter-spacing:0.16em}
-@media (max-width:900px){.grid{grid-template-columns:1fr}.topbar-inner{align-items:flex-start}} @media (max-width:680px){.hero{padding-top:3.9rem} h1{max-width:100%}}
-
-    .nav {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: flex-end;
-      gap: 0.7rem 0.95rem;
-      font-size: 0.73rem;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      font-family: var(--font-mono);
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <title>OMEGA-wave Portal</title>
+  <style>
+    :root {
+      --bg: #070b14;
+      --bg-2: #0e1522;
+      --panel: rgba(20, 30, 48, 0.6);
+      --panel-soft: rgba(30, 42, 60, 0.5);
+      --ink: #ffffff;
+      --ink-soft: #9aa2b1;
+      --line: rgba(255, 255, 255, 0.1);
+      --line-strong: rgba(255, 255, 255, 0.18);
+      --accent: #3b82f6;
+      --accent-deep: #2563eb;
+      --ocean: #0ea5e9;
+      --white: #ffffff;
+      --radius: 1.25rem;
+      --font-sans: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --font-serif: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Georgia, serif;
+      --font-mono: "SFMono-Regular", "Roboto Mono", Consolas, Monaco, monospace;
     }
-
-    .nav a {
-      text-decoration: none;
-      color: rgba(255,255,255,0.78);
-      border-bottom: 1px solid transparent;
-      padding-bottom: 0.15rem;
-      transition: color 0.2s ease, border-color 0.2s ease;
-      cursor: pointer;
-      list-style: none;
+    * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0; color: var(--ink); background: var(--bg);
+      font-family: var(--font-sans); line-height: 1.65; min-height: 100vh;
     }
-
-    .nav a:hover,
-    .nav a:focus-visible,
-    .nav a.is-current {
-      color: var(--white, #fff);
-      border-color: currentColor;
-      outline: none;
+    body::before {
+      content: ""; position: fixed; inset: -50%; z-index: -2;
+      background: radial-gradient(circle at 20% 0%, rgba(59, 130, 246, 0.15), transparent 40%),
+                  radial-gradient(circle at 80% 20%, rgba(14, 165, 233, 0.1), transparent 40%);
+      pointer-events: none;
     }
+    a { color: inherit; text-decoration: none; }
+    .wrap { width: min(calc(100% - 2rem), 82rem); margin: 0 auto; }
+    .topbar { position: sticky; top: 0; z-index: 40; backdrop-filter: blur(20px); background: rgba(7, 11, 20, 0.75); border-bottom: 1px solid var(--line); }
+    .topbar-inner { min-height: 5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+    .brand-title { display: block; font-family: var(--font-serif); font-size: 1.4rem; color: var(--white); }
+    .brand-sub { display: block; margin-top: 0.15rem; font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); font-family: var(--font-mono); }
+    .nav { display: flex; gap: 1.5rem; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; font-family: var(--font-mono); }
+    .nav a { color: var(--ink-soft); padding-bottom: 0.2rem; position: relative; transition: color 0.3s; }
+    .nav a:hover, .nav a.is-current { color: var(--white); }
+    .nav a::after { content: ''; position: absolute; width: 100%; height: 1px; bottom: 0; left: 0; background-color: var(--accent); transform: scaleX(0); transform-origin: bottom right; transition: transform 0.3s; }
+    .nav a:hover::after, .nav a.is-current::after { transform: scaleX(1); transform-origin: bottom left; }
 
-    .omega-subnav {
-      margin: 0 0 1.5rem;
-      padding: 0.8rem 1rem;
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 999px;
-      background: rgba(255,255,255,0.06);
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem 0.8rem;
-      align-items: center;
-      backdrop-filter: blur(10px);
-    }
+    .hero { padding: 6rem 0 4rem; text-align: center; }
+    .eyebrow { display: inline-flex; font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.2em; color: var(--accent); margin-bottom: 1rem; }
+    h1 { margin: 0 auto 1.5rem; font-family: var(--font-serif); font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 400; }
+    .hero p { max-width: 48rem; margin: 0 auto; font-size: 1.2rem; color: var(--ink-soft); }
 
-    .omega-subnav strong {
-      font-family: var(--font-mono);
-      font-size: 0.68rem;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.66);
-      font-weight: 500;
-    }
+    .content-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 5rem; }
+    @media (max-width: 800px) { .content-grid { grid-template-columns: 1fr; } }
+    .panel { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 2rem; backdrop-filter: blur(10px); }
+    .panel h3 { font-family: var(--font-serif); font-size: 1.8rem; margin: 0 0 1rem; color: var(--white); }
+    .panel p { color: var(--ink-soft); margin-bottom: 1rem; }
+    ul { color: var(--ink-soft); padding-left: 1.5rem; }
+    li { margin-bottom: 0.5rem; }
 
-    .omega-subnav a {
-      text-decoration: none;
-      font-family: var(--font-mono);
-      font-size: 0.68rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.78);
-      padding-bottom: 0.12rem;
-      border-bottom: 1px solid transparent;
-    }
-
-    .omega-subnav a:hover,
-    .omega-subnav a:focus-visible,
-    .omega-subnav a.is-current {
-      color: #fff;
-      border-color: currentColor;
-      outline: none;
-    }
-
-</style>
+    .footer { border-top: 1px solid var(--line); padding: 3rem 0; color: var(--ink-soft); font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.15em; }
+  </style>
 </head>
 <body>
-<header class="topbar">
-<div class="wrap topbar-inner">
-<a class="brand" href="index.html">
-<span class="brand-title">Jonathan Capone</span>
-<span class="brand-sub">Technical Portfolio</span>
-</a>
-<nav aria-label="Primary" class="nav">
-<a href="index.html">Home</a>
-<a href="how-omega-works.html">How It Works</a>
-<a href="omega-research.html">Research Context</a>
-<a href="omega-data.html">Data</a>
-<a href="omega-wave.html" class="is-current">OMEGA Wave</a>
-<a href="teaching-documentation.html">Teaching</a>
-<a href="https://jonathancapone.art" rel="noopener" target="_blank">Artwork</a>
-<a href="mailto:jonathancapone@gmail.com">Contact</a>
-</nav>
-</div>
-</header>
-<section class="hero"><div class="wrap"><span class="eyebrow">Marine communications and field networking</span><h1>OMEGA Wave.</h1><p>OMEGA Wave is a developing companion project related to communications, distributed sensing, and the movement of field data between devices operating across shoreline and near-water environments.</p><p>This page is a placeholder while the project is still under development. It gives the site a stable place for the work without implying that the system is already fully documented.</p><div class="hero-actions"><a class="button button-primary" href="index.html#projects">Back to Projects</a><a class="button button-secondary" href="how-omega-works.html">How OMEGA Works</a><a class="button button-secondary" href="omega-research.html">OMEGA Research</a></div></div></section>
-<main class="main-shell"><div class="wrap main-inner"><section class="section"><div class="wrap"><div class="section-head"><span class="section-kicker">Current status</span><h2>A placeholder page with room to grow.</h2><p>This page can eventually hold project notes, architecture diagrams, communication methods, hardware plans, protocols, field tests, and related documentation once OMEGA Wave becomes more fully defined.</p></div><div class="grid"><article class="card"><h3>Possible direction</h3><p>Surface and near-shore communications, relay systems, mobile nodes, field telemetry, and related experimental infrastructure.</p></article><article class="card"><h3>Future content</h3><p>Technical notes, repositories, diagrams, data pathways, networking decisions, and project updates can all live here later.</p></article></div></div></section></div></main>
-<footer class="footer"><div class="wrap footer-inner"><span>Jonathan Capone</span><span><a href="index.html">Home</a> · <a href="how-omega-works.html">How It Works</a> · <a href="omega-research.html">Research Context</a></span></div></footer>
+  <header class="topbar">
+    <div class="wrap topbar-inner">
+      <a class="brand" href="index.html">
+        <span class="brand-title">Jonathan Capone</span>
+        <span class="brand-sub">Technical Portfolio</span>
+      </a>
+      <nav class="nav">
+        <a href="index.html">Home</a>
+        <a href="index.html#omega">OMEGA Project</a>
+        <a href="teaching-documentation.html">Teaching</a>
+        <a href="https://jonathancapone.art" target="_blank" rel="noopener">Artwork</a>
+        <a href="mailto:jonathancapone@gmail.com">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero wrap">
+    <span class="eyebrow">OMEGA-wave</span>
+    <h1>The Map Portal</h1>
+    <p>A lightweight spatial portal inspired by top environmental sensor maps. Designed for operational awareness, data visualization, and mesh routing control.</p>
+  </section>
+
+  <main class="wrap content-grid">
+    <div class="panel">
+      <h3>Interactive Mapping</h3>
+      <p>The core of the portal is a map-first interface for exploring stations and fleets.</p>
+      <ul>
+        <li>Switchable basemaps (street, topo, satellite).</li>
+        <li>Color-by-metric and freshness-aware styling.</li>
+        <li>Density-grid aggregations for quick regional pattern scanning.</li>
+        <li>NOAA chart and research-overlay selectors.</li>
+        <li>Direct CSV data downloads directly from the portal view.</li>
+      </ul>
+    </div>
+    
+    <div class="panel">
+      <h3>Bathymetry & Sub-surface</h3>
+      <p>OMEGA-wave can construct first-pass bathymetric maps dynamically from standard observation envelopes with depth soundings.</p>
+      <ul>
+        <li>Ingests `bathymetry-depth` metrics attached to GPS coordinates.</li>
+        <li>Generates an interpolated grid map layer.</li>
+        <li>Exports raw sounding point queries to CSV.</li>
+      </ul>
+    </div>
+
+    <div class="panel">
+      <h3>Wayfinding & Routing</h3>
+      <p>Modeled after voyage optimization flows, the wayfinding layer allows robust path planning.</p>
+      <ul>
+        <li>Scenario comparison (offsets, speeds, departure windows).</li>
+        <li>Scores scenarios against the latest environmental observation data (currents, waves, wind).</li>
+        <li>Land-aware routing utilizing uploaded obstacle polygons.</li>
+        <li>Planned vs. actual track analysis.</li>
+      </ul>
+    </div>
+
+    <div class="panel">
+      <h3>Control Center & Diagnostics</h3>
+      <p>The portal isn't just for viewing—it controls the mesh.</p>
+      <ul>
+        <li>Live parameter changes and supervisory command dispatch.</li>
+        <li>Mesh operations panels monitoring interfaces, delivery queues, and packets.</li>
+        <li>JANUS test composer and acoustic command queueing tools.</li>
+        <li>Built-in visualization studio (histograms, diagnostics, statistics).</li>
+      </ul>
+    </div>
+  </main>
+
+  <footer class="footer wrap"><span>© Jonathan Capone — Technical Portfolio</span></footer>
 </body>
 </html>

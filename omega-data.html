@@ -1,40 +1,128 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1" name="viewport"/>
-<title>OMEGA Data</title>
-<style>
-:root{--bg:#0b121a;--panel:#fcfaf6;--panel-soft:#f4efe6;--ink:#141414;--ink-soft:#505157;--line:rgba(20,20,20,0.12);--accent:#d94841;--white:#ffffff;--shadow:0 2rem 5rem rgba(0,0,0,0.18);--max:78rem;--radius:1.25rem;--font-sans:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;--font-serif:"Iowan Old Style","Palatino Linotype","Book Antiqua",Georgia,serif;--font-mono:"SFMono-Regular","Roboto Mono",Consolas,Monaco,monospace;}*{box-sizing:border-box;-webkit-font-smoothing:antialiased}html{scroll-behavior:smooth}body{margin:0;color:var(--white);background:radial-gradient(circle at 20% 0%, rgba(126,167,206,0.18), transparent 28%),radial-gradient(circle at 82% 16%, rgba(217,72,65,0.12), transparent 24%),linear-gradient(180deg, #071018 0%, #0b121a 44%, #0f1721 100%);font-family:var(--font-sans);line-height:1.65;min-height:100vh}a{color:inherit}.wrap{width:min(calc(100% - 2rem), var(--max));margin:0 auto}.topbar{position:sticky;top:0;z-index:40;backdrop-filter:blur(18px);background:rgba(7,16,24,0.74);border-bottom:1px solid rgba(255,255,255,0.08)}.topbar-inner{min-height:4.8rem;display:flex;align-items:center;justify-content:space-between;gap:1rem}.brand{text-decoration:none}.brand-title{display:block;font-family:var(--font-serif);font-size:1.2rem;letter-spacing:-0.03em}.brand-sub{display:block;margin-top:.15rem;font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.68);font-family:var(--font-mono)}.nav{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:.7rem .95rem;font-size:.73rem;letter-spacing:.16em;text-transform:uppercase;font-family:var(--font-mono)}.nav a{text-decoration:none;color:rgba(255,255,255,.78);border-bottom:1px solid transparent;padding-bottom:.15rem;cursor:pointer;list-style:none}.nav a:hover,.nav a:focus-visible,.nav a.is-current{color:var(--white);border-color:currentColor;outline:none}.omega-subnav{margin:0 0 1.5rem;padding:.8rem 1rem;border:1px solid rgba(255,255,255,.08);border-radius:999px;background:rgba(255,255,255,.06);display:flex;flex-wrap:wrap;gap:.5rem .8rem;align-items:center;backdrop-filter:blur(10px)}.omega-subnav strong{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.66);font-weight:500}.omega-subnav a{text-decoration:none;font-family:var(--font-mono);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.78);padding-bottom:.12rem;border-bottom:1px solid transparent}.omega-subnav a:hover,.omega-subnav a:focus-visible,.omega-subnav a.is-current{color:#fff;border-color:currentColor;outline:none}.hero{padding:4.2rem 0 3rem}.eyebrow{display:inline-flex;align-items:center;gap:.55rem;font-family:var(--font-mono);font-size:.68rem;text-transform:uppercase;letter-spacing:.15em;color:rgba(255,255,255,.72)}.eyebrow::before{content:"";width:1.6rem;height:1px;background:rgba(255,255,255,.44)}h1{margin:.8rem 0 1rem;max-width:13ch;font-family:var(--font-serif);font-size:clamp(2rem,4.2vw,3.7rem);line-height:.98;letter-spacing:-.045em;font-weight:400}.hero p{max-width:42rem;margin:0 0 1rem;font-size:1.05rem;color:rgba(255,255,255,.82)}.button-row{display:flex;flex-wrap:wrap;gap:.8rem;margin-top:1.2rem}.button{display:inline-flex;align-items:center;justify-content:center;min-height:2.9rem;padding:0 1rem;border-radius:999px;text-decoration:none;font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;font-family:var(--font-mono);border:1px solid rgba(255,255,255,.12)}.button-primary{background:var(--accent);color:#fff;border-color:transparent}.button-secondary{background:rgba(255,255,255,.08);color:#fff}.section{padding:0 0 2rem}.panel{background:var(--panel);color:var(--ink);border-radius:1.4rem;padding:2rem;box-shadow:var(--shadow)}.panel h2{margin:0 0 .8rem;font-family:var(--font-serif);font-size:clamp(1.6rem,3vw,2.5rem);line-height:1.02;letter-spacing:-.03em;font-weight:400}.panel p{margin:0 0 1rem;color:var(--ink-soft)}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem;margin-top:1.25rem}.card{padding:1.1rem;border-radius:1rem;background:var(--panel-soft);border:1px solid var(--line)} .card strong{display:block;margin-bottom:.45rem}.notice{margin-top:1.2rem;padding:1rem 1.1rem;border-radius:1rem;background:rgba(46,91,135,.08);border:1px solid rgba(46,91,135,.16)}footer{padding:3rem 0 4rem;color:rgba(255,255,255,.72)} .footer-links{display:flex;flex-wrap:wrap;gap:.9rem 1rem;font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;font-family:var(--font-mono)} .footer-links a{text-decoration:none}@media (max-width:900px){.grid{grid-template-columns:1fr}.topbar-inner{align-items:flex-start;padding:.8rem 0}.nav{justify-content:flex-start}}
-</style>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <title>OMEGA Data</title>
+  <style>
+    :root {
+      --bg: #070b14; --bg-2: #0e1522; --panel: rgba(20, 30, 48, 0.6); --panel-soft: rgba(30, 42, 60, 0.5);
+      --ink: #ffffff; --ink-soft: #9aa2b1; --line: rgba(255, 255, 255, 0.1); --accent: #3b82f6; --accent-deep: #2563eb;
+      --white: #ffffff; --radius: 1.25rem;
+      --font-sans: Inter, sans-serif; --font-serif: "Iowan Old Style", Georgia, serif; --font-mono: Consolas, monospace;
+    }
+    * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+    body { margin: 0; color: var(--ink); background: var(--bg); font-family: var(--font-sans); line-height: 1.65; }
+    body::before { content: ""; position: fixed; inset: -50%; z-index: -2; background: radial-gradient(circle at 50% 0%, rgba(59, 130, 246, 0.15), transparent 60%); }
+    a { color: inherit; text-decoration: none; }
+    .wrap { width: min(calc(100% - 2rem), 82rem); margin: 0 auto; }
+    
+    .topbar { position: sticky; top: 0; z-index: 40; backdrop-filter: blur(20px); background: rgba(7, 11, 20, 0.75); border-bottom: 1px solid var(--line); padding: 1.5rem 0; }
+    .topbar-inner { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+    .brand-title { display: block; font-family: var(--font-serif); font-size: 1.4rem; color: var(--white); }
+    .brand-sub { display: block; font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); font-family: var(--font-mono); }
+    .nav { display: flex; flex-wrap: wrap; gap: 1.2rem; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; font-family: var(--font-mono); }
+    .nav a { color: var(--ink-soft); transition: color 0.3s; }
+    .nav a:hover, .nav a.is-current { color: var(--white); }
+
+    .omega-subnav { margin: 2rem 0; padding: 1rem 1.5rem; border: 1px solid var(--line); border-radius: 999px; background: rgba(255,255,255,0.03); display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; backdrop-filter: blur(10px); }
+    .omega-subnav strong { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink-soft); margin-right: 0.5rem; }
+    .omega-subnav a { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink-soft); border-bottom: 1px solid transparent; transition: all 0.2s; }
+    .omega-subnav a:hover, .omega-subnav a.is-current { color: var(--white); border-color: var(--white); }
+
+    .hero { padding: 4rem 0 3rem; }
+    .eyebrow { font-family: var(--font-mono); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.2em; color: var(--accent); margin-bottom: 1rem; display: block; }
+    h1 { margin: 0 0 1.5rem; font-family: var(--font-serif); font-size: clamp(3rem, 6vw, 4.5rem); font-weight: 400; line-height: 1.1; max-width: 20ch; }
+    .hero p { max-width: 48rem; margin: 0 0 2.5rem; font-size: 1.25rem; color: var(--ink-soft); }
+    .btn { display: inline-flex; align-items: center; padding: 0.8rem 1.5rem; border-radius: 999px; font-family: var(--font-mono); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.15em; transition: all 0.2s; margin-right: 0.5rem; margin-bottom: 0.5rem;}
+    .btn-primary { background: var(--accent); color: #fff; border: 1px solid var(--accent); }
+    .btn-primary:hover { background: var(--accent-deep); transform: translateY(-2px); }
+    .btn-secondary { background: rgba(255, 255, 255, 0.05); color: #fff; border: 1px solid rgba(255, 255, 255, 0.2); }
+    .btn-secondary:hover { background: rgba(255, 255, 255, 0.1); transform: translateY(-2px); }
+
+    .section { padding: 4rem 0; border-top: 1px solid var(--line); }
+    .section h2 { font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem; max-width: 48rem;}
+    .section p { color: var(--ink-soft); font-size: 1.1rem; max-width: 48rem; margin-bottom: 2rem;}
+
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
+    .panel { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 2rem; display: flex; flex-direction: column; }
+    .panel h3 { font-family: var(--font-serif); font-size: 1.5rem; margin: 0 0 1rem; }
+    .panel p { color: var(--ink-soft); font-size: 0.95rem; margin-bottom: 1.5rem; }
+    
+    .callout { background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.2); padding: 1.5rem; border-radius: var(--radius); margin-top: 2rem;}
+    .callout strong { display: block; font-family: var(--font-mono); font-size: 0.7rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 0.5rem;}
+    .callout p { font-size: 1rem; color: var(--ink-soft); margin-bottom: 0;}
+
+    .footer { border-top: 1px solid var(--line); padding: 4rem 0; text-align: center; font-family: var(--font-mono); font-size: 0.8rem; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.15em; }
+  </style>
 </head>
 <body>
-<header class="topbar">
-<div class="wrap topbar-inner">
-<a class="brand" href="index.html">
-<span class="brand-title">Jonathan Capone</span>
-<span class="brand-sub">Technical Portfolio</span>
-</a>
-<nav aria-label="Primary" class="nav">
-<a href="index.html">Home</a>
-<a href="how-omega-works.html">How It Works</a>
-<a href="omega-research.html">Research Context</a>
-<a href="omega-data.html" class="is-current">Data</a>
-<a href="omega-wave.html">OMEGA Wave</a>
-<a href="teaching-documentation.html">Teaching</a>
-<a href="https://jonathancapone.art" rel="noopener" target="_blank">Artwork</a>
-<a href="mailto:jonathancapone@gmail.com">Contact</a>
-</nav>
-</div>
-</header>
-<div class="wrap"><div class="omega-subnav">
-<strong>OMEGA sections</strong>
-<a href="how-omega-works.html">How It Works</a>
-<a href="omega-research.html">Research Context</a>
-<a href="omega-data.html" class="is-current">Data</a>
-</div></div>
-<section class="hero"><div class="wrap"><span class="eyebrow">OMEGA data</span><h1>Live and downloadable OMEGA data.</h1><p>This page will eventually provide access to current measurements, downloadable datasets, metadata, field definitions, and quality notes for OMEGA.</p><p>For now, it is being added to the site so the OMEGA section has a stable navigation structure while the data interface is built out.</p><div class="button-row"><a class="button button-primary" href="index.html">Back to Home</a><a class="button button-secondary" href="omega-research.html">Research Context</a><a class="button button-secondary" href="how-omega-works.html">How It Works</a></div></div></section>
-<section class="section"><div class="wrap"><div class="panel"><h2>Under construction</h2><p>The final version of this page can include live readings, downloadable logs, processed survey outputs, metadata, and documentation on how to use the data.</p><div class="grid"><div class="card"><strong>Planned section</strong><p>Current conditions and most recent update time.</p></div><div class="card"><strong>Planned section</strong><p>Downloads for raw and processed files.</p></div><div class="card"><strong>Planned section</strong><p>Metadata, field definitions, and quality notes.</p></div></div><div class="notice"><strong>Planned direction</strong><p>This page is intended to become the public entry point for real-time data access, archived survey outputs, and reusable research files.</p></div></div></div></section>
-</main>
-<footer><div class="wrap"><div class="footer-links"><a href="index.html">Home</a><a href="how-omega-works.html">How It Works</a><a href="omega-research.html">Research Context</a><a href="omega-data.html">Data</a></div></div></footer>
-</body></html>
+  <header class="topbar">
+    <div class="wrap topbar-inner">
+      <a class="brand" href="index.html">
+        <span class="brand-title">Jonathan Capone</span>
+        <span class="brand-sub">Technical Portfolio</span>
+      </a>
+      <nav class="nav">
+        <a href="index.html">Home</a>
+        <a href="index.html#omega">OMEGA Project</a>
+        <a href="teaching-documentation.html">Teaching</a>
+        <a href="https://jonathancapone.art" target="_blank" rel="noopener">Artwork</a>
+        <a href="mailto:jonathancapone@gmail.com">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <div class="omega-subnav" style="margin-bottom: 3rem;">
+      <strong>Context & Data:</strong>
+      <a href="omega-research.html">Research Context</a>
+      <a href="omega-data.html" class="is-current">Data Access</a>
+    </div>
+  </div>
+
+  <section class="hero wrap">
+    <span class="eyebrow">OMEGA Data</span>
+    <h1>Live and downloadable OMEGA data.</h1>
+    <p>This page will eventually provide access to current measurements, downloadable datasets, metadata, field definitions, and quality notes.</p>
+    <div class="hero-actions" style="justify-content: flex-start;">
+      <a class="btn btn-primary" href="index.html#research">Back to Index</a>
+    </div>
+  </section>
+
+  <main>
+    <section class="section">
+      <div class="wrap">
+        <h2>Under construction</h2>
+        <p>The final version of this page will integrate with the new SQLite backend to serve live readings, downloadable logs, processed survey outputs, and metadata.</p>
+        
+        <div class="grid-3">
+          <article class="panel">
+            <h3>Live Telemetry</h3>
+            <p>Current conditions and most recent update time from the ASV gateway and relay network.</p>
+          </article>
+          
+          <article class="panel">
+            <h3>Downloads</h3>
+            <p>Direct downloads for raw CBOR/JSONL logs and processed bathymetric mapping files.</p>
+          </article>
+
+          <article class="panel">
+            <h3>Metadata</h3>
+            <p>Comprehensive metadata, field definitions, and quality notes for integration.</p>
+          </article>
+        </div>
+
+        <div class="callout">
+          <strong>Planned Direction</strong>
+          <p>This page is intended to become the public entry point for real-time data access, archived survey outputs, and reusable research files derived from the OMEGA fleet.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer wrap">
+    <span>© Jonathan Capone — Technical Portfolio</span>
+  </footer>
+</body>
+</html>

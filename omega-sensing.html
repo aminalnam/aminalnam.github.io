@@ -1,628 +1,174 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>OMEGA — Sensing and Sound</title>
-<style>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <title>OMEGA — Sensing and Sound</title>
+  <style>
     :root {
-      --bg: #0d1925;
-      --bg-soft: #152433;
-      --panel: #f7f2e9;
-      --panel-soft: #fffdf8;
-      --ink: #141414;
-      --ink-soft: #4f4a45;
-      --line: rgba(20,20,20,0.12);
-      --accent: #d94841;
-      --accent-deep: #b93832;
-      --navy: #173046;
-      --navy-deep: #102434;
-      --sea: #2e5b87;
-      --sand: #efe8dc;
-      --radius: 1.1rem;
-      --radius-sm: 0.9rem;
-      --shadow: 0 2rem 4rem rgba(7, 14, 22, 0.18);
-      --font-sans: "Inter", "Helvetica Neue", Arial, sans-serif;
-      --font-serif: "Iowan Old Style", "Georgia", "Times New Roman", serif;
-      --font-mono: "SFMono-Regular", "Menlo", "Consolas", monospace;
+      --bg: #070b14; --bg-2: #0e1522; --panel: rgba(20, 30, 48, 0.6); --panel-soft: rgba(30, 42, 60, 0.5);
+      --ink: #ffffff; --ink-soft: #9aa2b1; --line: rgba(255, 255, 255, 0.1); --accent: #3b82f6; --accent-deep: #2563eb;
+      --white: #ffffff; --radius: 1.25rem;
+      --font-sans: Inter, sans-serif; --font-serif: "Iowan Old Style", Georgia, serif; --font-mono: Consolas, monospace;
     }
-
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body {
-      margin: 0;
-      font-family: var(--font-sans);
-      background:
-        radial-gradient(circle at top, rgba(126,167,206,0.14), transparent 35%),
-        linear-gradient(180deg, #102131 0%, #0d1925 32%, #0d1925 100%);
-      color: #fff;
-      line-height: 1.65;
-    }
-    a { color: inherit; }
-    .wrap {
-      width: min(1120px, calc(100vw - 2.2rem));
-      margin: 0 auto;
-    }
-    .topbar {
-      position: sticky;
-      top: 0;
-      z-index: 20;
-      backdrop-filter: blur(14px);
-      background: rgba(12, 22, 33, 0.76);
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-    }
-    .topbar-inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-      padding: 0.9rem 0;
-    }
-    .brand {
-      text-decoration: none;
-      display: grid;
-      gap: 0.1rem;
-    }
-    .brand-title {
-      font-family: var(--font-serif);
-      font-size: 1.08rem;
-      letter-spacing: -0.02em;
-    }
-    .brand-sub {
-      font-family: var(--font-mono);
-      font-size: 0.66rem;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      color: rgba(255,255,255,0.66);
-    }
+    * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+    body { margin: 0; color: var(--ink); background: var(--bg); font-family: var(--font-sans); line-height: 1.65; }
+    body::before { content: ""; position: fixed; inset: -50%; z-index: -2; background: radial-gradient(circle at 50% 0%, rgba(59, 130, 246, 0.15), transparent 60%); }
+    a { color: inherit; text-decoration: none; }
+    .wrap { width: min(calc(100% - 2rem), 82rem); margin: 0 auto; }
     
-    .nav {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: flex-end;
-      gap: 0.7rem 0.95rem;
-      font-size: 0.73rem;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      font-family: var(--font-mono);
-    }
+    .topbar { position: sticky; top: 0; z-index: 40; backdrop-filter: blur(20px); background: rgba(7, 11, 20, 0.75); border-bottom: 1px solid var(--line); padding: 1.5rem 0; }
+    .topbar-inner { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+    .brand-title { display: block; font-family: var(--font-serif); font-size: 1.4rem; color: var(--white); }
+    .brand-sub { display: block; font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); font-family: var(--font-mono); }
+    .nav { display: flex; flex-wrap: wrap; gap: 1.2rem; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; font-family: var(--font-mono); }
+    .nav a { color: var(--ink-soft); transition: color 0.3s; }
+    .nav a:hover, .nav a.is-current { color: var(--white); }
 
-    .nav a {
-      text-decoration: none;
-      color: rgba(255,255,255,0.78);
-      border-bottom: 1px solid transparent;
-      padding-bottom: 0.15rem;
-      transition: color 0.2s ease, border-color 0.2s ease;
-      cursor: pointer;
-      list-style: none;
-    }
+    .omega-subnav { margin: 2rem 0; padding: 1rem 1.5rem; border: 1px solid var(--line); border-radius: 999px; background: rgba(255,255,255,0.03); display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; backdrop-filter: blur(10px); }
+    .omega-subnav strong { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink-soft); margin-right: 0.5rem; }
+    .omega-subnav a { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink-soft); border-bottom: 1px solid transparent; transition: all 0.2s; }
+    .omega-subnav a:hover, .omega-subnav a.is-current { color: var(--white); border-color: var(--white); }
 
-    .nav a:hover,
-    .nav a:focus-visible,
-    .nav a.is-current {
-      color: var(--white, #fff);
-      border-color: currentColor;
-      outline: none;
-    }
+    .hero { padding: 4rem 0 3rem; }
+    .eyebrow { font-family: var(--font-mono); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.2em; color: var(--accent); margin-bottom: 1rem; display: block; }
+    h1 { margin: 0 0 1.5rem; font-family: var(--font-serif); font-size: clamp(3rem, 6vw, 4.5rem); font-weight: 400; line-height: 1.1; max-width: 20ch; }
+    .hero p { max-width: 48rem; margin: 0 0 2.5rem; font-size: 1.25rem; color: var(--ink-soft); }
+    .btn { display: inline-flex; align-items: center; padding: 0.8rem 1.5rem; border-radius: 999px; font-family: var(--font-mono); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.15em; transition: all 0.2s; margin-right: 0.5rem; margin-bottom: 0.5rem;}
+    .btn-primary { background: var(--accent); color: #fff; border: 1px solid var(--accent); }
+    .btn-primary:hover { background: var(--accent-deep); transform: translateY(-2px); }
+    .btn-secondary { background: rgba(255, 255, 255, 0.05); color: #fff; border: 1px solid rgba(255, 255, 255, 0.2); }
+    .btn-secondary:hover { background: rgba(255, 255, 255, 0.1); transform: translateY(-2px); }
 
-    .omega-subnav {
-      margin: 0 0 1.5rem;
-      padding: 0.8rem 1rem;
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 999px;
-      background: rgba(255,255,255,0.06);
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem 0.8rem;
-      align-items: center;
-      backdrop-filter: blur(10px);
-    }
+    .section { padding: 4rem 0; border-top: 1px solid var(--line); }
+    .section-kicker { font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent); margin-bottom: 0.8rem; display: block; }
+    .section h2 { font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem; max-width: 48rem;}
+    .section p { color: var(--ink-soft); font-size: 1.1rem; max-width: 48rem; margin-bottom: 2rem;}
 
-    .omega-subnav strong {
-      font-family: var(--font-mono);
-      font-size: 0.68rem;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.66);
-      font-weight: 500;
-    }
+    .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 2rem; }
+    .panel { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 2rem; display: flex; flex-direction: column; }
+    .panel-kicker { display: inline-block; font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent); padding: 0.2rem 0.6rem; background: rgba(59,130,246,0.1); border-radius: 999px; margin-bottom: 1rem; align-self: flex-start;}
+    .panel h3 { font-family: var(--font-serif); font-size: 1.5rem; margin: 0 0 1rem; }
+    .panel p { color: var(--ink-soft); font-size: 0.95rem; margin-bottom: 1.5rem; }
+    
+    .callout { background: rgba(255,255,255,0.03); border: 1px solid var(--line); padding: 1rem; border-radius: 0.75rem; margin-top: auto;}
+    .callout strong { display: block; font-family: var(--font-mono); font-size: 0.7rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 0.5rem;}
+    .callout p { font-size: 0.9rem; color: var(--ink-soft); margin-bottom: 0;}
+    
+    pre { background: rgba(10,15,25,0.9); padding: 1.5rem; border-radius: var(--radius); overflow-x: auto; border: 1px solid var(--line); margin-bottom: 1.5rem; font-family: var(--font-mono); font-size: 0.9rem;}
+    code { font-family: var(--font-mono); color: var(--white); }
+    .panel p code { background: rgba(255,255,255,0.1); padding: 0.2rem 0.4rem; border-radius: 4px; font-size: 0.85em;}
 
-    .omega-subnav a {
-      text-decoration: none;
-      font-family: var(--font-mono);
-      font-size: 0.68rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.78);
-      padding-bottom: 0.12rem;
-      border-bottom: 1px solid transparent;
-    }
-
-    .omega-subnav a:hover,
-    .omega-subnav a:focus-visible,
-    .omega-subnav a.is-current {
-      color: #fff;
-      border-color: currentColor;
-      outline: none;
-    }
-
-    .hero {
-      padding: 4.8rem 0 4rem;
-    }
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.55rem;
-      font-family: var(--font-mono);
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      color: rgba(255,255,255,0.7);
-    }
-    .eyebrow::before {
-      content: "";
-      width: 1.1rem;
-      height: 1px;
-      background: rgba(255,255,255,0.4);
-    }
-    h1 {
-      margin: 1rem 0 1rem;
-      font-family: var(--font-serif);
-      font-size: clamp(2.6rem, 6vw, 5rem);
-      line-height: 0.95;
-      letter-spacing: -0.06em;
-      font-weight: 400;
-      max-width: 12ch;
-    }
-    .hero p {
-      max-width: 52rem;
-      color: rgba(255,255,255,0.82);
-      font-size: 1.04rem;
-      margin: 0 0 1rem;
-    }
-    .hero-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.8rem;
-      margin-top: 1.5rem;
-    }
-    .button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 2.8rem;
-      padding: 0 1rem;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.16);
-      text-decoration: none;
-      font-family: var(--font-mono);
-      font-size: 0.69rem;
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-      transition: transform 0.18s ease, background 0.18s ease, border-color 0.18s ease;
-    }
-    .button:hover,
-    .button:focus-visible {
-      transform: translateY(-1px);
-      outline: none;
-    }
-    .button-primary {
-      background: var(--accent);
-      border-color: rgba(255,255,255,0.08);
-      color: #fff;
-    }
-    .button-primary:hover,
-    .button-primary:focus-visible {
-      background: var(--accent-deep);
-    }
-    .button-secondary {
-      background: rgba(255,255,255,0.06);
-      color: #fff;
-    }
-    .button-secondary:hover,
-    .button-secondary:focus-visible {
-      background: rgba(255,255,255,0.12);
-      border-color: rgba(255,255,255,0.26);
-    }
-    .main-shell {
-      margin-bottom: 3.5rem;
-    }
-    .main-inner {
-      background: var(--panel);
-      color: var(--ink);
-      border-radius: 1.4rem;
-      overflow: hidden;
-      box-shadow: var(--shadow);
-      border: 1px solid rgba(255,255,255,0.08);
-    }
-    .section {
-      padding: 3.6rem 0;
-      border-bottom: 1px solid var(--line);
-    }
-    .section:last-child {
-      border-bottom: none;
-    }
-    .section-head {
-      margin-bottom: 1.9rem;
-    }
-    .section-kicker {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.6rem;
-      font-family: var(--font-mono);
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      letter-spacing: 0.18em;
-      color: var(--ink-soft);
-    }
-    .section-kicker::before {
-      content: "";
-      width: 1.2rem;
-      height: 1px;
-      background: rgba(20,20,20,0.24);
-    }
-    .section-head h2 {
-      margin: 0.8rem 0 0.8rem;
-      font-family: var(--font-serif);
-      font-size: clamp(2rem, 4vw, 3.1rem);
-      line-height: 0.97;
-      letter-spacing: -0.05em;
-      font-weight: 400;
-    }
-    .section-head p {
-      max-width: 52rem;
-      margin: 0;
-      color: var(--ink-soft);
-      font-size: 1.02rem;
-    }
-    .grid-2 {
-      display: grid;
-      grid-template-columns: 1.15fr 0.85fr;
-      gap: 1.4rem;
-      align-items: start;
-    }
-    .grid-3 {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 1rem;
-    }
-    .card {
-      background: #fff;
-      border: 1px solid var(--line);
-      border-radius: 1rem;
-      padding: 1.35rem;
-      min-height: 100%;
-    }
-    .card h3 {
-      margin: 0 0 0.7rem;
-      font-family: var(--font-serif);
-      font-size: 1.55rem;
-      font-weight: 400;
-      line-height: 1.02;
-      letter-spacing: -0.04em;
-    }
-    .card p {
-      margin: 0 0 0.95rem;
-      color: var(--ink-soft);
-      font-size: 0.97rem;
-    }
-    .pill {
-      display: inline-block;
-      margin-bottom: 0.8rem;
-      font-family: var(--font-mono);
-      font-size: 0.65rem;
-      text-transform: uppercase;
-      letter-spacing: 0.15em;
-      color: var(--accent);
-    }
-    .metric-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 0.8rem;
-      margin-top: 1rem;
-    }
-    .metric {
-      background: var(--panel-soft);
-      border: 1px solid var(--line);
-      border-radius: 0.9rem;
-      padding: 0.95rem;
-    }
-    .metric strong {
-      display: block;
-      font-family: var(--font-mono);
-      font-size: 0.66rem;
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-      color: var(--accent);
-      margin-bottom: 0.3rem;
-    }
-    .metric span {
-      display: block;
-      color: var(--ink);
-      font-size: 0.95rem;
-    }
-    .prose p {
-      margin: 0 0 1rem;
-      color: var(--ink-soft);
-      font-size: 1rem;
-    }
-    .list {
-      margin: 0;
-      padding-left: 1.1rem;
-      color: var(--ink-soft);
-    }
-    .list li + li { margin-top: 0.55rem; }
-    .callout {
-      background: #fff;
-      border: 1px solid var(--line);
-      border-radius: 1rem;
-      padding: 1.15rem 1.2rem;
-      margin-top: 1rem;
-    }
-    .callout strong {
-      display: block;
-      margin-bottom: 0.4rem;
-      font-family: var(--font-mono);
-      font-size: 0.68rem;
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-      color: var(--accent);
-    }
-    .callout p {
-      margin: 0;
-      color: var(--ink-soft);
-    }
-    .code-block {
-      margin: 1rem 0 0.8rem;
-      background: #0f1720;
-      color: #d6deeb;
-      border: 1px solid #1d2938;
-      border-radius: 1rem;
-      overflow: auto;
-    }
-    pre {
-      margin: 0;
-      padding: 1.1rem 1.15rem;
-      font-family: var(--font-mono);
-      font-size: 0.9rem;
-      line-height: 1.55;
-    }
-    code { font-family: var(--font-mono); }
-    .table-wrap {
-      overflow: auto;
-      border: 1px solid var(--line);
-      border-radius: 1rem;
-      background: #fff;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-    th, td {
-      padding: 0.9rem 1rem;
-      text-align: left;
-      vertical-align: top;
-      border-bottom: 1px solid var(--line);
-      font-size: 0.95rem;
-    }
-    th {
-      font-family: var(--font-mono);
-      font-size: 0.68rem;
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-      color: var(--accent);
-      background: #fbf8f2;
-    }
-    tr:last-child td { border-bottom: none; }
-    .footer {
-      padding: 1.2rem 0 3rem;
-      color: rgba(255,255,255,0.66);
-      font-family: var(--font-mono);
-      font-size: 0.68rem;
-      letter-spacing: 0.13em;
-      text-transform: uppercase;
-    }
-    .footer-inner {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 0.8rem 1rem;
-    }
-    .footer a {
-      text-decoration: none;
-      border-bottom: 1px solid rgba(255,255,255,0.2);
-      padding-bottom: 0.08rem;
-    }
-    .footer a:hover,
-    .footer a:focus-visible {
-      border-color: currentColor;
-      color: #fff;
-      outline: none;
-    }
-    @media (max-width: 940px) {
-      .grid-2, .grid-3 { grid-template-columns: 1fr; }
-      .topbar-inner {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-    }
-
-.chapter-breadcrumb{margin:0 0 .65rem;font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;color:#60707e;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}.chapter-breadcrumb a{color:inherit;text-decoration:none;border-bottom:1px solid rgba(96,112,126,.35)}
-
-.chapter-subnav{margin:1rem auto 0;display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;padding:.75rem 1rem;border:1px solid rgba(20,31,43,.12);border-radius:14px;background:#fff}
-.chapter-subnav strong{font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:#5a6a79;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;margin-right:.35rem}
-.chapter-subnav a{display:inline-block;padding:.45rem .7rem;border-radius:999px;border:1px solid rgba(20,31,43,.12);text-decoration:none;color:#10212f;background:#f7f8fa}
-.chapter-subnav a.current{background:#10212f;color:#fff;border-color:#10212f}
-
-</style>
+    .footer { border-top: 1px solid var(--line); padding: 4rem 0; text-align: center; font-family: var(--font-mono); font-size: 0.8rem; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.15em; }
+  </style>
 </head>
 <body>
-<header class="topbar">
-<div class="wrap topbar-inner">
-<a class="brand" href="index.html">
-<span class="brand-title">Jonathan Capone</span>
-<span class="brand-sub">Technical Portfolio</span>
-</a>
-<nav aria-label="Primary" class="nav">
-<a href="index.html">Home</a>
-<a href="how-omega-works.html" class="is-current">How It Works</a>
-<a href="omega-research.html">Research Context</a>
-<a href="omega-data.html">Data</a>
-<a href="omega-wave.html">OMEGA Wave</a>
-<a href="teaching-documentation.html">Teaching</a>
-<a href="https://jonathancapone.art" rel="noopener" target="_blank">Artwork</a>
-<a href="mailto:jonathancapone@gmail.com">Contact</a>
-</nav>
-</div>
-</header>
-<div class="wrap"><div class="omega-subnav">
-<strong>OMEGA sections</strong>
-<a href="how-omega-works.html" class="is-current">How It Works</a>
-<a href="omega-research.html">Research Context</a>
-<a href="omega-data.html">Data</a>
-</div></div>
-<div class="wrap"><div class="chapter-subnav"><strong>How It Works chapters</strong><a href="how-omega-works.html">Overview</a><a href="omega-sensing.html" class="current">Sensing</a><a href="omega-validation.html">Validation</a><a href="omega-mapping.html">Mapping</a></div></div>
-<div class="wrap">
-<p class="chapter-breadcrumb"><a href="how-omega-works.html">How It Works</a> / Sensing</p>
-<span class="eyebrow">OMEGA</span>
-<h1>Sensing, sound speed, and depth.</h1>
-<p>A closer look at how OMEGA estimates underwater depth, why water temperature changes that estimate, and why salinity matters even though it is not yet part of the current correction model.</p>
-<div class="hero-actions">
-<a class="button button-primary" href="how-omega-works.html">Back to How OMEGA Works</a><a class="button button-secondary" href="omega-validation.html">Next: Validation</a><a class="button button-secondary" href="omega-mapping.html">Next: Mapping</a><a class="button button-secondary" href="omega-research.html">Research Context</a><a class="button button-secondary" href="omega-data.html">Data</a>
-</div>
-</div>
-</section>
-<main class="main-shell">
-<div class="wrap main-inner">
-<section class="section">
-<div class="wrap">
-<div class="section-head">
-<span class="section-kicker">Acoustic measurement</span>
-<h2>Depth is being inferred from sound.</h2>
-<p>
-        The sonar transducer sends a pulse through the water, listens for the return from the bottom, and estimates
-        distance from the pulse travel time. In water, the speed of sound is often close to 1500 m/s, but it is not fixed.
-      </p>
-</div>
-<div class="grid-2">
-<div class="card prose">
-<span class="pill">Core equation</span>
-<h3>Round-trip time has to be cut in half</h3>
-<p>
-          The travel-time measurement includes the trip down to the bottom and the return trip back to the sensor.
-          The one-way depth is therefore:
-        </p>
-<div class="callout">
-<strong>Depth formula</strong>
-<p><code>depth = (sound speed × travel time) / 2</code></p>
-</div>
-<p>
-          That division by two is easy to overlook, but it is fundamental. The instrument never measures one-way depth directly.
-          It measures elapsed time and converts that time into range.
-        </p>
-</div>
-<div class="card prose">
-<span class="pill">Why it changes</span>
-<h3>Sound speed depends on the water itself</h3>
-<p>
-          Temperature, salinity, and pressure all change how quickly sound moves through water. Warmer water generally raises sound speed.
-          Increased salinity also raises sound speed. Greater pressure at depth raises it as well.
-        </p>
-<p>
-          Because OMEGA is measuring travel time rather than direct physical contact, any change in sound speed changes the interpretation of the depth reading.
-        </p>
-</div>
-</div>
-</div>
-</section>
-<section class="section">
-<div class="wrap">
-<div class="section-head">
-<span class="section-kicker">Current implementation</span>
-<h2>The logger applies a temperature-based correction to the sonar range.</h2>
-<p>
-        In the Arduino code, the sonar uses a baseline reference speed of 1500 m/s at 20 °C. The measured water
-        temperature from the DS18B20 is used to adjust that baseline before the depth enters the mapping pipeline.
-      </p>
-</div>
-<div class="card">
-<span class="pill">From <code>rov_logger_mapping.ino</code></span>
-<div class="code-block"><pre><code>// Baseline reference values used by the logger.
+  <header class="topbar">
+    <div class="wrap topbar-inner">
+      <a class="brand" href="index.html">
+        <span class="brand-title">Jonathan Capone</span>
+        <span class="brand-sub">Technical Portfolio</span>
+      </a>
+      <nav class="nav">
+        <a href="index.html">Home</a>
+        <a href="index.html#omega">OMEGA Project</a>
+        <a href="teaching-documentation.html">Teaching</a>
+        <a href="https://jonathancapone.art" target="_blank" rel="noopener">Artwork</a>
+        <a href="mailto:jonathancapone@gmail.com">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <div class="omega-subnav" style="margin-bottom: 3rem;">
+      <strong>Sensing Chapters:</strong>
+      <a href="how-omega-works.html">Overview</a>
+      <a href="omega-sensing.html" class="is-current">Sensing</a>
+      <a href="omega-validation.html">Validation</a>
+      <a href="omega-mapping.html">Mapping</a>
+    </div>
+  </div>
+
+  <section class="hero wrap">
+    <span class="eyebrow">Part 1: Sensing</span>
+    <h1>Sensing, sound speed, and depth.</h1>
+    <p>A closer look at how OMEGA estimates underwater depth, why water temperature changes that estimate, and why salinity matters.</p>
+    <div class="hero-actions" style="justify-content: flex-start;">
+      <a class="btn btn-primary" href="how-omega-works.html">Back to Overview</a>
+      <a class="btn btn-secondary" href="omega-validation.html">Next: Validation</a>
+    </div>
+  </section>
+
+  <main>
+    <section class="section">
+      <div class="wrap">
+        <span class="section-kicker">Acoustic measurement</span>
+        <h2>Depth is being inferred from sound.</h2>
+        <p>The sonar transducer sends a pulse, listens for the return from the bottom, and estimates distance from travel time.</p>
+        
+        <div class="grid-2">
+          <article class="panel">
+            <span class="panel-kicker">Core equation</span>
+            <h3>Round-trip time cut in half</h3>
+            <p>The travel-time measurement includes the trip down and back. The one-way depth formula is:</p>
+            <div class="callout">
+              <strong>Formula</strong>
+              <p><code>depth = (sound speed × travel time) / 2</code></p>
+            </div>
+          </article>
+          
+          <article class="panel">
+            <span class="panel-kicker">Why it changes</span>
+            <h3>Speed depends on water</h3>
+            <p>Temperature, salinity, and pressure all change how quickly sound moves through water, changing the interpretation of the depth reading.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <span class="section-kicker">Implementation</span>
+        <h2>Temperature-based correction.</h2>
+        <p>In the Arduino code, the sonar uses a baseline reference speed of 1500 m/s at 20 °C, nudged up or down based on measured water temperature.</p>
+        
+        <div class="panel" style="max-width: 100%;">
+          <span class="panel-kicker">From rov_logger_mapping.ino</span>
+<pre><code>// Baseline reference values used by the logger.
 const float sonarCalSoundSpeed = 1500.0f;  // m/s
 const float sonarCalTempC = 20.0f;         // °C
 
 // Estimate sound speed from water temperature.
 float estimateSoundSpeed(float waterTempC) {
   float c = sonarCalSoundSpeed;
-
   if (!isnan(waterTempC)) {
     c += 4.6f * (waterTempC - sonarCalTempC);
   }
-
   return c;
 }
 
-// Rescale the sonar-reported range to match the estimated sound speed.
+// Rescale the sonar-reported range
 float correctSonarRangeCm(float reportedRangeCm, float waterTempC) {
   float cActual = estimateSoundSpeed(waterTempC);
   return reportedRangeCm * (cActual / sonarCalSoundSpeed);
-}</code></pre></div>
-<div class="callout">
-<strong>What the code is doing</strong>
-<p>
-          The logger starts from a reference calibration, then nudges the sound speed up or down based on the measured water temperature.
-          If the water is colder than the reference condition, the corrected depth will come down slightly. If it is warmer, the corrected depth will rise slightly.
-        </p>
-</div>
-</div>
-</div>
-</section>
-<section class="section">
-<div class="wrap">
-<div class="section-head">
-<span class="section-kicker">Why salinity is not in the current model</span>
-<h2>Salinity still matters, but it is not currently being measured by the device.</h2>
-<p>
-        The absence of salinity in the correction model does not mean salinity is unimportant. It means the present version of OMEGA is using the variables
-        it can actually measure in the field. Temperature is available directly from the DS18B20, so the code includes a temperature-based correction.
-      </p>
-</div>
-<div class="grid-2">
-<div class="card prose">
-<span class="pill">Freshwater and shallow work</span>
-<h3>Why the temperature-only model can still be useful</h3>
-<p>
-          In shallow or modest-precision surveys, especially in freshwater, a temperature correction can remove one of the largest easy-to-measure sources of error
-          without adding more hardware or more operator setup. It is a practical improvement over using a fixed sound speed all the time.
-        </p>
-</div>
-<div class="card prose">
-<span class="pill">Where the limits show up</span>
-<h3>When a fuller sound-speed model would matter more</h3>
-<p>
-          In salt water, deeper water, or higher-accuracy survey work, salinity and pressure should be part of the model as well.
-          A future version of OMEGA could add a conductivity or salinity sensor, or use a dedicated sound-speed instrument, to improve the correction.
-        </p>
-</div>
-</div>
-</div>
-</section>
-<section class="section">
-<div class="wrap">
-<div class="section-head">
-<span class="section-kicker">Depth entry</span>
-<h2>The reading is corrected before it is accepted.</h2>
-<p>
-        The sonar value does not go straight from the packet decoder into the map. The code converts the raw packet,
-        applies the temperature correction, rejects implausible depths, and only then passes the value into the smoothing buffer.
-      </p>
-</div>
-<div class="card">
-<span class="pill">From the sonar read loop</span>
-<div class="code-block"><pre><code>// Convert the decoded sonar packet to centimeters.
+}</code></pre>
+          <div class="callout">
+            <strong>What the code is doing</strong>
+            <p>The logger starts from a reference calibration, then adjusts the sound speed based on the DS18B20 water temperature reading.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <span class="section-kicker">Depth entry</span>
+        <h2>Corrected before accepted.</h2>
+        <p>The sonar value doesn't go straight into the map. It is corrected, smoothed, and bounds-checked first.</p>
+        
+        <div class="panel" style="max-width: 100%;">
+          <span class="panel-kicker">Sonar read loop</span>
+<pre><code>// Convert the decoded sonar packet to centimeters.
 float reportedDepthCm = raw / 10.0f;
 
 // Correct that range using the measured water temperature.
@@ -633,25 +179,18 @@ if (correctedDepthCm &gt;= 2.0f &amp;&amp; correctedDepthCm &lt;= 800.0f) {
   addDepthSample(correctedDepthCm);
   lastValidDepthMillis = currentMillis;
   validReading = true;
-}</code></pre></div>
-<div class="callout">
-<strong>Why this stage matters</strong>
-<p>
-          By the time a depth sample reaches the moving average, it has already been interpreted and screened. The measurement
-          pipeline is doing physics and quality control before the mapping logic ever sees the point.
-        </p>
-</div>
-</div>
-</div>
-</section>
-</div>
-</main>
-<footer class="footer">
-<div class="wrap footer-inner">
-<span>Jonathan Capone — Project Portfolio</span>
-<span><a href="how-omega-works.html">How It Works</a></span>
-<span><a href="omega-research.html">Research Context</a></span>
-<span><a href="omega-data.html">Data</a></span></div>
-</footer>
+}</code></pre>
+          <div class="callout">
+            <strong>Why this stage matters</strong>
+            <p>The measurement pipeline does physics and quality control before the mapping logic ever sees the point.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer wrap">
+    <span>© Jonathan Capone — Technical Portfolio</span>
+  </footer>
 </body>
 </html>

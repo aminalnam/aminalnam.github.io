@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <title>OMEGA Data Ingest</title>
+  <style>
+    :root {
+      --bg: #070b14; --bg-2: #0e1522; --panel: rgba(20, 30, 48, 0.6); --panel-soft: rgba(30, 42, 60, 0.5);
+      --ink: #ffffff; --ink-soft: #9aa2b1; --line: rgba(255, 255, 255, 0.1); --accent: #3b82f6;
+      --white: #ffffff; --radius: 1.25rem;
+      --font-sans: Inter, sans-serif; --font-serif: "Iowan Old Style", Georgia, serif; --font-mono: Consolas, monospace;
+    }
+    * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+    body { margin: 0; color: var(--ink); background: var(--bg); font-family: var(--font-sans); line-height: 1.65; }
+    body::before { content: ""; position: fixed; inset: -50%; z-index: -2; background: radial-gradient(circle at 50% 80%, rgba(59, 130, 246, 0.1), transparent 50%); }
+    a { color: inherit; text-decoration: none; }
+    .wrap { width: min(calc(100% - 2rem), 82rem); margin: 0 auto; }
+    .topbar { position: sticky; top: 0; z-index: 40; backdrop-filter: blur(20px); background: rgba(7, 11, 20, 0.75); border-bottom: 1px solid var(--line); padding: 1.5rem 0; }
+    .topbar-inner { display: flex; align-items: center; justify-content: space-between; }
+    .brand-title { display: block; font-family: var(--font-serif); font-size: 1.4rem; color: var(--white); }
+    .brand-sub { display: block; font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); font-family: var(--font-mono); }
+    .nav { display: flex; gap: 1.5rem; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; font-family: var(--font-mono); }
+    .nav a { color: var(--ink-soft); transition: color 0.3s; }
+    .nav a:hover, .nav a.is-current { color: var(--white); }
+    
+    .hero { padding: 6rem 0 4rem; text-align: center; }
+    .eyebrow { font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.2em; color: var(--accent); margin-bottom: 1rem; display: block; }
+    h1 { margin: 0 auto 1.5rem; font-family: var(--font-serif); font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 400; }
+    .hero p { max-width: 48rem; margin: 0 auto; font-size: 1.2rem; color: var(--ink-soft); }
+
+    .content-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 5rem; }
+    @media (max-width: 800px) { .content-grid { grid-template-columns: 1fr; } }
+    .panel { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 2rem; }
+    .panel h3 { font-family: var(--font-serif); font-size: 1.8rem; margin: 0 0 1rem; }
+    .panel p { color: var(--ink-soft); }
+    .footer { border-top: 1px solid var(--line); padding: 3rem 0; font-family: var(--font-mono); font-size: 0.75rem; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.15em;}
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap topbar-inner">
+      <a class="brand" href="index.html">
+        <span class="brand-title">Jonathan Capone</span>
+        <span class="brand-sub">Technical Portfolio</span>
+      </a>
+      <nav class="nav">
+        <a href="index.html">Home</a>
+        <a href="index.html#omega">OMEGA Project</a>
+        <a href="teaching-documentation.html">Teaching</a>
+        <a href="https://jonathancapone.art" target="_blank" rel="noopener">Artwork</a>
+        <a href="mailto:jonathancapone@gmail.com">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero wrap">
+    <span class="eyebrow">Data Intelligence</span>
+    <h1>Environmental Context</h1>
+    <p>Ingesting, normalizing, and structuring both local field sensor readings and credentialed global datasets into a unified spatial model.</p>
+  </section>
+
+  <main class="wrap content-grid">
+    <div class="panel">
+      <h3>Observation Normalization</h3>
+      <p>The gateway ingests canonical observation envelopes over HTTP and normalizes measurements into an SQLite backend. This exposes an online-friendly REST/JSON and OpenAPI interface, allowing simple querying without worrying about the radio specifics.</p>
+    </div>
+    
+    <div class="panel">
+      <h3>Public Ocean & Weather</h3>
+      <p>OMEGA actively pulls in public context from NOAA NDBC buoys, NOAA CO-OPS tide products, Open-Meteo marine models, and NWS weather alerts. This allows users to combine live sensor readings with massive public forecast structures.</p>
+    </div>
+
+    <div class="panel">
+      <h3>Global Fishing Watch (GFW)</h3>
+      <p>A credential-safe provider pipeline seamlessly injects the 4Wings API for real heatmap overlays, apparent fishing effort, vessel presence (AIS), and satellite SAR detections into the map portal—without exposing your tokens to the client browser.</p>
+    </div>
+
+    <div class="panel">
+      <h3>Commercial Data Providers</h3>
+      <p>Direct integration for platforms like Stormglass (marine weather), Copernicus Marine, NASA EarthData, and AISStream, bridging commercial and research-grade data down into the localized operational mesh map.</p>
+    </div>
+  </main>
+
+  <footer class="footer wrap"><span>© Jonathan Capone — Technical Portfolio</span></footer>
+</body>
+</html>

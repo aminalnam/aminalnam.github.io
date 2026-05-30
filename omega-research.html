@@ -6,21 +6,24 @@
   <title>The Science Behind OMEGA</title>
   <style>
     :root {
-      --bg: #eef3f7;
-      --panel: rgba(255, 255, 255, 0.84);
-      --panel-solid: #ffffff;
-      --text: #16202a;
-      --muted: #556473;
-      --line: rgba(22, 32, 42, 0.1);
-      --accent: #123e57;
-      --accent-2: #1f6c8c;
-      --accent-3: #89c8d8;
-      --soft: #f8fbfd;
-      --dark: #0e1b24;
-      --dark-soft: #152734;
+      --bg: #070b14;
+      --panel: rgba(20, 30, 48, 0.6);
+      --panel-solid: #0e1522;
+      --text: #ffffff;
+      --muted: #9aa2b1;
+      --line: rgba(255, 255, 255, 0.1);
+      --accent: #3b82f6;
+      --accent-2: #60a5fa;
+      --accent-3: #93c5fd;
+      --soft: rgba(30, 42, 60, 0.5);
+      --dark: #070b14;
+      --dark-soft: #0e1522;
       --code-text: #eaf4fb;
-      --shadow: 0 22px 48px rgba(17, 34, 49, 0.1);
+      --shadow: 0 22px 48px rgba(0, 0, 0, 0.5);
       --radius: 26px;
+      --font-sans: Inter, sans-serif;
+      --font-serif: "Iowan Old Style", Georgia, serif;
+      --font-mono: Consolas, monospace;
     }
 
     * { box-sizing: border-box; }
@@ -28,14 +31,12 @@
 
     body {
       margin: 0;
-      font-family: Inter, Arial, Helvetica, sans-serif;
+      font-family: var(--font-sans);
       color: var(--text);
-      background:
-        radial-gradient(circle at top left, rgba(137, 200, 216, 0.5), transparent 28%),
-        radial-gradient(circle at top right, rgba(31, 108, 140, 0.14), transparent 24%),
-        linear-gradient(180deg, #f4f8fb 0%, #edf2f6 46%, #eff4f8 100%);
+      background: var(--bg);
       line-height: 1.72;
     }
+    body::before { content: ""; position: fixed; inset: -50%; z-index: -2; background: radial-gradient(circle at 50% 0%, rgba(59, 130, 246, 0.15), transparent 60%); }
 
     a { color: inherit; }
 
@@ -668,26 +669,26 @@
 </head>
 <body>
   <main class="page">
-    <header class="topbar">
-<div class="page">
-<nav aria-label="Primary" class="nav">
-<a href="index.html">Home</a>
-<a href="how-omega-works.html">How It Works</a>
-<a href="omega-research.html" class="is-current">Research Context</a>
-<a href="omega-data.html">Data</a>
-<a href="omega-wave.html">OMEGA Wave</a>
-<a href="teaching-documentation.html">Teaching</a>
-<a href="https://jonathancapone.art" rel="noopener" target="_blank">Artwork</a>
-<a href="mailto:jonathancapone@gmail.com">Contact</a>
-</nav>
-</div>
-</header>
+  <header class="topbar">
+    <div class="wrap topbar-inner" style="display:flex; justify-content:space-between; align-items:center;">
+      <a class="brand" href="index.html" style="text-decoration:none;">
+        <span class="brand-title" style="display:block; font-family:var(--font-serif); font-size:1.4rem; color:var(--white);">Jonathan Capone</span>
+        <span class="brand-sub" style="display:block; font-size:0.7rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--accent); font-family:var(--font-mono);">Technical Portfolio</span>
+      </a>
+      <nav class="nav" style="display:flex; gap:1.2rem; font-size:0.75rem; letter-spacing:0.15em; text-transform:uppercase; font-family:var(--font-mono); justify-content:flex-end;">
+        <a href="index.html">Home</a>
+        <a href="index.html#omega">OMEGA Project</a>
+        <a href="teaching-documentation.html">Teaching</a>
+        <a href="https://jonathancapone.art" target="_blank" rel="noopener">Artwork</a>
+        <a href="mailto:jonathancapone@gmail.com">Contact</a>
+      </nav>
+    </div>
+  </header>
 
-<div class="wrap"><div class="omega-subnav">
-<strong>OMEGA sections</strong>
-<a href="how-omega-works.html">How It Works</a>
+<div class="wrap"><div class="omega-subnav" style="background: rgba(255,255,255,0.03); border-color: var(--line);">
+<strong>Context & Data</strong>
 <a href="omega-research.html" class="is-current">Research Context</a>
-<a href="omega-data.html">Data</a>
+<a href="omega-data.html">Data Access</a>
 </div></div>
 <header class="hero">
       <div class="hero-grid">
