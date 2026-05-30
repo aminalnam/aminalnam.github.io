@@ -142,6 +142,21 @@
 
           <section class="section">
             <div class="section-content">
+              <span class="section-kicker">Control Systems Engineering</span>
+              <h2>Jetson & Pixhawk Sensor Fusion.</h2>
+              <p>Deploying autonomous vessels requires a strict separation of concerns. The OMEGA Fleet node profile isolates safety-critical motor control from high-level mission planning.</p><p>The <strong>Jetson Orin NX</strong> handles computer vision, map reduction, and mesh logic (running the gateway). It communicates via MAVLink to a <strong>Pixhawk Autopilot</strong>. The Pixhawk is the ultimate arbiter of physical movement—if the Jetson crashes, the Pixhawk retains hard-coded Return-To-Launch failsafes.</p>
+              <div class="callout"><strong>Mission Intents vs Motor Control</strong><p>Operators do not send PWM motor signals over the mesh. They send abstract "Mission Intents" (e.g., "Survey Grid A"), which the Jetson expands into local waypoints.</p></div>
+            </div>
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">gateway/asv_controller.py</span><pre><code class="language-python">@app.post("/v1/asv/mission-intent")
+def receive_intent(intent: MissionIntent):
+    if intent.type == "survey_grid":
+        waypoints = generate_coverage_path(intent.polygon)
+        pixhawk.upload_mission(waypoints)
+        return {"status": "executing"}</code></pre></div>
+          </section>
+    
+          <section class="section">
+            <div class="section-content">
               <span class="section-kicker">Thermodynamics & RF Physics</span>
               <h2>Edge Node Engineering.</h2>
               <p>Deploying microcontrollers into marine environments introduces severe hardware constraints. Nodes must be encased in completely sealed, IP67+ waterproof enclosures. However, the ESP32 and accompanying LoRa amplifiers generate significant heat.</p><p>Without active ventilation, the system relies entirely on <strong>passive thermal conduction</strong> through the enclosure walls. If duty cycles are not strictly managed by the firmware, the internal ambient temperature will rise until the silicon reaches its thermal throttling limit.</p>

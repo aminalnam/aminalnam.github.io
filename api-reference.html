@@ -142,12 +142,19 @@
 
           <section class="section">
             <div class="section-content">
-              <span class="section-kicker">Docs</span>
-              <h2>REST API</h2>
-              <p>Programmatic access to the gateway endpoints.</p>
-              
+              <span class="section-kicker">Binary Serialization & Security</span>
+              <h2>CBOR Encodings & Authentication.</h2>
+              <p>Sending verbose JSON strings over a 900MHz LoRa radio is an egregious waste of airtime. OMEGA compresses API payloads using <strong>CBOR (Concise Binary Object Representation)</strong>, stripping structural overhead while maintaining the exact schema.</p><p>All physical hardware endpoints are protected by the <code>X-OMEGA-API-Key</code>. This boundary ensures that public users can query observational data, but only authenticated operators can interact with the <code>/v1/control/commands</code> namespace.</p>
+              <div class="callout"><strong>OpenAPI Schema Generation</strong><p>Because the gateway is built on FastAPI, the OpenAPI (Swagger) schema is automatically generated and structurally guaranteed by Pydantic models.</p></div>
             </div>
-            
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">CBOR Compression</span><pre><code class="language-python">import cbor2
+import json
+
+payload = {"temperature": 22.4, "status": "nominal"}
+# JSON: 43 bytes
+json_bytes = json.dumps(payload).encode()
+# CBOR: 28 bytes
+cbor_bytes = cbor2.dumps(payload)</code></pre></div>
           </section>
     
     </div>

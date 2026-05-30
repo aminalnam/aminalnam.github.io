@@ -142,6 +142,19 @@
 
           <section class="section">
             <div class="section-content">
+              <span class="section-kicker">Concurrency & IO Bound Limits</span>
+              <h2>FastAPI Async Event Loop.</h2>
+              <p>The OMEGA Gateway sits at the intersection of HTTP requests from the portal, serial data from LoRa modules, and acoustic packets from underwater nodes. Python's Global Interpreter Lock (GIL) traditionally struggles with this.</p><p>By utilizing <strong>FastAPI and Starlette</strong>, the gateway relies on an asynchronous event loop. It can await an I/O bound serial operation without blocking the execution of a critical API response, allowing a single lightweight process to handle thousands of concurrent state requests.</p>
+              <div class="callout"><strong>SQLite Normalization</strong><p>Raw JSON/CBOR envelopes are unpacked and normalized into a relational SQLite structure, providing lightning-fast spatial queries without heavy database infrastructure.</p></div>
+            </div>
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">FastAPI Concurrency</span><pre><code class="language-python">@app.post("/v1/observations")
+async def ingest_observation(envelope: ObservationEnvelope, db: Session = Depends(get_db)):
+    await background_tasks.add_task(normalize_and_store, db, envelope)
+    return {"status": "accepted"}</code></pre></div>
+          </section>
+    
+          <section class="section">
+            <div class="section-content">
               <span class="section-kicker">Amnesia Prevention & NLP</span>
               <h2>Honu Copilot Architecture.</h2>
               <p>Honu (named after the Hawaiian green sea turtle) is the native, context-aware intelligence engine. To prevent "LLM Amnesia" where the model loses track of what the user is currently viewing, the gateway implements a strict <strong>Amnesia Prevention Protocol</strong>. Every prompt is secretly bundled with a <code>[PORTAL CONTEXT]</code> block containing the active map bounding box, selected device, and UI state.</p><p>Honu operates under strict Read-Only constraints. It possesses a Tool Registry of 46 callable API routes. When a user requests an action, Honu uses <code>kind="action"</code> tools to <em>stage</em> the payload for explicit operator confirmation, guaranteeing AI cannot blindly execute physical hardware commands.</p>

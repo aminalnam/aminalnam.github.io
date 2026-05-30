@@ -155,6 +155,38 @@ def queue_flash_job(job: FlashJob, hardware_registry: Dict):
     return DTN.queue_payload(job.node_id, job.binary_data)</code></pre></div>
           </section>
     
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">Control Systems Engineering</span>
+              <h2>Jetson & Pixhawk Sensor Fusion.</h2>
+              <p>Deploying autonomous vessels requires a strict separation of concerns. The OMEGA Fleet node profile isolates safety-critical motor control from high-level mission planning.</p><p>The <strong>Jetson Orin NX</strong> handles computer vision, map reduction, and mesh logic (running the gateway). It communicates via MAVLink to a <strong>Pixhawk Autopilot</strong>. The Pixhawk is the ultimate arbiter of physical movement—if the Jetson crashes, the Pixhawk retains hard-coded Return-To-Launch failsafes.</p>
+              <div class="callout"><strong>Mission Intents vs Motor Control</strong><p>Operators do not send PWM motor signals over the mesh. They send abstract "Mission Intents" (e.g., "Survey Grid A"), which the Jetson expands into local waypoints.</p></div>
+            </div>
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">gateway/asv_controller.py</span><pre><code class="language-python">@app.post("/v1/asv/mission-intent")
+def receive_intent(intent: MissionIntent):
+    if intent.type == "survey_grid":
+        waypoints = generate_coverage_path(intent.polygon)
+        pixhawk.upload_mission(waypoints)
+        return {"status": "executing"}</code></pre></div>
+          </section>
+    
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">Embedded C++ Compilation</span>
+              <h2>PlatformIO & OTA Pipelines.</h2>
+              <p>OMEGA firmware is built using <strong>PlatformIO</strong> rather than the standard Arduino IDE. This ensures deterministic, reproducible builds across different operator machines by explicitly defining library versions in the <code>platformio.ini</code> manifest.</p><p>Once a binary is compiled, operators deploy it to the fleet via the Over-The-Air (OTA) flashing pipeline. The binary is fragmented, compressed via CBOR, and streamed across the DTN mesh to the target ESP32.</p>
+              <div class="callout"><strong>Hardware Profiles</strong><p>To prevent flashing a T-Beam binary onto a Pixhawk, the OTA gateway strictly verifies the compiled hardware profile signature against the node registry.</p></div>
+            </div>
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">platformio.ini</span><pre><code class="language-ini">[env:tbeam-supreme]
+platform = espressif32
+board = ttgo-t-beam
+framework = arduino
+lib_deps =
+  jgromes/RadioLib @ ^6.0.0
+  bblanchon/ArduinoJson @ ^6.21.0
+build_flags = -D OMEGA_NODE_PROFILE=tbeam_supreme</code></pre></div>
+          </section>
+    
     </div>
   </main>
 

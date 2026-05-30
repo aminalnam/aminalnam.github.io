@@ -213,6 +213,20 @@
 }</code></pre></div>
           </section>
     
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">Dijkstra's Algorithm & Link State</span>
+              <h2>Route Cost & AutoInterface.</h2>
+              <p>In a mixed-bearer environment, the mesh must decide whether to send a packet over a fast, expensive LTE link, or a slow, free LoRa link. OMEGA utilizes a custom route-scoring system weighing <strong>Route Cost</strong> (financial/bandwidth penalty) and <strong>Route Weight</strong> (latency).</p><p>For local configuration, it implements a <strong>Reticulum-inspired AutoInterface</strong>, automatically discovering peers over local IP multicasts without requiring static IP configuration.</p>
+              <div class="callout"><strong>Acknowledgment-Aware Outboxes</strong><p>When a packet is dispatched over the DTN, it sits in an `awaiting_ack` state. If the target node fails to acknowledge within the timeout, the packet falls back to a heavier bearer or fails safely.</p></div>
+            </div>
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">gateway/fleet.py Route Scoring</span><pre><code class="language-python">def calculate_best_route(target_id: str, interfaces: dict) -> str:
+    valid_routes = [iface for iface in interfaces.values() if iface.can_reach(target_id)]
+    # Sort by lowest cost, then lowest weight
+    valid_routes.sort(key=lambda x: (x.route_cost, x.route_weight))
+    return valid_routes[0].id if valid_routes else None</code></pre></div>
+          </section>
+    
     </div>
   </main>
 

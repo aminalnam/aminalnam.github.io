@@ -142,6 +142,21 @@
 
           <section class="section">
             <div class="section-content">
+              <span class="section-kicker">WebGL Rendering & Spatial Indexing</span>
+              <h2>Mapbox GL JS & Real-Time Polling.</h2>
+              <p>Rendering thousands of live nodes requires a hardware-accelerated pipeline. The Mission Portal utilizes <strong>Mapbox GL JS</strong>, pushing the heavy lifting to the client's GPU via WebGL. The system clusters dense node clusters using Supercluster algorithms under the hood.</p><p>To maintain real-time parity without choking the browser's main thread or opening expensive WebSockets over spotty field networks, the portal implements a strict, lightweight <strong>HTTP Long-Polling</strong> architecture against the gateway's SQLite database.</p>
+              <div class="callout"><strong>Vector Tile Caching</strong><p>To save bandwidth on disconnected operations, the frontend aggressively caches Mapbox Vector Tiles (MVT) in the browser's IndexedDB.</p></div>
+            </div>
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">JavaScript Polling Logic</span><pre><code class="language-javascript">async function pollGateway() {
+  const response = await fetch('/v1/measurements/latest');
+  const features = await response.json();
+  map.getSource('omega-nodes').setData(features);
+  setTimeout(pollGateway, 5000);
+}</code></pre></div>
+          </section>
+    
+          <section class="section">
+            <div class="section-content">
               <span class="section-kicker">Sensor Noise & Statistics</span>
               <h2>The Observation Envelope.</h2>
               <p>Raw data from the edge is inherently noisy. GPS modules suffer from atmospheric interference, and MEMS Inertial Measurement Units (IMUs) are highly susceptible to high-frequency vibration from motors and wave chop.</p><p>To extract true vessel state, the edge nodes apply <strong>Kalman Filtering</strong> to mathematically isolate true pitch and roll from the vibration.</p>

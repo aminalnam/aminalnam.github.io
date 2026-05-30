@@ -142,12 +142,19 @@
 
           <section class="section">
             <div class="section-content">
-              <span class="section-kicker">Docs</span>
-              <h2>Deployment</h2>
-              <p>Instructions for spinning up OMEGA locally are coming soon.</p>
-              
+              <span class="section-kicker">Embedded C++ Compilation</span>
+              <h2>PlatformIO & OTA Pipelines.</h2>
+              <p>OMEGA firmware is built using <strong>PlatformIO</strong> rather than the standard Arduino IDE. This ensures deterministic, reproducible builds across different operator machines by explicitly defining library versions in the <code>platformio.ini</code> manifest.</p><p>Once a binary is compiled, operators deploy it to the fleet via the Over-The-Air (OTA) flashing pipeline. The binary is fragmented, compressed via CBOR, and streamed across the DTN mesh to the target ESP32.</p>
+              <div class="callout"><strong>Hardware Profiles</strong><p>To prevent flashing a T-Beam binary onto a Pixhawk, the OTA gateway strictly verifies the compiled hardware profile signature against the node registry.</p></div>
             </div>
-            
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">platformio.ini</span><pre><code class="language-ini">[env:tbeam-supreme]
+platform = espressif32
+board = ttgo-t-beam
+framework = arduino
+lib_deps =
+  jgromes/RadioLib @ ^6.0.0
+  bblanchon/ArduinoJson @ ^6.21.0
+build_flags = -D OMEGA_NODE_PROFILE=tbeam_supreme</code></pre></div>
           </section>
     
     </div>
