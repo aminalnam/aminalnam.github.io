@@ -3,11 +3,26 @@
 <head>
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1" name="viewport"/>
-  <title>How OMEGA Works — The Bathymetric Pipeline</title>
+  <title>OMEGA — How OMEGA Works</title>
+  
+  <!-- SEO & Social Metadata -->
+  <meta name="description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
+  <meta property="og:title" content="OMEGA — How OMEGA Works" />
+  <meta property="og:description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://jonathancapone.com/how-omega-works.html" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="OMEGA — How OMEGA Works" />
+  <meta name="twitter:description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
+  
+  <!-- Favicon / Title Branding -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌊</text></svg>">
+  
   <style>
     :root {
       --bg: #070b14; --bg-2: #0e1522; --panel: rgba(20, 30, 48, 0.6); --panel-soft: rgba(30, 42, 60, 0.5);
       --ink: #ffffff; --ink-soft: #9aa2b1; --line: rgba(255, 255, 255, 0.1); --accent: #3b82f6; --accent-deep: #2563eb;
+      --accent-green: #10b981; --accent-yellow: #f59e0b;
       --white: #ffffff; --radius: 1.25rem; --radius-sm: 18px;
       --font-sans: Inter, sans-serif; --font-serif: "Iowan Old Style", Georgia, serif; --font-mono: Consolas, monospace;
       --shadow: 0 22px 48px rgba(0, 0, 0, 0.5);
@@ -28,9 +43,10 @@
     .topbar-inner { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
     .brand-title { display: block; font-family: var(--font-serif); font-size: 1.4rem; color: var(--white); }
     .brand-sub { display: block; font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); font-family: var(--font-mono); }
+    
     .nav { display: flex; flex-wrap: wrap; gap: 1.2rem; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; font-family: var(--font-mono); }
     .nav a { color: var(--ink-soft); transition: color 0.3s; }
-    .nav a:hover { color: var(--white); }
+    .nav a:hover, .nav a.is-current { color: var(--white); }
 
     .omega-subnav { margin: 2rem 0; padding: 1rem 1.5rem; border: 1px solid var(--line); border-radius: 999px; background: rgba(255,255,255,0.03); display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; backdrop-filter: blur(10px); }
     .omega-subnav strong { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink-soft); margin-right: 0.5rem; }
@@ -39,7 +55,7 @@
 
     .hero { padding: 4rem 0 3rem; }
     .eyebrow { font-family: var(--font-mono); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.2em; color: var(--accent); margin-bottom: 1rem; display: block; }
-    h1 { margin: 0 0 1.5rem; font-family: var(--font-serif); font-size: clamp(3rem, 6vw, 4.5rem); font-weight: 400; line-height: 1.1; max-width: 20ch; }
+    h1 { margin: 0 0 1.5rem; font-family: var(--font-serif); font-size: clamp(3rem, 6vw, 4.5rem); font-weight: 400; line-height: 1.1; max-width: 25ch; }
     .hero p { max-width: 48rem; margin: 0 0 2.5rem; font-size: 1.25rem; color: var(--ink-soft); }
     .btn { display: inline-flex; align-items: center; padding: 0.8rem 1.5rem; border-radius: 999px; font-family: var(--font-mono); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.15em; transition: all 0.2s; margin-right: 0.5rem; margin-bottom: 0.5rem;}
     .btn-primary { background: var(--accent); color: #fff; border: 1px solid var(--accent); }
@@ -48,37 +64,40 @@
     .btn-secondary:hover { background: rgba(255, 255, 255, 0.1); transform: translateY(-2px); }
 
     .main-shell { position: relative; margin-bottom: 4rem; }
-    .main-inner { background: var(--panel); border-radius: 1.5rem; overflow: clip; box-shadow: var(--shadow); border: 1px solid var(--line); }
-    .section { padding: 4rem; border-bottom: 1px solid var(--line); }
+    .main-inner { background: var(--panel); border-radius: 1.5rem; overflow: clip; box-shadow: var(--shadow); border: 1px solid var(--line); padding: 2rem;}
+    .section { padding: 2rem 0; border-bottom: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 4rem; align-items: flex-start; }
     .section:last-child { border-bottom: none; }
+    .section-content { flex: 1; min-width: 300px; }
     .section-kicker { font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent); margin-bottom: 0.8rem; display: block; }
-    .section h2 { font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem; max-width: 48rem;}
-    .section p { color: var(--ink-soft); font-size: 1.1rem; max-width: 48rem; margin-bottom: 2rem;}
+    .section h2 { font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1.5rem; }
+    .section p { color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 1.5rem; line-height: 1.7; }
 
-    .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 2rem; }
-    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
-    .panel { background: rgba(0,0,0,0.2); border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 2rem; display: flex; flex-direction: column; }
-    .panel-kicker { display: inline-block; font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent); padding: 0.2rem 0.6rem; background: rgba(59,130,246,0.1); border-radius: 999px; margin-bottom: 1rem; align-self: flex-start;}
-    .panel h3 { font-family: var(--font-serif); font-size: 1.5rem; margin: 0 0 1rem; }
-    .panel p { color: var(--ink-soft); font-size: 0.95rem; margin-bottom: 1.5rem; }
-    .panel ul { color: var(--ink-soft); padding-left: 1.2rem; margin-bottom: 1.5rem;}
-    .panel li { margin-bottom: 0.5rem; }
+    .section-visual { flex: 1; min-width: 300px; background: rgba(0,0,0,0.3); border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 2rem; }
+    .section-visual img { width: 100%; border-radius: 8px; border: 1px solid var(--line); box-shadow: var(--shadow); margin-bottom: 1rem; }
+    
+    .panel-kicker { display: inline-block; font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent); padding: 0.2rem 0.6rem; background: rgba(59,130,246,0.1); border-radius: 999px; margin-bottom: 1rem; }
     
     .callout { background: rgba(255,255,255,0.03); border: 1px solid var(--line); padding: 1.5rem; border-radius: 0.75rem; margin-top: 2rem; border-left: 4px solid var(--accent);}
     .callout strong { display: block; font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 0.5rem;}
-    .callout p { font-size: 0.95rem; color: var(--ink-soft); margin-bottom: 0; max-width: 100%;}
+    .callout p { font-size: 0.95rem; color: var(--ink-soft); margin-bottom: 0; }
     
-    pre { background: rgba(10,15,25,0.9); padding: 1.5rem; border-radius: var(--radius-sm); overflow-x: auto; border: 1px solid var(--line); margin-bottom: 1.5rem; font-family: var(--font-mono); font-size: 0.9rem;}
+    pre { background: rgba(10,15,25,0.9); padding: 1.5rem; border-radius: var(--radius-sm); overflow-x: auto; border: 1px solid var(--line); margin-bottom: 1.5rem; font-family: var(--font-mono); font-size: 0.85rem; line-height: 1.4;}
     code { font-family: var(--font-mono); color: #e2e8f0; }
     p code, li code { background: rgba(255,255,255,0.1); padding: 0.2rem 0.4rem; border-radius: 4px; font-size: 0.85em; color: #60a5fa;}
 
-    table { width: 100%; border-collapse: collapse; margin-top: 1rem; background: rgba(0,0,0,0.2); border: 1px solid var(--line); border-radius: var(--radius-sm); overflow: hidden; display: block;}
-    th, td { padding: 1rem 1.5rem; text-align: left; border-bottom: 1px solid var(--line); }
-    th { font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent); background: rgba(255,255,255,0.03); }
-    td { font-size: 0.95rem; color: var(--ink-soft); }
-    tr:last-child td { border-bottom: none; }
-
     .footer { border-top: 1px solid var(--line); padding: 4rem 0; text-align: center; font-family: var(--font-mono); font-size: 0.8rem; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.15em; }
+    
+    .status-label { font-family: var(--font-mono); font-size: 0.65rem; padding: 0.2rem 0.5rem; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.1em; display: inline-block; margin-bottom: 0.5rem; }
+    .status-implemented { background: rgba(16, 185, 129, 0.1); color: var(--accent-green); border: 1px solid rgba(16, 185, 129, 0.3); }
+    .status-partial { background: rgba(245, 158, 11, 0.1); color: var(--accent-yellow); border: 1px solid rgba(245, 158, 11, 0.3); }
+    .status-planned { background: rgba(255, 255, 255, 0.05); color: var(--ink-soft); border: 1px solid rgba(255, 255, 255, 0.1); }
+    
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+    .panel { background: rgba(0,0,0,0.2); border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 2rem; display: flex; flex-direction: column; transition: transform 0.2s, background 0.2s; }
+    .panel:hover { background: rgba(255,255,255,0.03); transform: translateY(-4px); border-color: rgba(255,255,255,0.2);}
+    .panel h3 { font-family: var(--font-serif); font-size: 1.5rem; margin: 0 0 1rem; }
+    .panel p { color: var(--ink-soft); font-size: 0.95rem; margin-bottom: 1.5rem; flex-grow: 1;}
+    
   </style>
   <script type="module">
     import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
@@ -92,123 +111,50 @@
         <span class="brand-title">Jonathan Capone</span>
         <span class="brand-sub">Technical Portfolio</span>
       </a>
-                  <nav class="nav">
+      <nav class="nav">
         <a href="index.html">Home</a>
-        <a href="omega-transport.html">Transport</a>
-        <a href="omega-hardware.html">Hardware</a>
-        <a href="omega-data.html">Data</a>
-        <a href="omega-ops.html">Operations</a>
-        <a href="omega-observe.html">Observe</a>
+        <a href="overview.html">Overview</a>
+        <a href="gateway.html">Gateway</a>
+        <a href="mesh-core.html">Mesh</a>
+        <a href="mission-portal.html">Portal</a>
+        <a href="fleet-asv.html">Fleet</a>
+        <a href="data-providers.html">Data</a>
+        <a href="janus-acoustic.html">Acoustics</a>
+        <a href="simulation.html">Simulation</a>
+        <a href="teaching-documentation.html">Education</a>
+        <a href="build-guide.html">Build</a>
       </nav>
     </div>
   </header>
 
-  <div class="wrap">
-    <div class="omega-subnav">
-      <strong>Sensing Chapters:</strong>
-      <a href="how-omega-works.html" class="is-current">Overview</a>
-      <a href="omega-sensing.html">1. Physics of Sensing</a>
-      <a href="omega-validation.html">2. Validation Logic</a>
-      <a href="omega-mapping.html">3. Map Interpolation</a>
-    </div>
-  </div>
-
   <section class="hero wrap">
-    <span class="eyebrow">The Bathymetric Engine</span>
-    <h1>How OMEGA Maps the Ocean.</h1>
-    <p>Before data can be routed through mesh networks or displayed in a digital twin, it must be accurately captured, validated, and interpolated. This guide breaks down the science, code, and mathematics behind OMEGA's bathymetric reconstruction pipeline.</p>
+    <span class="eyebrow">Overview</span>
+    <h1>How OMEGA Works</h1>
+    <p>The operational architecture of the OMEGA platform.</p>
     <div class="hero-actions">
-      <a class="btn btn-primary" href="omega-sensing.html">Start the Guide: Sensing Physics</a>
-      <a class="btn btn-secondary" href="https://github.com/aminalnam/OMEGA" target="_blank">View Python Mapping Scripts</a>
+      <a class="btn btn-primary" href="https://github.com/aminalnam/OMEGA" target="_blank">View OMEGA on GitHub</a>
+      <a class="btn btn-secondary" href="index.html">Back to Portfolio</a>
     </div>
   </section>
 
   <main class="main-shell wrap">
     <div class="main-inner">
-      
-      <section class="section">
-        <span class="section-kicker">Data Pipeline</span>
-        <h2>The Measurement-to-Map Architecture.</h2>
-        <p>Turning acoustic transducer pings into continuous spatial map layers requires a strict pipeline. Edge compute nodes execute physical corrections and heuristic validations in real-time, drastically reducing the data transmitted over the mesh network. Only "accepted" geospatial points reach the Python backend for Inverse Distance Weighting interpolation.</p>
-        
-        <div class="mermaid" style="margin: 3rem 0; border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 2rem; background: rgba(0,0,0,0.3);">
-          sequenceDiagram
-            participant Sensor as Sonar/Temp
-            participant Edge as ESP32 Compute
-            participant Valid as Heuristic Validator
-            participant Python as Python Backend (IDW)
-            participant Output as GIS Output (KML/Contours)
 
-            Sensor->>Edge: Raw Time-of-Flight & Water Temp
-            Edge->>Edge: Mackenzie Eq: Correct Sound Speed
-            Edge->>Valid: Corrected Depth (meters)
-            Valid->>Valid: Check HDOP, IMU Pitch, Fix Age
-            alt Validation Fails
-                Valid-->>Edge: Drop Point (Save Bandwidth)
-            else Validation Passes
-                Valid->>Python: Route Validated Point (Lat/Lon/Z)
-            end
-            Python->>Python: scipy.spatial.cKDTree (IDW)
-            Python->>Output: Generate Matplotlib Surfaces & Earth Overlays
-        </div>
-
-        <div class="callout">
-          <strong>Why process at the edge?</strong>
-          <p>Transmitting raw 10Hz sonar pings over a 250-byte MTU LoRa connection is impossible. By executing sound-speed corrections and strict geographic validation heuristics on the ESP32 rover itself, we only transmit high-value data points. This is the essence of extreme edge-computing in marine environments.</p>
-        </div>
-      </section>
-
-      <section class="section">
-        <span class="section-kicker">The Three Stages</span>
-        <h2>Sensing, Validation, and Interpolation.</h2>
-        <p>The OMEGA bathymetric pipeline is strictly delineated into three scientific domains: Physics, Edge Logic, and Applied Mathematics.</p>
-        
-        <div class="grid-3">
-          <article class="panel">
-            <span class="panel-kicker">1. Physics</span>
-            <h3>Acoustic Sensing</h3>
-            <p>Sonar returns a travel time, not a map. Depth is heavily dependent on the thermodynamic properties of the water column (temperature and salinity). We explore how the Mackenzie equation corrects time-of-flight on the fly.</p>
-            <a href="omega-sensing.html" class="btn btn-secondary" style="margin-top: auto; align-self: flex-start;">Read Part 1</a>
-          </article>
-          <article class="panel">
-            <span class="panel-kicker">2. Logic</span>
-            <h3>Edge Validation</h3>
-            <p>A mathematically perfect depth reading is useless if the geographic position is wrong. We detail the C++ algorithms that reject points based on GPS HDOP degradation, satellite count, and IMU platform pitch/roll.</p>
-            <a href="omega-validation.html" class="btn btn-secondary" style="margin-top: auto; align-self: flex-start;">Read Part 2</a>
-          </article>
-          <article class="panel">
-            <span class="panel-kicker">3. Mathematics</span>
-            <h3>Spatial Interpolation</h3>
-            <p>Roving vehicles only capture discrete points (a "breadcrumb trail"). We break down the Python scripts that use Inverse Distance Weighting (IDW) and K-D trees to generate continuous topographical surfaces.</p>
-            <a href="omega-mapping.html" class="btn btn-secondary" style="margin-top: auto; align-self: flex-start;">Read Part 3</a>
-          </article>
-        </div>
-      </section>
-
-      <section class="section">
-        <span class="section-kicker">Strict Thresholds</span>
-        <h2>The Validation Matrix.</h2>
-        <p>The ESP32 rover code defines highly specific bounds for data acceptance. If a sensor reading violates any of these predefined thresholds, the data is tagged with an error string and completely excluded from the mapping payload.</p>
-        
-        <table>
-          <thead>
-            <tr><th>C++ Constant</th><th>Current Threshold</th><th>Scientific Rationale</th></tr>
-          </thead>
-          <tbody>
-            <tr><td><code>sonarCalSoundSpeed</code></td><td>1500.0 m/s</td><td>The baseline acoustic velocity reference point (fresh water at ~20°C). Used as the denominator for live ratio corrections.</td></tr>
-            <tr><td><code>maxMapHdop</code></td><td>1.8</td><td>Horizontal Dilution of Precision. Values > 1.8 indicate poor satellite geometry, meaning the spatial anchor of the depth point is compromised.</td></tr>
-            <tr><td><code>maxMapFixAgeMs</code></td><td>2000 ms</td><td>If the rover loses GPS lock for more than 2 seconds, the vehicle's momentum has likely carried it far from the last known coordinate.</td></tr>
-            <tr><td><code>maxMapPitchDeg</code></td><td>12.0°</td><td>If the vessel pitches severely, the sonar beam is no longer measuring the nadir (vertical) depth, but the hypotenuse. This introduces critical distortion.</td></tr>
-            <tr><td><code>minDepthCm</code></td><td>20 cm</td><td>The physical blanking distance (ring-down time) of the transducer crystal. Anything closer is acoustic noise.</td></tr>
-          </tbody>
-        </table>
-      </section>
-
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">Architecture</span>
+              <h2>System Design</h2>
+              <p>See the Overview page for architecture diagrams.</p>
+              
+            </div>
+            
+          </section>
+    
     </div>
   </main>
 
   <footer class="footer wrap">
-    <span>© Jonathan Capone — Technical Portfolio</span>
+    <span>© Jonathan Capone — Technical Portfolio. OMEGA (formerly OMEGA-wave).</span>
   </footer>
 </body>
 </html>

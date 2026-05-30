@@ -3,12 +3,26 @@
 <head>
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1" name="viewport"/>
-  <title>OMEGA-wave — Data & Analytics</title>
+  <title>OMEGA — OMEGA Observation Data, Providers & Exports</title>
+  
+  <!-- SEO & Social Metadata -->
+  <meta name="description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
+  <meta property="og:title" content="OMEGA — OMEGA Observation Data, Providers & Exports" />
+  <meta property="og:description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://jonathancapone.com/omega-data.html" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="OMEGA — OMEGA Observation Data, Providers & Exports" />
+  <meta name="twitter:description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
+  
+  <!-- Favicon / Title Branding -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌊</text></svg>">
+  
   <style>
     :root {
       --bg: #070b14; --bg-2: #0e1522; --panel: rgba(20, 30, 48, 0.6); --panel-soft: rgba(30, 42, 60, 0.5);
       --ink: #ffffff; --ink-soft: #9aa2b1; --line: rgba(255, 255, 255, 0.1); --accent: #3b82f6; --accent-deep: #2563eb;
-      --accent-green: #10b981;
+      --accent-green: #10b981; --accent-yellow: #f59e0b;
       --white: #ffffff; --radius: 1.25rem; --radius-sm: 18px;
       --font-sans: Inter, sans-serif; --font-serif: "Iowan Old Style", Georgia, serif; --font-mono: Consolas, monospace;
       --shadow: 0 22px 48px rgba(0, 0, 0, 0.5);
@@ -50,8 +64,9 @@
     .btn-secondary:hover { background: rgba(255, 255, 255, 0.1); transform: translateY(-2px); }
 
     .main-shell { position: relative; margin-bottom: 4rem; }
-    .main-inner { background: var(--panel); border-radius: 1.5rem; overflow: clip; box-shadow: var(--shadow); border: 1px solid var(--line); }
-    .section { padding: 4rem; border-bottom: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 4rem; align-items: flex-start; }
+    .main-inner { background: var(--panel); border-radius: 1.5rem; overflow: clip; box-shadow: var(--shadow); border: 1px solid var(--line); padding: 2rem;}
+    .section { padding: 2rem 0; border-bottom: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 4rem; align-items: flex-start; }
+    .section:last-child { border-bottom: none; }
     .section-content { flex: 1; min-width: 300px; }
     .section-kicker { font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent); margin-bottom: 0.8rem; display: block; }
     .section h2 { font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1.5rem; }
@@ -71,6 +86,18 @@
     p code, li code { background: rgba(255,255,255,0.1); padding: 0.2rem 0.4rem; border-radius: 4px; font-size: 0.85em; color: #60a5fa;}
 
     .footer { border-top: 1px solid var(--line); padding: 4rem 0; text-align: center; font-family: var(--font-mono); font-size: 0.8rem; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.15em; }
+    
+    .status-label { font-family: var(--font-mono); font-size: 0.65rem; padding: 0.2rem 0.5rem; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.1em; display: inline-block; margin-bottom: 0.5rem; }
+    .status-implemented { background: rgba(16, 185, 129, 0.1); color: var(--accent-green); border: 1px solid rgba(16, 185, 129, 0.3); }
+    .status-partial { background: rgba(245, 158, 11, 0.1); color: var(--accent-yellow); border: 1px solid rgba(245, 158, 11, 0.3); }
+    .status-planned { background: rgba(255, 255, 255, 0.05); color: var(--ink-soft); border: 1px solid rgba(255, 255, 255, 0.1); }
+    
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+    .panel { background: rgba(0,0,0,0.2); border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 2rem; display: flex; flex-direction: column; transition: transform 0.2s, background 0.2s; }
+    .panel:hover { background: rgba(255,255,255,0.03); transform: translateY(-4px); border-color: rgba(255,255,255,0.2);}
+    .panel h3 { font-family: var(--font-serif); font-size: 1.5rem; margin: 0 0 1rem; }
+    .panel p { color: var(--ink-soft); font-size: 0.95rem; margin-bottom: 1.5rem; flex-grow: 1;}
+    
   </style>
   <script type="module">
     import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
@@ -86,40 +113,26 @@
       </a>
       <nav class="nav">
         <a href="index.html">Home</a>
-        <a href="omega-transport.html" class="">Transport</a>
-        <a href="omega-hardware.html" class="">Hardware</a>
-        <a href="omega-data.html" class="is-current">Data</a>
-        <a href="omega-ops.html" class="">Ops</a>
-        <a href="omega-observe.html" class="">Observe</a>
-        <a href="omega-intelligence.html" class="">AI</a>
-        <a href="omega-simulation.html" class="">Sims</a>
-        <a href="omega-science.html" class="">QC</a>
-        <a href="omega-external.html" class="">Fed</a>
+        <a href="overview.html">Overview</a>
+        <a href="gateway.html">Gateway</a>
+        <a href="mesh-core.html">Mesh</a>
+        <a href="mission-portal.html">Portal</a>
+        <a href="fleet-asv.html">Fleet</a>
+        <a href="data-providers.html">Data</a>
+        <a href="janus-acoustic.html">Acoustics</a>
+        <a href="simulation.html">Simulation</a>
+        <a href="teaching-documentation.html">Education</a>
+        <a href="build-guide.html">Build</a>
       </nav>
     </div>
   </header>
 
-  <div class="wrap">
-    <div class="omega-subnav">
-      <strong>Domains:</strong>
-      <a href="omega-transport.html" class="">Network & Transport</a>
-      <a href="omega-hardware.html" class="">Hardware & Edge</a>
-      <a href="omega-data.html" class="is-current">Data & Analytics</a>
-      <a href="omega-ops.html" class="">Mission & Ops</a>
-      <a href="omega-observe.html" class="">API Observation</a>
-      <a href="omega-intelligence.html" class="">Honu Copilot</a>
-      <a href="omega-simulation.html" class="">Digital Twins</a>
-      <a href="omega-science.html" class="">QC & Calibration</a>
-      <a href="omega-external.html" class="">ERDDAP Federation</a>
-    </div>
-  </div>
-
   <section class="hero wrap">
-    <span class="eyebrow">Domain 03: Data Science</span>
-    <h1>Statistics & Spatial Math.</h1>
-    <p>Transforming raw, asynchronous telemetry into actionable intelligence using Kalman filtering, Inverse Distance Weighting, and live polling structures.</p>
+    <span class="eyebrow">Legacy Domain</span>
+    <h1>Data</h1>
+    <p>Observation envelopes and data handling.</p>
     <div class="hero-actions">
-      <a class="btn btn-primary" href="https://github.com/aminalnam/OMEGA-wave" target="_blank">View GitHub Repository</a>
+      <a class="btn btn-primary" href="https://github.com/aminalnam/OMEGA" target="_blank">View OMEGA on GitHub</a>
       <a class="btn btn-secondary" href="index.html">Back to Portfolio</a>
     </div>
   </section>
@@ -127,113 +140,21 @@
   <main class="main-shell wrap">
     <div class="main-inner">
 
-      <section class="section">
-        <div class="section-content">
-          <span class="section-kicker">Sensor Noise & Statistics</span>
-          <h2>The Observation Envelope.</h2>
-          <p>Raw data from the edge is inherently noisy. GPS modules suffer from atmospheric interference, and MEMS Inertial Measurement Units (IMUs) are highly susceptible to high-frequency vibration from motors and wave chop.</p><p>To extract true vessel state, the edge nodes apply <strong>Kalman Filtering</strong> to mathematically isolate true pitch and roll from the vibration.</p>
-          <div class="callout">
-            <strong>Canonical Observations</strong>
-            <p>When the gateway receives a packet, it expands it into a fully validated Observation Envelope, containing cleaned statistics alongside the raw readings.</p>
-          </div>
-        </div>
-        <div class="section-visual" style="max-height: 800px; overflow-y: auto;">
-          <span class="panel-kicker">observation-envelope.example.json</span>
-          <pre><code class="language-json">{
-  "spec": "omega-wave.observation-envelope/1",
-  "message_id": "01HSJ9R2XW6T4Q3AP7D3R5K8NE",
-  "message_type": "observation",
-  "origin": {
-    "node_id": "urn:omega-wave:node:site-a:buoy-02",
-    "device_id": "water-quality-probe-main",
-    "capability_ref": "https://example.invalid/omega-wave/things/site-a-buoy-02-water-quality.td.json",
-    "firmware_version": "0.1.0"
-  },
-  "routing": {
-    "priority": "normal",
-    "ttl_s": 86400,
-    "ack_mode": "gateway",
-    "max_hops": 8
-  },
-  "sample": {
-    "sampled_at": "2026-04-18T18:30:00Z",
-    "sequence": 1842,
-    "location": {
-      "lat": 36.8054,
-      "lon": -121.7891,
-      "depth_m": 4.2
-    }
-  },
-  "tags": {
-    "site": "site-a",
-    "platform": "buoy",
-    "medium": "water"
-  },
-  "payload": {
-    "mode": "senml",
-    "content_type": "application/senml+json",
-    "schema_ref": "urn:ietf:rfc:8428",
-    "records": [
-      {
-        "bn": "urn:omega-wave:thing:site-a:buoy-02:water-quality/",
-        "bt": 1776537000
-      },
-      {
-        "n": "temperature",
-        "u": "Cel",
-        "v": 13.42
-      },
-      {
-        "n": "salinity",
-        "u": "psu",
-        "v": 33.91
-      },
-      {
-        "n": "dissolved-oxygen",
-        "u": "mg/L",
-        "v": 8.11
-      },
-      {
-        "n": "battery-voltage",
-        "u": "V",
-        "v": 3.92
-      }
-    ]
-  }
-}</code></pre>
-        </div>
-      </section>
-
-      <section class="section">
-        <div class="section-content">
-          <span class="section-kicker">Spatial Interpolation</span>
-          <h2>Bathymetry & IDW.</h2>
-          <p>Because a physical vessel cannot sound every single square meter of a lakebed, the system must mathematically infer the depth of the unmapped voids.</p><p>OMEGA-wave utilizes <strong>Inverse Distance Weighting (IDW)</strong> for rapid edge-compute approximation. The depth of an unknown point is calculated as a weighted average of known surrounding points, where the weight decreases exponentially as distance increases.</p>
-          <div class="callout">
-            <strong>cKDTree Optimization</strong>
-            <p>This is executed efficiently in Python using scipy.spatial.cKDTree, which organizes the data into a k-dimensional tree for lightning-fast nearest-neighbor lookups.</p>
-          </div>
-        </div>
-        <div class="section-visual" style="max-height: 800px; overflow-y: auto;">
-          <span class="panel-kicker">Python IDW Implementation</span>
-          <pre><code class="language-python">from scipy.spatial import cKDTree
-import numpy as np
-
-def inverse_distance_weighting(x, y, z, xi, yi, power=2):
-    tree = cKDTree(np.c_[x, y])
-    dist, idx = tree.query(np.c_[xi.ravel(), yi.ravel()], k=10)
-    dist = np.maximum(dist, 1e-10)
-    weights = 1.0 / dist**power
-    zi = np.sum(weights * z[idx], axis=1) / np.sum(weights, axis=1)
-    return zi.reshape(xi.shape)</code></pre>
-        </div>
-      </section>
-
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">Data</span>
+              <h2>Data Handlers</h2>
+              <p>Content moved to specific capability pages.</p>
+              
+            </div>
+            
+          </section>
+    
     </div>
   </main>
 
   <footer class="footer wrap">
-    <span>© Jonathan Capone — Technical Portfolio</span>
+    <span>© Jonathan Capone — Technical Portfolio. OMEGA (formerly OMEGA-wave).</span>
   </footer>
 </body>
 </html>

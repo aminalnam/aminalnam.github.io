@@ -3,16 +3,16 @@
 <head>
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1" name="viewport"/>
-  <title>OMEGA — OMEGA Mesh Core & Mixed-Bearer Transport</title>
+  <title>OMEGA — JANUS Acoustics</title>
   
   <!-- SEO & Social Metadata -->
   <meta name="description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
-  <meta property="og:title" content="OMEGA — OMEGA Mesh Core & Mixed-Bearer Transport" />
+  <meta property="og:title" content="OMEGA — JANUS Acoustics" />
   <meta property="og:description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://jonathancapone.com/omega-transport.html" />
+  <meta property="og:url" content="https://jonathancapone.com/janus-acoustic.html" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="OMEGA — OMEGA Mesh Core & Mixed-Bearer Transport" />
+  <meta name="twitter:title" content="OMEGA — JANUS Acoustics" />
   <meta name="twitter:description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
   
   <!-- Favicon / Title Branding -->
@@ -128,9 +128,9 @@
   </header>
 
   <section class="hero wrap">
-    <span class="eyebrow">Legacy Domain</span>
-    <h1>Transport</h1>
-    <p>The DTN overlay and mixed-bearer network.</p>
+    <span class="eyebrow">Component</span>
+    <h1>JANUS Acoustics</h1>
+    <p>NATO-standard acoustic modulation.</p>
     <div class="hero-actions">
       <a class="btn btn-primary" href="https://github.com/aminalnam/OMEGA" target="_blank">View OMEGA on GitHub</a>
       <a class="btn btn-secondary" href="index.html">Back to Portfolio</a>
@@ -142,12 +142,48 @@
 
           <section class="section">
             <div class="section-content">
-              <span class="section-kicker">Transport</span>
-              <h2>Mesh Core</h2>
-              <p>Content moved to specific capability pages.</p>
+              <span class="section-kicker">Underwater</span>
+              <h2>Acoustic Bridges</h2>
+              <p>Overcoming multipath fading and refraction.</p>
               
             </div>
-            
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">janus-announce.json</span><pre><code class="language-json">{
+  "message_id": "janus-msg-0001",
+  "observed_at": "2026-04-18T19:20:00Z",
+  "link_id": "buoy-02-acoustic",
+  "message_type": "announce",
+  "origin": {
+    "node_id": "urn:omega-wave:node:site-a:buoy-02",
+    "device_id": "acoustic-bridge-main",
+    "role": "surface-gateway"
+  },
+  "destination": {
+    "scope": "broadcast"
+  },
+  "janus": {
+    "class_id": 16,
+    "app_type": "gateway-announce",
+    "cargo_encoding": "json",
+    "cargo": {
+      "capabilities": [
+        "command-envelope",
+        "telemetry-bridge"
+      ],
+      "surface_backhaul": [
+        "lora",
+        "wifi-halow",
+        "cellular"
+      ],
+      "notes": "Buoy bridge ready for sparse telemetry and supervisory commands."
+    }
+  },
+  "transport": {
+    "provider": "software-defined-modem",
+    "center_frequency_hz": 11520,
+    "snr_db": 11.4,
+    "rx_level_db": -78.0
+  }
+}</code></pre></div>
           </section>
     
     </div>

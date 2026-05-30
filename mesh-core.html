@@ -3,16 +3,16 @@
 <head>
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1" name="viewport"/>
-  <title>OMEGA — OMEGA Mesh Core & Mixed-Bearer Transport</title>
+  <title>OMEGA — Mesh Core</title>
   
   <!-- SEO & Social Metadata -->
   <meta name="description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
-  <meta property="og:title" content="OMEGA — OMEGA Mesh Core & Mixed-Bearer Transport" />
+  <meta property="og:title" content="OMEGA — Mesh Core" />
   <meta property="og:description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://jonathancapone.com/omega-transport.html" />
+  <meta property="og:url" content="https://jonathancapone.com/mesh-core.html" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="OMEGA — OMEGA Mesh Core & Mixed-Bearer Transport" />
+  <meta name="twitter:title" content="OMEGA — Mesh Core" />
   <meta name="twitter:description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
   
   <!-- Favicon / Title Branding -->
@@ -128,9 +128,9 @@
   </header>
 
   <section class="hero wrap">
-    <span class="eyebrow">Legacy Domain</span>
-    <h1>Transport</h1>
-    <p>The DTN overlay and mixed-bearer network.</p>
+    <span class="eyebrow">Component</span>
+    <h1>Mesh Core</h1>
+    <p>LoRa CSS, CBOR compression, and DTN logic.</p>
     <div class="hero-actions">
       <a class="btn btn-primary" href="https://github.com/aminalnam/OMEGA" target="_blank">View OMEGA on GitHub</a>
       <a class="btn btn-secondary" href="index.html">Back to Portfolio</a>
@@ -142,12 +142,29 @@
 
           <section class="section">
             <div class="section-content">
-              <span class="section-kicker">Transport</span>
-              <h2>Mesh Core</h2>
-              <p>Content moved to specific capability pages.</p>
+              <span class="section-kicker">Networking</span>
+              <h2>Mesh Transport</h2>
+              <p>A unified addressing fabric over unreliable RF.</p>
               
             </div>
-            
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">lora-cbor-frame.json</span><pre><code class="language-json">{
+  "message_id": "lora-asv-health-0001",
+  "message_type": "compact_observation",
+  "node_id": "urn:omega-wave:node:asv:prototype-01",
+  "device_id": "tbeam-1w-lora",
+  "sequence": 1,
+  "timestamp": "2026-04-29T15:35:00Z",
+  "lat": 36.81,
+  "lon": -122.41,
+  "priority": "high",
+  "payload_kind": "system_health",
+  "payload": {
+    "battery-percent": 86,
+    "rssi-dbm": -97,
+    "snr-db": 6.5,
+    "leak-detected": false
+  }
+}</code></pre></div>
           </section>
     
     </div>

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <title>OMEGA | Data & Outputs</title>
+  <meta name="description" content="Sample OMEGA datasets, CSVs, and generated maps."/>
+  
+  <!-- Favicons -->
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" href="/OMEGA/favicon.ico" type="image/x-icon">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website"/>
+  <meta property="og:url" content="https://jonathancapone.com/data.html"/>
+  <meta property="og:title" content="OMEGA | Data & Outputs"/>
+  <meta property="og:description" content="Sample OMEGA datasets, CSVs, and generated maps."/>
+  <meta property="og:image" content="https://jonathancapone.com/images/omega-og-image.png"/>
+  
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image"/>
+  <meta property="twitter:url" content="https://jonathancapone.com/data.html"/>
+  <meta property="twitter:title" content="OMEGA | Data & Outputs"/>
+  <meta property="twitter:description" content="Sample OMEGA datasets, CSVs, and generated maps."/>
+  <meta property="twitter:image" content="https://jonathancapone.com/images/omega-og-image.png"/>
+
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "OMEGA",
+    "url": "https://jonathancapone.com",
+    "description": "Underwater survey, sensing, and bathymetric mapping platform."
+  }
+  </script>
+
+  <style>
+    :root {
+      --bg: #070b14; --bg-2: #0e1522; --panel: rgba(20, 30, 48, 0.6); --panel-soft: rgba(30, 42, 60, 0.5);
+      --ink: #ffffff; --ink-soft: #9aa2b1; --line: rgba(255, 255, 255, 0.1); --accent: #3b82f6; --accent-deep: #2563eb;
+      --accent-green: #10b981;
+      --white: #ffffff; --radius: 1.25rem; --radius-sm: 18px;
+      --font-sans: Inter, sans-serif; --font-serif: "Iowan Old Style", Georgia, serif; --font-mono: Consolas, monospace;
+      --shadow: 0 22px 48px rgba(0, 0, 0, 0.5);
+    }
+    * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; color: var(--ink); background: var(--bg); font-family: var(--font-sans); line-height: 1.65; }
+    body::before { content: ""; position: fixed; inset: -50%; z-index: -2; background: radial-gradient(circle at 50% 0%, rgba(59, 130, 246, 0.15), transparent 60%); pointer-events: none;}
+    body::after {
+      content: ""; position: fixed; inset: 0; z-index: -1;
+      background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 2.2rem 2.2rem; mask-image: linear-gradient(180deg, rgba(0,0,0,0.8), rgba(0,0,0,0.25)); pointer-events: none;
+    }
+    a { color: inherit; text-decoration: none; }
+    .wrap { width: min(calc(100% - 2rem), 82rem); margin: 0 auto; }
+    
+    .topbar { position: sticky; top: 0; z-index: 40; backdrop-filter: blur(20px); background: rgba(7, 11, 20, 0.75); border-bottom: 1px solid var(--line); padding: 1.5rem 0; }
+    .topbar-inner { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+    .brand-title { display: block; font-family: var(--font-serif); font-size: 1.4rem; color: var(--white); }
+    .brand-sub { display: block; font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); font-family: var(--font-mono); }
+    
+    .nav { display: flex; flex-wrap: wrap; gap: 1.2rem; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; font-family: var(--font-mono); }
+    .nav a { color: var(--ink-soft); transition: color 0.3s; border-bottom: 2px solid transparent; padding-bottom: 0.2rem; }
+    .nav a:hover, .nav a.is-current { color: var(--white); border-bottom: 2px solid var(--accent); }
+
+    .hero { padding: 6rem 0 4rem; text-align: left; }
+    .eyebrow { font-family: var(--font-mono); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.2em; color: var(--accent); margin-bottom: 1rem; display: block; }
+    h1 { margin: 0 0 1.5rem; font-family: var(--font-serif); font-size: clamp(3rem, 7vw, 4.5rem); font-weight: 400; line-height: 1.1; max-width: 25ch; }
+    .hero p { max-width: 48rem; margin: 0 0 3rem; font-size: 1.25rem; color: var(--ink-soft); }
+    
+    .main-shell { position: relative; margin-bottom: 4rem; }
+    .main-inner { background: var(--panel); border-radius: 1.5rem; overflow: clip; box-shadow: var(--shadow); border: 1px solid var(--line); }
+    .section { padding: 4rem; border-bottom: 1px solid var(--line); }
+    .section:last-child { border-bottom: none; }
+    .section-kicker { font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent); margin-bottom: 0.8rem; display: block; }
+    .section h2 { font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem; max-width: 48rem;}
+    .section p { color: var(--ink-soft); font-size: 1.1rem; max-width: 48rem; margin-bottom: 2rem;}
+
+    .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 2rem; }
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+    
+    .panel { background: rgba(0,0,0,0.2); border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 2rem; display: flex; flex-direction: column; transition: transform 0.2s, background 0.2s; }
+    .panel:hover { background: rgba(255,255,255,0.03); transform: translateY(-4px); border-color: rgba(255,255,255,0.2);}
+    .panel-kicker { display: inline-block; font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent); padding: 0.2rem 0.6rem; background: rgba(59,130,246,0.1); border-radius: 999px; margin-bottom: 1rem; align-self: flex-start;}
+    .panel h3 { font-family: var(--font-serif); font-size: 1.5rem; margin: 0 0 1rem; }
+    .panel p { color: var(--ink-soft); font-size: 0.95rem; margin-bottom: 1.5rem; flex-grow: 1;}
+
+    .btn { display: inline-flex; align-items: center; padding: 0.8rem 1.5rem; border-radius: 999px; font-family: var(--font-mono); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.15em; transition: all 0.2s; margin-right: 0.5rem; margin-bottom: 0.5rem; cursor: pointer;}
+    .btn-primary { background: var(--accent); color: #fff; border: 1px solid var(--accent); }
+    .btn-primary:hover { background: var(--accent-deep); transform: translateY(-2px); }
+    .btn-secondary { background: rgba(255, 255, 255, 0.05); color: #fff; border: 1px solid rgba(255, 255, 255, 0.2); }
+    .btn-secondary:hover { background: rgba(255, 255, 255, 0.1); transform: translateY(-2px); }
+    
+    .callout { background: rgba(255,255,255,0.03); border: 1px solid var(--line); padding: 1.5rem; border-radius: 0.75rem; margin-top: 2rem; border-left: 4px solid var(--accent);}
+    .callout strong { display: block; font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 0.5rem;}
+    
+    pre { background: rgba(10,15,25,0.9); padding: 1.5rem; border-radius: var(--radius-sm); overflow-x: auto; border: 1px solid var(--line); margin-bottom: 1.5rem; font-family: var(--font-mono); font-size: 0.85rem; line-height: 1.4;}
+    code { font-family: var(--font-mono); color: #e2e8f0; }
+
+    .footer { border-top: 1px solid var(--line); padding: 4rem 0; text-align: center; font-family: var(--font-mono); font-size: 0.8rem; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.15em; }
+    
+    .status-badge { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 8px; }
+    .status-working { background-color: var(--accent-green); }
+    .status-progress { background-color: #f59e0b; }
+    .status-planned { background-color: #64748b; }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap topbar-inner">
+      <a class="brand" href="index.html">
+        <span class="brand-title">Jonathan Capone</span>
+        <span class="brand-sub">Technical Portfolio</span>
+      </a>
+      <nav class="nav">
+        <a href="omega.html" class="">OMEGA</a>
+        <a href="how-it-works.html" class="">How It Works</a>
+        <a href="build.html" class="">Build</a>
+        <a href="data.html" class="is-current">Data</a>
+        <a href="research.html" class="">Research</a>
+        <a href="teaching.html" class="">Teaching</a>
+        <a href="projects.html" class="">Projects</a>
+        <a href="contact.html" class="">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero wrap">
+    <span class="eyebrow">Data Hub</span>
+    <h1>Sample Datasets & Maps.</h1>
+    <p>Download actual field data, view generated maps, and learn how to reproduce our results.</p>
+  </section>
+
+  <main class="main-shell wrap">
+    <div class="main-inner">
+      <section class="section">
+        <h2>Downloads.</h2>
+        <div class="grid-2">
+          <div class="panel">
+            <h3>Raw CSV</h3>
+            <p>The unfiltered, asynchronous telemetry straight from the edge node.</p>
+            <button class="btn btn-secondary">Download raw.csv</button>
+          </div>
+          <div class="panel">
+            <h3>Filtered CSV</h3>
+            <p>Data after Kalmen filtering and QARTOD flag removal.</p>
+            <button class="btn btn-secondary">Download map_data.csv</button>
+          </div>
+          <div class="panel">
+            <h3>Google Earth KML/KMZ</h3>
+            <p>The final interpolated contour map ready for GIS viewing.</p>
+            <button class="btn btn-secondary">Download survey.kmz</button>
+          </div>
+          <div class="panel">
+            <h3>CSV Field Dictionary</h3>
+            <p>Documentation of every column header in our datasets.</p>
+            <button class="btn btn-secondary">View Schema</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>Map Outputs.</h2>
+        <div class="grid-2">
+          <div style="background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 8px;">
+            <img src="images/omega-depth-placeholder.png" alt="Generated Depth Map" style="width: 100%; border-radius: 4px;">
+            <p style="font-size: 0.85rem; margin-top: 0.5rem; color: var(--ink-soft);"><strong>Depth Map:</strong> Demonstrates the IDW interpolation output filling gaps between physical survey tracks.</p>
+          </div>
+          <div style="background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 8px;">
+            <img src="images/omega-contour-placeholder.png" alt="Generated Contour Map" style="width: 100%; border-radius: 4px;">
+            <p style="font-size: 0.85rem; margin-top: 0.5rem; color: var(--ink-soft);"><strong>Contour Map:</strong> Demonstrates the topographical generation for visual analysis in QGIS.</p>
+          </div>
+        </div>
+        <div style="margin-top: 2rem;">
+          <a href="#" class="btn btn-primary">"Reproduce this map" Tutorial →</a>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="footer wrap">
+    <span>© Jonathan Capone — Technical Portfolio</span>
+  </footer>
+</body>
+</html>
