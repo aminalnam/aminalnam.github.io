@@ -186,6 +186,32 @@
             
           </section>
     
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">Strict Validation</span>
+              <h2>JSON Schema Enforcement.</h2>
+              <p>To protect the SQLite database from malformed or malicious payloads injected by rogue edge nodes, OMEGA relies on strict schema validations located in the <code>schemas/</code> directory. Before a packet is ever parsed, it is validated against the <code>observation-envelope.schema.json</code> definition, instantly dropping payloads that are missing critical routing arrays or origin UUIDs.</p>
+              
+            </div>
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">observation-envelope.schema.json</span><pre><code class="language-json">{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/omega-wave/observation-envelope.schema.json",
+  "title": "OMEGA-wave Observation Envelope",
+  "description": "Canonical application-level envelope for sensor observations.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "spec",
+    "message_id",
+    "message_type",
+    "origin",
+    "routing",
+    "sample",
+    "payload"
+  ]
+}</code></pre></div>
+          </section>
+    
     </div>
   </main>
 

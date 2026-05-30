@@ -196,6 +196,16 @@ build_flags =
     
           <section class="section">
             <div class="section-content">
+              <span class="section-kicker">Remote Operations</span>
+              <h2>Cloud CGNAT Tunneling.</h2>
+              <p>Field operations often rely on marine cellular routers, which are trapped behind massive Carrier-Grade NAT (CGNAT) firewalls. The <code>scripts/tunnel-up.ps1</code> daemon automates the execution of Cloudflared or Ngrok. It securely punches a reverse TCP tunnel from the ASV gateway out to the public internet, securely exposing the local React Mission Portal to oceanographic teams thousands of miles away.</p>
+              
+            </div>
+            
+          </section>
+    
+          <section class="section">
+            <div class="section-content">
               <span class="section-kicker">RF Optimization</span>
               <h2>LoRa CBOR Frame Compression.</h2>
               <p>This is a <code>compact_observation</code> payload. As a raw JSON string, it consumes ~448 bytes. Over 900MHz LoRa, this would require a massive Time-On-Air (ToA) penalty and high collision probability. The gateway passes this payload through the Python <code>cbor2</code> library, crushing the structural overhead (keys, quotes, spaces) down to a ~180 byte binary buffer, allowing it to fit effortlessly inside a single CSS packet window.</p>
