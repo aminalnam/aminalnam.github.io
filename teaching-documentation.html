@@ -3,46 +3,102 @@
 <head>
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1" name="viewport"/>
-  <title>OMEGA Educational Guide</title>
+  <title>OMEGA — Education & Guides</title>
+  
+  <meta name="description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
+  <meta property="og:title" content="OMEGA — Education & Guides" />
+  <meta property="og:description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://jonathancapone.com/teaching-documentation.html" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="OMEGA — Education & Guides" />
+  <meta name="twitter:description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
+  
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌊</text></svg>">
+  
   <style>
     :root {
       --bg: #070b14; --bg-2: #0e1522; --panel: rgba(20, 30, 48, 0.6); --panel-soft: rgba(30, 42, 60, 0.5);
-      --ink: #ffffff; --ink-soft: #9aa2b1; --line: rgba(255, 255, 255, 0.1); --accent: #3b82f6;
-      --white: #ffffff; --radius: 1.25rem;
+      --ink: #ffffff; --ink-soft: #9aa2b1; --line: rgba(255, 255, 255, 0.1); --accent: #3b82f6; --accent-deep: #2563eb;
+      --accent-green: #10b981; --accent-yellow: #f59e0b;
+      --white: #ffffff; --radius: 1.25rem; --radius-sm: 18px;
       --font-sans: Inter, sans-serif; --font-serif: "Iowan Old Style", Georgia, serif; --font-mono: Consolas, monospace;
+      --shadow: 0 22px 48px rgba(0, 0, 0, 0.5);
     }
     * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+    html { scroll-behavior: smooth; }
     body { margin: 0; color: var(--ink); background: var(--bg); font-family: var(--font-sans); line-height: 1.65; }
-    body::before { content: ""; position: fixed; inset: -50%; z-index: -2; background: radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.1), transparent 50%); }
+    body::before { content: ""; position: fixed; inset: -50%; z-index: -2; background: radial-gradient(circle at 50% 0%, rgba(59, 130, 246, 0.15), transparent 60%); pointer-events: none;}
+    body::after {
+      content: ""; position: fixed; inset: 0; z-index: -1;
+      background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 2.2rem 2.2rem; mask-image: linear-gradient(180deg, rgba(0,0,0,0.8), rgba(0,0,0,0.25)); pointer-events: none;
+    }
     a { color: inherit; text-decoration: none; }
     .wrap { width: min(calc(100% - 2rem), 82rem); margin: 0 auto; }
+    
     .topbar { position: sticky; top: 0; z-index: 40; backdrop-filter: blur(20px); background: rgba(7, 11, 20, 0.75); border-bottom: 1px solid var(--line); padding: 1.5rem 0; }
-    .topbar-inner { display: flex; align-items: center; justify-content: space-between; }
+    .topbar-inner { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
     .brand-title { display: block; font-family: var(--font-serif); font-size: 1.4rem; color: var(--white); }
     .brand-sub { display: block; font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); font-family: var(--font-mono); }
-    .nav { display: flex; gap: 1.5rem; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; font-family: var(--font-mono); }
+    
+    .nav { display: flex; flex-wrap: wrap; gap: 1.2rem; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; font-family: var(--font-mono); }
     .nav a { color: var(--ink-soft); transition: color 0.3s; }
     .nav a:hover, .nav a.is-current { color: var(--white); }
-    
-    .hero { padding: 6rem 0 4rem; text-align: center; }
-    .eyebrow { font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.2em; color: var(--accent); margin-bottom: 1rem; display: block; }
-    h1 { margin: 0 auto 1.5rem; font-family: var(--font-serif); font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 400; }
-    .hero p { max-width: 48rem; margin: 0 auto; font-size: 1.2rem; color: var(--ink-soft); }
 
-    .content-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-bottom: 5rem; }
-    @media (max-width: 900px) { .content-grid { grid-template-columns: 1fr 1fr; } }
-    @media (max-width: 600px) { .content-grid { grid-template-columns: 1fr; } }
-    .panel { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 2rem; transition: transform 0.3s, border-color 0.3s; }
-    .panel:hover { transform: translateY(-5px); border-color: rgba(59, 130, 246, 0.3); }
-    .panel-kicker { font-family: var(--font-mono); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent); margin-bottom: 0.5rem; display: block; }
-    .panel h3 { font-family: var(--font-serif); font-size: 1.5rem; margin: 0 0 1rem; }
-    .panel p { color: var(--ink-soft); font-size: 0.95rem; margin-bottom: 1.5rem; }
-    .panel a.link-btn { display: inline-flex; font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent); border: 1px solid var(--accent); padding: 0.5rem 1rem; border-radius: 999px; transition: all 0.2s; }
-    .panel a.link-btn:hover { background: var(--accent); color: #fff; }
+    .hero { padding: 4rem 0 3rem; }
+    .eyebrow { font-family: var(--font-mono); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.2em; color: var(--accent); margin-bottom: 1rem; display: block; }
+    h1 { margin: 0 0 1.5rem; font-family: var(--font-serif); font-size: clamp(3rem, 6vw, 4.5rem); font-weight: 400; line-height: 1.1; max-width: 25ch; }
+    .hero p { max-width: 48rem; margin: 0 0 2.5rem; font-size: 1.25rem; color: var(--ink-soft); }
+    .btn { display: inline-flex; align-items: center; padding: 0.8rem 1.5rem; border-radius: 999px; font-family: var(--font-mono); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.15em; transition: all 0.2s; margin-right: 0.5rem; margin-bottom: 0.5rem;}
+    .btn-primary { background: var(--accent); color: #fff; border: 1px solid var(--accent); }
+    .btn-primary:hover { background: var(--accent-deep); transform: translateY(-2px); }
+    .btn-secondary { background: rgba(255, 255, 255, 0.05); color: #fff; border: 1px solid rgba(255, 255, 255, 0.2); }
+    .btn-secondary:hover { background: rgba(255, 255, 255, 0.1); transform: translateY(-2px); }
+
+    .main-shell { position: relative; margin-bottom: 4rem; }
+    .main-inner { background: var(--panel); border-radius: 1.5rem; overflow: clip; box-shadow: var(--shadow); border: 1px solid var(--line); }
+    .section { padding: 4rem; border-bottom: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 4rem; align-items: flex-start; }
+    .section:last-child { border-bottom: none; }
+    .section-content { flex: 1; min-width: 300px; }
+    .section-kicker { font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent); margin-bottom: 0.8rem; display: block; }
+    .section h2 { font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1.5rem; }
+    .section p { color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 1.5rem; line-height: 1.7; }
+
+    .section-visual { flex: 1; min-width: 300px; background: rgba(0,0,0,0.3); border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 2rem; }
+    .section-visual img { width: 100%; border-radius: 8px; border: 1px solid var(--line); box-shadow: var(--shadow); margin-bottom: 1rem; }
     
-    .section-title { font-family: var(--font-serif); font-size: 2rem; margin: 0 0 2rem; border-bottom: 1px solid var(--line); padding-bottom: 1rem; }
-    .footer { border-top: 1px solid var(--line); padding: 3rem 0; font-family: var(--font-mono); font-size: 0.75rem; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.15em;}
+    .panel-kicker { display: inline-block; font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent); padding: 0.2rem 0.6rem; background: rgba(59,130,246,0.1); border-radius: 999px; margin-bottom: 1rem; }
+    
+    .callout { background: rgba(255,255,255,0.03); border: 1px solid var(--line); padding: 1.5rem; border-radius: 0.75rem; margin-top: 2rem; border-left: 4px solid var(--accent);}
+    .callout strong { display: block; font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 0.5rem;}
+    .callout p { font-size: 0.95rem; color: var(--ink-soft); margin-bottom: 0; }
+    
+    pre { background: rgba(10,15,25,0.9); padding: 1.5rem; border-radius: var(--radius-sm); overflow-x: auto; border: 1px solid var(--line); margin-bottom: 1.5rem; font-family: var(--font-mono); font-size: 0.85rem; line-height: 1.4;}
+    code { font-family: var(--font-mono); color: #e2e8f0; }
+    p code, li code { background: rgba(255,255,255,0.1); padding: 0.2rem 0.4rem; border-radius: 4px; font-size: 0.85em; color: #60a5fa;}
+
+    .footer { border-top: 1px solid var(--line); padding: 4rem 0; text-align: center; font-family: var(--font-mono); font-size: 0.8rem; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.15em; }
+    
+    /* Layout fix for Homepage which needs block display instead of flex */
+    .section-block { display: block; padding: 4rem; }
+    
+    .status-label { font-family: var(--font-mono); font-size: 0.65rem; padding: 0.2rem 0.5rem; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.1em; display: inline-block; margin-bottom: 0.5rem; }
+    .status-implemented { background: rgba(16, 185, 129, 0.1); color: var(--accent-green); border: 1px solid rgba(16, 185, 129, 0.3); }
+    .status-partial { background: rgba(245, 158, 11, 0.1); color: var(--accent-yellow); border: 1px solid rgba(245, 158, 11, 0.3); }
+    .status-planned { background: rgba(255, 255, 255, 0.05); color: var(--ink-soft); border: 1px solid rgba(255, 255, 255, 0.1); }
+    
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+    .panel { background: rgba(0,0,0,0.2); border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 2rem; display: flex; flex-direction: column; transition: transform 0.2s, background 0.2s; }
+    .panel:hover { background: rgba(255,255,255,0.03); transform: translateY(-4px); border-color: rgba(255,255,255,0.2);}
+    .panel h3 { font-family: var(--font-serif); font-size: 1.5rem; margin: 0 0 1rem; }
+    .panel p { color: var(--ink-soft); font-size: 0.95rem; margin-bottom: 1.5rem; flex-grow: 1;}
+    
   </style>
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ startOnLoad: true, theme: 'dark', themeVariables: { fontFamily: 'Inter' } });
+  </script>
 </head>
 <body>
   <header class="topbar">
@@ -51,82 +107,60 @@
         <span class="brand-title">Jonathan Capone</span>
         <span class="brand-sub">Technical Portfolio</span>
       </a>
-                  <nav class="nav">
+      <nav class="nav">
         <a href="index.html">Home</a>
-        <a href="omega-transport.html">Transport</a>
-        <a href="omega-hardware.html">Hardware</a>
-        <a href="omega-data.html">Data</a>
-        <a href="omega-ops.html">Operations</a>
-        <a href="omega-observe.html">Observe</a>
+        <a href="overview.html">Overview</a>
+        <a href="gateway.html">Gateway</a>
+        <a href="mesh-core.html">Mesh</a>
+        <a href="mission-portal.html">Portal</a>
+        <a href="fleet-asv.html">Fleet</a>
+        <a href="data-providers.html">Data</a>
+        <a href="janus-acoustic.html">Acoustics</a>
+        <a href="simulation.html">Simulation</a>
+        <a href="teaching-documentation.html">Education</a>
+        <a href="build-guide.html">Build</a>
       </nav>
     </div>
   </header>
 
   <section class="hero wrap">
-    <span class="eyebrow">Educational Guide</span>
-    <h1>Learning with OMEGA</h1>
-    <p>OMEGA serves as a technical blueprint and an educational platform. Here you will find resources bridging hardware engineering, data science, and classroom-ready STEAM materials.</p>
+    <span class="eyebrow">Documentation</span>
+    <h1>Education</h1>
+    <p>Deployment guides for Gateway infrastructure and field nodes.</p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="https://github.com/aminalnam/OMEGA" target="_blank">View OMEGA on GitHub</a>
+      <a class="btn btn-secondary" href="index.html">Back to Portfolio</a>
+    </div>
   </section>
 
-  <main class="wrap">
-    <h2 class="section-title">STEAM & Interdisciplinary Teaching</h2>
-    <div class="content-grid">
-      <article class="panel">
-        <span class="panel-kicker">Integration</span>
-        <h3>STEAM Curricula</h3>
-        <p>Teaching materials that connect artistic inquiry with engineering, environmental science, and applied making.</p>
-        <a href="https://jonathancapone.art/steam" class="link-btn" target="_blank" rel="noopener">Open Page</a>
-      </article>
+  <main class="main-shell wrap">
+    <div class="main-inner">
 
-      <article class="panel">
-        <span class="panel-kicker">Process</span>
-        <h3>Students at Work</h3>
-        <p>Project development, classroom process, and documentation of making in practice.</p>
-        <a href="https://jonathancapone.art/students-at-work" class="link-btn" target="_blank" rel="noopener">Open Page</a>
-      </article>
-
-      <article class="panel">
-        <span class="panel-kicker">Method</span>
-        <h3>Experiential Learning</h3>
-        <p>Project-based approaches centered on inquiry, prototyping, iteration, and hands-on experimentation.</p>
-        <a href="https://jonathancapone.art/experiential-learning" class="link-btn" target="_blank" rel="noopener">Open Page</a>
-      </article>
-
-      <article class="panel">
-        <span class="panel-kicker">Instruction</span>
-        <h3>Media Arts</h3>
-        <p>Documentation related to digital moving images, technology-based art, and media literacy.</p>
-        <a href="https://jonathancapone.art/media-arts" class="link-btn" target="_blank" rel="noopener">Open Page</a>
-      </article>
-      
-      <article class="panel">
-        <span class="panel-kicker">Production</span>
-        <h3>Performing Arts</h3>
-        <p>Material related to staging, performance systems, and interdisciplinary production work.</p>
-        <a href="https://jonathancapone.art/performing-arts" class="link-btn" target="_blank" rel="noopener">Open Page</a>
-      </article>
-    </div>
-
-    <h2 class="section-title">OMEGA System Guides (Coming Soon)</h2>
-    <div class="content-grid">
-      <article class="panel">
-        <span class="panel-kicker">Hardware</span>
-        <h3>Building a Mesh Relay</h3>
-        <p>A step-by-step guide to flashing LilyGO T-Beam hardware and deploying your first floating relay.</p>
-      </article>
-      <article class="panel">
-        <span class="panel-kicker">Software</span>
-        <h3>API & Data Integration</h3>
-        <p>Tutorials on connecting external data sources and extracting normalized data from the SQLite backend.</p>
-      </article>
-      <article class="panel">
-        <span class="panel-kicker">Analysis</span>
-        <h3>Bathymetry Basics</h3>
-        <p>Learn how raw soundings become interpolated spatial maps and how to interpret the results.</p>
-      </article>
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">System Bringup</span>
+              <h2>Getting the Gateway Online.</h2>
+              <p>The gateway utilizes a PowerShell script <code>omega_gateway_online.ps1</code> to handle environment variable injection, PYTHONPATH resolution, and launching <code>uvicorn gateway.main:app</code>. It actively handles binding to localhost, exposing same-Wi-Fi LAN URLs, and optionally tunneling the traffic through <code>ngrok</code> or <code>cloudflared</code> for remote oceanographic team access.</p>
+              
+            </div>
+            
+          </section>
+    
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">Field Hardware</span>
+              <h2>Raspberry Pi Gateway Mesh.</h2>
+              <p>The ultimate goal of OMEGA is remote deployment. We provide exhaustive guides on configuring a Raspberry Pi 4 as a headless field gateway, setting up <code>systemd</code> services for the Python application, and ensuring the local SQLite database is robust against abrupt power loss on marine deployments.</p>
+              
+            </div>
+            
+          </section>
+    
     </div>
   </main>
 
-  <footer class="footer wrap"><span>© Jonathan Capone — Technical Portfolio</span></footer>
+  <footer class="footer wrap">
+    <span>© Jonathan Capone — Technical Portfolio. OMEGA (formerly OMEGA-wave).</span>
+  </footer>
 </body>
 </html>
