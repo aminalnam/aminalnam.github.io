@@ -177,7 +177,9 @@
             <div class="section-content">
               <span class="section-kicker">Fluid Dynamics & Vector Math</span>
               <h2>Course Over Ground (COG).</h2>
-              <p>An ASV operates on the surface of a moving fluid. If it points its bow directly at a target (its <strong>Heading</strong>), but a strong cross-current pushes against the hull, its actual path over the Earth (its <strong>Course-Over-Ground, or COG</strong>) will drift significantly off-target.</p><p>The Wayfinder module models the vessel's kinematics as one vector, and imports real-time ocean current data as an environmental vector field to calculate the necessary "crab angle".</p>
+              <p>An Autonomous Surface Vehicle (ASV) operates on the surface of a constantly moving, chaotic fluid. If a traditional routing algorithm points the ASV's bow directly at a target (its <strong>Heading</strong>), but a strong 3-knot cross-current pushes against the hull, the vessel's actual physical path over the Earth (its <strong>Course-Over-Ground, or COG</strong>) will drift significantly off-target. In tight coastal environments, this results in the ASV crashing into a reef.</p>
+<p>The OMEGA Wayfinder module is a high-performance kinematic engine. It models the vessel's kinematics as a physical vector, and imports real-time ocean current and wind data (via NOAA ERDDAP) as an environmental vector field. The engine mathematically calculates the necessary "crab angle"—forcing the ASV to steer <i>into</i> the current so its resulting COG exactly matches the desired track line.</p>
+<p><strong>Operational Use:</strong> When an operator drops a polygon in the Mission Portal and clicks "Generate Coverage Path," the Wayfinder engine doesn't just draw straight lines. It simulates the fluid dynamics of the specific timestamped mission, ensuring the resulting waypoints actually account for the physical ocean environment.</p>
               
             </div>
             
@@ -187,7 +189,9 @@
             <div class="section-content">
               <span class="section-kicker">Algorithm Design</span>
               <h2>A* Routing on Dynamic Vectors.</h2>
-              <p>Standard terrestrial routing algorithms assume static roads. Marine routing requires navigating a dynamic fluid field. OMEGA implements adapted A* algorithms that heavily penalize nodes featuring counter-currents, finding paths that optimize for fuel efficiency rather than strict linear distance.</p>
+              <p>Standard terrestrial routing algorithms (like Google Maps) assume static roads with fixed speed limits. Marine routing requires navigating a completely dynamic, continuously shifting fluid field where the "cost" of moving from Point A to Point B changes depending on the direction of the tide.</p>
+<p>OMEGA implements adapted A* algorithms operating over a time-stepped geometric grid. The algorithm assigns extreme traversal penalties to nodes featuring strong counter-currents (which would drain the battery rapidly) and rewards nodes featuring following currents (which allow the ASV to surf for free).</p>
+<p><strong>How it works:</strong> The resulting path often looks bizarre to a human operator—it might curve wildly to avoid an invisible eddy—but it mathematically optimizes for total fuel efficiency rather than strict linear distance, allowing small solar-powered ASVs to cross massive oceanic basins without draining their lithium reserves.</p>
               
             </div>
             
@@ -197,7 +201,8 @@
             <div class="section-content">
               <span class="section-kicker">Wayfinding Execution</span>
               <h2>Kinematic Route Generation.</h2>
-              <p>This is a raw <code>wayfinding-plan.json</code> payload. An operator submits this structure to the Gateway. The backend pathing engine runs multiple parallel fluid dynamic simulations using the <code>speeds_knots</code> and <code>route_offsets_nm</code> arrays, scoring each variation against live wind and wave polygons extracted from the OMEGA database.</p>
+              <p>The <code>wayfinding-plan.json</code> payload represents the highest level of autonomous intent. A human operator submits this structure to the Gateway, defining abstract polygon bounds and target coordinates.</p>
+<p><strong>Execution:</strong> The backend pathing engine intercepts this payload and spins up multiple parallel fluid dynamic simulations. Utilizing the <code>speeds_knots</code> and <code>route_offsets_nm</code> arrays, the engine scores thousands of potential paths against live wind and wave vector fields extracted from the Copernicus database. The final output is an optimized string of GPS waypoints that surf the local currents, maximizing the ASV's fuel efficiency.</p>
               
             </div>
             <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">wayfinding-plan.example.json</span><pre><code class="language-json">{
@@ -229,7 +234,8 @@
             <div class="section-content">
               <span class="section-kicker">Coordinate Autonomy</span>
               <h2>ASV Waypoint Missions.</h2>
-              <p>Autonomous Surface Vehicles (ASVs) can execute strict coordinate waypoint sequences. The Mission Portal builds JSON payloads defining bounding geofences, speeds (in meters per second), and camera polling rates. This allows for complex survey grids during operations.</p>
+              <p>Autonomous Surface Vehicles (ASVs) cannot rely on a human operator holding a joystick; they must execute strict mathematical coordinate sequences completely autonomously. The Mission Portal builds strict JSON payloads defining complex bounding geofences, precise transit speeds (in meters per second), and targeted camera polling rates.</p>
+<p><strong>Operational Use:</strong> An operator draws a polygon over a coral reef in the Mapbox UI. The gateway pathing engine converts that polygon into a lawnmower survey grid of GPS waypoints. This payload is transmitted to the ASV, which then blindly executes the grid, capturing bathymetry data at exactly 1-meter intervals, completely unassisted.</p>
               
             </div>
             <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">asv-waypoint-mission.example.json</span><pre><code class="language-json">{
@@ -271,7 +277,8 @@
             <div class="section-content">
               <span class="section-kicker">Hydrodynamics</span>
               <h2>HFRNet Surface Currents.</h2>
-              <p>Navigating an ASV against a 4-knot current drains the battery instantly. The <code>hfrnet.py</code> module ingests the High-Frequency Radar Network data, providing real-time vector fields of ocean surface currents. The <code>wayfinding.py</code> module consumes this vector matrix, executing A* pathfinding that "surfs" the currents, drastically extending operational range.</p>
+              <p>Attempting to navigate a small, solar-powered ASV directly against a 4-knot Gulf Stream current will drain its lithium battery instantly, leading to a dead vessel adrift at sea. The <code>hfrnet.py</code> module solves this by ingesting the U.S. High-Frequency Radar Network (HFRNet) data via THREDDS servers.</p>
+<p><strong>How it works:</strong> This provides a real-time, high-resolution vector field of ocean surface currents. The <code>wayfinding.py</code> module consumes this massive vector matrix and executes its A* pathfinding algorithm. The resulting mission plan actively "surfs" the currents, intentionally deviating from a straight line to hitch a ride on localized eddies, drastically extending the ASV's operational range.</p>
               
             </div>
             
@@ -281,7 +288,8 @@
             <div class="section-content">
               <span class="section-kicker">Autonomous Safety</span>
               <h2>Active Guard Geofencing.</h2>
-              <p>The <code>active_guard.py</code> module is a merciless watchdog. It constantly calculates the cross-track error of every ASV against predefined GeoJSON exclusion zones. If a vessel deviates into a shipping lane due to high winds, the Active Guard instantly overrides the standard waypoint mission and executes an emergency heading correction.</p>
+              <p>The <code>active_guard.py</code> module acts as a merciless, unblinking watchdog over the physical fleet. During high winds or heavy chop, an ASV might struggle to maintain its commanded heading and slowly drift off-course.</p>
+<p><strong>Execution:</strong> Active Guard constantly calculates the cross-track error (the perpendicular distance from the planned path) of every ASV against predefined GeoJSON exclusion zones. If a vessel mathematically deviates into a dangerous shipping lane or a shallow reef, Active Guard instantly overrides the standard waypoint mission, sending an emergency heading correction to the Pixhawk to drag the vessel back into safe waters.</p>
               
             </div>
             

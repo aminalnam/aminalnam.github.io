@@ -177,7 +177,9 @@
             <div class="section-content">
               <span class="section-kicker">Network Graph Theory</span>
               <h2>Delay Tolerant Networks (DTN).</h2>
-              <p>Standard IP networking relies on the assumption that a direct, unbroken path exists between the source and destination at the time of transmission. In the ocean, this assumption is false.</p><p>OMEGA operates a <strong>Delay Tolerant Network (DTN)</strong> overlay. It models the network as a dynamic graph where edges (connections) appear and disappear. If an Autonomous Surface Vehicle (ASV) captures a packet but cannot reach the shore, it stores the packet in its local NVRAM. The packet is physically carried across the ocean until the ASV drifts into range of a relay buoy, at which point the graph edge reforms and the packet is forwarded.</p>
+              <p>Standard IP networking relies on the fundamental assumption that a direct, unbroken, end-to-end path exists between the source and destination at the exact moment of transmission. In the ocean—where nodes are thousands of miles apart, constantly moving, and operating on low-power radios over rolling waves—this assumption is entirely false.</p>
+<p>OMEGA operates a <strong>Delay Tolerant Network (DTN)</strong> overlay to mathematically handle this reality. It models the mesh network as a dynamic, temporal graph where edges (RF or acoustic connections) constantly appear and disappear. If an Autonomous Surface Vehicle (ASV) captures a crucial water-quality measurement but cannot reach the shore gateway, the packet is not simply dropped (as it would be in standard TCP/IP).</p>
+<p>Instead, the packet is stored in the ASV's local NVRAM queue. The physical ASV is then treated as a "data mule." It physically carries the packet across the ocean until it drifts into the RF range of a shore station or a relay buoy, at which point the graph edge reforms and the packet is forwarded. This architecture ensures 100% data preservation in extreme latency environments.</p>
               
             </div>
             
@@ -187,7 +189,9 @@
             <div class="section-content">
               <span class="section-kicker">Routing Algorithms</span>
               <h2>Route Cost & AutoInterface.</h2>
-              <p>In a mixed-bearer environment, the mesh must decide whether to send a packet over a fast, expensive LTE link, or a slow, free LoRa link. OMEGA utilizes a custom route-scoring system weighing <strong>Route Cost</strong> (financial/bandwidth penalty) and <strong>Route Weight</strong> (latency).</p><p>For local configuration, it implements a <strong>Reticulum-inspired AutoInterface</strong>, automatically discovering peers over local IP multicasts without requiring static IP configuration.</p>
+              <p>In a mixed-bearer environment, the mesh gateway must constantly decide whether to send a packet over a fast but incredibly expensive satellite link (Iridium), a fast but short-range cellular link (LTE), or a slow but completely free sub-GHz RF link (LoRa).</p>
+<p>OMEGA utilizes a highly customized route-scoring algorithm that dynamically weighs <strong>Route Cost</strong> (the financial or bandwidth penalty of the transmission) against <strong>Route Weight</strong> (the physical latency or topological distance of the hop). The Python mesh router ranks every physical interface mapped to a target node.</p>
+<p><strong>Operational Use:</strong> For local mesh clustering, OMEGA implements a <strong>Reticulum-inspired AutoInterface</strong>. When a new ASV or Buoy is powered on, it immediately begins broadcasting UDP multicasts over its active hardware interfaces. Nearby nodes intercept these multicasts, extract the cryptographic public key, and instantly map a valid route to the new node without requiring a human to statically assign an IP address. It is true, zero-configuration networking in the field.</p>
               <div class="callout"><strong>Acknowledgment-Aware Outboxes</strong><p>When a packet is dispatched over the DTN, it sits in an `awaiting_ack` state. If the target node fails to acknowledge within the timeout, the packet falls back to a heavier bearer.</p></div>
             </div>
             <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">gateway/fleet.py Route Scoring</span><pre><code class="language-python">def calculate_best_route(target_id: str, interfaces: dict) -> str:
@@ -200,7 +204,9 @@
             <div class="section-content">
               <span class="section-kicker">Binary Optimization</span>
               <h2>CBOR Payload Compression.</h2>
-              <p>Sending verbose JSON strings over a 900MHz LoRa radio is an egregious waste of airtime. OMEGA compresses API payloads using <strong>CBOR (Concise Binary Object Representation)</strong>.</p><p>CBOR strips structural overhead (like quotes, colons, and whitespace) while maintaining the exact key-value mapping. This often reduces payload size by 40-60%, directly translating to reduced radio duty cycles, lower power consumption, and fewer packet collisions over the RF spectrum.</p>
+              <p>Sending verbose, human-readable JSON strings over a 900MHz LoRa radio is an egregious waste of constrained RF airtime. LoRa provides massive range by utilizing Chirp Spread Spectrum modulation, but at the cost of extremely low bitrates (often <1kbps).</p>
+<p>OMEGA compresses all edge payloads using <strong>CBOR (Concise Binary Object Representation, RFC 8949)</strong>. CBOR strips the structural overhead of JSON—such as quotes, colons, brackets, and whitespace—and converts keys and numeric values into strict bit-packed formats, while flawlessly maintaining the exact dictionary mapping.</p>
+<p><strong>Relevance:</strong> This compression often reduces the byte size of an Observation Envelope by 40-60%. In the field, smaller payloads directly translate to vastly reduced radio duty cycles, lower battery power consumption during transmissions, and a significantly lower mathematical probability of packet collisions over the shared RF spectrum.</p>
               
             </div>
             
@@ -210,7 +216,8 @@
             <div class="section-content">
               <span class="section-kicker">Long-Range Wi-Fi</span>
               <h2>IEEE 802.11ah HaLow Bridging.</h2>
-              <p>Standard LoRa is restricted to a few hundred bytes per second—useless for streaming video. OMEGA integrates the T-HaLow ESP32-S3 boards. By configuring one node as <code>ap-root</code> and another as <code>sta-client</code>, it creates a transparent TCP/IP network over sub-GHz frequencies (900MHz), allowing the ASV to stream live RTSP camera feeds to the shore gateway from over a kilometer away.</p>
+              <p>Standard 900MHz LoRa is restricted to a few hundred bytes per second—perfect for telemetry, but entirely useless for streaming underwater video feeds. To solve this, OMEGA integrates T-HaLow ESP32-S3 boards.</p>
+<p><strong>Execution:</strong> The firmware configures one node as an <code>ap-root</code> (Access Point) and another as a <code>sta-client</code> (Station). This establishes a transparent IEEE 802.11ah Wi-Fi connection over sub-GHz frequencies. It creates a massive, long-range TCP/IP tunnel that bypasses standard 2.4GHz Wi-Fi limitations, allowing the ASV to stream live RTSP camera feeds directly to the shore gateway from over a kilometer away.</p>
               
             </div>
             <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">thalow_gateway_control/platformio.ini</span><pre><code class="language-ini">[env:t_halow_ap_companion]
@@ -245,7 +252,8 @@ build_flags =
             <div class="section-content">
               <span class="section-kicker">RF Optimization</span>
               <h2>LoRa CBOR Frame Compression.</h2>
-              <p>This is a <code>compact_observation</code> payload. As a raw JSON string, it consumes ~448 bytes. Over 900MHz LoRa, this would require a massive Time-On-Air (ToA) penalty and high collision probability. The gateway passes this payload through the Python <code>cbor2</code> library, crushing the structural overhead (keys, quotes, spaces) down to a ~180 byte binary buffer, allowing it to fit effortlessly inside a single CSS packet window.</p>
+              <p>The <code>compact_observation.json</code> payload, when transmitted as a raw JSON string, consumes approximately 448 bytes. Over a 900MHz LoRa radio operating at SF10, this incurs a massive Time-On-Air (ToA) penalty, legally violating FCC duty cycles and dramatically increasing the probability of a packet collision.</p>
+<p><strong>Execution:</strong> The gateway intercepts this payload and passes it through the Python <code>cbor2</code> library. This algorithm aggressively crushes the structural overhead—eliminating all keys, quotes, colons, and spaces—down to a dense ~180-byte binary buffer. This allows the critical telemetry to fit effortlessly inside a single LoRa CSS packet window, ensuring instant transmission and drastically improved range.</p>
               
             </div>
             <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">lora-cbor-frame.example.json</span><pre><code class="language-json">{
@@ -272,7 +280,8 @@ build_flags =
             <div class="section-content">
               <span class="section-kicker">Transport Fallback</span>
               <h2>MQTT Pub/Sub Bridging.</h2>
-              <p>While the DTN is the primary transport, the gateway includes <code>mqtt_bridge.py</code>. If an ASV enters 4G/LTE cellular range, it immediately abandons the slow 1200bps LoRa protocol and begins dumping high-resolution telemetry and camera frames over a high-speed MQTT websocket directly to the cloud.</p>
+              <p>While the Delay Tolerant Network (DTN) LoRa mesh is the primary transport for remote operations, the gateway is highly opportunistic. It includes the <code>mqtt_bridge.py</code> architecture for high-bandwidth offloading.</p>
+<p><strong>How it works:</strong> If an ASV drifts back into range of a 4G/LTE cellular tower near the coast, it instantly detects the fast connection. It abandons the slow 1200bps LoRa protocol and begins dumping its massive backlog of high-resolution telemetry, acoustic recordings, and camera frames over a high-speed MQTT websocket directly to the cloud, rapidly draining its NVRAM queues before it heads back out to sea.</p>
               
             </div>
             
@@ -282,7 +291,8 @@ build_flags =
             <div class="section-content">
               <span class="section-kicker">Low-Level Networking</span>
               <h2>TCP JSONL Socket Streaming.</h2>
-              <p>For scientific instruments that cannot run an HTTP stack (like legacy Sonde profilers), the gateway exposes raw TCP sockets via <code>tcp_jsonl_bridge.py</code>. Devices can simply pipe newline-delimited JSON strings into port 9000, and the gateway will automatically normalize them into the observation pipeline.</p>
+              <p>Many legacy scientific instruments (like older Sonde profilers or serial-based weather stations) completely lack the hardware to run an HTTP stack or a complex REST client. The gateway accommodates these devices by exposing raw TCP sockets via <code>tcp_jsonl_bridge.py</code>.</p>
+<p><strong>Relevance:</strong> Legacy devices can simply connect to port 9000 and pipe raw, newline-delimited JSON strings (JSONL) into the open socket. The gateway buffers the stream, detects the line breaks, and automatically normalizes the raw strings into the standard Observation Pipeline, instantly modernizing 10-year-old oceanographic hardware.</p>
               
             </div>
             
@@ -292,7 +302,8 @@ build_flags =
             <div class="section-content">
               <span class="section-kicker">Protocol Engineering</span>
               <h2>LoRa CBOR Compression.</h2>
-              <p>Sending pure JSON over a 900MHz LoRa link is catastrophic for bandwidth. The <code>lora_cbor_bridge.py</code> engine crushes the SenML Observation Envelopes into Concise Binary Object Representation (CBOR). This shrinks a 400-byte payload into a dense 90-byte binary frame, minimizing the time-on-air and circumventing FCC duty-cycle limitations.</p>
+              <p>As detailed in the core Mesh sections, sending pure JSON strings over a 900MHz LoRa link is catastrophic for bandwidth. The <code>lora_cbor_bridge.py</code> engine is the workhorse that performs the actual structural crushing.</p>
+<p><strong>Execution:</strong> It takes the verbose SenML Observation Envelopes and translates them into Concise Binary Object Representation (CBOR). This conversion shrinks a massive 400-byte payload into a dense 90-byte binary frame. This minimizes the physical time-on-air (ToA), legally circumvents FCC transmission duty-cycle limitations, and massively reduces the probability of packet collisions.</p>
               
             </div>
             

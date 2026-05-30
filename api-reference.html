@@ -177,7 +177,9 @@
             <div class="section-content">
               <span class="section-kicker">Authentication Boundary</span>
               <h2>Security Posture & Headers.</h2>
-              <p>All physical hardware endpoints are protected by the <code>X-OMEGA-API-Key</code>. This boundary ensures that public users can query observational data, but only authenticated operators can interact with the <code>/v1/control/commands</code> namespace, preventing hijacking of autonomous vessels.</p>
+              <p>Marine autonomous networks operate in completely untrusted environments. If a malicious actor intercepts the LoRa traffic or scans the public IP of the shore gateway, they cannot be allowed to inject false waypoints into an ASV.</p>
+<p>All physical hardware endpoints and critical telemetry streams are protected by a strict <strong>Authentication Boundary</strong>. The gateway enforces the <code>X-OMEGA-API-Key</code> HTTP header using FastAPI dependency injection.</p>
+<p><strong>Operational Security:</strong> This boundary ensures that public, unauthenticated users can safely query observational data (like current water temperatures via GET requests), but only authenticated, cryptographically verified operators can interact with the <code>/v1/control/commands</code> namespace, completely preventing the hostile hijacking of multimillion-dollar autonomous assets.</p>
               
             </div>
             
@@ -187,7 +189,8 @@
             <div class="section-content">
               <span class="section-kicker">Documentation</span>
               <h2>OpenAPI Schema Generation.</h2>
-              <p>Because the gateway is built on FastAPI, the OpenAPI (Swagger) schema is automatically generated and structurally guaranteed by strictly typed Pydantic models. This ensures downstream integrators always have access to a living, accurate definition of the JSON payloads.</p>
+              <p>Because the gateway is built natively on the <strong>FastAPI</strong> framework, the entire API structure is incredibly robust. The OpenAPI (Swagger) schema is not maintained manually; it is automatically generated and structurally guaranteed by strictly typed Pydantic models in Python.</p>
+<p><strong>How to use it:</strong> When a downstream integrator or a university partner needs to consume OMEGA data, they simply navigate to the <code>/docs</code> endpoint. They are presented with a living, interactive, mathematically accurate definition of every JSON payload, query parameter, and HTTP status code. If a Python developer changes a field from an integer to a float, the Swagger documentation updates instantly, eliminating API drift entirely.</p>
               
             </div>
             
@@ -197,7 +200,8 @@
             <div class="section-content">
               <span class="section-kicker">API Reference</span>
               <h2>/v1/network Routers.</h2>
-              <p>The <code>main.py</code> router exposes endpoints like <code>/v1/network/remote-access</code> and <code>/v1/network/mesh-topology</code>. These endpoints return live graph definitions of the RF environment, allowing the Mission Portal to draw the exact signal-to-noise ratio (SNR) edges between floating relay nodes.</p>
+              <p>The <code>main.py</code> API router acts as the central nervous system for the portal UI. It exposes endpoints like <code>/v1/network/remote-access</code> and <code>/v1/network/mesh-topology</code>.</p>
+<p><strong>Relevance:</strong> These specific endpoints do not return sensor data; they return the live mathematical graph definitions of the RF environment itself. This allows the Mission Portal to draw the exact Signal-to-Noise Ratio (SNR) and RSSI edges between floating relay nodes, allowing the operator to visually identify weak links in the mesh topology before a node drops entirely offline.</p>
               
             </div>
             
@@ -207,7 +211,8 @@
             <div class="section-content">
               <span class="section-kicker">API Reference</span>
               <h2>/v1/control Routers.</h2>
-              <p>Strictly guarded by the <code>X-OMEGA-API-Key</code>, the <code>/v1/control/commands</code> namespace pushes imperative commands into the DTN outbox. This includes executing firmware OTA drops, altering ASV PID tuning loops, and commanding JANUS acoustic payload transmissions.</p>
+              <p>The <code>/v1/control/commands</code> namespace is the most dangerous endpoint in the gateway. Strictly guarded by the <code>X-OMEGA-API-Key</code>, this router pushes imperative, physical commands directly into the DTN outbox.</p>
+<p><strong>Execution:</strong> An operator hitting this API can execute massive remote operations: triggering firmware OTA drops to 50 buoys simultaneously, altering the low-level PID tuning loops of an ASV's thrusters, or commanding an underwater modem to transmit a JANUS acoustic payload to a submerged ROV. It is the absolute command-and-control conduit.</p>
               
             </div>
             
@@ -217,7 +222,8 @@
             <div class="section-content">
               <span class="section-kicker">API Reference</span>
               <h2>/v1/science Routers.</h2>
-              <p>The science namespace provides raw access to the QARTOD pipeline. Oceanographers can hit <code>/v1/science/qc-eval</code> with a batch of raw time-series data and receive a fully labeled dataset featuring robust sigma flags, flat-line detection, and statistical deviations without needing to run the portal UI.</p>
+              <p>The science namespace provides raw, unfiltered access to the gateway's analytical pipeline. Oceanographers do not need to use the visual map portal; they can interact programmatically with the gateway.</p>
+<p><strong>Operational Use:</strong> A Python script can hit the <code>/v1/science/qc-eval</code> endpoint with a massive CSV batch of raw time-series data. The gateway will run the dataset through the QARTOD engine and return a fully labeled dataset featuring robust sigma flags, flat-line detection parameters, and statistical deviations, providing massive computational power to external researchers.</p>
               
             </div>
             
@@ -227,7 +233,8 @@
             <div class="section-content">
               <span class="section-kicker">Strict Validation</span>
               <h2>JSON Schema Enforcement.</h2>
-              <p>To protect the SQLite database from malformed or malicious payloads injected by rogue edge nodes, OMEGA relies on strict schema validations located in the <code>schemas/</code> directory. Before a packet is ever parsed, it is validated against the <code>observation-envelope.schema.json</code> definition, instantly dropping payloads that are missing critical routing arrays or origin UUIDs.</p>
+              <p>To protect the core SQLite database from malformed, corrupt, or actively malicious payloads injected by rogue edge nodes, OMEGA relies on strict mathematical JSON schema validations located in the <code>schemas/</code> directory.</p>
+<p><strong>Execution:</strong> Before a network packet is ever parsed by the Python backend, it is rapidly validated against the <code>observation-envelope.schema.json</code> definition using the <code>jsonschema</code> library. Any payload missing critical routing arrays, origin UUIDs, or containing the wrong data type is instantly dropped, ensuring database integrity is never compromised by field errors.</p>
               
             </div>
             <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">observation-envelope.schema.json</span><pre><code class="language-json">{

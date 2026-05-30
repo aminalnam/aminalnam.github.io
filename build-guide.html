@@ -177,7 +177,9 @@
             <div class="section-content">
               <span class="section-kicker">Embedded C++ Compilation</span>
               <h2>PlatformIO Manifests.</h2>
-              <p>OMEGA firmware is built using <strong>PlatformIO</strong> rather than the standard Arduino IDE. This ensures deterministic, reproducible builds across different operator machines by explicitly defining library versions in the <code>platformio.ini</code> manifest.</p>
+              <p>OMEGA firmware explicitly rejects the standard Arduino IDE. Managing complex, multi-library C++ projects across a dispersed engineering team using the Arduino IDE invariably leads to "works on my machine" dependency nightmares.</p>
+<p>Instead, OMEGA firmware is built exclusively using <strong>PlatformIO</strong>. This ensures deterministic, rigidly reproducible builds across different operator machines (Windows, Linux, macOS) by explicitly defining library dependencies, strict GCC compiler flags, and exact hardware environments in the <code>platformio.ini</code> manifest.</p>
+<p><strong>Relevance:</strong> By defining multiple profiles (e.g., <code>[env:tbeam-supreme-telemetry]</code> vs <code>[env:heltec-v3-relay]</code>), the Python gateway can automatically target and compile the exact C++ binary required for a specific piece of hardware before beaming it over the air.</p>
               
             </div>
             
@@ -187,7 +189,8 @@
             <div class="section-content">
               <span class="section-kicker">RF Engineering</span>
               <h2>Antenna Tuning & VSWR.</h2>
-              <p>Deploying 900MHz nodes requires strict attention to the <strong>Voltage Standing Wave Ratio (VSWR)</strong>. If an antenna is poorly tuned, power is reflected back into the amplifier, causing thermal destruction. Operators are guided to utilize proper ground planes (the ASV hull itself) to maximize LoRa range over the water.</p>
+              <p>Deploying 900MHz nodes into the field requires strict attention to RF Physics, specifically the <strong>Voltage Standing Wave Ratio (VSWR)</strong>. If an antenna is poorly tuned or mismatched to the transmission line impedance, the RF power is not radiated into the air; it reflects back down the cable into the LoRa amplifier.</p>
+<p>This reflected power causes massive thermal buildup and will rapidly destroy the SX1262 transceiver silicon. OMEGA operators are mathematically guided to utilize proper ground planes—often utilizing the aluminum hull of the ASV itself—to optimize the VSWR curve. This ensures maximum transmission efficiency, enabling 20+ kilometer line-of-sight hops over the water using a mere 30dBm of power.</p>
               
             </div>
             
@@ -197,7 +200,8 @@
             <div class="section-content">
               <span class="section-kicker">Deterministic Builds</span>
               <h2>PlatformIO Matrices.</h2>
-              <p>OMEGA firmware explicitly rejects the standard Arduino IDE. By utilizing PlatformIO (<code>platformio.ini</code>), the project defines strict build environments for different ESP32 hardware profiles (e.g., T-Beam vs Heltec). Compiler flags like <code>-DOMEGA_RADIO_KIND_LR1121=1</code> dynamically instruct the C++ preprocessor to compile the correct SPI pinouts for the Semtech LR1121 vs the SX1262.</p>
+              <p>The Arduino IDE is wholly inadequate for managing complex, multi-layered C++ mesh networks across a dispersed engineering team. OMEGA firmware fundamentally relies on PlatformIO (<code>platformio.ini</code>) to enforce deterministic, repeatable builds.</p>
+<p><strong>Execution:</strong> The project defines strict build environments for entirely different ESP32 hardware profiles (e.g., LilyGO T-Beam vs Heltec V3). Specific compiler flags like <code>-DOMEGA_RADIO_KIND_LR1121=1</code> dynamically instruct the C++ preprocessor. This ensures that when the compiler runs, it seamlessly configures the correct internal SPI pinouts and power profiles for a Semtech LR1121 transceiver versus a standard SX1262, preventing hardware mismatch crashes.</p>
               
             </div>
             <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">platformio.ini</span><pre><code class="language-ini">[env:gateway_t3_s3_lr1121_subghz]

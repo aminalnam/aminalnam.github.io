@@ -177,7 +177,9 @@
             <div class="section-content">
               <span class="section-kicker">Concurrency & IO Bound Limits</span>
               <h2>FastAPI Async Event Loop.</h2>
-              <p>The OMEGA Gateway sits at the intersection of HTTP requests from the portal, serial data from LoRa modules, and acoustic packets from underwater nodes. Python's Global Interpreter Lock (GIL) traditionally struggles with this.</p><p>By utilizing <strong>FastAPI and Starlette</strong>, the gateway relies on an asynchronous event loop. It can await an I/O bound serial operation without blocking the execution of a critical API response, allowing a single lightweight process to handle thousands of concurrent state requests.</p>
+              <p>The OMEGA Gateway sits at the highly volatile intersection of synchronous HTTP requests from the Mission Portal, asynchronous serial data streaming from LoRa modules, and unpredictable UDP acoustic packets from underwater nodes. Python's Global Interpreter Lock (GIL) traditionally struggles to juggle these massive I/O bound workloads simultaneously.</p>
+<p>To solve this, the gateway utilizes <strong>FastAPI and the Starlette framework</strong> to run on a high-performance asynchronous event loop (uvloop). This allows the gateway to `await` a slow I/O bound serial operation—like reading a 1200 baud LoRa transmission—without blocking the execution thread that is simultaneously serving a critical API response to the web dashboard.</p>
+<p><strong>Operational Use:</strong> When an Observation Envelope hits the `POST /v1/observations` endpoint, the gateway does not wait to process, validate, and write the data to disk. It immediately offloads the heavy normalization workload to a `BackgroundTasks` queue and returns a `202 Accepted` response within milliseconds. This guarantees that the edge node can go back to sleep instantly, saving precious battery life, while the gateway handles the database logic asynchronously.</p>
               <div class="callout"><strong>Background Tasks</strong><p>Heavy normalization operations are relegated to Starlette background tasks, ensuring the endpoint returns a 202 Accepted instantly.</p></div>
             </div>
             <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">FastAPI Concurrency</span><pre><code class="language-python">@app.post("/v1/observations")
@@ -190,7 +192,9 @@ async def ingest_observation(envelope: ObservationEnvelope, db: Session = Depend
             <div class="section-content">
               <span class="section-kicker">Database Engineering</span>
               <h2>SQLite Normalization & WAL.</h2>
-              <p>A fleet of 50 edge nodes transmitting telemetry every 10 seconds generates a continuous write-heavy load. Traditional SQLite can suffer from `database is locked` errors during concurrent read/write operations.</p><p>The gateway configures SQLite in <strong>Write-Ahead Logging (WAL)</strong> mode. Instead of locking the entire database file during a write, changes are appended to a separate `.wal` file, allowing readers (the Mission Portal) to concurrently access the database without being blocked by writers (the telemetry ingest).</p>
+              <p>A fleet of 50 edge nodes transmitting telemetry every 10 seconds generates a continuous, erratic, write-heavy load on the central gateway. Traditional SQLite configurations use database-level locks; when a write occurs, the entire file is locked, which causes `database is locked` exceptions for any dashboard attempting to read the data concurrently.</p>
+<p>To eliminate this bottleneck, the OMEGA gateway configures its SQLite engine in <strong>Write-Ahead Logging (WAL)</strong> mode using explicit PRAGMA statements on startup. Instead of locking the main database file during a write, changes are appended extremely fast to a separate `.wal` file.</p>
+<p><strong>Relevance:</strong> This allows readers (the Mission Portal fetching historical graphs) to concurrently access the database without ever being blocked by writers (the continuous telemetry ingest). Furthermore, `PRAGMA synchronous=NORMAL` relaxes the rigid sync constraints, vastly increasing write throughput on the SD cards of Raspberry Pi gateways without risking catastrophic corruption.</p>
               
             </div>
             <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">SQLite Configuration</span><pre><code class="language-sql">PRAGMA journal_mode=WAL;
@@ -202,7 +206,9 @@ PRAGMA cache_size=-64000;</code></pre></div>
             <div class="section-content">
               <span class="section-kicker">Data Structures</span>
               <h2>The Observation Envelope.</h2>
-              <p>Disparate sensors produce chaotic data formats. OMEGA standardizes all incoming telemetry into a strict <strong>Observation Envelope</strong>. This schema guarantees that every measurement has a cryptographic timestamp, an explicitly defined unit, and spatial coordinates.</p><p>By enforcing this envelope at the boundary, downstream systems (like bathymetry processors or QARTOD QC algorithms) do not need to parse different manufacturer formats.</p>
+              <p>Disparate marine sensors natively produce chaotic, proprietary data formats—a YSI sonde outputs ASCII strings, while a BlueRobotics pressure sensor outputs raw hex. OMEGA standardizes all incoming telemetry into a strict <strong>Observation Envelope</strong> schema.</p>
+<p>This schema is the universal currency of the OMEGA platform. It mathematically guarantees that every measurement entering the system possesses a cryptographic UUID, an ISO-8601 timestamp, explicit SI units, and spatial coordinates (Latitude/Longitude/Depth).</p>
+<p><strong>How it works:</strong> By enforcing this envelope at the boundary layer via Pydantic models, downstream systems—such as bathymetry processors, machine learning models, or QARTOD Quality Control algorithms—do not need to write custom parsers for different manufacturer formats. They simply ingest the normalized Envelope, process the payload, and output a new Envelope. This strict data contract enables massive interoperability across the fleet.</p>
               
             </div>
             
@@ -212,7 +218,8 @@ PRAGMA cache_size=-64000;</code></pre></div>
             <div class="section-content">
               <span class="section-kicker">Data Science Workflows</span>
               <h2>The Honu AI Copilot.</h2>
-              <p>The gateway includes an embedded, offline-capable AI Orchestration engine named Honu. This is a 166KB Python module that routes natural language queries across 46 distinct internal APIs. Because the model holds zero built-in knowledge of the deployment, it uses a strict system prompt to act as a pure analytical and navigational tool, leveraging Live Tool Calls to answer complex oceanographic queries.</p>
+              <p>The Mission Portal is too complex for a human operator to constantly navigate nested menus during a critical mission event. To solve this, the Python gateway includes an embedded, completely offline-capable AI Orchestration engine named <strong>Honu</strong>. This is a highly optimized 166KB Python module that intercepts natural language queries from the operator and dynamically routes them across 46 distinct internal APIs.</p>
+<p><strong>Execution:</strong> Because the LLM inherently holds absolutely zero built-in knowledge of the specific marine deployment, the system uses a strict foundational prompt. It acts strictly as an analytical and navigational bridge, leveraging Live Tool Calls to query the SQLite database, filter nodes by geographic bounds, and summarize massive observation arrays. Instead of clicking 10 buttons to find out why Buoy 4 went offline, the operator simply asks Honu, and the copilot autonomously executes the diagnostic trace.</p>
               
             </div>
             <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">copilot.py</span><pre><code class="language-python">SYSTEM_PROMPT = """You are Honu, the OMEGA Intelligence Engine — an expert research assistant, data analyst, and interface navigator embedded in the OMEGA open-source marine research portal.

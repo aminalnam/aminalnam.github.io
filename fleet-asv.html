@@ -177,7 +177,9 @@
             <div class="section-content">
               <span class="section-kicker">Control Systems Engineering</span>
               <h2>Jetson & Pixhawk Sensor Fusion.</h2>
-              <p>Deploying autonomous vessels requires a strict separation of concerns. The OMEGA Fleet node profile isolates safety-critical motor control from high-level mission planning.</p><p>The <strong>Jetson Orin NX</strong> handles computer vision, map reduction, and mesh logic (running the gateway). It communicates via MAVLink to a <strong>Pixhawk Autopilot</strong>. The Pixhawk is the ultimate arbiter of physical movement—if the Jetson crashes, the Pixhawk retains hard-coded Return-To-Launch failsafes.</p>
+              <p>Deploying autonomous vessels physically into the ocean requires a rigid, unbreakable separation of concerns. If a high-level Python script crashes, the vessel cannot be allowed to spin its propellers uncontrollably or drift into a shipping lane.</p>
+<p>The OMEGA Fleet node profile isolates safety-critical motor control from high-level, unpredictable mission planning. A high-compute <strong>NVIDIA Jetson Orin NX</strong> handles computer vision, localized map reduction, and complex DTN mesh routing. The Jetson communicates exclusively via MAVLink protocols to a dedicated, low-level <strong>Pixhawk Autopilot</strong>.</p>
+<p><strong>Relevance:</strong> The Pixhawk is the ultimate, fail-safe arbiter of physical movement. It runs a hardened RTOS (Real-Time Operating System). If the Jetson completely crashes or burns out, the Pixhawk retains hard-coded Return-To-Launch (RTL) geofence failsafes, guaranteeing the multimillion-dollar asset safely returns to harbor without higher-level compute intervention.</p>
               <div class="callout"><strong>Mission Intents vs Motor Control</strong><p>Operators do not send PWM motor signals over the mesh. They send abstract "Mission Intents" (e.g., "Survey Grid A"), which the Jetson expands into local waypoints.</p></div>
             </div>
             <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">gateway/asv_controller.py</span><pre><code class="language-python">@app.post("/v1/asv/mission-intent")
@@ -192,7 +194,9 @@ def receive_intent(intent: MissionIntent):
             <div class="section-content">
               <span class="section-kicker">Hardware Physics</span>
               <h2>Thermodynamics & Heat Dissipation.</h2>
-              <p>Deploying microcontrollers into marine environments introduces severe hardware constraints. Nodes must be encased in completely sealed, IP67+ waterproof enclosures to survive saltwater immersion. However, the ESP32 and accompanying LoRa amplifiers generate significant internal heat.</p><p>Without active ventilation, the system relies entirely on <strong>passive thermal conduction</strong> through the enclosure walls. Firmware must strictly limit radio transmit duty-cycles. If the transceiver operates continuously, the internal ambient temperature will rise until the silicon reaches its thermal throttling limit, leading to catastrophic failure.</p>
+              <p>Deploying powerful microcontrollers into marine environments introduces severe, often fatal hardware constraints. Edge nodes must be encased in completely sealed, hermetic IP67+ waterproof enclosures to survive saltwater immersion. However, processors like the ESP32 and accompanying 30dBm LoRa amplifiers generate significant internal heat.</p>
+<p>Because they are sealed, there is zero active ventilation. The system relies entirely on <strong>passive thermal conduction</strong> through the enclosure walls to the surrounding ambient air or water. If the firmware transmits data continuously, the internal ambient temperature will inevitably rise until the silicon hits its thermal throttling limit, leading to catastrophic system failure or melted PLA mounts.</p>
+<p><strong>How we use this:</strong> OMEGA firmware implements rigid software limiters on radio transmit duty-cycles. It monitors the internal CPU die temperatures and aggressively throttles clock speeds or drops non-critical telemetry packets to ensure the thermal envelope of the enclosure is never breached.</p>
               
             </div>
             
@@ -202,7 +206,9 @@ def receive_intent(intent: MissionIntent):
             <div class="section-content">
               <span class="section-kicker">Deployment Operations</span>
               <h2>Over-The-Air (OTA) Pipelines.</h2>
-              <p>Retrieving a deployed buoy simply to update a line of code is logistically prohibitive. OMEGA implements a robust Over-The-Air (OTA) flashing pipeline over the DTN mesh.</p><p>Compiled firmware binaries are fragmented, compressed, and signed cryptographically. The Gateway transmits these fragments sequentially. The edge node buffers them in external flash memory, verifies the cryptographic signature, and only switches the boot partition if the validation passes, preventing "bricked" nodes.</p>
+              <p>Retrieving a deployed buoy or an ASV from the middle of the ocean simply to update a line of code is logistically and financially prohibitive. OMEGA implements a robust Over-The-Air (OTA) flashing pipeline over its own DTN mesh network.</p>
+<p><strong>How it works:</strong> The compiled C++ firmware binaries are fragmented, heavily compressed, and signed with a cryptographic private key. The Gateway transmits these fragments sequentially over the LoRa network. The edge node receives the fragments, buffers them in its external SPI flash memory, and reassembles them.</p>
+<p>Crucially, the node then mathematically verifies the cryptographic signature of the reassembled binary. It only switches the boot partition pointer to the new firmware if the validation passes perfectly, completely preventing "bricked" nodes from corrupt RF packets.</p>
               
             </div>
             
@@ -212,7 +218,8 @@ def receive_intent(intent: MissionIntent):
             <div class="section-content">
               <span class="section-kicker">Fleet Algorithms</span>
               <h2>Autonomous Relay Deployment Logic.</h2>
-              <p>The ASV autonomously evaluates when to drop floating LoRa relays to extend the mesh network back to shore. The <code>build_relay_chain_plan</code> Python function calculates the Haversine distance between the shore and ASV. Crucially, it triggers a drop if the <code>direct_rssi_dbm</code> falls below the <code>deploy_rssi_dbm</code> threshold, proving that the ASV is reacting to live RF propagation conditions rather than just simple geographic distance.</p>
+              <p>The ASV does not rely on a human operator to decide when to expand the network. It autonomously executes Relay Deployment Logic. The <code>build_relay_chain_plan</code> Python function continuously monitors the RF environment.</p>
+<p><strong>The Math:</strong> It calculates the Haversine distance between the shore and the ASV. However, RF propagation over rolling waves is not a simple linear equation. The algorithm actively monitors the <code>direct_rssi_dbm</code> (Received Signal Strength Indicator) of the LoRa packets. If the signal decays below the strict <code>deploy_rssi_dbm</code> threshold (e.g., -115 dBm), the Jetson triggers a physical servo to drop a floating LoRa relay buoy. This proves the ASV is reacting to live, unpredictable RF physics rather than simple geographic distance assumptions.</p>
               
             </div>
             <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">gateway/fleet.py (Snippet)</span><pre><code class="language-python">def build_relay_chain_plan(
@@ -238,7 +245,8 @@ def receive_intent(intent: MissionIntent):
             <div class="section-content">
               <span class="section-kicker">OTA Updates</span>
               <h2>Live Firmware Flasher.</h2>
-              <p>OMEGA allows operators to flash ESP32 nodes directly from the Mission Portal. The Python backend dynamically executes <code>platformio</code> as a subprocess, allowing operators to deploy targeted profiles (like <code>tbeam-supreme-usb-telemetry</code>) over the air or via USB without ever leaving the browser.</p>
+              <p>Standard IoT platforms require operators to download bin files and physically plug USB cables into hardware to update firmware. OMEGA completely automates this via the <strong>Live Firmware Flasher</strong> directly within the Mission Portal.</p>
+<p><strong>How it works:</strong> The Python backend uses the <code>subprocess</code> module to dynamically execute <code>platformio</code> CLI commands. This allows operators to select targeted hardware profiles (like <code>[env:tbeam-supreme-usb-telemetry]</code>), compile the C++ code on the fly inside the gateway, and push the resulting binaries either over the air (OTA) via the mesh network or directly via a tethered USB port, without ever leaving the web browser.</p>
               
             </div>
             <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">firmware_flasher.py</span><pre><code class="language-python">def build_firmware_command(target: FirmwareTarget, *, action: FirmwareAction, port: str | None = None) -> list[str]:
@@ -255,7 +263,8 @@ def receive_intent(intent: MissionIntent):
             <div class="section-content">
               <span class="section-kicker">Autonomous Safety</span>
               <h2>Active Guard Geofencing.</h2>
-              <p>The <code>active_guard.py</code> module is a merciless watchdog. It constantly calculates the cross-track error of every ASV against predefined GeoJSON exclusion zones. If a vessel deviates into a shipping lane due to high winds, the Active Guard instantly overrides the standard waypoint mission and executes an emergency heading correction.</p>
+              <p>The <code>active_guard.py</code> module acts as a merciless, unblinking watchdog over the physical fleet. During high winds or heavy chop, an ASV might struggle to maintain its commanded heading and slowly drift off-course.</p>
+<p><strong>Execution:</strong> Active Guard constantly calculates the cross-track error (the perpendicular distance from the planned path) of every ASV against predefined GeoJSON exclusion zones. If a vessel mathematically deviates into a dangerous shipping lane or a shallow reef, Active Guard instantly overrides the standard waypoint mission, sending an emergency heading correction to the Pixhawk to drag the vessel back into safe waters.</p>
               
             </div>
             
@@ -265,7 +274,8 @@ def receive_intent(intent: MissionIntent):
             <div class="section-content">
               <span class="section-kicker">Simulation</span>
               <h2>Digital Twin Execution.</h2>
-              <p>Before a fleet is deployed, operators can launch a shadow fleet using <code>digital_twin.py</code>. This module spawns virtual edge nodes that mimic the exact hardware quirks, battery degradation curves, and RF transmission patterns of the physical vessels, stress-testing the Mesh Core before the hull ever touches the water.</p>
+              <p>Deploying a massive mesh network in the ocean without testing is guaranteed to fail. Before a fleet is ever put on a boat, operators launch a shadow fleet using the <code>digital_twin.py</code> architecture.</p>
+<p><strong>How it works:</strong> This module spawns hundreds of virtual edge nodes running the exact same C++ firmware logic. These digital twins mimic the physical hardware quirks, specific battery degradation discharge curves, and exact LoRa RF transmission patterns of the physical vessels. This completely stress-tests the Mesh Core, the FastAPI routing, and the SQLite WAL configuration before the hull ever touches the saltwater.</p>
               
             </div>
             
@@ -275,7 +285,8 @@ def receive_intent(intent: MissionIntent):
             <div class="section-content">
               <span class="section-kicker">Hardware Architecture</span>
               <h2>Raspberry Pi Coprocessor.</h2>
-              <p>An ESP32 alone cannot run a complex routing table. The <code>pi_gateway_controller.py</code> and <code>gateway_coprocessor_bridge.py</code> modules document how the Raspberry Pi acts as the brain (handling HTTP, SQLite, and Python), while the tethered ESP32 acts merely as a dumb RF modem, executing AT commands injected via serial.</p>
+              <p>An ESP32 microcontroller is incredibly efficient at radio transmissions, but it physically lacks the RAM and clock speed to run a complex asynchronous routing table or a SQLite database. The OMEGA architecture utilizes a hardware tether.</p>
+<p><strong>Execution:</strong> The <code>pi_gateway_controller.py</code> and <code>gateway_coprocessor_bridge.py</code> modules dictate this relationship. A Raspberry Pi 4 acts as the "brain," handling all HTTP requests, database transactions, and Python-based routing logic. The tethered ESP32 (connected via USB serial) acts merely as a "dumb" RF modem. The Pi injects specific AT commands and byte arrays into the ESP32, which simply blasts them out over the LoRa antenna.</p>
               
             </div>
             
@@ -285,7 +296,8 @@ def receive_intent(intent: MissionIntent):
             <div class="section-content">
               <span class="section-kicker">Deterministic Builds</span>
               <h2>PlatformIO Matrices.</h2>
-              <p>OMEGA firmware explicitly rejects the standard Arduino IDE. By utilizing PlatformIO (<code>platformio.ini</code>), the project defines strict build environments for different ESP32 hardware profiles (e.g., T-Beam vs Heltec). Compiler flags like <code>-DOMEGA_RADIO_KIND_LR1121=1</code> dynamically instruct the C++ preprocessor to compile the correct SPI pinouts for the Semtech LR1121 vs the SX1262.</p>
+              <p>The Arduino IDE is wholly inadequate for managing complex, multi-layered C++ mesh networks across a dispersed engineering team. OMEGA firmware fundamentally relies on PlatformIO (<code>platformio.ini</code>) to enforce deterministic, repeatable builds.</p>
+<p><strong>Execution:</strong> The project defines strict build environments for entirely different ESP32 hardware profiles (e.g., LilyGO T-Beam vs Heltec V3). Specific compiler flags like <code>-DOMEGA_RADIO_KIND_LR1121=1</code> dynamically instruct the C++ preprocessor. This ensures that when the compiler runs, it seamlessly configures the correct internal SPI pinouts and power profiles for a Semtech LR1121 transceiver versus a standard SX1262, preventing hardware mismatch crashes.</p>
               
             </div>
             <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">platformio.ini</span><pre><code class="language-ini">[env:gateway_t3_s3_lr1121_subghz]

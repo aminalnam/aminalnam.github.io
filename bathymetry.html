@@ -177,7 +177,9 @@
             <div class="section-content">
               <span class="section-kicker">Spatial Interpolation</span>
               <h2>Inverse Distance Weighting (IDW).</h2>
-              <p>Because a physical vessel cannot sound every single square meter of a lakebed, the system must mathematically infer the depth of the unmapped voids.</p><p>OMEGA utilizes <strong>Inverse Distance Weighting (IDW)</strong> for rapid edge-compute approximation. The depth of an unknown point is calculated as a weighted average of known surrounding points, executed efficiently in Python using <code>scipy.spatial.cKDTree</code>.</p>
+              <p>When an ASV conducts a sonar survey, it physically cannot sound every single square meter of a lakebed or ocean floor. The resulting dataset is a massive point cloud with significant, unmapped spatial voids between the transect lines.</p>
+<p>To generate a continuous 3D topographic map for the Mission Portal, OMEGA utilizes <strong>Inverse Distance Weighting (IDW)</strong> for rapid, edge-compute spatial interpolation. The depth of any unknown coordinate is calculated as a mathematically weighted average of all known surrounding sonar points.</p>
+<p><strong>How it works:</strong> The closer a known sonar ping is to the unknown coordinate, the more mathematical weight it carries. This operation is executed extremely efficiently in the Python Gateway using <code>scipy.spatial.cKDTree</code>, allowing millions of points to be interpolated and projected into a GeoJSON raster almost instantly upon mission completion.</p>
               
             </div>
             
@@ -187,7 +189,9 @@
             <div class="section-content">
               <span class="section-kicker">Sonar Physics</span>
               <h2>Acoustic Sounding Cones.</h2>
-              <p>A transducer does not shoot a laser line directly downwards; it emits an acoustic cone. In shallow water, the footprint is small. In deep water, the footprint can cover a massive area, averaging out steep underwater cliffs. The bathymetry processor adjusts confidence weights based on depth-derived acoustic footprint sizes.</p>
+              <img src="omega_ui_bathymetry_3d.png" style="width: 100%; border-radius: 8px; border: 1px solid var(--line); margin-bottom: 1.5rem;" alt="3D Bathymetry Map Visualization">
+<p>Sonar physics dictate that a transducer does not shoot a laser-thin line directly downwards; it emits an expanding acoustic cone. In shallow water (2 meters), the acoustic footprint on the floor is extremely small, resulting in highly accurate, localized depth readings.</p>
+<p>However, in deep water (500 meters), the acoustic footprint can cover a massive area, physically averaging out steep underwater cliffs or small wrecks. The OMEGA bathymetry processor dynamically adjusts confidence weights based on depth-derived footprint sizes. Shallow readings are trusted completely; deep readings are mathematically smoothed to account for the wider acoustic dispersion, ensuring the final generated 3D map is physically accurate.</p>
               
             </div>
             
@@ -197,7 +201,8 @@
             <div class="section-content">
               <span class="section-kicker">Bathymetric Execution</span>
               <h2>Interpolated Depth Soundings.</h2>
-              <p>This is a raw bathymetry sounding envelope. Note the specific metric <code>bathymetry-depth: 12.4m</code> in the SenML records. The gateway consumes these envelopes, storing them as raw points in SQLite. The portal then queries these points and executes Inverse Distance Weighting (IDW) interpolation in real-time, generating a continuous 3D contour map from discrete sonar pings.</p>
+              <p>The <code>bathymetry-sounding.json</code> envelope is generated thousands of times per hour by the ASV's active sonar pinging the lakebed. Note the specific metric <code>bathymetry-depth: 12.4m</code> encoded in the strict SenML format.</p>
+<p><strong>Execution:</strong> The gateway consumes these disparate envelopes and stores them as massive arrays of raw coordinate points in SQLite. The Mission Portal then queries these points and executes an Inverse Distance Weighting (IDW) interpolation algorithm directly in the client's browser. This mathematics transforms discrete, scattered sonar pings into a beautiful, continuous 3D contour map, giving operators instant, real-time feedback on the topography of the unmapped ocean floor.</p>
               
             </div>
             <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">bathymetry-sounding.example.json</span><pre><code class="language-json">{
@@ -253,7 +258,8 @@
             <div class="section-content">
               <span class="section-kicker">Data Standards</span>
               <h2>CF-Compliant NetCDF Pipelines.</h2>
-              <p>Scientific data is useless if it is proprietary. OMEGA strictly adheres to the Climate and Forecast (CF) Metadata Conventions (<code>cf_metadata.py</code>). All raw JSON telemetry is eventually serialized into massive multi-dimensional NetCDF arrays (<code>cf_netcdf.py</code>) for long-term archival in national supercomputing repositories.</p>
+              <p>Scientific data is fundamentally useless if it is trapped in proprietary formats. OMEGA is designed for institutional interoperability and strictly adheres to the Climate and Forecast (CF) Metadata Conventions (<code>cf_metadata.py</code>).</p>
+<p><strong>Execution:</strong> All raw JSON/CBOR telemetry collected by the edge nodes is eventually serialized into massive, multi-dimensional NetCDF arrays (<code>cf_netcdf.py</code>). These arrays include rigorous metadata describing the exact sensor used, the calibration date, and the QA/QC flags. This allows the data to be seamlessly ingested into national supercomputing repositories (like NCEI) for long-term climate modeling archival.</p>
               
             </div>
             
@@ -263,7 +269,8 @@
             <div class="section-content">
               <span class="section-kicker">4D Data Arrays</span>
               <h2>Copernicus 4D Data Cubes.</h2>
-              <p>The gateway does not just read flat CSVs; it parses true 4D data cubes (Latitude, Longitude, Depth, Time) using <code>copernicus_cube.py</code>. This allows the visualization portal to render complex volumetric slices of ocean salinity and ocean color (Chlorophyll-a), overlaying the exact 3D position of the ASV inside the data cube.</p>
+              <p>The gateway does not just read flat CSV files; it is engineered to parse true 4D data cubes (Latitude, Longitude, Depth, Time) using the <code>copernicus_cube.py</code> architecture. These cubes represent terabytes of oceanic modeling data.</p>
+<p><strong>Relevance:</strong> By accessing the Copernicus Marine Service APIs, the OMEGA gateway extracts specific slices of this data cube. This allows the visualization portal to render complex, volumetric slices of ocean salinity and ocean color (Chlorophyll-a), and mathematically overlay the exact 3D physical position of the ASV directly inside the simulated data cube.</p>
               
             </div>
             

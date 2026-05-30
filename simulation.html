@@ -177,7 +177,9 @@
             <div class="section-content">
               <span class="section-kicker">Synthetic Generation</span>
               <h2>Procedural Time-Step Environments.</h2>
-              <p>Testing a disconnected DTN mesh network is impossible with a single static JSON file. OMEGA includes a massive Simulation Harness that procedurally generates stationary water-quality buoys, moving drifters, ROV tracks, and JANUS acoustic activity across defined time steps.</p>
+              <p>Physically testing a completely disconnected, Delay Tolerant Network (DTN) mesh is virtually impossible with a single static JSON payload. Real-world mesh networks behave unpredictably: nodes drift out of range, waves block RF signals, and packets are cached for hours before bursting across a newly formed link.</p>
+<p>OMEGA includes a massive <strong>Simulation Harness</strong> designed to stress-test the Gateway and Mission Portal logic. The engine procedurally generates stationary water-quality buoys, fast-moving drifters, completely disconnected ROV subsurface tracks, and JANUS acoustic anomaly alerts across thousands of defined temporal steps.</p>
+<p><strong>Relevance:</strong> This allows UI developers and backend engineers to visually debug how the system handles 500 nodes moving simultaneously, going offline, and dropping massive payload caches hours late, ensuring the SQLite WAL implementation and React state machines never crack under pressure.</p>
               
             </div>
             
@@ -187,7 +189,8 @@
             <div class="section-content">
               <span class="section-kicker">Network Planning</span>
               <h2>Monte Carlo Relay Drop Analysis.</h2>
-              <p>Before an ASV deploys floating LoRa relays, the simulator runs thousands of Monte Carlo physics models. It simulates drift based on predicted wind/currents to calculate the exact coordinate to drop a relay, maximizing the duration the relay will remain within RF line-of-sight of both the shore and the ASV.</p>
+              <p>Deploying physical hardware into the ocean is incredibly expensive. Before an ASV physically drops a floating LoRa relay buoy into the water to extend the mesh network, the operational team must mathematically prove the drop zone is viable.</p>
+<p>The simulation harness runs thousands of <strong>Monte Carlo physics models</strong>. It ingests historical Copernicus wind and tidal current datasets, and simulates the physical drift of the unpowered relay buoy over 72 hours. It calculates the exact GPS coordinate to drop the relay, maximizing the statistical probability that the drifting relay will remain within RF line-of-sight (approx 15km) of both the shore gateway and the moving ASV for the duration of the mission.</p>
               
             </div>
             

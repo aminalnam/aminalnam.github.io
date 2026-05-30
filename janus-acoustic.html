@@ -177,7 +177,9 @@
             <div class="section-content">
               <span class="section-kicker">Acoustic Physics</span>
               <h2>Snell's Law & Refraction.</h2>
-              <p>Radio waves attenuate almost immediately in seawater. To communicate with subsurface ROVs, OMEGA utilizes mechanical energy: acoustic waves.</p><p>However, acoustics face severe physical challenges. As temperature and salinity change with depth, the speed of sound shifts. According to <strong>Snell's Law of Refraction</strong>, sound waves bend toward regions of slower sound speed, creating "shadow zones" where communication is physically impossible.</p>
+              <p>Traditional radio waves (RF) attenuate and die almost immediately when striking seawater. To communicate with subsurface Remotely Operated Vehicles (ROVs) or deep-sea sensors, OMEGA must abandon the electromagnetic spectrum and utilize mechanical energy: acoustic waves.</p>
+<p>However, marine acoustics face severe physical physics challenges. As the water's temperature, salinity, and depth (pressure) change, the physical speed of sound shifts. According to <strong>Snell's Law of Refraction</strong>, sound waves do not travel in straight lines underwater; they aggressively bend toward regions of slower sound speed.</p>
+<p><strong>Relevance:</strong> This refraction creates massive acoustic "shadow zones" where communication is physically impossible, even if the ROV is only a few hundred meters away. OMEGA's acoustic processing algorithms account for these extreme environmental variables when predicting mesh connectivity.</p>
               
             </div>
             
@@ -187,7 +189,9 @@
             <div class="section-content">
               <span class="section-kicker">NATO Protocols</span>
               <h2>The JANUS Bridge.</h2>
-              <p>To combat multipath fading and echo interference, OMEGA implements the NATO-standard <strong>JANUS</strong> acoustic protocol. The gateway translates JSON mesh commands into Frequency-Shift Keyed (FSK) acoustic waveforms, treating a hydrophone exactly like a terrestrial radio.</p>
+              <p>To combat the severe multipath fading and echo interference caused by sound bouncing wildly off the ocean floor and the surface waves, OMEGA implements the NATO-standard <strong>JANUS</strong> acoustic protocol (STANAG 4748).</p>
+<p><strong>How it works:</strong> The gateway translates standardized JSON mesh commands into Frequency-Shift Keyed (FSK) acoustic waveforms. It treats a massive hardware hydrophone exactly like it treats a standard terrestrial radio interface.</p>
+<p>By using the JANUS specification, OMEGA nodes can inherently interoperate with allied naval vessels, autonomous gliders, and university acoustic modems right out of the box, breaking proprietary vendor lock-in in the underwater communications space.</p>
               
             </div>
             
@@ -197,7 +201,8 @@
             <div class="section-content">
               <span class="section-kicker">Acoustic Subsea Frames</span>
               <h2>JANUS Initialization.</h2>
-              <p>This is a simulated NATO-standard JANUS acoustic frame. The payload defines the <code>center_frequency_hz</code> and the <code>rx_level_db</code>. Because underwater acoustics are incredibly low-bandwidth (often ~80 bps), the actual data transferred via the acoustic gateway is usually limited to initialization vectors and critical emergency stop commands.</p>
+              <p>Because underwater acoustic physics are incredibly hostile, bandwidth is severely limited—often maxing out at a mere 80 bits per second (bps). Therefore, OMEGA cannot stream complex JSON over a hydrophone.</p>
+<p><strong>How it works:</strong> The <code>janus-announce.json</code> structure represents the simulated NATO-standard JANUS initialization frame. The payload explicitly defines the <code>center_frequency_hz</code> and the <code>rx_level_db</code>. The Gateway uses this payload to align the hydrophone's physical oscillator. Once aligned, the actual data transferred via the acoustic bridge is strictly limited to heavily compressed initialization vectors and critical emergency stop commands, preserving the fragile acoustic channel.</p>
               
             </div>
             <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">janus-announce.example.json</span><pre><code class="language-json">{

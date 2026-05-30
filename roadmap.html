@@ -177,7 +177,9 @@
             <div class="section-content">
               <span class="section-kicker">Data Science & Cartography</span>
               <h2>Hexbinned Aggregation (H3 Grid).</h2>
-              <p>As the network scales to thousands of global nodes, rendering individual points causes severe map clutter. The planned roadmap includes migrating to Uber's <strong>H3 Hexagonal Hierarchical Spatial Index</strong>.</p><p>Instead of plotting nodes, the map will plot discrete hexagonal geographic buckets, color-coded by the statistical median or standard deviation of the nodes contained within them.</p>
+              <p>As the OMEGA network scales globally—incorporating thousands of autonomous nodes, millions of historical pings, and massive public NDBC datasets—rendering individual geospatial points causes severe UI map clutter and crashes the browser's DOM renderer.</p>
+<p>The planned roadmap includes migrating the entire spatial database to Uber's <strong>H3 Hexagonal Hierarchical Spatial Index</strong>. Instead of plotting individual coordinate nodes, the map will plot discrete, hierarchical hexagonal geographic buckets. These hexagons will be dynamically color-coded by the statistical median or standard deviation of the millions of nodes contained within them.</p>
+<p><strong>Relevance:</strong> This allows an operator to zoom out to view the entire Pacific Ocean as a massive, low-resolution hex-grid heatmap, and seamlessly zoom in to a single coral reef to view individual node resolutions, without ever overwhelming the WebGL engine.</p>
               
             </div>
             
@@ -187,7 +189,8 @@
             <div class="section-content">
               <span class="section-kicker">Edge AI</span>
               <h2>Machine Learning Inferencing (TinyML).</h2>
-              <p>Future fleet iterations will run TinyML models directly on the ESP32 edge nodes. By training a TensorFlow Lite model on baseline vibration profiles, the node will be able to detect motor anomalies (e.g., kelp wrapped around a propeller) and transmit an alarm before critical failure occurs.</p>
+              <p>Currently, edge nodes rely entirely on the shore Gateway or the onboard Jetson Orin NX to process complex data and detect anomalies. Future fleet iterations will push <strong>Machine Learning Inferencing (TinyML)</strong> directly onto the ESP32 and ESP32-S3 edge microcontrollers.</p>
+<p><strong>How it works:</strong> By training a highly compressed TensorFlow Lite model on thousands of hours of baseline vibration profiles and hydrophone acoustic data, the edge node will be able to detect complex mechanical anomalies locally. For example, if kelp wraps around a propeller, the vibration frequency shifts. The TinyML model detects this shift instantly and transmits a high-priority 50-byte alarm over LoRa, shutting down the motor before catastrophic physical failure occurs, without ever needing to transmit the massive raw vibration matrix to the cloud.</p>
               
             </div>
             

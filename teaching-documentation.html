@@ -177,7 +177,9 @@
             <div class="section-content">
               <span class="section-kicker">System Bringup</span>
               <h2>Getting the Gateway Online.</h2>
-              <p>The gateway utilizes a PowerShell script <code>omega_gateway_online.ps1</code> to handle environment variable injection, PYTHONPATH resolution, and launching <code>uvicorn gateway.main:app</code>. It actively handles binding to localhost, exposing same-Wi-Fi LAN URLs, and optionally tunneling the traffic through <code>ngrok</code> or <code>cloudflared</code> for remote oceanographic team access.</p>
+              <p>Configuring a local development environment for a system that spans React, FastAPI, SQLite, and MAVLink can be daunting. The OMEGA repository utilizes a master PowerShell script <code>omega_gateway_online.ps1</code> (and its bash equivalent) to orchestrate the entire bringup process.</p>
+<p><strong>How to use it:</strong> Running this script automatically handles environment variable injection, PYTHONPATH resolution, database initialization, and launches the gateway via <code>uvicorn gateway.main:app --host 0.0.0.0</code>.</p>
+<p>Crucially, it actively handles binding the application to the physical network interface card (NIC), exposing the Gateway APIs and the Mission Portal to devices on the same Wi-Fi LAN. It also optionally hooks into daemonized tunneling services like <code>ngrok</code> or <code>cloudflared</code>, punching a secure reverse TCP tunnel out to the internet so remote oceanographic teams can monitor a gateway running on a boat thousand of miles away.</p>
               
             </div>
             
@@ -187,7 +189,8 @@
             <div class="section-content">
               <span class="section-kicker">Field Hardware</span>
               <h2>Raspberry Pi Gateway Mesh.</h2>
-              <p>The ultimate goal of OMEGA is remote deployment. We provide exhaustive guides on configuring a Raspberry Pi 4 as a headless field gateway, setting up <code>systemd</code> services for the Python application, and ensuring the local SQLite database is robust against abrupt power loss on marine deployments.</p>
+              <p>The ultimate goal of OMEGA is remote, unassisted field deployment. While testing on a Windows laptop is convenient, the physical gateway is usually a headless Raspberry Pi 4 bolted inside a pelican case on a bouncing vessel.</p>
+<p>We provide exhaustive deployment guides on configuring the Pi for the harsh realities of marine deployments. This includes setting up rigid <code>systemd</code> daemon services that automatically restart the Python application if it crashes, configuring the OS to mount root filesystems as Read-Only to prevent catastrophic SD card corruption during abrupt power losses, and ensuring the SQLite database WAL files are cleanly flushed to disk.</p>
               
             </div>
             

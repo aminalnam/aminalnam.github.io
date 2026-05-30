@@ -177,7 +177,9 @@
             <div class="section-content">
               <span class="section-kicker">WebGL Rendering & Spatial Indexing</span>
               <h2>Mapbox GL JS Performance.</h2>
-              <p>Rendering thousands of live nodes requires a hardware-accelerated pipeline. The Mission Portal utilizes <strong>Mapbox GL JS</strong>, pushing the heavy lifting to the client's GPU via WebGL.</p><p>To handle extreme density, the system clusters nodes using Supercluster algorithms. Rather than DOM manipulation, points are drawn directly to the WebGL canvas context.</p>
+              <p>Rendering thousands of live nodes, historical telemetry paths, and dynamic vector polygons simultaneously requires a hardware-accelerated pipeline. Standard DOM manipulation (like traditional Leaflet maps) completely freezes the browser when node counts exceed a few thousand.</p>
+<p>The Mission Portal utilizes <strong>Mapbox GL JS</strong>, pushing the heavy spatial rendering algorithms directly to the client's GPU via WebGL. To handle extreme density deployments, the system clusters grouped nodes using rapid Supercluster algorithms. Rather than manipulating thousands of `<div>` tags, millions of points are mathematically projected and drawn directly to a single WebGL canvas context.</p>
+<p><strong>Offline Capabilities:</strong> To save highly constrained bandwidth when an operator is accessing the portal from a ship in the middle of the ocean, the frontend aggressively caches Mapbox Vector Tiles (MVT) in the browser's IndexedDB. This ensures the map loads instantly from local storage, without requiring external API calls over the satellite link.</p>
               <div class="callout"><strong>Vector Tile Caching</strong><p>To save bandwidth on disconnected operations, the frontend aggressively caches Mapbox Vector Tiles (MVT) in the browser's IndexedDB.</p></div>
             </div>
             
@@ -187,7 +189,9 @@
             <div class="section-content">
               <span class="section-kicker">Network Architecture</span>
               <h2>HTTP Long-Polling vs WebSockets.</h2>
-              <p>WebSockets provide excellent real-time bidirectional communication, but they require a persistently open TCP connection. Over degraded satellite or maritime VHF links, persistent TCP connections drop constantly, triggering expensive handshake reconnect loops.</p><p>OMEGA bypasses this by utilizing a strict, lightweight <strong>HTTP Long-Polling</strong> architecture. The browser requests state updates via stateless GET requests. If the connection drops mid-poll, the browser simply attempts the next stateless request, making the UI incredibly resilient to spotty field internet.</p>
+              <p>WebSockets are the industry standard for real-time, bidirectional communication, but they carry a fatal flaw for marine operations: they require a persistently open, stable TCP connection. Over degraded satellite networks or maritime VHF links, persistent TCP connections drop constantly, triggering an endless, expensive loop of handshake reconnects.</p>
+<p>OMEGA completely bypasses this architectural flaw by utilizing a strict, lightweight <strong>HTTP Long-Polling</strong> architecture for its dashboard UI. The browser requests state updates via stateless `GET` requests using `async/await` fetch loops.</p>
+<p><strong>How it works:</strong> If the connection drops mid-poll—which happens constantly in the field—the browser simply catches the timeout error and attempts the next stateless request. There are no dropped connection pipelines to rebuild. This makes the UI incredibly resilient to spotty, high-packet-loss internet.</p>
               
             </div>
             
@@ -197,7 +201,9 @@
             <div class="section-content">
               <span class="section-kicker">State Decoupling</span>
               <h2>Digital Twins & UI State.</h2>
-              <p>Because edge nodes are often offline for hours, the frontend cannot assume that clicking a "Turn On Motor" button instantly activates the motor. OMEGA models all physical assets as <strong>Digital Twins</strong>.</p><p>The React UI manages decoupled state variables: <code>pending</code> (the operator clicked the button), <code>synced</code> (the gateway queued it), and <code>reported</code> (the hardware physically acknowledged the change). This ensures the operator has absolute clarity on the synchronization gap between the cloud and the ocean.</p>
+              <p>Because edge nodes operate on aggressive battery-saving duty cycles, they are often offline and entirely uncontactable for hours at a time. Therefore, the React frontend cannot assume that clicking a "Turn On Motor" button instantly activates the motor.</p>
+<p>To solve this synchronization gap, OMEGA models all physical assets on the map as <strong>Digital Twins</strong>. The React UI manages strictly decoupled state variables for every user action: <code>pending</code> (the operator clicked the button in the UI), <code>synced</code> (the shore gateway queued the command into the DTN mesh), and <code>reported</code> (the hardware edge node physically acknowledged the change and beamed the result back).</p>
+<p><strong>Operational Relevance:</strong> This tripartite state machine ensures the human operator has absolute, unambiguous clarity on the synchronization gap between the cloud servers and the physical ocean surface.</p>
               
             </div>
             
@@ -247,7 +253,8 @@
             <div class="section-content">
               <span class="section-kicker">Frontend Architecture</span>
               <h2>React & Vite Mission Portal.</h2>
-              <p>The <code>web/</code> directory contains the React-based Mission Portal. Built using Vite for instant HMR (Hot Module Replacement) during development, the UI is decoupled entirely from the Python backend. It relies on high-speed WebSockets established with the FastAPI edge router to stream live ASV telemetry and structural alerts directly to the browser DOM at 10Hz, completely bypassing the need for slow REST polling.</p>
+              <p>The <code>web/</code> directory contains the React-based Mission Portal. Built using the modern Vite build tool for instant Hot Module Replacement (HMR) during development, the UI architecture is completely decoupled from the Python gateway backend.</p>
+<p><strong>Architecture:</strong> It relies entirely on high-speed, asynchronous WebSockets and stateless HTTP polling established with the FastAPI edge router. This architecture allows the UI to stream live ASV telemetry, spatial coordinates, and critical structural alerts directly to the browser DOM at 10Hz, completely bypassing the need for slow, blocking REST API calls.</p>
               
             </div>
             
