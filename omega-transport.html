@@ -206,6 +206,36 @@
 }</code></pre></div>
           </section>
     
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">Transport Fallback</span>
+              <h2>MQTT Pub/Sub Bridging.</h2>
+              <p>While the DTN is the primary transport, the gateway includes <code>mqtt_bridge.py</code>. If an ASV enters 4G/LTE cellular range, it immediately abandons the slow 1200bps LoRa protocol and begins dumping high-resolution telemetry and camera frames over a high-speed MQTT websocket directly to the cloud.</p>
+              
+            </div>
+            
+          </section>
+    
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">Low-Level Networking</span>
+              <h2>TCP JSONL Socket Streaming.</h2>
+              <p>For scientific instruments that cannot run an HTTP stack (like legacy Sonde profilers), the gateway exposes raw TCP sockets via <code>tcp_jsonl_bridge.py</code>. Devices can simply pipe newline-delimited JSON strings into port 9000, and the gateway will automatically normalize them into the observation pipeline.</p>
+              
+            </div>
+            
+          </section>
+    
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">Protocol Engineering</span>
+              <h2>LoRa CBOR Compression.</h2>
+              <p>Sending pure JSON over a 900MHz LoRa link is catastrophic for bandwidth. The <code>lora_cbor_bridge.py</code> engine crushes the SenML Observation Envelopes into Concise Binary Object Representation (CBOR). This shrinks a 400-byte payload into a dense 90-byte binary frame, minimizing the time-on-air and circumventing FCC duty-cycle limitations.</p>
+              
+            </div>
+            
+          </section>
+    
     </div>
   </main>
 

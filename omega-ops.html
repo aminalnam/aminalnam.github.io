@@ -230,6 +230,26 @@
 }</code></pre></div>
           </section>
     
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">Hydrodynamics</span>
+              <h2>HFRNet Surface Currents.</h2>
+              <p>Navigating an ASV against a 4-knot current drains the battery instantly. The <code>hfrnet.py</code> module ingests the High-Frequency Radar Network data, providing real-time vector fields of ocean surface currents. The <code>wayfinding.py</code> module consumes this vector matrix, executing A* pathfinding that "surfs" the currents, drastically extending operational range.</p>
+              
+            </div>
+            
+          </section>
+    
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">Autonomous Safety</span>
+              <h2>Active Guard Geofencing.</h2>
+              <p>The <code>active_guard.py</code> module is a merciless watchdog. It constantly calculates the cross-track error of every ASV against predefined GeoJSON exclusion zones. If a vessel deviates into a shipping lane due to high winds, the Active Guard instantly overrides the standard waypoint mission and executes an emergency heading correction.</p>
+              
+            </div>
+            
+          </section>
+    
     </div>
   </main>
 

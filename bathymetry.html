@@ -212,6 +212,26 @@
 }</code></pre></div>
           </section>
     
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">Data Standards</span>
+              <h2>CF-Compliant NetCDF Pipelines.</h2>
+              <p>Scientific data is useless if it is proprietary. OMEGA strictly adheres to the Climate and Forecast (CF) Metadata Conventions (<code>cf_metadata.py</code>). All raw JSON telemetry is eventually serialized into massive multi-dimensional NetCDF arrays (<code>cf_netcdf.py</code>) for long-term archival in national supercomputing repositories.</p>
+              
+            </div>
+            
+          </section>
+    
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">4D Data Arrays</span>
+              <h2>Copernicus 4D Data Cubes.</h2>
+              <p>The gateway does not just read flat CSVs; it parses true 4D data cubes (Latitude, Longitude, Depth, Time) using <code>copernicus_cube.py</code>. This allows the visualization portal to render complex volumetric slices of ocean salinity and ocean color (Chlorophyll-a), overlaying the exact 3D position of the ASV inside the data cube.</p>
+              
+            </div>
+            
+          </section>
+    
     </div>
   </main>
 

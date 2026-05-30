@@ -196,6 +196,66 @@
             
           </section>
     
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">Maritime Safety</span>
+              <h2>AISHub & MarineTraffic Fallback.</h2>
+              <p>If the local VHF AIS receiver fails, the gateway features built-in fallback integrations for <code>aishub.py</code>, <code>marinetraffic.py</code>, and <code>spire_maritime.py</code>. This triple-redundant architecture ensures the autonomous fleet always has line-of-sight to commercial supertankers traversing the survey polygon, executing emergency collision-avoidance maneuvers via the <code>active_guard.py</code> daemon.</p>
+              
+            </div>
+            
+          </section>
+    
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">Subsurface Profiles</span>
+              <h2>Argo Float Calibration.</h2>
+              <p>Surface sensors only tell half the story. The <code>argo_calibration.py</code> and <code>argovis.py</code> modules query the global Argo network (a fleet of 4,000 autonomous profiling floats). OMEGA cross-references the CTD (Conductivity, Temperature, Depth) casts from nearby Argo floats to automatically calibrate the on-board thermistors of the ASV as it transits across the thermocline.</p>
+              
+            </div>
+            
+          </section>
+    
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">Ecological Monitoring</span>
+              <h2>NOAA Coral Reef Watch.</h2>
+              <p>By integrating <code>coral_reef_watch.py</code>, OMEGA ingests 5km satellite virtual stations to monitor degree heating weeks (DHW). When the gateway detects a marine heatwave stress alert, it automatically redirects the ASV fleet to the affected reef coordinates to capture high-resolution acoustic bathymetry and dissolved oxygen samples before a mass bleaching event occurs.</p>
+              
+            </div>
+            
+          </section>
+    
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">Hydrodynamics</span>
+              <h2>HFRNet Surface Currents.</h2>
+              <p>Navigating an ASV against a 4-knot current drains the battery instantly. The <code>hfrnet.py</code> module ingests the High-Frequency Radar Network data, providing real-time vector fields of ocean surface currents. The <code>wayfinding.py</code> module consumes this vector matrix, executing A* pathfinding that "surfs" the currents, drastically extending operational range.</p>
+              
+            </div>
+            
+          </section>
+    
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">Biodiversity</span>
+              <h2>OBIS Marine Species Tracking.</h2>
+              <p>The Ocean Biodiversity Information System (<code>obis.py</code>) integration allows the gateway to pull historical acoustic tag detections. When the fleet operates in known migration corridors (e.g., Great White Shark breeding grounds), the gateway lowers the propulsion RPM to reduce acoustic signatures and minimize ecological disturbance.</p>
+              
+            </div>
+            
+          </section>
+    
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">Emergency Egress</span>
+              <h2>National Hurricane Center Tracking.</h2>
+              <p>The <code>nhc.py</code> daemon constantly polls the National Hurricane Center for active cyclone cones. If a deployed gateway or floating LoRa relay intersects with the 48-hour probability cone of a Category 3+ storm, the Mission Portal throws a catastrophic weather alarm and automatically commands all ASVs to return-to-base or dive to a safe depth.</p>
+              
+            </div>
+            
+          </section>
+    
     </div>
   </main>
 

@@ -214,6 +214,36 @@ def receive_intent(intent: MissionIntent):
     return command</code></pre></div>
           </section>
     
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">Autonomous Safety</span>
+              <h2>Active Guard Geofencing.</h2>
+              <p>The <code>active_guard.py</code> module is a merciless watchdog. It constantly calculates the cross-track error of every ASV against predefined GeoJSON exclusion zones. If a vessel deviates into a shipping lane due to high winds, the Active Guard instantly overrides the standard waypoint mission and executes an emergency heading correction.</p>
+              
+            </div>
+            
+          </section>
+    
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">Simulation</span>
+              <h2>Digital Twin Execution.</h2>
+              <p>Before a fleet is deployed, operators can launch a shadow fleet using <code>digital_twin.py</code>. This module spawns virtual edge nodes that mimic the exact hardware quirks, battery degradation curves, and RF transmission patterns of the physical vessels, stress-testing the Mesh Core before the hull ever touches the water.</p>
+              
+            </div>
+            
+          </section>
+    
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">Hardware Architecture</span>
+              <h2>Raspberry Pi Coprocessor.</h2>
+              <p>An ESP32 alone cannot run a complex routing table. The <code>pi_gateway_controller.py</code> and <code>gateway_coprocessor_bridge.py</code> modules document how the Raspberry Pi acts as the brain (handling HTTP, SQLite, and Python), while the tethered ESP32 acts merely as a dumb RF modem, executing AT commands injected via serial.</p>
+              
+            </div>
+            
+          </section>
+    
     </div>
   </main>
 

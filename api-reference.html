@@ -156,6 +156,36 @@
             
           </section>
     
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">API Reference</span>
+              <h2>/v1/network Routers.</h2>
+              <p>The <code>main.py</code> router exposes endpoints like <code>/v1/network/remote-access</code> and <code>/v1/network/mesh-topology</code>. These endpoints return live graph definitions of the RF environment, allowing the Mission Portal to draw the exact signal-to-noise ratio (SNR) edges between floating relay nodes.</p>
+              
+            </div>
+            
+          </section>
+    
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">API Reference</span>
+              <h2>/v1/control Routers.</h2>
+              <p>Strictly guarded by the <code>X-OMEGA-API-Key</code>, the <code>/v1/control/commands</code> namespace pushes imperative commands into the DTN outbox. This includes executing firmware OTA drops, altering ASV PID tuning loops, and commanding JANUS acoustic payload transmissions.</p>
+              
+            </div>
+            
+          </section>
+    
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">API Reference</span>
+              <h2>/v1/science Routers.</h2>
+              <p>The science namespace provides raw access to the QARTOD pipeline. Oceanographers can hit <code>/v1/science/qc-eval</code> with a batch of raw time-series data and receive a fully labeled dataset featuring robust sigma flags, flat-line detection, and statistical deviations without needing to run the portal UI.</p>
+              
+            </div>
+            
+          </section>
+    
     </div>
   </main>
 
