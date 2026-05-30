@@ -156,6 +156,46 @@
             
           </section>
     
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">Fisheries & Security</span>
+              <h2>Global Fishing Watch (GFW).</h2>
+              <p>OMEGA integrates directly with the <strong>Global Fishing Watch 4Wings API</strong>. It pulls real-time heatmap MVT overlays for apparent fishing effort, AIS vessel presence, and Synthetic Aperture Radar (SAR) detections of "dark targets" (vessels not transmitting AIS).</p><p>Furthermore, the gateway pulls vessel risk and IUU (Illegal, Unreported, and Unregulated) insights, matching detected AIS tracks against global registries to flag vessels fishing within no-take Marine Protected Areas (MPAs).</p>
+              
+            </div>
+            
+          </section>
+    
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">Maritime Traffic</span>
+              <h2>Live Commercial AIS & MarineCadastre.</h2>
+              <p>For live tactical awareness, the gateway ingests commercial AIS streams (via AISStream), tracking thousands of live vessels and superimposing them onto the OMEGA Map Portal in real-time.</p><p>For historical context, the portal registers U.S. <strong>MarineCadastre</strong> transit-count overlays. These are cached ArcGIS tiles displaying annual vessel-density heatmaps (2019-2025), allowing operators to plan autonomous survey routes that actively avoid historical high-traffic shipping lanes.</p>
+              
+            </div>
+            
+          </section>
+    
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">Climate Models</span>
+              <h2>NASA EarthData & Copernicus.</h2>
+              <p>The gateway integrates NASA EarthData CMR-STAC endpoints and the Copernicus Marine catalog. This allows OMEGA to query multi-petabyte federated cloud datasets, pulling specific climate variables (like Chlorophyll-a concentrations from Sentinel-3) to compare against real-time, local water-quality buoy data.</p>
+              
+            </div>
+            
+          </section>
+    
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">Public Ingestion</span>
+              <h2>NOAA NDBC & CO-OPS Public Loader.</h2>
+              <p>Rather than relying strictly on proprietary hardware, OMEGA utilizes a Public Loader daemon. It actively scrapes NOAA National Data Buoy Center (NDBC) buoys, CO-OPS tide/met products, and Open-Meteo marine models.</p><p>Crucially, it normalizes these diverse public sources into the exact same <strong>Observation Envelope</strong> schema used by OMEGA hardware, allowing the frontend to render public buoys interchangeably with private fleet assets.</p>
+              
+            </div>
+            
+          </section>
+    
     </div>
   </main>
 
