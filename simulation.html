@@ -142,12 +142,18 @@
 
           <section class="section">
             <div class="section-content">
-              <span class="section-kicker">Testing</span>
-              <h2>Digital Twins</h2>
-              <p>Procedural generation for disconnected networks.</p>
-              
+              <span class="section-kicker">Synthetic Datasets & Mesh State</span>
+              <h2>Simulation Harness & Digital Twins.</h2>
+              <p>Testing a disconnected DTN mesh network is impossible with a single static JSON file. OMEGA includes a massive Simulation Harness that procedurally generates stationary water-quality buoys, moving drifters, ROV tracks, and JANUS acoustic activity across defined time steps.</p><p>Furthermore, the edge nodes are modeled as <strong>Digital Twins</strong>. Because a node may go offline for days, the portal maintains a decoupled state model (<code>validate_sync_request</code>). The twin tracks variables across states like <code>pending</code>, <code>synced</code>, and <code>drift</code>, ensuring the operator knows whether a hardware parameter shown in the UI has actually reached the physical node.</p>
+              <div class="callout"><strong>Time-Step Procedural Generation</strong><p>The simulator can fast-forward days of simulated time, seeding measurements with realistic statistical noise and drift patterns to stress-test the UI.</p></div>
             </div>
-            
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">gateway/digital_twin.py Validation</span><pre><code class="language-python">ALLOWED_TWIN_STATUSES = {"pending", "synced", "drift", "reported", "failed"}
+def validate_sync_request(payload: dict[str, Any]) -> dict[str, Any]:
+    variables = payload.get("variables")
+    for item in variables:
+        status = _optional_string(item, "status")
+        if status not in ALLOWED_TWIN_STATUSES:
+            raise DigitalTwinValidationError(f"variables.status must be one of {ALLOWED_TWIN_STATUSES}")</code></pre></div>
           </section>
     
     </div>

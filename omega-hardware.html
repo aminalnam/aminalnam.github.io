@@ -142,12 +142,17 @@
 
           <section class="section">
             <div class="section-content">
-              <span class="section-kicker">Hardware</span>
-              <h2>Edge Nodes</h2>
-              <p>Content moved to specific capability pages.</p>
-              
+              <span class="section-kicker">Thermodynamics & RF Physics</span>
+              <h2>Edge Node Engineering.</h2>
+              <p>Deploying microcontrollers into marine environments introduces severe hardware constraints. Nodes must be encased in completely sealed, IP67+ waterproof enclosures. However, the ESP32 and accompanying LoRa amplifiers generate significant heat.</p><p>Without active ventilation, the system relies entirely on <strong>passive thermal conduction</strong> through the enclosure walls. If duty cycles are not strictly managed by the firmware, the internal ambient temperature will rise until the silicon reaches its thermal throttling limit.</p>
+              <div class="callout"><strong>Over-The-Air (OTA) Flashing</strong><p>Because physical access to a deployed fleet is impossible, the gateway implements a full OTA pipeline over the DTN mesh. The backend strictly enforces hardware profiles to prevent bricking devices.</p></div>
             </div>
-            
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">Firmware Verification Logic</span><pre><code class="language-python">@app.post("/v1/gateway/firmware/jobs")
+def queue_flash_job(job: FlashJob, hardware_registry: Dict):
+    target_node = hardware_registry.get(job.node_id)
+    if target_node.mcu_profile != job.binary_profile:
+        raise HTTPException(status_code=400, detail="Profile mismatch.")
+    return DTN.queue_payload(job.node_id, job.binary_data)</code></pre></div>
           </section>
     
     </div>

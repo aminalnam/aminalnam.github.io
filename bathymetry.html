@@ -142,12 +142,21 @@
 
           <section class="section">
             <div class="section-content">
-              <span class="section-kicker">Science</span>
-              <h2>Spatial Interpolation</h2>
-              <p>Math over sparse depth soundings.</p>
-              
+              <span class="section-kicker">Spatial Interpolation</span>
+              <h2>Bathymetry & IDW.</h2>
+              <p>Because a physical vessel cannot sound every single square meter of a lakebed, the system must mathematically infer the depth of the unmapped voids.</p><p>OMEGA utilizes <strong>Inverse Distance Weighting (IDW)</strong> for rapid edge-compute approximation. The depth of an unknown point is calculated as a weighted average of known surrounding points, where the weight decreases exponentially as distance increases.</p>
+              <div class="callout"><strong>cKDTree Optimization</strong><p>This is executed efficiently in Python using scipy.spatial.cKDTree, which organizes the data into a k-dimensional tree for lightning-fast nearest-neighbor lookups.</p></div>
             </div>
-            
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">Python IDW Implementation</span><pre><code class="language-python">from scipy.spatial import cKDTree
+import numpy as np
+
+def inverse_distance_weighting(x, y, z, xi, yi, power=2):
+    tree = cKDTree(np.c_[x, y])
+    dist, idx = tree.query(np.c_[xi.ravel(), yi.ravel()], k=10)
+    dist = np.maximum(dist, 1e-10)
+    weights = 1.0 / dist**power
+    zi = np.sum(weights * z[idx], axis=1) / np.sum(weights, axis=1)
+    return zi.reshape(xi.shape)</code></pre></div>
           </section>
     
     </div>

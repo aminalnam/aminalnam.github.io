@@ -142,12 +142,12 @@
 
           <section class="section">
             <div class="section-content">
-              <span class="section-kicker">Networking</span>
-              <h2>Mesh Transport</h2>
-              <p>A unified addressing fabric over unreliable RF.</p>
-              
+              <span class="section-kicker">Radio Physics & Information Theory</span>
+              <h2>The Shannon-Hartley Limit.</h2>
+              <p>Marine environments are notoriously hostile to radio frequency (RF) propagation. The ocean acts as a dynamic ground plane, and atmospheric salt creates significant signal attenuation. According to the <strong>Shannon-Hartley theorem</strong>, the maximum data rate of a communication channel is strictly bound by its bandwidth and the signal-to-noise ratio (SNR).</p><p>To overcome this, OMEGA utilizes <strong>LoRa Chirp Spread Spectrum (CSS)</strong> modulation. By spreading the signal across a wider bandwidth, the system can decode packets below the noise floor.</p>
+              <div class="callout"><strong>Graph Theory & Delay Tolerant Networks (DTN)</strong><p>Traditional IP networks assume a connected path. OMEGA uses a store-and-forward DTN overlay. If an ASV cannot reach the shore, it holds the packet in memory until it physically drifts within range of a relay buoy.</p></div>
             </div>
-            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">lora-cbor-frame.json</span><pre><code class="language-json">{
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">lora-cbor-frame.example.json</span><pre><code class="language-json">{
   "message_id": "lora-asv-health-0001",
   "message_type": "compact_observation",
   "node_id": "urn:omega-wave:node:asv:prototype-01",

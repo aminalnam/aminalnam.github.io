@@ -142,12 +142,75 @@
 
           <section class="section">
             <div class="section-content">
-              <span class="section-kicker">Transport</span>
-              <h2>Mesh Core</h2>
-              <p>Content moved to specific capability pages.</p>
-              
+              <span class="section-kicker">Radio Physics & Information Theory</span>
+              <h2>The Shannon-Hartley Limit.</h2>
+              <p>Marine environments are notoriously hostile to radio frequency (RF) propagation. The ocean acts as a dynamic ground plane, and atmospheric salt creates significant signal attenuation. According to the <strong>Shannon-Hartley theorem</strong>, the maximum data rate of a communication channel is strictly bound by its bandwidth and the signal-to-noise ratio (SNR).</p><p>To overcome this, OMEGA utilizes <strong>LoRa Chirp Spread Spectrum (CSS)</strong> modulation. By spreading the signal across a wider bandwidth, the system can decode packets below the noise floor.</p>
+              <div class="callout"><strong>Graph Theory & Delay Tolerant Networks (DTN)</strong><p>Traditional IP networks assume a connected path. OMEGA uses a store-and-forward DTN overlay. If an ASV cannot reach the shore, it holds the packet in memory until it physically drifts within range of a relay buoy.</p></div>
             </div>
-            
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">lora-cbor-frame.example.json</span><pre><code class="language-json">{
+  "message_id": "lora-asv-health-0001",
+  "message_type": "compact_observation",
+  "node_id": "urn:omega-wave:node:asv:prototype-01",
+  "device_id": "tbeam-1w-lora",
+  "sequence": 1,
+  "timestamp": "2026-04-29T15:35:00Z",
+  "lat": 36.81,
+  "lon": -122.41,
+  "priority": "high",
+  "payload_kind": "system_health",
+  "payload": {
+    "battery-percent": 86,
+    "rssi-dbm": -97,
+    "snr-db": 6.5,
+    "leak-detected": false
+  }
+}</code></pre></div>
+          </section>
+    
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">Acoustic Physics</span>
+              <h2>The JANUS Protocol.</h2>
+              <p>Radio waves attenuate almost immediately in seawater. To communicate with subsurface ROVs, OMEGA utilizes mechanical energy: acoustic waves.</p><p>However, acoustics face severe physical challenges. As temperature and salinity change with depth, the speed of sound shifts. According to <strong>Snell's Law of Refraction</strong>, sound waves bend toward regions of slower sound speed, creating "shadow zones" and multipath fading.</p><p>OMEGA implements the NATO-standard <strong>JANUS</strong> acoustic protocol bridge to survive multipath fading.</p>
+              <div class="callout"><strong>Acoustic Bridge Architecture</strong><p>The gateway translates JSON mesh commands into standard acoustic waveforms, treating a hydrophone exactly like a terrestrial radio.</p></div>
+            </div>
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">janus-announce.example.json</span><pre><code class="language-json">{
+  "message_id": "janus-msg-0001",
+  "observed_at": "2026-04-18T19:20:00Z",
+  "link_id": "buoy-02-acoustic",
+  "message_type": "announce",
+  "origin": {
+    "node_id": "urn:omega-wave:node:site-a:buoy-02",
+    "device_id": "acoustic-bridge-main",
+    "role": "surface-gateway"
+  },
+  "destination": {
+    "scope": "broadcast"
+  },
+  "janus": {
+    "class_id": 16,
+    "app_type": "gateway-announce",
+    "cargo_encoding": "json",
+    "cargo": {
+      "capabilities": [
+        "command-envelope",
+        "telemetry-bridge"
+      ],
+      "surface_backhaul": [
+        "lora",
+        "wifi-halow",
+        "cellular"
+      ],
+      "notes": "Buoy bridge ready for sparse telemetry and supervisory commands."
+    }
+  },
+  "transport": {
+    "provider": "software-defined-modem",
+    "center_frequency_hz": 11520,
+    "snr_db": 11.4,
+    "rx_level_db": -78.0
+  }
+}</code></pre></div>
           </section>
     
     </div>

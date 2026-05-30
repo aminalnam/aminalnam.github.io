@@ -142,12 +142,24 @@
 
           <section class="section">
             <div class="section-content">
-              <span class="section-kicker">External</span>
-              <h2>Federation</h2>
-              <p>Content moved to specific capability pages.</p>
-              
+              <span class="section-kicker">Data Federation & Transformation</span>
+              <h2>ERDDAP Federation.</h2>
+              <p>ERDDAP is the gold standard for marine data distribution, exposing petabytes of datasets across federated servers (NOAA, MBARI, IOOS). However, ERDDAP outputs tabular (tabledap) or gridded (griddap) structures that don't inherently render on web maps.</p><p>The OMEGA <code>erddap.py</code> adapter acts as a dynamic translation layer. It queries remote ERDDAP servers, pulls the tabledap payloads, and automatically projects them into standardized GeoJSON <code>FeatureCollections</code>. It filters out engineering channels (like glider pitch/roll/battery) and isolates true science tokens (salinity, chlorophyll, temperature) so the UI can instantly render massive external deployments alongside native OMEGA mesh data.</p>
+              <div class="callout"><strong>Robust Retry & Constraint Assembly</strong><p>The ERDDAP adapter automatically builds temporal and bounding-box constraint strings (e.g. `time>=2026-05-01T00:00:00Z&latitude>=36.5`), executes the query with retry logic, and standardizes 404 responses into empty collections.</p></div>
             </div>
-            
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">gateway/erddap.py Translation</span><pre><code class="language-python">def tabledap_to_geojson(dataset: ErddapDataset, payload: dict[str, Any]):
+    table = payload.get("table")
+    features = []
+    for row in table.get("rows"):
+        lat = float(row[lat_idx])
+        lon = float(row[lon_idx])
+        properties = {"erddap_dataset_id": dataset.dataset_id}
+        features.append({
+            "type": "Feature",
+            "geometry": {"type": "Point", "coordinates": [lon, lat]},
+            "properties": properties,
+        })
+    return {"type": "FeatureCollection", "features": features}</code></pre></div>
           </section>
     
     </div>

@@ -142,12 +142,92 @@
 
           <section class="section">
             <div class="section-content">
-              <span class="section-kicker">Data</span>
-              <h2>Data Handlers</h2>
-              <p>Content moved to specific capability pages.</p>
-              
+              <span class="section-kicker">Sensor Noise & Statistics</span>
+              <h2>The Observation Envelope.</h2>
+              <p>Raw data from the edge is inherently noisy. GPS modules suffer from atmospheric interference, and MEMS Inertial Measurement Units (IMUs) are highly susceptible to high-frequency vibration from motors and wave chop.</p><p>To extract true vessel state, the edge nodes apply <strong>Kalman Filtering</strong> to mathematically isolate true pitch and roll from the vibration.</p>
+              <div class="callout"><strong>Canonical Observations</strong><p>When the gateway receives a packet, it expands it into a fully validated Observation Envelope, containing cleaned statistics alongside the raw readings.</p></div>
             </div>
-            
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">observation-envelope.example.json</span><pre><code class="language-json">{
+  "spec": "omega-wave.observation-envelope/1",
+  "message_id": "01HSJ9R2XW6T4Q3AP7D3R5K8NE",
+  "message_type": "observation",
+  "origin": {
+    "node_id": "urn:omega-wave:node:site-a:buoy-02",
+    "device_id": "water-quality-probe-main",
+    "capability_ref": "https://example.invalid/omega-wave/things/site-a-buoy-02-water-quality.td.json",
+    "firmware_version": "0.1.0"
+  },
+  "routing": {
+    "priority": "normal",
+    "ttl_s": 86400,
+    "ack_mode": "gateway",
+    "max_hops": 8
+  },
+  "sample": {
+    "sampled_at": "2026-04-18T18:30:00Z",
+    "sequence": 1842,
+    "location": {
+      "lat": 36.8054,
+      "lon": -121.7891,
+      "depth_m": 4.2
+    }
+  },
+  "tags": {
+    "site": "site-a",
+    "platform": "buoy",
+    "medium": "water"
+  },
+  "payload": {
+    "mode": "senml",
+    "content_type": "application/senml+json",
+    "schema_ref": "urn:ietf:rfc:8428",
+    "records": [
+      {
+        "bn": "urn:omega-wave:thing:site-a:buoy-02:water-quality/",
+        "bt": 1776537000
+      },
+      {
+        "n": "temperature",
+        "u": "Cel",
+        "v": 13.42
+      },
+      {
+        "n": "salinity",
+        "u": "psu",
+        "v": 33.91
+      },
+      {
+        "n": "dissolved-oxygen",
+        "u": "mg/L",
+        "v": 8.11
+      },
+      {
+        "n": "battery-voltage",
+        "u": "V",
+        "v": 3.92
+      }
+    ]
+  }
+}</code></pre></div>
+          </section>
+    
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">Spatial Interpolation</span>
+              <h2>Bathymetry & IDW.</h2>
+              <p>Because a physical vessel cannot sound every single square meter of a lakebed, the system must mathematically infer the depth of the unmapped voids.</p><p>OMEGA utilizes <strong>Inverse Distance Weighting (IDW)</strong> for rapid edge-compute approximation. The depth of an unknown point is calculated as a weighted average of known surrounding points, where the weight decreases exponentially as distance increases.</p>
+              <div class="callout"><strong>cKDTree Optimization</strong><p>This is executed efficiently in Python using scipy.spatial.cKDTree, which organizes the data into a k-dimensional tree for lightning-fast nearest-neighbor lookups.</p></div>
+            </div>
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">Python IDW Implementation</span><pre><code class="language-python">from scipy.spatial import cKDTree
+import numpy as np
+
+def inverse_distance_weighting(x, y, z, xi, yi, power=2):
+    tree = cKDTree(np.c_[x, y])
+    dist, idx = tree.query(np.c_[xi.ravel(), yi.ravel()], k=10)
+    dist = np.maximum(dist, 1e-10)
+    weights = 1.0 / dist**power
+    zi = np.sum(weights * z[idx], axis=1) / np.sum(weights, axis=1)
+    return zi.reshape(xi.shape)</code></pre></div>
           </section>
     
     </div>

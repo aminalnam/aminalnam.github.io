@@ -142,12 +142,18 @@
 
           <section class="section">
             <div class="section-content">
-              <span class="section-kicker">Science</span>
-              <h2>QC Engine</h2>
-              <p>Content moved to specific capability pages.</p>
-              
+              <span class="section-kicker">QARTOD Standards & Drift Correction</span>
+              <h2>Quality Control & Calibration.</h2>
+              <p>Raw oceanographic data requires rigorous quality control before it can be trusted. OMEGA implements the <strong>IOOS QARTOD</strong> (Quality Assurance / Quality Control of Real-Time Oceanographic Data) standards directly in the gateway.</p><p>The QC engine (`gateway/qc.py`) evaluates incoming data using statistical mathematics: calculating the <strong>Median Absolute Deviation (MAD)</strong> to derive a Robust Sigma for spike detection, flat-line checks, and gross-range violations. Points are flagged from 1 (Pass) to 4 (Fail) or 9 (Missing).</p><p>For hardware drift over time, the <strong>Argo Calibration Engine</strong> mathematically matches raw readings from local nodes against certified IFREMER Argo floats operating in the same spatial volume to generate dynamic calibration offsets.</p>
+              <div class="callout"><strong>Threshold Bundles & Sigma Multipliers</strong><p>Thresholds are dynamically calculated per-station. A spike is flagged as "suspect" if it deviates by 3-sigma from the center, and "fail" if it exceeds 6-sigma.</p></div>
             </div>
-            
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">gateway/qc.py Robust Sigma</span><pre><code class="language-python">def _robust_sigma(values: list[float]) -> float | None:
+    if len(values) < 4:
+        return None
+    center = median(values)
+    mad = _median_absolute_deviation(values, center)
+    sigma = mad * 1.4826  # Scale factor for normal distribution
+    return sigma if sigma > 0 else None</code></pre></div>
           </section>
     
     </div>

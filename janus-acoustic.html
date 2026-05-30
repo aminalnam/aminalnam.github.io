@@ -142,12 +142,12 @@
 
           <section class="section">
             <div class="section-content">
-              <span class="section-kicker">Underwater</span>
-              <h2>Acoustic Bridges</h2>
-              <p>Overcoming multipath fading and refraction.</p>
-              
+              <span class="section-kicker">Acoustic Physics</span>
+              <h2>The JANUS Protocol.</h2>
+              <p>Radio waves attenuate almost immediately in seawater. To communicate with subsurface ROVs, OMEGA utilizes mechanical energy: acoustic waves.</p><p>However, acoustics face severe physical challenges. As temperature and salinity change with depth, the speed of sound shifts. According to <strong>Snell's Law of Refraction</strong>, sound waves bend toward regions of slower sound speed, creating "shadow zones" and multipath fading.</p><p>OMEGA implements the NATO-standard <strong>JANUS</strong> acoustic protocol bridge to survive multipath fading.</p>
+              <div class="callout"><strong>Acoustic Bridge Architecture</strong><p>The gateway translates JSON mesh commands into standard acoustic waveforms, treating a hydrophone exactly like a terrestrial radio.</p></div>
             </div>
-            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">janus-announce.json</span><pre><code class="language-json">{
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">janus-announce.example.json</span><pre><code class="language-json">{
   "message_id": "janus-msg-0001",
   "observed_at": "2026-04-18T19:20:00Z",
   "link_id": "buoy-02-acoustic",

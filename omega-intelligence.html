@@ -142,12 +142,17 @@
 
           <section class="section">
             <div class="section-content">
-              <span class="section-kicker">AI</span>
-              <h2>Honu Copilot</h2>
-              <p>Content moved to specific capability pages.</p>
-              
+              <span class="section-kicker">Amnesia Prevention & NLP</span>
+              <h2>Honu Copilot Architecture.</h2>
+              <p>Honu (named after the Hawaiian green sea turtle) is the native, context-aware intelligence engine. To prevent "LLM Amnesia" where the model loses track of what the user is currently viewing, the gateway implements a strict <strong>Amnesia Prevention Protocol</strong>. Every prompt is secretly bundled with a <code>[PORTAL CONTEXT]</code> block containing the active map bounding box, selected device, and UI state.</p><p>Honu operates under strict Read-Only constraints. It possesses a Tool Registry of 46 callable API routes. When a user requests an action, Honu uses <code>kind="action"</code> tools to <em>stage</em> the payload for explicit operator confirmation, guaranteeing AI cannot blindly execute physical hardware commands.</p>
+              <div class="callout"><strong>Intent-Based Tool Preprocessing</strong><p>To save tokens and execution time on small local models (Ollama), the gateway parses natural language to detect geographic intent (translating "Monterey Bay" into bounding boxes) and statistical intent (routing to get_measurement_statistics instead of raw row queries).</p></div>
             </div>
-            
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">gateway/copilot.py Tool Registry</span><pre><code class="language-python">_action_tool(
+    "propose_control_command",
+    "Stage a control command for one node for operator confirmation. "
+    "This does NOT run the command — it stages it for the operator to confirm.",
+    "/v1/control/commands",
+)</code></pre></div>
           </section>
     
     </div>

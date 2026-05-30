@@ -142,12 +142,12 @@
 
           <section class="section">
             <div class="section-content">
-              <span class="section-kicker">Ops</span>
-              <h2>Route Planning</h2>
-              <p>Vector math over current datasets.</p>
-              
+              <span class="section-kicker">Fluid Dynamics & Vector Math</span>
+              <h2>Wayfinding Scenarios.</h2>
+              <p>An ASV operates on the surface of a moving fluid. If it points its bow directly at a target (its <strong>Heading</strong>), but a strong cross-current pushes against the hull, its actual path over the Earth (its <strong>Course-Over-Ground, or COG</strong>) will drift significantly off-target.</p><p>The Wayfinder module models the vessel's kinematics as one vector, and imports real-time ocean current data as an environmental vector field to calculate the necessary "crab angle".</p>
+              <div class="callout"><strong>Secure Live Control</strong><p>Operators can push commands directly into the DTN queue. Every request is protected by an X-OMEGA-API-Key header to prevent unauthorized hijacking.</p></div>
             </div>
-            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">wayfinding-plan.json</span><pre><code class="language-json">{
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">wayfinding-plan.example.json</span><pre><code class="language-json">{
   "origin": {
     "lat": 36.7998,
     "lon": -121.7902,
