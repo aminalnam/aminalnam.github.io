@@ -511,6 +511,30 @@
             
           </section>
     
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">QARTOD Compliance</span>
+              <h2>Automated Quality Control.</h2>
+              <p>Before sensor data is normalized, it passes through the Gateway's strict QARTOD compliance engine. The Python backend utilizes the Median Absolute Deviation (MAD) to calculate a Robust Sigma. This sigma is then used to flag incoming measurements for spikes, flat-lines, or gross-range violations.</p>
+              
+            </div>
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">qc.py</span><pre><code class="language-python">def _threshold_bundle(values: list[float]) -> dict[str, float] | None:
+    center = median(values)
+    sigma = _robust_sigma(values)
+    return {
+        "center": center,
+        "sigma": sigma,
+        "gross_range_suspect_min": center - sigma * 3,
+        "gross_range_suspect_max": center + sigma * 3,
+        "gross_range_fail_min": center - sigma * 6,
+        "gross_range_fail_max": center + sigma * 6,
+        "rate_of_change_suspect": sigma * 3,
+        "rate_of_change_fail": sigma * 6,
+        "spike_suspect": sigma * 3,
+        "spike_fail": sigma * 6,
+    }</code></pre></div>
+          </section>
+    
     </div>
   </main>
 
