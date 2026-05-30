@@ -42,9 +42,18 @@
     .brand-title { display: block; font-family: var(--font-serif); font-size: 1.4rem; color: var(--white); }
     .brand-sub { display: block; font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); font-family: var(--font-mono); }
     
-    .nav { display: flex; flex-wrap: wrap; gap: 1.2rem; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; font-family: var(--font-mono); }
-    .nav a { color: var(--ink-soft); transition: color 0.3s; }
+    .nav { display: flex; flex-wrap: wrap; gap: 1.2rem; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; font-family: var(--font-mono); align-items: center; }
+    .nav a { color: var(--ink-soft); transition: color 0.3s; padding: 0.5rem; }
     .nav a:hover, .nav a.is-current { color: var(--white); }
+    
+    .dropdown { position: relative; display: inline-block; }
+    .dropbtn { color: var(--ink-soft); padding: 0.5rem; border: none; background: none; font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; cursor: pointer; transition: color 0.3s; }
+    .dropdown:hover .dropbtn { color: var(--white); }
+    .dropdown-content { display: none; position: absolute; background-color: rgba(14, 21, 34, 0.95); min-width: 160px; box-shadow: var(--shadow); z-index: 100; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; top: 100%; left: 0; backdrop-filter: blur(10px); }
+    .dropdown-content a { color: var(--ink-soft); padding: 0.8rem 1rem; text-decoration: none; display: block; text-transform: none; font-family: var(--font-sans); letter-spacing: normal; font-size: 0.85rem; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .dropdown-content a:last-child { border-bottom: none; }
+    .dropdown-content a:hover { background-color: rgba(59, 130, 246, 0.2); color: #fff; }
+    .dropdown:hover .dropdown-content { display: block; }
 
     .hero { padding: 4rem 0 3rem; }
     .eyebrow { font-family: var(--font-mono); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.2em; color: var(--accent); margin-bottom: 1rem; display: block; }
