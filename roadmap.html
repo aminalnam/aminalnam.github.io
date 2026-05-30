@@ -5,7 +5,6 @@
   <meta content="width=device-width, initial-scale=1" name="viewport"/>
   <title>OMEGA — Roadmap</title>
   
-  <!-- SEO & Social Metadata -->
   <meta name="description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
   <meta property="og:title" content="OMEGA — Roadmap" />
   <meta property="og:description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
@@ -15,7 +14,6 @@
   <meta name="twitter:title" content="OMEGA — Roadmap" />
   <meta name="twitter:description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
   
-  <!-- Favicon / Title Branding -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌊</text></svg>">
   
   <style>
@@ -48,11 +46,6 @@
     .nav a { color: var(--ink-soft); transition: color 0.3s; }
     .nav a:hover, .nav a.is-current { color: var(--white); }
 
-    .omega-subnav { margin: 2rem 0; padding: 1rem 1.5rem; border: 1px solid var(--line); border-radius: 999px; background: rgba(255,255,255,0.03); display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; backdrop-filter: blur(10px); }
-    .omega-subnav strong { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink-soft); margin-right: 0.5rem; }
-    .omega-subnav a { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink-soft); border-bottom: 1px solid transparent; transition: all 0.2s; }
-    .omega-subnav a:hover, .omega-subnav a.is-current { color: var(--white); border-color: var(--white); }
-
     .hero { padding: 4rem 0 3rem; }
     .eyebrow { font-family: var(--font-mono); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.2em; color: var(--accent); margin-bottom: 1rem; display: block; }
     h1 { margin: 0 0 1.5rem; font-family: var(--font-serif); font-size: clamp(3rem, 6vw, 4.5rem); font-weight: 400; line-height: 1.1; max-width: 25ch; }
@@ -64,8 +57,8 @@
     .btn-secondary:hover { background: rgba(255, 255, 255, 0.1); transform: translateY(-2px); }
 
     .main-shell { position: relative; margin-bottom: 4rem; }
-    .main-inner { background: var(--panel); border-radius: 1.5rem; overflow: clip; box-shadow: var(--shadow); border: 1px solid var(--line); padding: 2rem;}
-    .section { padding: 2rem 0; border-bottom: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 4rem; align-items: flex-start; }
+    .main-inner { background: var(--panel); border-radius: 1.5rem; overflow: clip; box-shadow: var(--shadow); border: 1px solid var(--line); }
+    .section { padding: 4rem; border-bottom: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 4rem; align-items: flex-start; }
     .section:last-child { border-bottom: none; }
     .section-content { flex: 1; min-width: 300px; }
     .section-kicker { font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent); margin-bottom: 0.8rem; display: block; }
@@ -86,6 +79,9 @@
     p code, li code { background: rgba(255,255,255,0.1); padding: 0.2rem 0.4rem; border-radius: 4px; font-size: 0.85em; color: #60a5fa;}
 
     .footer { border-top: 1px solid var(--line); padding: 4rem 0; text-align: center; font-family: var(--font-mono); font-size: 0.8rem; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.15em; }
+    
+    /* Layout fix for Homepage which needs block display instead of flex */
+    .section-block { display: block; padding: 4rem; }
     
     .status-label { font-family: var(--font-mono); font-size: 0.65rem; padding: 0.2rem 0.5rem; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.1em; display: inline-block; margin-bottom: 0.5rem; }
     .status-implemented { background: rgba(16, 185, 129, 0.1); color: var(--accent-green); border: 1px solid rgba(16, 185, 129, 0.3); }
@@ -143,20 +139,21 @@
           <section class="section">
             <div class="section-content">
               <span class="section-kicker">Data Science & Cartography</span>
-              <h2>Hexbinned Aggregation & Future Models.</h2>
-              <p>As the OMEGA network scales to thousands of global nodes, rendering individual points causes severe map clutter and GPU exhaustion. The planned roadmap includes migrating to <strong>Hexbinned Aggregation (H3 Grid System)</strong>.</p><p>Instead of plotting nodes, the map will plot discrete hexagonal geographic buckets, color-coded by the statistical median or standard deviation of the nodes contained within them. This allows operators to visualize macro-scale ocean anomalies (like a 50km cold-water upwelling) instantly.</p>
-              <div class="callout"><strong>Synchronized Multi-Layer Overlays</strong><p>Future updates will allow synchronized dragging of time sliders, dynamically shifting ERDDAP satellite NetCDF data concurrently with local mesh readings.</p></div>
+              <h2>Hexbinned Aggregation (H3 Grid).</h2>
+              <p>As the network scales to thousands of global nodes, rendering individual points causes severe map clutter. The planned roadmap includes migrating to Uber's <strong>H3 Hexagonal Hierarchical Spatial Index</strong>.</p><p>Instead of plotting nodes, the map will plot discrete hexagonal geographic buckets, color-coded by the statistical median or standard deviation of the nodes contained within them.</p>
+              
             </div>
-            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">H3 Spatial Indexing</span><pre><code class="language-python">import h3
-
-def aggregate_nodes_to_hex(nodes, resolution=5):
-    hex_bins = {}
-    for node in nodes:
-        h3_index = h3.geo_to_h3(node.lat, node.lon, resolution)
-        if h3_index not in hex_bins:
-            hex_bins[h3_index] = []
-        hex_bins[h3_index].append(node.temp)
-    return {h3: sum(temps)/len(temps) for h3, temps in hex_bins.items()}</code></pre></div>
+            
+          </section>
+    
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">Edge AI</span>
+              <h2>Machine Learning Inferencing (TinyML).</h2>
+              <p>Future fleet iterations will run TinyML models directly on the ESP32 edge nodes. By training a TensorFlow Lite model on baseline vibration profiles, the node will be able to detect motor anomalies (e.g., kelp wrapped around a propeller) and transmit an alarm before critical failure occurs.</p>
+              
+            </div>
+            
           </section>
     
     </div>

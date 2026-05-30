@@ -5,7 +5,6 @@
   <meta content="width=device-width, initial-scale=1" name="viewport"/>
   <title>OMEGA — Mission Portal</title>
   
-  <!-- SEO & Social Metadata -->
   <meta name="description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
   <meta property="og:title" content="OMEGA — Mission Portal" />
   <meta property="og:description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
@@ -15,7 +14,6 @@
   <meta name="twitter:title" content="OMEGA — Mission Portal" />
   <meta name="twitter:description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
   
-  <!-- Favicon / Title Branding -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌊</text></svg>">
   
   <style>
@@ -48,11 +46,6 @@
     .nav a { color: var(--ink-soft); transition: color 0.3s; }
     .nav a:hover, .nav a.is-current { color: var(--white); }
 
-    .omega-subnav { margin: 2rem 0; padding: 1rem 1.5rem; border: 1px solid var(--line); border-radius: 999px; background: rgba(255,255,255,0.03); display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; backdrop-filter: blur(10px); }
-    .omega-subnav strong { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink-soft); margin-right: 0.5rem; }
-    .omega-subnav a { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink-soft); border-bottom: 1px solid transparent; transition: all 0.2s; }
-    .omega-subnav a:hover, .omega-subnav a.is-current { color: var(--white); border-color: var(--white); }
-
     .hero { padding: 4rem 0 3rem; }
     .eyebrow { font-family: var(--font-mono); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.2em; color: var(--accent); margin-bottom: 1rem; display: block; }
     h1 { margin: 0 0 1.5rem; font-family: var(--font-serif); font-size: clamp(3rem, 6vw, 4.5rem); font-weight: 400; line-height: 1.1; max-width: 25ch; }
@@ -64,8 +57,8 @@
     .btn-secondary:hover { background: rgba(255, 255, 255, 0.1); transform: translateY(-2px); }
 
     .main-shell { position: relative; margin-bottom: 4rem; }
-    .main-inner { background: var(--panel); border-radius: 1.5rem; overflow: clip; box-shadow: var(--shadow); border: 1px solid var(--line); padding: 2rem;}
-    .section { padding: 2rem 0; border-bottom: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 4rem; align-items: flex-start; }
+    .main-inner { background: var(--panel); border-radius: 1.5rem; overflow: clip; box-shadow: var(--shadow); border: 1px solid var(--line); }
+    .section { padding: 4rem; border-bottom: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 4rem; align-items: flex-start; }
     .section:last-child { border-bottom: none; }
     .section-content { flex: 1; min-width: 300px; }
     .section-kicker { font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent); margin-bottom: 0.8rem; display: block; }
@@ -86,6 +79,9 @@
     p code, li code { background: rgba(255,255,255,0.1); padding: 0.2rem 0.4rem; border-radius: 4px; font-size: 0.85em; color: #60a5fa;}
 
     .footer { border-top: 1px solid var(--line); padding: 4rem 0; text-align: center; font-family: var(--font-mono); font-size: 0.8rem; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.15em; }
+    
+    /* Layout fix for Homepage which needs block display instead of flex */
+    .section-block { display: block; padding: 4rem; }
     
     .status-label { font-family: var(--font-mono); font-size: 0.65rem; padding: 0.2rem 0.5rem; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.1em; display: inline-block; margin-bottom: 0.5rem; }
     .status-implemented { background: rgba(16, 185, 129, 0.1); color: var(--accent-green); border: 1px solid rgba(16, 185, 129, 0.3); }
@@ -143,87 +139,31 @@
           <section class="section">
             <div class="section-content">
               <span class="section-kicker">WebGL Rendering & Spatial Indexing</span>
-              <h2>Mapbox GL JS & Real-Time Polling.</h2>
-              <p>Rendering thousands of live nodes requires a hardware-accelerated pipeline. The Mission Portal utilizes <strong>Mapbox GL JS</strong>, pushing the heavy lifting to the client's GPU via WebGL. The system clusters dense node clusters using Supercluster algorithms under the hood.</p><p>To maintain real-time parity without choking the browser's main thread or opening expensive WebSockets over spotty field networks, the portal implements a strict, lightweight <strong>HTTP Long-Polling</strong> architecture against the gateway's SQLite database.</p>
+              <h2>Mapbox GL JS Performance.</h2>
+              <p>Rendering thousands of live nodes requires a hardware-accelerated pipeline. The Mission Portal utilizes <strong>Mapbox GL JS</strong>, pushing the heavy lifting to the client's GPU via WebGL.</p><p>To handle extreme density, the system clusters nodes using Supercluster algorithms. Rather than DOM manipulation, points are drawn directly to the WebGL canvas context.</p>
               <div class="callout"><strong>Vector Tile Caching</strong><p>To save bandwidth on disconnected operations, the frontend aggressively caches Mapbox Vector Tiles (MVT) in the browser's IndexedDB.</p></div>
             </div>
-            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">JavaScript Polling Logic</span><pre><code class="language-javascript">async function pollGateway() {
-  const response = await fetch('/v1/measurements/latest');
-  const features = await response.json();
-  map.getSource('omega-nodes').setData(features);
-  setTimeout(pollGateway, 5000);
-}</code></pre></div>
+            
           </section>
     
           <section class="section">
             <div class="section-content">
-              <span class="section-kicker">Sensor Noise & Statistics</span>
-              <h2>The Observation Envelope.</h2>
-              <p>Raw data from the edge is inherently noisy. GPS modules suffer from atmospheric interference, and MEMS Inertial Measurement Units (IMUs) are highly susceptible to high-frequency vibration from motors and wave chop.</p><p>To extract true vessel state, the edge nodes apply <strong>Kalman Filtering</strong> to mathematically isolate true pitch and roll from the vibration.</p>
-              <div class="callout"><strong>Canonical Observations</strong><p>When the gateway receives a packet, it expands it into a fully validated Observation Envelope, containing cleaned statistics alongside the raw readings.</p></div>
+              <span class="section-kicker">Network Architecture</span>
+              <h2>HTTP Long-Polling vs WebSockets.</h2>
+              <p>WebSockets provide excellent real-time bidirectional communication, but they require a persistently open TCP connection. Over degraded satellite or maritime VHF links, persistent TCP connections drop constantly, triggering expensive handshake reconnect loops.</p><p>OMEGA bypasses this by utilizing a strict, lightweight <strong>HTTP Long-Polling</strong> architecture. The browser requests state updates via stateless GET requests. If the connection drops mid-poll, the browser simply attempts the next stateless request, making the UI incredibly resilient to spotty field internet.</p>
+              
             </div>
-            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">observation-envelope.example.json</span><pre><code class="language-json">{
-  "spec": "omega-wave.observation-envelope/1",
-  "message_id": "01HSJ9R2XW6T4Q3AP7D3R5K8NE",
-  "message_type": "observation",
-  "origin": {
-    "node_id": "urn:omega-wave:node:site-a:buoy-02",
-    "device_id": "water-quality-probe-main",
-    "capability_ref": "https://example.invalid/omega-wave/things/site-a-buoy-02-water-quality.td.json",
-    "firmware_version": "0.1.0"
-  },
-  "routing": {
-    "priority": "normal",
-    "ttl_s": 86400,
-    "ack_mode": "gateway",
-    "max_hops": 8
-  },
-  "sample": {
-    "sampled_at": "2026-04-18T18:30:00Z",
-    "sequence": 1842,
-    "location": {
-      "lat": 36.8054,
-      "lon": -121.7891,
-      "depth_m": 4.2
-    }
-  },
-  "tags": {
-    "site": "site-a",
-    "platform": "buoy",
-    "medium": "water"
-  },
-  "payload": {
-    "mode": "senml",
-    "content_type": "application/senml+json",
-    "schema_ref": "urn:ietf:rfc:8428",
-    "records": [
-      {
-        "bn": "urn:omega-wave:thing:site-a:buoy-02:water-quality/",
-        "bt": 1776537000
-      },
-      {
-        "n": "temperature",
-        "u": "Cel",
-        "v": 13.42
-      },
-      {
-        "n": "salinity",
-        "u": "psu",
-        "v": 33.91
-      },
-      {
-        "n": "dissolved-oxygen",
-        "u": "mg/L",
-        "v": 8.11
-      },
-      {
-        "n": "battery-voltage",
-        "u": "V",
-        "v": 3.92
-      }
-    ]
-  }
-}</code></pre></div>
+            
+          </section>
+    
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">State Decoupling</span>
+              <h2>Digital Twins & UI State.</h2>
+              <p>Because edge nodes are often offline for hours, the frontend cannot assume that clicking a "Turn On Motor" button instantly activates the motor. OMEGA models all physical assets as <strong>Digital Twins</strong>.</p><p>The React UI manages decoupled state variables: <code>pending</code> (the operator clicked the button), <code>synced</code> (the gateway queued it), and <code>reported</code> (the hardware physically acknowledged the change). This ensures the operator has absolute clarity on the synchronization gap between the cloud and the ocean.</p>
+              
+            </div>
+            
           </section>
     
     </div>

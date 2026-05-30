@@ -5,7 +5,6 @@
   <meta content="width=device-width, initial-scale=1" name="viewport"/>
   <title>OMEGA — Bathymetric Mapping</title>
   
-  <!-- SEO & Social Metadata -->
   <meta name="description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
   <meta property="og:title" content="OMEGA — Bathymetric Mapping" />
   <meta property="og:description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
@@ -15,7 +14,6 @@
   <meta name="twitter:title" content="OMEGA — Bathymetric Mapping" />
   <meta name="twitter:description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
   
-  <!-- Favicon / Title Branding -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌊</text></svg>">
   
   <style>
@@ -48,11 +46,6 @@
     .nav a { color: var(--ink-soft); transition: color 0.3s; }
     .nav a:hover, .nav a.is-current { color: var(--white); }
 
-    .omega-subnav { margin: 2rem 0; padding: 1rem 1.5rem; border: 1px solid var(--line); border-radius: 999px; background: rgba(255,255,255,0.03); display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; backdrop-filter: blur(10px); }
-    .omega-subnav strong { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink-soft); margin-right: 0.5rem; }
-    .omega-subnav a { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink-soft); border-bottom: 1px solid transparent; transition: all 0.2s; }
-    .omega-subnav a:hover, .omega-subnav a.is-current { color: var(--white); border-color: var(--white); }
-
     .hero { padding: 4rem 0 3rem; }
     .eyebrow { font-family: var(--font-mono); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.2em; color: var(--accent); margin-bottom: 1rem; display: block; }
     h1 { margin: 0 0 1.5rem; font-family: var(--font-serif); font-size: clamp(3rem, 6vw, 4.5rem); font-weight: 400; line-height: 1.1; max-width: 25ch; }
@@ -64,8 +57,8 @@
     .btn-secondary:hover { background: rgba(255, 255, 255, 0.1); transform: translateY(-2px); }
 
     .main-shell { position: relative; margin-bottom: 4rem; }
-    .main-inner { background: var(--panel); border-radius: 1.5rem; overflow: clip; box-shadow: var(--shadow); border: 1px solid var(--line); padding: 2rem;}
-    .section { padding: 2rem 0; border-bottom: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 4rem; align-items: flex-start; }
+    .main-inner { background: var(--panel); border-radius: 1.5rem; overflow: clip; box-shadow: var(--shadow); border: 1px solid var(--line); }
+    .section { padding: 4rem; border-bottom: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 4rem; align-items: flex-start; }
     .section:last-child { border-bottom: none; }
     .section-content { flex: 1; min-width: 300px; }
     .section-kicker { font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent); margin-bottom: 0.8rem; display: block; }
@@ -86,6 +79,9 @@
     p code, li code { background: rgba(255,255,255,0.1); padding: 0.2rem 0.4rem; border-radius: 4px; font-size: 0.85em; color: #60a5fa;}
 
     .footer { border-top: 1px solid var(--line); padding: 4rem 0; text-align: center; font-family: var(--font-mono); font-size: 0.8rem; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.15em; }
+    
+    /* Layout fix for Homepage which needs block display instead of flex */
+    .section-block { display: block; padding: 4rem; }
     
     .status-label { font-family: var(--font-mono); font-size: 0.65rem; padding: 0.2rem 0.5rem; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.1em; display: inline-block; margin-bottom: 0.5rem; }
     .status-implemented { background: rgba(16, 185, 129, 0.1); color: var(--accent-green); border: 1px solid rgba(16, 185, 129, 0.3); }
@@ -143,20 +139,21 @@
           <section class="section">
             <div class="section-content">
               <span class="section-kicker">Spatial Interpolation</span>
-              <h2>Bathymetry & IDW.</h2>
-              <p>Because a physical vessel cannot sound every single square meter of a lakebed, the system must mathematically infer the depth of the unmapped voids.</p><p>OMEGA utilizes <strong>Inverse Distance Weighting (IDW)</strong> for rapid edge-compute approximation. The depth of an unknown point is calculated as a weighted average of known surrounding points, where the weight decreases exponentially as distance increases.</p>
-              <div class="callout"><strong>cKDTree Optimization</strong><p>This is executed efficiently in Python using scipy.spatial.cKDTree, which organizes the data into a k-dimensional tree for lightning-fast nearest-neighbor lookups.</p></div>
+              <h2>Inverse Distance Weighting (IDW).</h2>
+              <p>Because a physical vessel cannot sound every single square meter of a lakebed, the system must mathematically infer the depth of the unmapped voids.</p><p>OMEGA utilizes <strong>Inverse Distance Weighting (IDW)</strong> for rapid edge-compute approximation. The depth of an unknown point is calculated as a weighted average of known surrounding points, executed efficiently in Python using <code>scipy.spatial.cKDTree</code>.</p>
+              
             </div>
-            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">Python IDW Implementation</span><pre><code class="language-python">from scipy.spatial import cKDTree
-import numpy as np
-
-def inverse_distance_weighting(x, y, z, xi, yi, power=2):
-    tree = cKDTree(np.c_[x, y])
-    dist, idx = tree.query(np.c_[xi.ravel(), yi.ravel()], k=10)
-    dist = np.maximum(dist, 1e-10)
-    weights = 1.0 / dist**power
-    zi = np.sum(weights * z[idx], axis=1) / np.sum(weights, axis=1)
-    return zi.reshape(xi.shape)</code></pre></div>
+            
+          </section>
+    
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">Sonar Physics</span>
+              <h2>Acoustic Sounding Cones.</h2>
+              <p>A transducer does not shoot a laser line directly downwards; it emits an acoustic cone. In shallow water, the footprint is small. In deep water, the footprint can cover a massive area, averaging out steep underwater cliffs. The bathymetry processor adjusts confidence weights based on depth-derived acoustic footprint sizes.</p>
+              
+            </div>
+            
           </section>
     
     </div>

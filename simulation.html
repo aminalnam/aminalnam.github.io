@@ -5,7 +5,6 @@
   <meta content="width=device-width, initial-scale=1" name="viewport"/>
   <title>OMEGA — Simulation Harness</title>
   
-  <!-- SEO & Social Metadata -->
   <meta name="description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
   <meta property="og:title" content="OMEGA — Simulation Harness" />
   <meta property="og:description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
@@ -15,7 +14,6 @@
   <meta name="twitter:title" content="OMEGA — Simulation Harness" />
   <meta name="twitter:description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
   
-  <!-- Favicon / Title Branding -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌊</text></svg>">
   
   <style>
@@ -48,11 +46,6 @@
     .nav a { color: var(--ink-soft); transition: color 0.3s; }
     .nav a:hover, .nav a.is-current { color: var(--white); }
 
-    .omega-subnav { margin: 2rem 0; padding: 1rem 1.5rem; border: 1px solid var(--line); border-radius: 999px; background: rgba(255,255,255,0.03); display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; backdrop-filter: blur(10px); }
-    .omega-subnav strong { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink-soft); margin-right: 0.5rem; }
-    .omega-subnav a { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink-soft); border-bottom: 1px solid transparent; transition: all 0.2s; }
-    .omega-subnav a:hover, .omega-subnav a.is-current { color: var(--white); border-color: var(--white); }
-
     .hero { padding: 4rem 0 3rem; }
     .eyebrow { font-family: var(--font-mono); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.2em; color: var(--accent); margin-bottom: 1rem; display: block; }
     h1 { margin: 0 0 1.5rem; font-family: var(--font-serif); font-size: clamp(3rem, 6vw, 4.5rem); font-weight: 400; line-height: 1.1; max-width: 25ch; }
@@ -64,8 +57,8 @@
     .btn-secondary:hover { background: rgba(255, 255, 255, 0.1); transform: translateY(-2px); }
 
     .main-shell { position: relative; margin-bottom: 4rem; }
-    .main-inner { background: var(--panel); border-radius: 1.5rem; overflow: clip; box-shadow: var(--shadow); border: 1px solid var(--line); padding: 2rem;}
-    .section { padding: 2rem 0; border-bottom: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 4rem; align-items: flex-start; }
+    .main-inner { background: var(--panel); border-radius: 1.5rem; overflow: clip; box-shadow: var(--shadow); border: 1px solid var(--line); }
+    .section { padding: 4rem; border-bottom: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 4rem; align-items: flex-start; }
     .section:last-child { border-bottom: none; }
     .section-content { flex: 1; min-width: 300px; }
     .section-kicker { font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent); margin-bottom: 0.8rem; display: block; }
@@ -86,6 +79,9 @@
     p code, li code { background: rgba(255,255,255,0.1); padding: 0.2rem 0.4rem; border-radius: 4px; font-size: 0.85em; color: #60a5fa;}
 
     .footer { border-top: 1px solid var(--line); padding: 4rem 0; text-align: center; font-family: var(--font-mono); font-size: 0.8rem; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.15em; }
+    
+    /* Layout fix for Homepage which needs block display instead of flex */
+    .section-block { display: block; padding: 4rem; }
     
     .status-label { font-family: var(--font-mono); font-size: 0.65rem; padding: 0.2rem 0.5rem; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.1em; display: inline-block; margin-bottom: 0.5rem; }
     .status-implemented { background: rgba(16, 185, 129, 0.1); color: var(--accent-green); border: 1px solid rgba(16, 185, 129, 0.3); }
@@ -142,18 +138,22 @@
 
           <section class="section">
             <div class="section-content">
-              <span class="section-kicker">Synthetic Datasets & Mesh State</span>
-              <h2>Simulation Harness & Digital Twins.</h2>
-              <p>Testing a disconnected DTN mesh network is impossible with a single static JSON file. OMEGA includes a massive Simulation Harness that procedurally generates stationary water-quality buoys, moving drifters, ROV tracks, and JANUS acoustic activity across defined time steps.</p><p>Furthermore, the edge nodes are modeled as <strong>Digital Twins</strong>. Because a node may go offline for days, the portal maintains a decoupled state model (<code>validate_sync_request</code>). The twin tracks variables across states like <code>pending</code>, <code>synced</code>, and <code>drift</code>, ensuring the operator knows whether a hardware parameter shown in the UI has actually reached the physical node.</p>
-              <div class="callout"><strong>Time-Step Procedural Generation</strong><p>The simulator can fast-forward days of simulated time, seeding measurements with realistic statistical noise and drift patterns to stress-test the UI.</p></div>
+              <span class="section-kicker">Synthetic Generation</span>
+              <h2>Procedural Time-Step Environments.</h2>
+              <p>Testing a disconnected DTN mesh network is impossible with a single static JSON file. OMEGA includes a massive Simulation Harness that procedurally generates stationary water-quality buoys, moving drifters, ROV tracks, and JANUS acoustic activity across defined time steps.</p>
+              
             </div>
-            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">gateway/digital_twin.py Validation</span><pre><code class="language-python">ALLOWED_TWIN_STATUSES = {"pending", "synced", "drift", "reported", "failed"}
-def validate_sync_request(payload: dict[str, Any]) -> dict[str, Any]:
-    variables = payload.get("variables")
-    for item in variables:
-        status = _optional_string(item, "status")
-        if status not in ALLOWED_TWIN_STATUSES:
-            raise DigitalTwinValidationError(f"variables.status must be one of {ALLOWED_TWIN_STATUSES}")</code></pre></div>
+            
+          </section>
+    
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">Network Planning</span>
+              <h2>Monte Carlo Relay Drop Analysis.</h2>
+              <p>Before an ASV deploys floating LoRa relays, the simulator runs thousands of Monte Carlo physics models. It simulates drift based on predicted wind/currents to calculate the exact coordinate to drop a relay, maximizing the duration the relay will remain within RF line-of-sight of both the shore and the ASV.</p>
+              
+            </div>
+            
           </section>
     
     </div>

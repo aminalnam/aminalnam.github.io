@@ -5,7 +5,6 @@
   <meta content="width=device-width, initial-scale=1" name="viewport"/>
   <title>OMEGA — Platform Overview</title>
   
-  <!-- SEO & Social Metadata -->
   <meta name="description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
   <meta property="og:title" content="OMEGA — Platform Overview" />
   <meta property="og:description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
@@ -15,7 +14,6 @@
   <meta name="twitter:title" content="OMEGA — Platform Overview" />
   <meta name="twitter:description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
   
-  <!-- Favicon / Title Branding -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌊</text></svg>">
   
   <style>
@@ -48,11 +46,6 @@
     .nav a { color: var(--ink-soft); transition: color 0.3s; }
     .nav a:hover, .nav a.is-current { color: var(--white); }
 
-    .omega-subnav { margin: 2rem 0; padding: 1rem 1.5rem; border: 1px solid var(--line); border-radius: 999px; background: rgba(255,255,255,0.03); display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; backdrop-filter: blur(10px); }
-    .omega-subnav strong { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink-soft); margin-right: 0.5rem; }
-    .omega-subnav a { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink-soft); border-bottom: 1px solid transparent; transition: all 0.2s; }
-    .omega-subnav a:hover, .omega-subnav a.is-current { color: var(--white); border-color: var(--white); }
-
     .hero { padding: 4rem 0 3rem; }
     .eyebrow { font-family: var(--font-mono); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.2em; color: var(--accent); margin-bottom: 1rem; display: block; }
     h1 { margin: 0 0 1.5rem; font-family: var(--font-serif); font-size: clamp(3rem, 6vw, 4.5rem); font-weight: 400; line-height: 1.1; max-width: 25ch; }
@@ -64,8 +57,8 @@
     .btn-secondary:hover { background: rgba(255, 255, 255, 0.1); transform: translateY(-2px); }
 
     .main-shell { position: relative; margin-bottom: 4rem; }
-    .main-inner { background: var(--panel); border-radius: 1.5rem; overflow: clip; box-shadow: var(--shadow); border: 1px solid var(--line); padding: 2rem;}
-    .section { padding: 2rem 0; border-bottom: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 4rem; align-items: flex-start; }
+    .main-inner { background: var(--panel); border-radius: 1.5rem; overflow: clip; box-shadow: var(--shadow); border: 1px solid var(--line); }
+    .section { padding: 4rem; border-bottom: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 4rem; align-items: flex-start; }
     .section:last-child { border-bottom: none; }
     .section-content { flex: 1; min-width: 300px; }
     .section-kicker { font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent); margin-bottom: 0.8rem; display: block; }
@@ -86,6 +79,9 @@
     p code, li code { background: rgba(255,255,255,0.1); padding: 0.2rem 0.4rem; border-radius: 4px; font-size: 0.85em; color: #60a5fa;}
 
     .footer { border-top: 1px solid var(--line); padding: 4rem 0; text-align: center; font-family: var(--font-mono); font-size: 0.8rem; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.15em; }
+    
+    /* Layout fix for Homepage which needs block display instead of flex */
+    .section-block { display: block; padding: 4rem; }
     
     .status-label { font-family: var(--font-mono); font-size: 0.65rem; padding: 0.2rem 0.5rem; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.1em; display: inline-block; margin-bottom: 0.5rem; }
     .status-implemented { background: rgba(16, 185, 129, 0.1); color: var(--accent-green); border: 1px solid rgba(16, 185, 129, 0.3); }
@@ -142,9 +138,32 @@
 
           <section class="section">
             <div class="section-content">
-              <span class="section-kicker">Overview</span>
-              <h2>The OMEGA Platform</h2>
-              <p>OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform. It connects field devices, gateways, public data sources, and mission tools into one resilient observation network.</p>
+              <span class="section-kicker">Edge Compute Physics</span>
+              <h2>The Edge-to-Cloud Continuum.</h2>
+              <p>Marine deployments operate in environments hostile to traditional IP networks. The physics of transmitting large data volumes over satellite or VHF links dictates prohibitive costs and restrictive latency boundaries.</p><p>OMEGA pushes computational complexity to the Edge. Instead of piping raw vibration matrices across the ocean, an onboard Jetson Orin NX reduces thousands of rows into a single semantic "Mission Intent" or "Observation Envelope" state, saving 99% of required bandwidth before transmission.</p>
+              
+            </div>
+            
+          </section>
+    
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">System Architecture</span>
+              <h2>The Tripartite Network.</h2>
+              <p>The architecture is strictly divided into three distinct strata:</p><ul><li><strong>Physical Sensors & Nodes:</strong> Raw hardware (ESP32s, Pixhawks) acquiring analog/digital signals and performing initial RTOS handling.</li><li><strong>The Gateway Normalizers:</strong> Python-based software routers acting as the bridge. These ingest disjointed binary/CBOR formats and normalize them into unified SQLite records.</li><li><strong>The Mission Portal:</strong> The React/WebGL interface consumed by human operators, entirely decoupled from the hardware layer by interacting exclusively with the Gateway APIs.</li></ul>
+              <div class="callout"><strong>Decoupled State</strong><p>This tripartite division ensures that if the portal server goes offline, the gateway continues buffering telemetry, and if the gateway dies, the edge node continues to operate safely in its autonomous loop.</p></div>
+            </div>
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">Architecture Flow</span><pre><code class="language-mermaid">graph LR
+    A[Edge Node] -->|CBOR/LoRa| B(Gateway Router)
+    B -->|Normalized SQLite| C[Mission Portal]
+    B -->|ERDDAP| D[(Global Repositories)]</code></pre></div>
+          </section>
+    
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">Failure Modeling</span>
+              <h2>Resilient Architectures.</h2>
+              <p>Marine sensors fail. Batteries drain, thermoclines bend acoustic signals, and salt corrodes IP67 seals. A brittle architecture will collapse when one node vanishes.</p><p>OMEGA is designed with <strong>Asynchronous Resiliency</strong>. There are no blocking network calls that freeze the system if an acknowledgment is lost. Data is stored locally and forwarded only when a viable physical route (a passing ASV or active satellite overhead) is mathematically proven to exist.</p>
               
             </div>
             

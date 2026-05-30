@@ -5,7 +5,6 @@
   <meta content="width=device-width, initial-scale=1" name="viewport"/>
   <title>OMEGA — Mesh Core</title>
   
-  <!-- SEO & Social Metadata -->
   <meta name="description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
   <meta property="og:title" content="OMEGA — Mesh Core" />
   <meta property="og:description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
@@ -15,7 +14,6 @@
   <meta name="twitter:title" content="OMEGA — Mesh Core" />
   <meta name="twitter:description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
   
-  <!-- Favicon / Title Branding -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌊</text></svg>">
   
   <style>
@@ -48,11 +46,6 @@
     .nav a { color: var(--ink-soft); transition: color 0.3s; }
     .nav a:hover, .nav a.is-current { color: var(--white); }
 
-    .omega-subnav { margin: 2rem 0; padding: 1rem 1.5rem; border: 1px solid var(--line); border-radius: 999px; background: rgba(255,255,255,0.03); display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; backdrop-filter: blur(10px); }
-    .omega-subnav strong { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink-soft); margin-right: 0.5rem; }
-    .omega-subnav a { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink-soft); border-bottom: 1px solid transparent; transition: all 0.2s; }
-    .omega-subnav a:hover, .omega-subnav a.is-current { color: var(--white); border-color: var(--white); }
-
     .hero { padding: 4rem 0 3rem; }
     .eyebrow { font-family: var(--font-mono); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.2em; color: var(--accent); margin-bottom: 1rem; display: block; }
     h1 { margin: 0 0 1.5rem; font-family: var(--font-serif); font-size: clamp(3rem, 6vw, 4.5rem); font-weight: 400; line-height: 1.1; max-width: 25ch; }
@@ -64,8 +57,8 @@
     .btn-secondary:hover { background: rgba(255, 255, 255, 0.1); transform: translateY(-2px); }
 
     .main-shell { position: relative; margin-bottom: 4rem; }
-    .main-inner { background: var(--panel); border-radius: 1.5rem; overflow: clip; box-shadow: var(--shadow); border: 1px solid var(--line); padding: 2rem;}
-    .section { padding: 2rem 0; border-bottom: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 4rem; align-items: flex-start; }
+    .main-inner { background: var(--panel); border-radius: 1.5rem; overflow: clip; box-shadow: var(--shadow); border: 1px solid var(--line); }
+    .section { padding: 4rem; border-bottom: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 4rem; align-items: flex-start; }
     .section:last-child { border-bottom: none; }
     .section-content { flex: 1; min-width: 300px; }
     .section-kicker { font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent); margin-bottom: 0.8rem; display: block; }
@@ -86,6 +79,9 @@
     p code, li code { background: rgba(255,255,255,0.1); padding: 0.2rem 0.4rem; border-radius: 4px; font-size: 0.85em; color: #60a5fa;}
 
     .footer { border-top: 1px solid var(--line); padding: 4rem 0; text-align: center; font-family: var(--font-mono); font-size: 0.8rem; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.15em; }
+    
+    /* Layout fix for Homepage which needs block display instead of flex */
+    .section-block { display: block; padding: 4rem; }
     
     .status-label { font-family: var(--font-mono); font-size: 0.65rem; padding: 0.2rem 0.5rem; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.1em; display: inline-block; margin-bottom: 0.5rem; }
     .status-implemented { background: rgba(16, 185, 129, 0.1); color: var(--accent-green); border: 1px solid rgba(16, 185, 129, 0.3); }
@@ -142,43 +138,35 @@
 
           <section class="section">
             <div class="section-content">
-              <span class="section-kicker">Radio Physics & Information Theory</span>
-              <h2>The Shannon-Hartley Limit.</h2>
-              <p>Marine environments are notoriously hostile to radio frequency (RF) propagation. The ocean acts as a dynamic ground plane, and atmospheric salt creates significant signal attenuation. According to the <strong>Shannon-Hartley theorem</strong>, the maximum data rate of a communication channel is strictly bound by its bandwidth and the signal-to-noise ratio (SNR).</p><p>To overcome this, OMEGA utilizes <strong>LoRa Chirp Spread Spectrum (CSS)</strong> modulation. By spreading the signal across a wider bandwidth, the system can decode packets below the noise floor.</p>
-              <div class="callout"><strong>Graph Theory & Delay Tolerant Networks (DTN)</strong><p>Traditional IP networks assume a connected path. OMEGA uses a store-and-forward DTN overlay. If an ASV cannot reach the shore, it holds the packet in memory until it physically drifts within range of a relay buoy.</p></div>
+              <span class="section-kicker">Network Graph Theory</span>
+              <h2>Delay Tolerant Networks (DTN).</h2>
+              <p>Standard IP networking relies on the assumption that a direct, unbroken path exists between the source and destination at the time of transmission. In the ocean, this assumption is false.</p><p>OMEGA operates a <strong>Delay Tolerant Network (DTN)</strong> overlay. It models the network as a dynamic graph where edges (connections) appear and disappear. If an Autonomous Surface Vehicle (ASV) captures a packet but cannot reach the shore, it stores the packet in its local NVRAM. The packet is physically carried across the ocean until the ASV drifts into range of a relay buoy, at which point the graph edge reforms and the packet is forwarded.</p>
+              
             </div>
-            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">lora-cbor-frame.example.json</span><pre><code class="language-json">{
-  "message_id": "lora-asv-health-0001",
-  "message_type": "compact_observation",
-  "node_id": "urn:omega-wave:node:asv:prototype-01",
-  "device_id": "tbeam-1w-lora",
-  "sequence": 1,
-  "timestamp": "2026-04-29T15:35:00Z",
-  "lat": 36.81,
-  "lon": -122.41,
-  "priority": "high",
-  "payload_kind": "system_health",
-  "payload": {
-    "battery-percent": 86,
-    "rssi-dbm": -97,
-    "snr-db": 6.5,
-    "leak-detected": false
-  }
-}</code></pre></div>
+            
           </section>
     
           <section class="section">
             <div class="section-content">
-              <span class="section-kicker">Dijkstra's Algorithm & Link State</span>
+              <span class="section-kicker">Routing Algorithms</span>
               <h2>Route Cost & AutoInterface.</h2>
               <p>In a mixed-bearer environment, the mesh must decide whether to send a packet over a fast, expensive LTE link, or a slow, free LoRa link. OMEGA utilizes a custom route-scoring system weighing <strong>Route Cost</strong> (financial/bandwidth penalty) and <strong>Route Weight</strong> (latency).</p><p>For local configuration, it implements a <strong>Reticulum-inspired AutoInterface</strong>, automatically discovering peers over local IP multicasts without requiring static IP configuration.</p>
-              <div class="callout"><strong>Acknowledgment-Aware Outboxes</strong><p>When a packet is dispatched over the DTN, it sits in an `awaiting_ack` state. If the target node fails to acknowledge within the timeout, the packet falls back to a heavier bearer or fails safely.</p></div>
+              <div class="callout"><strong>Acknowledgment-Aware Outboxes</strong><p>When a packet is dispatched over the DTN, it sits in an `awaiting_ack` state. If the target node fails to acknowledge within the timeout, the packet falls back to a heavier bearer.</p></div>
             </div>
             <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">gateway/fleet.py Route Scoring</span><pre><code class="language-python">def calculate_best_route(target_id: str, interfaces: dict) -> str:
     valid_routes = [iface for iface in interfaces.values() if iface.can_reach(target_id)]
-    # Sort by lowest cost, then lowest weight
     valid_routes.sort(key=lambda x: (x.route_cost, x.route_weight))
     return valid_routes[0].id if valid_routes else None</code></pre></div>
+          </section>
+    
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">Binary Optimization</span>
+              <h2>CBOR Payload Compression.</h2>
+              <p>Sending verbose JSON strings over a 900MHz LoRa radio is an egregious waste of airtime. OMEGA compresses API payloads using <strong>CBOR (Concise Binary Object Representation)</strong>.</p><p>CBOR strips structural overhead (like quotes, colons, and whitespace) while maintaining the exact key-value mapping. This often reduces payload size by 40-60%, directly translating to reduced radio duty cycles, lower power consumption, and fewer packet collisions over the RF spectrum.</p>
+              
+            </div>
+            
           </section>
     
     </div>

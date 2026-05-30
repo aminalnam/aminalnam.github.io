@@ -5,7 +5,6 @@
   <meta content="width=device-width, initial-scale=1" name="viewport"/>
   <title>OMEGA — OMEGA Gateway</title>
   
-  <!-- SEO & Social Metadata -->
   <meta name="description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
   <meta property="og:title" content="OMEGA — OMEGA Gateway" />
   <meta property="og:description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
@@ -15,7 +14,6 @@
   <meta name="twitter:title" content="OMEGA — OMEGA Gateway" />
   <meta name="twitter:description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
   
-  <!-- Favicon / Title Branding -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌊</text></svg>">
   
   <style>
@@ -48,11 +46,6 @@
     .nav a { color: var(--ink-soft); transition: color 0.3s; }
     .nav a:hover, .nav a.is-current { color: var(--white); }
 
-    .omega-subnav { margin: 2rem 0; padding: 1rem 1.5rem; border: 1px solid var(--line); border-radius: 999px; background: rgba(255,255,255,0.03); display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; backdrop-filter: blur(10px); }
-    .omega-subnav strong { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink-soft); margin-right: 0.5rem; }
-    .omega-subnav a { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink-soft); border-bottom: 1px solid transparent; transition: all 0.2s; }
-    .omega-subnav a:hover, .omega-subnav a.is-current { color: var(--white); border-color: var(--white); }
-
     .hero { padding: 4rem 0 3rem; }
     .eyebrow { font-family: var(--font-mono); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.2em; color: var(--accent); margin-bottom: 1rem; display: block; }
     h1 { margin: 0 0 1.5rem; font-family: var(--font-serif); font-size: clamp(3rem, 6vw, 4.5rem); font-weight: 400; line-height: 1.1; max-width: 25ch; }
@@ -64,8 +57,8 @@
     .btn-secondary:hover { background: rgba(255, 255, 255, 0.1); transform: translateY(-2px); }
 
     .main-shell { position: relative; margin-bottom: 4rem; }
-    .main-inner { background: var(--panel); border-radius: 1.5rem; overflow: clip; box-shadow: var(--shadow); border: 1px solid var(--line); padding: 2rem;}
-    .section { padding: 2rem 0; border-bottom: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 4rem; align-items: flex-start; }
+    .main-inner { background: var(--panel); border-radius: 1.5rem; overflow: clip; box-shadow: var(--shadow); border: 1px solid var(--line); }
+    .section { padding: 4rem; border-bottom: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 4rem; align-items: flex-start; }
     .section:last-child { border-bottom: none; }
     .section-content { flex: 1; min-width: 300px; }
     .section-kicker { font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent); margin-bottom: 0.8rem; display: block; }
@@ -86,6 +79,9 @@
     p code, li code { background: rgba(255,255,255,0.1); padding: 0.2rem 0.4rem; border-radius: 4px; font-size: 0.85em; color: #60a5fa;}
 
     .footer { border-top: 1px solid var(--line); padding: 4rem 0; text-align: center; font-family: var(--font-mono); font-size: 0.8rem; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.15em; }
+    
+    /* Layout fix for Homepage which needs block display instead of flex */
+    .section-block { display: block; padding: 4rem; }
     
     .status-label { font-family: var(--font-mono); font-size: 0.65rem; padding: 0.2rem 0.5rem; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.1em; display: inline-block; margin-bottom: 0.5rem; }
     .status-implemented { background: rgba(16, 185, 129, 0.1); color: var(--accent-green); border: 1px solid rgba(16, 185, 129, 0.3); }
@@ -145,7 +141,7 @@
               <span class="section-kicker">Concurrency & IO Bound Limits</span>
               <h2>FastAPI Async Event Loop.</h2>
               <p>The OMEGA Gateway sits at the intersection of HTTP requests from the portal, serial data from LoRa modules, and acoustic packets from underwater nodes. Python's Global Interpreter Lock (GIL) traditionally struggles with this.</p><p>By utilizing <strong>FastAPI and Starlette</strong>, the gateway relies on an asynchronous event loop. It can await an I/O bound serial operation without blocking the execution of a critical API response, allowing a single lightweight process to handle thousands of concurrent state requests.</p>
-              <div class="callout"><strong>SQLite Normalization</strong><p>Raw JSON/CBOR envelopes are unpacked and normalized into a relational SQLite structure, providing lightning-fast spatial queries without heavy database infrastructure.</p></div>
+              <div class="callout"><strong>Background Tasks</strong><p>Heavy normalization operations are relegated to Starlette background tasks, ensuring the endpoint returns a 202 Accepted instantly.</p></div>
             </div>
             <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">FastAPI Concurrency</span><pre><code class="language-python">@app.post("/v1/observations")
 async def ingest_observation(envelope: ObservationEnvelope, db: Session = Depends(get_db)):
@@ -155,33 +151,24 @@ async def ingest_observation(envelope: ObservationEnvelope, db: Session = Depend
     
           <section class="section">
             <div class="section-content">
-              <span class="section-kicker">Amnesia Prevention & NLP</span>
-              <h2>Honu Copilot Architecture.</h2>
-              <p>Honu (named after the Hawaiian green sea turtle) is the native, context-aware intelligence engine. To prevent "LLM Amnesia" where the model loses track of what the user is currently viewing, the gateway implements a strict <strong>Amnesia Prevention Protocol</strong>. Every prompt is secretly bundled with a <code>[PORTAL CONTEXT]</code> block containing the active map bounding box, selected device, and UI state.</p><p>Honu operates under strict Read-Only constraints. It possesses a Tool Registry of 46 callable API routes. When a user requests an action, Honu uses <code>kind="action"</code> tools to <em>stage</em> the payload for explicit operator confirmation, guaranteeing AI cannot blindly execute physical hardware commands.</p>
-              <div class="callout"><strong>Intent-Based Tool Preprocessing</strong><p>To save tokens and execution time on small local models (Ollama), the gateway parses natural language to detect geographic intent (translating "Monterey Bay" into bounding boxes) and statistical intent (routing to get_measurement_statistics instead of raw row queries).</p></div>
+              <span class="section-kicker">Database Engineering</span>
+              <h2>SQLite Normalization & WAL.</h2>
+              <p>A fleet of 50 edge nodes transmitting telemetry every 10 seconds generates a continuous write-heavy load. Traditional SQLite can suffer from `database is locked` errors during concurrent read/write operations.</p><p>The gateway configures SQLite in <strong>Write-Ahead Logging (WAL)</strong> mode. Instead of locking the entire database file during a write, changes are appended to a separate `.wal` file, allowing readers (the Mission Portal) to concurrently access the database without being blocked by writers (the telemetry ingest).</p>
+              
             </div>
-            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">gateway/copilot.py Tool Registry</span><pre><code class="language-python">_action_tool(
-    "propose_control_command",
-    "Stage a control command for one node for operator confirmation. "
-    "This does NOT run the command — it stages it for the operator to confirm.",
-    "/v1/control/commands",
-)</code></pre></div>
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">SQLite Configuration</span><pre><code class="language-sql">PRAGMA journal_mode=WAL;
+PRAGMA synchronous=NORMAL;
+PRAGMA cache_size=-64000;</code></pre></div>
           </section>
     
           <section class="section">
             <div class="section-content">
-              <span class="section-kicker">QARTOD Standards & Drift Correction</span>
-              <h2>Quality Control & Calibration.</h2>
-              <p>Raw oceanographic data requires rigorous quality control before it can be trusted. OMEGA implements the <strong>IOOS QARTOD</strong> (Quality Assurance / Quality Control of Real-Time Oceanographic Data) standards directly in the gateway.</p><p>The QC engine (`gateway/qc.py`) evaluates incoming data using statistical mathematics: calculating the <strong>Median Absolute Deviation (MAD)</strong> to derive a Robust Sigma for spike detection, flat-line checks, and gross-range violations. Points are flagged from 1 (Pass) to 4 (Fail) or 9 (Missing).</p><p>For hardware drift over time, the <strong>Argo Calibration Engine</strong> mathematically matches raw readings from local nodes against certified IFREMER Argo floats operating in the same spatial volume to generate dynamic calibration offsets.</p>
-              <div class="callout"><strong>Threshold Bundles & Sigma Multipliers</strong><p>Thresholds are dynamically calculated per-station. A spike is flagged as "suspect" if it deviates by 3-sigma from the center, and "fail" if it exceeds 6-sigma.</p></div>
+              <span class="section-kicker">Data Structures</span>
+              <h2>The Observation Envelope.</h2>
+              <p>Disparate sensors produce chaotic data formats. OMEGA standardizes all incoming telemetry into a strict <strong>Observation Envelope</strong>. This schema guarantees that every measurement has a cryptographic timestamp, an explicitly defined unit, and spatial coordinates.</p><p>By enforcing this envelope at the boundary, downstream systems (like bathymetry processors or QARTOD QC algorithms) do not need to parse different manufacturer formats.</p>
+              
             </div>
-            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">gateway/qc.py Robust Sigma</span><pre><code class="language-python">def _robust_sigma(values: list[float]) -> float | None:
-    if len(values) < 4:
-        return None
-    center = median(values)
-    mad = _median_absolute_deviation(values, center)
-    sigma = mad * 1.4826  # Scale factor for normal distribution
-    return sigma if sigma > 0 else None</code></pre></div>
+            
           </section>
     
     </div>
