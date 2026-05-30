@@ -54,11 +54,11 @@
     .section { padding: 4rem; border-bottom: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 4rem; align-items: flex-start; }
     .section-content { flex: 1; min-width: 300px; }
     .section-kicker { font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent); margin-bottom: 0.8rem; display: block; }
-    .section h2 { font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem; }
-    .section p { color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem;}
+    .section h2 { font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1.5rem; }
+    .section p { color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 1.5rem; line-height: 1.7; }
 
     .section-visual { flex: 1; min-width: 300px; background: rgba(0,0,0,0.3); border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 2rem; }
-    .section-visual img { width: 100%; border-radius: 8px; border: 1px solid var(--line); box-shadow: var(--shadow); }
+    .section-visual img { width: 100%; border-radius: 8px; border: 1px solid var(--line); box-shadow: var(--shadow); margin-bottom: 1rem; }
     
     .panel-kicker { display: inline-block; font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent); padding: 0.2rem 0.6rem; background: rgba(59,130,246,0.1); border-radius: 999px; margin-bottom: 1rem; }
     
@@ -108,8 +108,8 @@
 
   <section class="hero wrap">
     <span class="eyebrow">Domain 04: Operations</span>
-    <h1>Wayfinding & Live Control.</h1>
-    <p>The tactical execution arm. Obstacle-aware wayfinding route generation, kinematic scenarios, and live parameter control of deployed physical assets.</p>
+    <h1>Kinematics & Control.</h1>
+    <p>The tactical execution arm. Calculating route scenarios through vector mathematics and fluid dynamics, and issuing secure live hardware commands.</p>
     <div class="hero-actions">
       <a class="btn btn-primary" href="https://github.com/aminalnam/OMEGA-wave" target="_blank">View GitHub Repository</a>
       <a class="btn btn-secondary" href="index.html">Back to Portfolio</a>
@@ -121,11 +121,16 @@
 
       <section class="section">
         <div class="section-content">
-          <span class="section-kicker">Kinematic Route Generation</span>
+          <span class="section-kicker">Fluid Dynamics & Vector Math</span>
           <h2>Wayfinding Scenarios.</h2>
-          <p>Autonomous Surface Vehicles (ASVs) cannot blindly draw straight lines between waypoints. The Wayfinder module generates route candidates based on the physical kinematic limits of the vessel (e.g., maximum turn radius, cruising speed).</p>
-          <p>It then overlays these paths against environmental data grids (Copernicus ocean currents) to calculate the energy expenditure and estimated time of arrival (ETA) for each scenario before exporting a GeoJSON path.</p>
-          <img src="images/ui-wayfinder.png" alt="Wayfinder Route Interface" style="width: 100%; border-radius: 8px; margin-top: 2rem; border: 1px solid var(--line);">
+          <p>Autonomous Surface Vehicles (ASVs) cannot blindly draw straight lines between GPS waypoints. A boat operates on the surface of a moving fluid. If an ASV points its bow directly at a target (its <strong>Heading</strong>), but a strong cross-current is pushing against the hull, its actual path over the Earth (its <strong>Course-Over-Ground, or COG</strong>) will drift significantly off-target.</p>
+          <p>The Wayfinder module solves this through vector mathematics. It models the vessel's kinematics (cruising speed, maximum turn radius) as one vector, and imports real-time ocean current data (from Copernicus Marine APIs) as a massive environmental vector field.</p>
+          <p>To generate a viable route, the algorithm calculates the necessary "crab angle"—the degree to which the vessel must steer *into* the current to maintain a straight COG. It integrates the resistance of the fluid against the hull displacement to accurately predict energy expenditure and battery drain, ensuring the vessel will not die mid-mission.</p>
+          
+          <div class="callout">
+            <strong>Secure Live Control</strong>
+            <p>Once a route is generated, the waypoints must be securely pushed to the ASV. The Control workspace allows operators to push these commands directly into the DTN queue. Every request to <code>/v1/control/commands</code> is protected by an <code>X-OMEGA-API-Key</code> header to prevent unauthorized hijacking of the physical fleet.</p>
+          </div>
         </div>
         <div class="section-visual">
           <span class="panel-kicker">wayfinding-plan.example.json</span>

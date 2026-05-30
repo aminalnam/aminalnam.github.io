@@ -54,11 +54,11 @@
     .section { padding: 4rem; border-bottom: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 4rem; align-items: flex-start; }
     .section-content { flex: 1; min-width: 300px; }
     .section-kicker { font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent); margin-bottom: 0.8rem; display: block; }
-    .section h2 { font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem; }
-    .section p { color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem;}
+    .section h2 { font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1.5rem; }
+    .section p { color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 1.5rem; line-height: 1.7; }
 
     .section-visual { flex: 1; min-width: 300px; background: rgba(0,0,0,0.3); border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 2rem; }
-    .section-visual img { width: 100%; border-radius: 8px; border: 1px solid var(--line); box-shadow: var(--shadow); }
+    .section-visual img { width: 100%; border-radius: 8px; border: 1px solid var(--line); box-shadow: var(--shadow); margin-bottom: 1rem; }
     
     .panel-kicker { display: inline-block; font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent); padding: 0.2rem 0.6rem; background: rgba(59,130,246,0.1); border-radius: 999px; margin-bottom: 1rem; }
     
@@ -108,8 +108,8 @@
 
   <section class="hero wrap">
     <span class="eyebrow">Domain 05: Observation</span>
-    <h1>API Map Fusion.</h1>
-    <p>Contextualizing local telemetry against massive global datasets. The Observe workspace fuses Copernicus Marine currents, NASA GIBS satellite imagery, and NOAA navigation bounds into a unified WebGL visualization standard.</p>
+    <h1>Earth Observation Physics.</h1>
+    <p>Contextualizing local telemetry against massive global datasets. Understanding the physics behind satellite imagery, altimetry, and API fusion.</p>
     <div class="hero-actions">
       <a class="btn btn-primary" href="https://github.com/aminalnam/OMEGA-wave" target="_blank">View GitHub Repository</a>
       <a class="btn btn-secondary" href="index.html">Back to Portfolio</a>
@@ -121,17 +121,32 @@
 
       <section class="section">
         <div class="section-content">
-          <span class="section-kicker">External Providers</span>
-          <h2>Global Fishing Watch.</h2>
-          <p>OMEGA-wave doesn't just read data from its own mesh nodes. By actively proxying calls to the Global Fishing Watch 4Wings API, the portal generates live contextual heatmaps of fishing effort directly in the primary workspace.</p>
+          <span class="section-kicker">Satellite Physics & NetCDF</span>
+          <h2>Global Map Fusion.</h2>
+          <p>OMEGA-wave doesn't just read data from its own edge nodes. It contextualizes that telemetry against massive global datasets provided by Copernicus Marine, NASA GIBS, and Global Fishing Watch.</p>
+          <p>But how is this data actually gathered? NASA and Copernicus rely on <strong>Earth Observation Satellites</strong>. To measure Sea Surface Temperature (SST), satellites use radiometers to detect thermal infrared radiation emitted by the top millimeter of the ocean. To model ocean currents, they use <strong>radar altimetry</strong>—bouncing microwave pulses off the ocean surface to measure minute differences in sea surface height. Gravity and the Coriolis effect cause water to flow around these "hills" and "valleys," allowing supercomputers to mathematically derive the velocity of surface currents.</p>
+          <p>Because the ocean is a dynamic, 3D environment changing over time, this data cannot be stored in simple tables. It is distributed in <strong>NetCDF (Network Common Data Form)</strong> files—massive multidimensional arrays plotting latitude, longitude, depth, and time.</p>
+          
           <div class="callout">
-            <strong>The Caching Engine</strong>
-            <p>The FastAPI gateway implements strict <code>Cache-Control</code> headers (e.g., `max-age=120`) to prevent overwhelming external providers. API statuses (like <code>stormglass_status</code>) are maintained locally to ensure the portal remains highly responsive.</p>
+            <strong>The FastAPI Caching Engine</strong>
+            <p>Pulling multidimensional datasets on the fly is computationally expensive. The OMEGA-wave gateway acts as a proxy, implementing strict HTTP <code>Cache-Control</code> headers (e.g., <code>max-age=120</code>). This ensures that while operators manipulate the Live WebGL map overlays in real-time, the portal doesn't exhaust its API rate limits with the external providers.</p>
           </div>
         </div>
         <div class="section-visual">
-          <span class="panel-kicker">Observe Overlay Interface</span>
-          <img src="images/ui-observe.png" alt="Observe Map with Data Overlays" style="width: 100%; border-radius: 8px; border: 1px solid var(--line);">
+          <span class="panel-kicker">FastAPI Route Logic</span>
+<pre><code class="language-python"># gateway/api/routes.py (Example Concept)
+@app.get("/v1/observe/overlays/gfw")
+def get_gfw_fishing_effort(bbox: str):
+    # Enforce same-origin proxy to prevent CORS issues on the frontend
+    if is_cached("gfw", bbox):
+        return cache.get("gfw", bbox)
+        
+    # Query 4Wings API for gridded effort stats
+    raw_data = gfw_client.fetch_bins(bbox)
+    normalized = standard_overlay_format(raw_data)
+    
+    cache.set("gfw", bbox, normalized, max_age=120)
+    return normalized</code></pre>
         </div>
       </section>
 

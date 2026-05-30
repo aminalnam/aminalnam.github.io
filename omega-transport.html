@@ -54,11 +54,11 @@
     .section { padding: 4rem; border-bottom: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 4rem; align-items: flex-start; }
     .section-content { flex: 1; min-width: 300px; }
     .section-kicker { font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent); margin-bottom: 0.8rem; display: block; }
-    .section h2 { font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem; }
-    .section p { color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem;}
+    .section h2 { font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1.5rem; }
+    .section p { color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 1.5rem; line-height: 1.7; }
 
     .section-visual { flex: 1; min-width: 300px; background: rgba(0,0,0,0.3); border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 2rem; }
-    .section-visual img { width: 100%; border-radius: 8px; border: 1px solid var(--line); box-shadow: var(--shadow); }
+    .section-visual img { width: 100%; border-radius: 8px; border: 1px solid var(--line); box-shadow: var(--shadow); margin-bottom: 1rem; }
     
     .panel-kicker { display: inline-block; font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent); padding: 0.2rem 0.6rem; background: rgba(59,130,246,0.1); border-radius: 999px; margin-bottom: 1rem; }
     
@@ -121,12 +121,15 @@
 
       <section class="section">
         <div class="section-content">
-          <span class="section-kicker">LoRa & CBOR Decoding</span>
-          <h2>The Telemetry Envelope.</h2>
-          <p>Because physical LoRa airtime is severely limited, the edge nodes pack their telemetry into highly compressed CBOR (Concise Binary Object Representation) structures. The gateway ingests these over serial and decodes them back into standard JSON envelopes.</p>
+          <span class="section-kicker">Radio Physics & Information Theory</span>
+          <h2>The Shannon-Hartley Limit.</h2>
+          <p>Marine environments are notoriously hostile to radio frequency (RF) propagation. The ocean acts as a dynamic ground plane, and atmospheric salt creates significant signal attenuation. According to the <strong>Shannon-Hartley theorem</strong>, the maximum data rate of a communication channel is strictly bound by its bandwidth and the signal-to-noise ratio (SNR).</p>
+          <p>To overcome this without violating power constraints on autonomous solar vehicles, OMEGA-wave utilizes <strong>LoRa (Long Range) Chirp Spread Spectrum (CSS)</strong> modulation. By spreading the signal across a wider bandwidth using linear frequency modulated chirps, the system can successfully decode packets even when the signal is physically buried below the noise floor (negative SNR).</p>
+          <p>Because physical LoRa airtime is severely limited to achieve this range, edge nodes pack their telemetry into highly compressed CBOR (Concise Binary Object Representation) structures. The Python gateway ingests these over serial and decodes them back into standard JSON envelopes.</p>
+          
           <div class="callout">
-            <strong>Store and Forward</strong>
-            <p>If an ASV is out of range, the mesh nodes hold the packet. When the vessel enters the boundary, the network automatically flushes the queue, ensuring zero data loss over disrupted marine links.</p>
+            <strong>Graph Theory & Delay Tolerant Networks (DTN)</strong>
+            <p>Traditional IP networks (TCP) assume a continuous, connected path between nodes. In maritime swarms, wave action and distance create a "disconnected graph" where paths constantly break. OMEGA-wave uses a store-and-forward DTN overlay. If an ASV cannot reach the shore, it holds the packet in memory. When it physically drifts within range of a relay buoy, the network mathematically converges and flushes the queue, ensuring zero data loss despite continuous link failure.</p>
           </div>
         </div>
         <div class="section-visual">
@@ -154,10 +157,11 @@
 
       <section class="section">
         <div class="section-content">
-          <span class="section-kicker">Underwater Protocol</span>
-          <h2>JANUS Acoustic Interop.</h2>
-          <p>Radio waves don't penetrate water. To communicate with subsurface ROVs and buoys, OMEGA-wave integrates a native JANUS acoustic bridge. The gateway translates JSON mesh commands into NATO-standard acoustic waveforms, treating a hydrophone exactly like a terrestrial radio.</p>
-          <img src="images/ui-janus.png" alt="JANUS Control Panel UI" style="width: 100%; border-radius: 8px; margin-top: 2rem; border: 1px solid var(--line);">
+          <span class="section-kicker">Acoustic Physics</span>
+          <h2>The JANUS Protocol.</h2>
+          <p>Radio waves attenuate almost immediately in seawater. To communicate with subsurface ROVs and sensor nodes, OMEGA-wave must utilize mechanical energy: acoustic waves.</p>
+          <p>However, underwater acoustics face severe physical challenges. As temperature and salinity change with depth (thermoclines and haloclines), the speed of sound shifts. According to <strong>Snell's Law of Refraction</strong>, sound waves bend toward regions of slower sound speed. This creates "shadow zones" where signals cannot reach, and multipath fading where echoes arriving out of phase destructively interfere with the main signal.</p>
+          <p>To establish a reliable baseline, OMEGA-wave implements the NATO-standard <strong>JANUS</strong> acoustic protocol bridge. JANUS relies on robust Frequency-Shift Keying (FSK) combined with heavy redundancy to survive multipath fading. The gateway translates JSON mesh commands into these standard acoustic waveforms, treating a hydrophone exactly like a terrestrial radio.</p>
         </div>
         <div class="section-visual">
           <span class="panel-kicker">janus-announce.example.json</span>

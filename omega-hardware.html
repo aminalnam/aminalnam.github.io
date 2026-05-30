@@ -54,11 +54,11 @@
     .section { padding: 4rem; border-bottom: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 4rem; align-items: flex-start; }
     .section-content { flex: 1; min-width: 300px; }
     .section-kicker { font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent); margin-bottom: 0.8rem; display: block; }
-    .section h2 { font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem; }
-    .section p { color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem;}
+    .section h2 { font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1.5rem; }
+    .section p { color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 1.5rem; line-height: 1.7; }
 
     .section-visual { flex: 1; min-width: 300px; background: rgba(0,0,0,0.3); border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 2rem; }
-    .section-visual img { width: 100%; border-radius: 8px; border: 1px solid var(--line); box-shadow: var(--shadow); }
+    .section-visual img { width: 100%; border-radius: 8px; border: 1px solid var(--line); box-shadow: var(--shadow); margin-bottom: 1rem; }
     
     .panel-kicker { display: inline-block; font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent); padding: 0.2rem 0.6rem; background: rgba(59,130,246,0.1); border-radius: 999px; margin-bottom: 1rem; }
     
@@ -109,7 +109,7 @@
   <section class="hero wrap">
     <span class="eyebrow">Domain 02: Hardware</span>
     <h1>Fleet & Edge Compute.</h1>
-    <p>Managing the physical reality of the mesh. This domain handles Over-The-Air (OTA) firmware flashing, hardware profile enforcement, and USB health monitoring for the LilyGO boards.</p>
+    <p>Managing the physical reality of the mesh. This domain handles Over-The-Air (OTA) firmware flashing, edge-compute thermodynamics, and RF antenna considerations.</p>
     <div class="hero-actions">
       <a class="btn btn-primary" href="https://github.com/aminalnam/OMEGA-wave" target="_blank">View GitHub Repository</a>
       <a class="btn btn-secondary" href="index.html">Back to Portfolio</a>
@@ -121,18 +121,32 @@
 
       <section class="section">
         <div class="section-content">
-          <span class="section-kicker">Device Administration</span>
-          <h2>Over-The-Air Flashing.</h2>
-          <p>Maintaining a fleet of autonomous nodes requires robust lifecycle management. The OMEGA-wave Admin panel exposes a complete firmware flashing pipeline, allowing operators to push compiled <code>firmware.bin</code> files directly to target nodes over the DTN mesh.</p>
-          <p>The gateway backend strictly enforces hardware profiles. A <code>T3-S3 MVSR SX1280</code> payload cannot accidentally be flashed to a <code>LilyGO T-HaLow</code> board.</p>
+          <span class="section-kicker">Thermodynamics & RF Physics</span>
+          <h2>Edge Node Engineering.</h2>
+          <p>Deploying microcontrollers like the ESP32 into marine environments introduces severe hardware constraints. Nodes must be encased in completely sealed, IP67+ waterproof enclosures. However, the ESP32 and accompanying LoRa amplifiers (like the SX1262) generate significant heat during active transmission.</p>
+          <p>Without active ventilation, the system relies entirely on <strong>passive thermal conduction</strong> through the enclosure walls to the surrounding air or water. If duty cycles are not strictly managed by the firmware, the internal ambient temperature will rise until the silicon reaches its thermal throttling limit, leading to unpredictable system halts.</p>
+          <p>Furthermore, RF antenna design on floating vessels is highly complex. An antenna requires a stable ground plane to shape its radiation pattern effectively. On a small ASV, the ocean itself acts as a massive, shifting, conductive ground plane. Pitch and roll caused by wave action constantly changes the antenna's orientation relative to this plane, creating dynamic dead zones in the transmission field. The firmware must account for this by utilizing the DTN to retry transmissions during optimal wave crests.</p>
+          
           <div class="callout">
-            <strong>Owner Protection</strong>
-            <p>All endpoints modifying the firmware state (<code>/v1/gateway/firmware/jobs</code>) require the <code>X-OMEGA-API-Key</code> owner secret. The gateway aggressively rejects unauthorized probe or flash requests.</p>
+            <strong>Over-The-Air (OTA) Flashing</strong>
+            <p>Because physical access to a deployed fleet is impossible, the gateway implements a full OTA pipeline. Operators can push compiled <code>firmware.bin</code> files to target nodes over the DTN mesh. The backend strictly enforces hardware profiles, ensuring a <code>T3-S3 MVSR</code> payload is never flashed to a <code>LilyGO T-HaLow</code> board, which would permanently brick the device.</p>
           </div>
         </div>
         <div class="section-visual">
-          <span class="panel-kicker">Firmware Flashing UI</span>
-          <img src="images/ui-firmware.png" alt="Firmware Flashing Interface" style="width: 100%; border-radius: 8px; border: 1px solid var(--line);">
+          <span class="panel-kicker">Firmware Verification Logic</span>
+<pre><code class="language-python"># gateway/api/firmware.py
+@app.post("/v1/gateway/firmware/jobs")
+def queue_flash_job(job: FlashJob, hardware_registry: Dict):
+    target_node = hardware_registry.get(job.node_id)
+    
+    # Strict MCU profile enforcement
+    if target_node.mcu_profile != job.binary_profile:
+        raise HTTPException(
+            status_code=400, 
+            detail=f"Profile mismatch. Attempted to flash {job.binary_profile} to a {target_node.mcu_profile} board."
+        )
+        
+    return DTN.queue_payload(job.node_id, job.binary_data)</code></pre>
         </div>
       </section>
 

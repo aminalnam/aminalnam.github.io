@@ -54,11 +54,11 @@
     .section { padding: 4rem; border-bottom: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 4rem; align-items: flex-start; }
     .section-content { flex: 1; min-width: 300px; }
     .section-kicker { font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent); margin-bottom: 0.8rem; display: block; }
-    .section h2 { font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem; }
-    .section p { color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem;}
+    .section h2 { font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1.5rem; }
+    .section p { color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 1.5rem; line-height: 1.7; }
 
     .section-visual { flex: 1; min-width: 300px; background: rgba(0,0,0,0.3); border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 2rem; }
-    .section-visual img { width: 100%; border-radius: 8px; border: 1px solid var(--line); box-shadow: var(--shadow); }
+    .section-visual img { width: 100%; border-radius: 8px; border: 1px solid var(--line); box-shadow: var(--shadow); margin-bottom: 1rem; }
     
     .panel-kicker { display: inline-block; font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent); padding: 0.2rem 0.6rem; background: rgba(59,130,246,0.1); border-radius: 999px; margin-bottom: 1rem; }
     
@@ -108,8 +108,8 @@
 
   <section class="hero wrap">
     <span class="eyebrow">Domain 03: Data Science</span>
-    <h1>Ingestion & Interpolation.</h1>
-    <p>Transforming raw, asynchronous telemetry into actionable intelligence. Featuring a Live Tiles dashboard, the Data Library BBS, and the legacy Bathymetric interpolation engine.</p>
+    <h1>Statistics & Spatial Mathematics.</h1>
+    <p>Transforming raw, asynchronous telemetry into actionable intelligence using Kalman filtering, Inverse Distance Weighting, and live polling structures.</p>
     <div class="hero-actions">
       <a class="btn btn-primary" href="https://github.com/aminalnam/OMEGA-wave" target="_blank">View GitHub Repository</a>
       <a class="btn btn-secondary" href="index.html">Back to Portfolio</a>
@@ -121,11 +121,12 @@
 
       <section class="section">
         <div class="section-content">
-          <span class="section-kicker">Telemetry Processing</span>
+          <span class="section-kicker">Sensor Noise & Statistics</span>
           <h2>The Observation Envelope.</h2>
-          <p>When the gateway successfully decodes a packet from the mesh, it expands it into a fully validated Observation Envelope. This payload includes high-precision coordinates, sensor arrays (temperature, depth, battery), and the exact hardware footprint of the reporting node.</p>
+          <p>Raw data from the edge is inherently noisy. GPS modules suffer from atmospheric interference, yielding fluctuating Horizontal Dilution of Precision (HDOP) metrics. MEMS Inertial Measurement Units (IMUs) are highly susceptible to high-frequency vibration from motors and wave chop.</p>
+          <p>To extract true vessel state, the edge nodes apply <strong>Kalman Filtering</strong>. A Kalman filter is an algorithm that uses a series of measurements observed over time, containing statistical noise, and produces estimates of unknown variables that tend to be more accurate than those based on a single measurement alone. By comparing the predicted state of the vessel against the noisy IMU reading, it mathematically isolates true pitch and roll from the vibration.</p>
+          <p>When the gateway receives a packet, it expands it into a fully validated Observation Envelope, containing these cleaned statistics alongside the raw readings.</p>
           
-          <img src="images/ui-data.png" alt="Live Data Tiles Dashboard" style="width: 100%; border-radius: 8px; margin-top: 2rem; border: 1px solid var(--line);">
         </div>
         <div class="section-visual" style="max-height: 800px; overflow-y: auto;">
           <span class="panel-kicker">observation-envelope.example.json</span>
@@ -197,9 +198,10 @@
       <section class="section">
         <div class="section-content">
           <span class="section-kicker">Spatial Interpolation</span>
-          <h2>Bathymetry Engine.</h2>
-          <p>A core feature of the Data Domain is the bathymetric mapping engine. Because a physical vessel cannot touch every square meter of a lakebed, we must mathematically infer the depth of unmapped areas.</p>
-          <p>OMEGA-wave achieves this using <strong>Inverse Distance Weighting (IDW)</strong> powered by <code>scipy.spatial.cKDTree</code>. This allows the backend to instantly calculate topological meshes from sparse data points gathered by the fleet.</p>
+          <h2>Bathymetry & IDW.</h2>
+          <p>A core feature of the Data Domain is the bathymetric mapping engine. Because a physical vessel cannot sound every single square meter of a lakebed, the system must mathematically infer the depth of the unmapped voids between the physical transit lines.</p>
+          <p>While techniques like Kriging rely on complex statistical models of spatial variance, OMEGA-wave utilizes <strong>Inverse Distance Weighting (IDW)</strong> for rapid edge-compute approximation. IDW operates on the fundamental geographical principle that things that are close to one another are more alike than those that are farther apart. The depth of an unknown point is calculated as a weighted average of known surrounding points, where the weight decreases exponentially as distance increases.</p>
+          <p>This is executed efficiently in Python using <code>scipy.spatial.cKDTree</code>, which organizes the data into a k-dimensional tree for lightning-fast nearest-neighbor lookups across massive arrays.</p>
         </div>
         <div class="section-visual">
           <span class="panel-kicker">Python IDW Implementation</span>
@@ -207,13 +209,17 @@
 import numpy as np
 
 def inverse_distance_weighting(x, y, z, xi, yi, power=2):
+    # KDTree allows rapid N-dimensional nearest neighbor search
+    tree = cKDTree(np.c_[x, y])
     dist, idx = tree.query(np.c_[xi.ravel(), yi.ravel()], k=10)
     
-    # Avoid division by zero
+    # Avoid division by zero at exact sample points
     dist = np.maximum(dist, 1e-10)
+    
+    # Weight decays exponentially with distance
     weights = 1.0 / dist**power
     
-    # Calculate weighted average
+    # Calculate the weighted average depth
     zi = np.sum(weights * z[idx], axis=1) / np.sum(weights, axis=1)
     return zi.reshape(xi.shape)</code></pre>
         </div>
