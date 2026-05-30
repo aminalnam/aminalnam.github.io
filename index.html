@@ -1056,11 +1056,9 @@
 <div class="wrap">
 <div class="section-head">
 <span class="section-kicker">Featured project</span>
-<h2>OMEGA unifies field sensing, mesh networks, and portal visualization.</h2>
+<h2>OMEGA unifies autonomous fleets, resilient mesh networks, and digital twin visualization.</h2>
 <p>
-              The project spans from Arduino-based autonomous fleets to a full-stack web portal.
-              Data is captured via mesh network, validated via GPS/IMU constraints, and pushed to the OMEGA-wave portal. Afterward, the accepted dataset is turned into
-              depth maps, interpolated surfaces, contour maps, and georeferenced outputs.
+              The project encompasses the complete data lifecycle: physical capture via rovers and LoRa/HaLow relays, high-performance ingestion via FastAPI and SQLite, and real-time visualization through a React-based predictive mapping portal. Bathymetric mapping is just one output of this massive distributed system.
             </p>
 </div>
 <div class="featured">
@@ -1081,16 +1079,16 @@
                 </p>
 <div aria-label="OMEGA highlights" class="feature-stats">
 <div class="stat">
-<strong>Capture</strong>
-<span>Arduino logger with GPS, sonar, temperature, IMU, LCD, and SD</span>
+<strong>Fleet & Mesh</strong>
+<span>Autonomous rovers, HaLow/LoRa overlays, and DTN store-and-forward routing.</span>
 </div>
 <div class="stat">
-<strong>Processing</strong>
-<span>CSV parsing, filtering, IDW interpolation, contour generation</span>
+<strong>The Gateway</strong>
+<span>FastAPI ingestion, SQLite timeseries, and real-time data normalization.</span>
 </div>
 <div class="stat">
-<strong>Outputs</strong>
-<span>Depth maps, continuous surfaces, KML points, and Earth overlays</span>
+<strong>The Portal</strong>
+<span>React SPA, Zustand state, live map surfacing, and predictive routing.</span>
 </div>
 </div>
 <div class="button-row">
@@ -1169,11 +1167,9 @@
 <div class="wrap">
 <div class="section-head">
 <span class="section-kicker">OMEGA guide</span>
-<h2>Pages that break down how the system works.</h2>
+<h2>The Bathymetric Sensing Engine.</h2>
 <p>
-              These pages break the system into its main parts: how depth is measured,
-              how mapping points are accepted or rejected, and how the Python workflow turns those accepted
-              points into bathymetric outputs.
+              Bathymetric mapping is a primary feature of the OMEGA system. These legacy documents explore the physics, point validation logic, and mathematical modeling used to turn raw transducer pings into continuous spatial surfaces.
             </p>
 </div>
 <div class="doc-grid">
@@ -1216,8 +1212,7 @@
 <div class="doc-type">Data</div>
 <h3>OMEGA Data</h3>
 <p>
-                A dedicated page for live readings, downloadable files, metadata, and quality notes.
-                Currently under construction.
+                A dedicated page explaining how live fleet telemetry is merged with NOAA, Copernicus, and Global Fishing Watch APIs.
               </p>
 <a href="omega-data.html">Open page</a>
 </article>
@@ -1262,21 +1257,21 @@
 </a>
 <a class="doc-card" href="omega-data.html">
 <span class="tile-kicker">OMEGA</span>
-<h3>Data</h3>
-<p>Live access, downloadable files, metadata, and data status information for OMEGA. Under construction.</p>
+<h3>External Data</h3>
+<p>Merging live fleet telemetry with NOAA, Copernicus, and Global Fishing Watch APIs via credential-safe proxy endpoints.</p>
 </a>
 <a class="doc-card" href="hardware-fleet.html">
-<span class="tile-kicker">OMEGA-wave</span>
+<span class="tile-kicker">OMEGA</span>
 <h3>Hardware Fleet</h3>
 <p>The transition from a single Arduino mega to a synchronized fleet of rovers and relays.</p>
 </a>
 <a class="doc-card" href="mesh-network.html">
-<span class="tile-kicker">OMEGA-wave</span>
+<span class="tile-kicker">OMEGA</span>
 <h3>Mesh Network</h3>
 <p>LoRa/HaLow network architecture, payload compression via CBOR, and field telemetry transport.</p>
 </a>
 <a class="doc-card" href="data-ingest.html">
-<span class="tile-kicker">OMEGA-wave</span>
+<span class="tile-kicker">OMEGA</span>
 <h3>Data Ingest & Backend</h3>
 <p>SQLite storage, TimescaleDB integrations, and REST API access for portal visualizations.</p>
 </a>
@@ -1310,8 +1305,8 @@
 <span>Field capture, processing scripts, documentation, and mapping outputs.</span>
 </li>
 <li>
-<strong>OMEGA-Wave</strong>
-<span>An in-progress companion project focused on marine communications and distributed field networking.</span>
+<strong>Digital Twin Portal</strong>
+<span>The interactive React-based portal providing mission control, live bathymetric surfacing, and predictive wayfinding.</span>
 </li>
 <li>
 <strong>How OMEGA Works</strong>
