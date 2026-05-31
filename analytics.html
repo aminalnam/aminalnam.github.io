@@ -101,12 +101,11 @@
 
           <section class="section">
             <div class="section-content">
-              <span class="section-kicker">Time-Series Processing</span>
-              <h2>Gateway Analytics Engine.</h2>
-              <p>The <code>gateway/analytics.py</code> engine is the mathematical workhorse of the shore system. It constantly crunches millions of historical SQLite telemetry points. By utilizing numpy and scipy, it generates moving averages, detects anomalous sensor drift, and pre-computes spatial statistics.</p>
-<p><strong>The Mathematics:</strong> When analyzing marine telemetry (like Salinity or pH), rogue acoustic spikes are inevitable due to biological fouling or sensor glitches. Standard averages are destroyed by these massive outliers. OMEGA utilizes the QARTOD (Quality Assurance / Quality Control of Real-Time Oceanographic Data) standards, calculating a robust median absolute deviation (MAD) instead of a standard standard-deviation.</p>
-<p><strong>Execution:</strong> The numpy arrays execute vectorized operations to instantly threshold incoming data bundles. If a sensor value exceeds 3 robust-sigmas, it is mathematically flagged as "Suspect". At 6 sigmas, it is flagged as "Fail" and stripped from the active mapping visualization, protecting the operators from reacting to ghost data.</p>
-              
+              <span class="section-kicker">Mathematical Signal Processing</span>
+              <h2>QARTOD Quality Control Math.</h2>
+              <p>The <code>gateway/analytics.py</code> engine is the mathematical workhorse of the shore system. It constantly crunches millions of historical SQLite telemetry points using strict QARTOD (Quality Assurance / Quality Control of Real-Time Oceanographic Data) standards.</p>
+              <p><strong>Spike Detection via First Derivative:</strong> When a hydrophone passes a thermocline, it might record a massive, legitimate spike in temperature (an ocean front). Standard deviation checks would flag this as an error. OMEGA uses the mathematical first derivative test: <code>|V2 - V1| - |V3 - V1| / 2 > Spike_Threshold</code>. This equation proves whether a sudden spike mathematically returned to the baseline (a sensor glitch) or established a new baseline (a legitimate oceanographic event).</p>
+              <p><strong>Gross Range Processing:</strong> For localized anomalies, the numpy arrays execute vectorized operations using the Median Absolute Deviation (MAD): <code>MAD = median(|Xi - median(X)|)</code>. Because standard averages are destroyed by massive outliers, the MAD provides an unbreakable center. If a value exceeds <code>MAD * 1.4826 * 3</code>, it is flagged as suspect. At 6 sigmas, it is stripped from the DOM.</p>
             </div>
             <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">gateway/qc.py</span><pre><code class="language-python">def _threshold_bundle(values: list[float]) -> dict[str, float] | None:
     # Calculate QARTOD compliant statistical bounds
@@ -133,25 +132,25 @@
           </section>
     
           <section class="section section-block" style="background: rgba(0,0,0,0.4);">
-            <span class="section-kicker">Predictive Maintenance</span>
+            <span class="section-kicker">Predictive Signal Processing</span>
             <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Fast Fourier Transforms (FFT).</h2>
-            <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">Wait until a biofouling colony completely encases a hydrophone in the middle of the ocean, and the acoustic mission is already lost. OMEGA utilizes predictive acoustic analytics to detect biological growth weeks before the hardware is compromised.</p>
+            <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">Wait until a biofouling colony completely encases a hydrophone, and the acoustic mission is already lost. OMEGA utilizes the mathematical Fast Fourier Transform algorithm <code>X_k = Σ x_n e^(-i 2π k n / N)</code> to detect microscopic biological growth weeks before the hardware is compromised.</p>
             
             <div class="grid-3" style="margin-bottom: 2rem;">
               <div class="panel" style="padding: 1.5rem;">
-                <span class="status-label status-implemented">Vibration Matrix</span>
-                <h3 style="font-size: 1.2rem;">Raw Ingestion</h3>
-                <p style="font-size: 0.85rem;">The edge node records micro-acoustic vibration data from the hydrophone housing during standard transmissions.</p>
+                <span class="status-label status-implemented">Hanning Window</span>
+                <h3 style="font-size: 1.2rem;">Signal Preparation</h3>
+                <p style="font-size: 0.85rem;">The edge node records micro-acoustic vibration arrays. Before the FFT, the data is mathematically multiplied against a Hanning Window function <code>w(n) = 0.5 - 0.5*cos(2πn/N)</code> to force the ends of the time-series to zero, eliminating spectral leakage.</p>
               </div>
               <div class="panel" style="padding: 1.5rem;">
                 <span class="status-label status-implemented">Spectral Shift</span>
-                <h3 style="font-size: 1.2rem;">FFT Processing</h3>
-                <p style="font-size: 0.85rem;">The gateway converts the time-domain acoustic reflections into the frequency domain. It detects microscopic shifts in the harmonic resonance of the transducer face.</p>
+                <h3 style="font-size: 1.2rem;">Time to Frequency</h3>
+                <p style="font-size: 0.85rem;">The FFT algorithm converts the time-domain reflections into a frequency-domain histogram. It calculates the exact amplitude of every constituent sine wave making up the complex acoustic pulse.</p>
               </div>
               <div class="panel" style="padding: 1.5rem;">
-                <span class="status-label status-implemented">Biofouling Alert</span>
-                <h3 style="font-size: 1.2rem;">Anomaly Alert</h3>
-                <p style="font-size: 0.85rem;">A sudden dampening in the 12kHz harmonic band mathematically indicates calcified barnacle growth, triggering an automatic maintenance alert for the next service vessel.</p>
+                <span class="status-label status-implemented">Biofouling Detection</span>
+                <h3 style="font-size: 1.2rem;">Harmonic Dampening</h3>
+                <p style="font-size: 0.85rem;">A clean hydrophone rings precisely at 11.5kHz. If calcified barnacles grow on the transducer face, the mass mathematically shifts the harmonic resonance, creating a dampening curve that triggers a maintenance alert.</p>
               </div>
             </div>
           </section>

@@ -310,6 +310,43 @@ build_flags =
               </div>
             </div>
           </section>
+
+          <section class="section section-block" style="background: rgba(0,0,0,0.4);">
+            <span class="section-kicker">Mathematical Physics</span>
+            <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">The Mathematics of LoRa.</h2>
+            <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">How does OMEGA achieve 15km of range using only 1 Watt of transmission power? It requires manipulating the fundamental physics of the Link Budget and Chirp Spread Spectrum (CSS) modulation.</p>
+            
+            <div class="grid-2" style="margin-bottom: 2rem;">
+              <div class="panel" style="padding: 1.5rem;">
+                <span class="status-label status-implemented">The Link Budget</span>
+                <h3 style="font-size: 1.2rem;">Rx = Tx + Gains - Losses</h3>
+                <p style="font-size: 0.85rem;">The Link Budget mathematically determines if a packet survives the journey. <code>Rx</code> (Receiver Sensitivity) must be greater than the <code>Tx</code> (Transmit Power) minus Free Space Path Loss. OMEGA uses massive 8dBi fiberglass antennas to mathematically force the <code>Gains</code> high enough to overcome the oceanic path loss.</p>
+              </div>
+              <div class="panel" style="padding: 1.5rem;">
+                <span class="status-label status-implemented">Chirp Spread Spectrum</span>
+                <h3 style="font-size: 1.2rem;">Spreading Factor 12 (SF12)</h3>
+                <p style="font-size: 0.85rem;">By spreading the signal across a wider frequency band over a longer time duration (SF12), OMEGA drastically drops the bit rate (to ~250 bps), but mathematically increases the processing gain. This pushes the receiver sensitivity to -137 dBm, allowing the SX1262 radio to literally pull the signal out from <em>below</em> the thermal noise floor.</p>
+              </div>
+            </div>
+            
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;">
+              <span class="panel-kicker">CSMA-CA Algorithmic Logic</span>
+              <pre><code class="language-python">async def transmit_with_csmaca(payload: bytes):
+    """Carrier Sense Multiple Access with Collision Avoidance"""
+    max_retries = 5
+    for attempt in range(max_retries):
+        # 1. Channel Activity Detection (CAD)
+        if radio.is_channel_free():
+            radio.transmit(payload)
+            return True
+            
+        # 2. Mathematical Random Backoff (Exponential)
+        backoff_ms = random.randint(100, 500 * (2 ** attempt))
+        await asyncio.sleep(backoff_ms / 1000.0)
+        
+    raise ChannelBusyError("RF environment completely saturated.")</code></pre>
+            </div>
+          </section>
     
     </div>
   </main>

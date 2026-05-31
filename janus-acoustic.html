@@ -147,12 +147,22 @@
             </div>
           </section>
 
-          <section class="section">
-            <div class="section-content">
-              <span class="section-kicker">Acoustic Refraction</span>
-              <h2>Thermocline Bounce Mathematics.</h2>
-              <p>Ocean water is not uniform. Temperature and salinity changes create distinct layers (thermoclines and haloclines). When a sound wave hits one of these layers at a shallow angle, it doesn't pass through—it bounces off it, exactly like light hitting a fiber-optic cable.</p>
-              <p><strong>Execution:</strong> The OMEGA Gateway utilizes Argo float data to construct a live 3D Sound Speed Profile (SSP) of the local water column. Before a surface buoy attempts to transmit to a deep ROV, the pathing engine runs a ray-tracing simulation to calculate the optimal acoustic trajectory. It intentionally aims the hydrophone to bounce the JANUS signal off the deep scattering layer, effectively bending the sound over underwater mountains to reach ROVs that are physically blocked from line-of-sight.</p>
+          <section class="section section-block" style="background: rgba(0,0,0,0.4);">
+            <span class="section-kicker">Acoustic Refraction Physics</span>
+            <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Snell's Law & The Sonar Equation.</h2>
+            <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">Transmitting data underwater is exponentially harder than RF. We must physically fight the ocean's thermodynamics and the physics of wave attenuation.</p>
+            
+            <div class="grid-2" style="margin-bottom: 2rem;">
+              <div class="panel" style="padding: 1.5rem;">
+                <span class="status-label status-implemented">The Sonar Equation</span>
+                <h3 style="font-size: 1.2rem;">TL = 20 log(r) + αr</h3>
+                <p style="font-size: 0.85rem;">Transmission Loss (TL) dictates that sound energy decays via spherical spreading <code>20 log(r)</code> and chemical absorption <code>αr</code>. Because higher frequencies (like 100kHz) have a massive absorption coefficient <code>α</code>, high-bandwidth data physically cannot travel more than a few hundred meters. This mathematically forces OMEGA to use low-frequency 11.5kHz chirps to achieve kilometers of range, crushing our data rate to a mere 80 bps.</p>
+              </div>
+              <div class="panel" style="padding: 1.5rem;">
+                <span class="status-label status-implemented">Thermocline Refraction</span>
+                <h3 style="font-size: 1.2rem;">Snell's Law: sin(θ₁)/c₁ = sin(θ₂)/c₂</h3>
+                <p style="font-size: 0.85rem;">Ocean water is not uniform. Sound travels faster in warm surface water and slower in the freezing depths. As the JANUS wave passes through the thermocline layer, Snell's Law mathematically proves the wave will refract (bend) downwards towards the slower water. This creates massive "Shadow Zones" near the surface where receiving buoys are physically blocked from hearing the signal, regardless of transmit power.</p>
+              </div>
             </div>
           </section>
     

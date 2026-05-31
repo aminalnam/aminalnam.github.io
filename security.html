@@ -189,25 +189,20 @@
           </section>
     
           <section class="section section-block" style="background: rgba(0,0,0,0.4);">
-            <span class="section-kicker">Hardware Authentication</span>
-            <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Elliptic Curve Cryptography.</h2>
-            <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">A malicious actor could physically capture a drifting buoy, reverse-engineer its LoRa payload structure, and attempt to inject false sensor data into the mesh. OMEGA prevents this via strict secp256k1 ECC provisioning.</p>
+            <span class="section-kicker">Mathematical Cryptography</span>
+            <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Elliptic Curve Cryptography (ECC).</h2>
+            <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">Standard web security relies on RSA (Rivest–Shamir–Adleman). RSA requires 2048-bit keys, which mathematically translates to 256 bytes of pure cryptographic overhead per packet. Over a 50-byte LoRa constraint, RSA is physically impossible.</p>
             
-            <div class="grid-3" style="margin-bottom: 2rem;">
+            <div class="grid-2" style="margin-bottom: 2rem;">
               <div class="panel" style="padding: 1.5rem;">
-                <span class="status-label status-implemented">Step 1</span>
-                <h3 style="font-size: 1.2rem;">Hardware Keygen</h3>
-                <p style="font-size: 0.85rem;">Upon factory boot, the ESP32 generates a unique secp256k1 keypair inside its secure enclave. The private key never leaves the silicon.</p>
+                <span class="status-label status-implemented">secp256r1 Geometry</span>
+                <h3 style="font-size: 1.2rem;">y² = x³ + ax + b</h3>
+                <p style="font-size: 0.85rem;">OMEGA utilizes ECC over the NIST P-256 curve. Because it relies on the mathematical impossibility of the Elliptic Curve Discrete Logarithm Problem (ECDLP), it achieves military-grade encryption equivalent to 3072-bit RSA using only 32 bytes (256 bits). This allows OMEGA to sign packets without destroying the RF airtime.</p>
               </div>
               <div class="panel" style="padding: 1.5rem;">
-                <span class="status-label status-implemented">Step 2</span>
-                <h3 style="font-size: 1.2rem;">QR Provisioning</h3>
-                <p style="font-size: 0.85rem;">The node's public key is printed as a QR code. The deployment team scans this with the Mission Portal, allowing the Gateway to trust the specific hardware identity.</p>
-              </div>
-              <div class="panel" style="padding: 1.5rem;">
-                <span class="status-label status-implemented">Step 3</span>
-                <h3 style="font-size: 1.2rem;">Signature Verification</h3>
-                <p style="font-size: 0.85rem;">Every CBOR telemetry packet is signed by the node's private key. The Gateway mathematically verifies the signature before ingesting the data.</p>
+                <span class="status-label status-implemented">AES-GCM Authentication</span>
+                <h3 style="font-size: 1.2rem;">Galois/Counter Mode</h3>
+                <p style="font-size: 0.85rem;">To encrypt payloads dynamically, OMEGA utilizes Authenticated Encryption with Associated Data (AEAD). The GCM mode calculates a mathematical GHASH tag appended to the end of the payload. If a rogue actor intercepts the packet and flips a single bit, the GHASH tag is instantly destroyed, forcing the gateway to silently drop the packet.</p>
               </div>
             </div>
           </section>

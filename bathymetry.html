@@ -99,16 +99,23 @@
   <main class="main-shell wrap">
     <div class="main-inner">
 
-          <section class="section">
-            <div class="section-content">
-              <span class="section-kicker">Spatial Interpolation</span>
-              <h2>Inverse Distance Weighting (IDW).</h2>
-              <p>When a remote sensor conducts a sonar survey, it physically cannot sound every single square meter of a lakebed or ocean floor. The resulting dataset is a massive point cloud with significant, unmapped spatial voids between the transect lines.</p>
-<p>To generate a continuous 3D topographic map for the Mission Portal, OMEGA utilizes <strong>Inverse Distance Weighting (IDW)</strong> for rapid, edge-compute spatial interpolation. The depth of any unknown coordinate is calculated as a mathematically weighted average of all known surrounding sonar points.</p>
-<p><strong>How it works:</strong> The closer a known sonar ping is to the unknown coordinate, the more mathematical weight it carries. This operation is executed extremely efficiently in the Python Gateway using <code>scipy.spatial.cKDTree</code>, allowing millions of points to be interpolated and projected into a GeoJSON raster almost instantly upon mission completion.</p>
-              
-            </div>
+          <section class="section section-block" style="background: rgba(0,0,0,0.4);">
+            <span class="section-kicker">Spatial Interpolation Mathematics</span>
+            <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">IDW & Kriging Algorithms.</h2>
+            <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">When a remote sensor conducts a sonar survey, it generates discrete point clouds with massive unmapped voids between the transect lines. OMEGA must mathematically estimate the depth of these voids to construct a continuous 3D topographic map.</p>
             
+            <div class="grid-2" style="margin-bottom: 2rem;">
+              <div class="panel" style="padding: 1.5rem;">
+                <span class="status-label status-implemented">Inverse Distance Weighting</span>
+                <h3 style="font-size: 1.2rem;">Deterministic Math</h3>
+                <p style="font-size: 0.85rem;">For rapid edge-compute, OMEGA utilizes Inverse Distance Weighting (IDW). The algorithm assumes that nearby points are more related than distant points. The unknown depth <code>Z</code> is calculated as <code>Z = Σ(zi / d_i^p) / Σ(1 / d_i^p)</code>. By utilizing <code>scipy.spatial.cKDTree</code>, the Python Gateway rapidly executes this O(n log n) spatial query, projecting millions of points into a GeoJSON raster almost instantly.</p>
+              </div>
+              <div class="panel" style="padding: 1.5rem;">
+                <span class="status-label status-implemented">Kriging Interpolation</span>
+                <h3 style="font-size: 1.2rem;">Geostatistical Math</h3>
+                <p style="font-size: 0.85rem;">For high-accuracy academic exports, IDW is insufficient because it ignores spatial autocorrelation (the fact that underwater trenches run in continuous lines). OMEGA utilizes Kriging to mathematically model the variogram of the dataset. This creates a statistically optimal map that not only predicts the unmapped depth but mathematically quantifies the variance (uncertainty) of that specific prediction.</p>
+              </div>
+            </div>
           </section>
     
           <section class="section">
