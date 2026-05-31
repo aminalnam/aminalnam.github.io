@@ -3,15 +3,15 @@
 <head>
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1" name="viewport"/>
-  <title>OMEGA — Platform Overview</title>
+  <title>OMEGA — Security & RBAC</title>
   
   <meta name="description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
-  <meta property="og:title" content="OMEGA — Platform Overview" />
+  <meta property="og:title" content="OMEGA — Security & RBAC" />
   <meta property="og:description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://jonathancapone.com/overview.html" />
+  <meta property="og:url" content="https://jonathancapone.com/security.html" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="OMEGA — Platform Overview" />
+  <meta name="twitter:title" content="OMEGA — Security & RBAC" />
   <meta name="twitter:description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
   
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌊</text></svg>">
@@ -118,14 +118,14 @@
       </a>
       <nav class="nav">
         <a href="index.html">Home</a>
-        <a href="overview.html" class="is-current">Overview</a>
+        <a href="overview.html">Overview</a>
         
         <div class="dropdown">
           <button class="dropbtn">Core &#9662;</button>
           <div class="dropdown-content">
             <a href="gateway.html">Gateway</a>
             <a href="mesh-core.html">Mesh Core</a>
-                        <a href="security.html">Security & RBAC</a>
+                        <a href="security.html" class="is-current">Security & RBAC</a>
             <a href="fleet-asv.html">Fleet & ASV</a>
           </div>
         </div>
@@ -162,9 +162,9 @@
   </header>
 
   <section class="hero wrap">
-    <span class="eyebrow">OMEGA Platform</span>
-    <h1>Platform Overview</h1>
-    <p>High-level architecture and system design of OMEGA.</p>
+    <span class="eyebrow">Security & RBAC</span>
+    <h1>Zero Trust.</h1>
+    <p>Immutable audit trails, dynamic rate limiting, and Role-Based Access Control.</p>
     <div class="hero-actions">
       <a class="btn btn-primary" href="https://github.com/aminalnam/OMEGA" target="_blank">View OMEGA on GitHub</a>
       <a class="btn btn-secondary" href="index.html">Back to Portfolio</a>
@@ -176,11 +176,9 @@
 
           <section class="section">
             <div class="section-content">
-              <span class="section-kicker">Edge Compute Physics</span>
-              <h2>The Edge-to-Cloud Continuum.</h2>
-              <p>Marine deployments operate in environments uniquely hostile to traditional IP networks. The physics of transmitting large data volumes over satellite (Iridium/Starlink) or VHF radio links dictates prohibitive costs and restrictive latency boundaries. For instance, streaming raw 20Hz vibration data from a remote buoy to the cloud is economically and physically unviable.</p>
-<p>OMEGA bypasses these physical limitations by pushing computational complexity entirely to the edge. Instead of piping raw, high-frequency matrices across the ocean, an onboard NVIDIA Jetson Orin NX or a multi-core ESP32 locally ingests, filters, and reduces millions of data points into a single semantic "Mission Intent" or "Observation Envelope." This process—often involving embedded machine learning or fast Fourier transforms—saves up to 99% of the required bandwidth.</p>
-<p>In practice, this means an Autonomous Surface Vehicle (ASV) can detect an acoustic anomaly, classify it locally, and transmit a 450-byte CBOR packet via LoRa to a shore gateway, rather than attempting to transmit a 50MB audio file. This paradigm shift enables massive, scalable sensor networks that can operate continuously without cellular dependencies.</p>
+              <span class="section-kicker">Authentication Engine</span>
+              <h2>Role-Based Access Control (RBAC).</h2>
+              <p>A multi-million dollar autonomous fleet cannot rely on simple password protection. The OMEGA gateway features a rigorous multi-user authentication engine with strict Role-Based Access Control (RBAC). <code>bossadmin</code> users have global mutating privileges, while <code>operator</code> users can execute waypoint missions, and <code>read-only</code> users are restricted entirely to telemetry analysis.</p><p><strong>Execution:</strong> Every mutating API endpoint (e.g. <code>/v1/control/commands</code>) is guarded by FastAPI dependency injection (<code>_require_operator</code>). If an unauthorized researcher attempts to fire a thruster, the API mathematically rejects the bearer token with an HTTP 403, absolutely preventing accidental fleet commands.</p>
               
             </div>
             
@@ -188,28 +186,29 @@
     
           <section class="section">
             <div class="section-content">
-              <span class="section-kicker">System Architecture</span>
-              <h2>The Tripartite Network.</h2>
-              <p>The OMEGA architecture is strictly divided into three distinct, decoupled strata to enforce fault tolerance and maintain rigid boundaries between hardware execution and human interaction:</p>
-<p><strong>1. Physical Sensors & Nodes:</strong> This layer comprises the raw hardware—ESP32 microcontrollers, Pixhawk flight controllers, and physical probes. These devices acquire analog/digital signals, manage RTOS tasks, and communicate via mesh protocols like LoRa or HaLow. They have no concept of "the internet" or "user interfaces."</p>
-<p><strong>2. The Gateway Normalizers:</strong> Python-based software routers (typically running on Raspberry Pi 4s or shore-based servers) act as the vital bridge. They ingest the disjointed, highly compressed binary formats (CBOR/Protobuf) generated by the edge nodes and "inflate" them. The gateway normalizes these packets into unified, queryable SQLite records.</p>
-<p><strong>3. The Mission Portal:</strong> The React/WebGL interface consumed by human operators. The portal is entirely decoupled from the hardware layer; it interacts exclusively with the Gateway APIs via standard HTTP/REST and WebSockets.</p>
-<p>This tripartite division ensures that if the portal server goes offline, the gateway safely continues buffering telemetry into its WAL-enabled database. Conversely, if the gateway dies, the edge node continues to operate safely in its autonomous loop without crashing due to network timeouts.</p>
-              <div class="callout"><strong>Decoupled State</strong><p>This tripartite division ensures that if the portal server goes offline, the gateway continues buffering telemetry, and if the gateway dies, the edge node continues to operate safely in its autonomous loop.</p></div>
+              <span class="section-kicker">Zero Trust Security</span>
+              <h2>X-Forwarded-For Reverse Proxy Trust.</h2>
+              <p>When a gateway is deployed behind a TLS-terminating reverse proxy (like Cloudflare or an Nginx ingress), naive applications see the proxy's IP for every incoming request. This destroys rate-limiting, as a single attacker will cause the proxy itself to be banned, locking out the entire legitimate team.</p><p><strong>Execution:</strong> OMEGA implements strict proxy-trust topology via <code>trusted_proxy_ips</code>. The Python backend extracts the leftmost <code>X-Forwarded-For</code> header <i>only</i> if the direct peer is a cryptographically trusted proxy. This ensures that a brute-force attacker is isolated and penalized by their true origin IP, preventing massive Denial of Service (DoS) cascades.</p>
+              
             </div>
-            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">Architecture Flow</span><pre><code class="language-mermaid">graph LR
-    A[Edge Node] -->|CBOR/LoRa| B(Gateway Router)
-    B -->|Normalized SQLite| C[Mission Portal]
-    B -->|ERDDAP| D[(Global Repositories)]</code></pre></div>
+            
           </section>
     
           <section class="section">
             <div class="section-content">
-              <span class="section-kicker">Failure Modeling</span>
-              <h2>Resilient Architectures.</h2>
-              <p>Marine sensors exist in a state of continuous degradation. Batteries drain unexpectedly in cold water, thermoclines bend and absorb acoustic communications, and salt aggressively corrodes IP67 seals. A brittle, tightly coupled architecture will inevitably collapse when a single critical node vanishes from the network.</p>
-<p>OMEGA is fundamentally designed around the principle of <strong>Asynchronous Resiliency</strong> and Delay Tolerant Networking (DTN). There are no blocking network calls in the core firmware that would freeze an execution thread if an acknowledgment packet is lost in the noise floor.</p>
-<p>Instead, data is stored locally in circular flash buffers and forwarded only when a viable physical route—such as a passing ASV acting as a data mule, or an active satellite pass overhead—is mathematically proven to exist. This "store-and-forward" resilience ensures that brief connectivity windows are fully utilized to offload critical envelopes, while preserving battery life during extended blackout periods.</p>
+              <span class="section-kicker">Penalty Box</span>
+              <h2>Dynamic IP Rate Limiting.</h2>
+              <p>Marine gateways are often deployed on static public IPs with minimal perimeter defenses, making them massive targets for automated SSH and HTTP brute-force bots.</p><p><strong>Execution:</strong> The authentication engine tracks failed login vectors in memory. After 5 sequential failures against a single username within a 10-minute sliding window, the source IP is dynamically parked in a cooldown penalty box. This completely halts dictionary attacks while allowing legitimate admins to utilize the new Settings panel to manually clear the blocklist and restore access.</p>
+              
+            </div>
+            
+          </section>
+    
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">Total Accountability</span>
+              <h2>Immutable Audit Trails.</h2>
+              <p>When an autonomous vessel executes a dangerous maneuver, "who sent the command?" is the most important question. The OMEGA backend now logs a completely immutable, chronological audit trail for every single mutating admin action.</p><p><strong>Execution:</strong> If an administrator resets a user's password or clears a rate-limited IP, the system generates a <code>system</code>-kind notification with a unique <code>source_id</code>. Operators can use the Honu AI Copilot to query this database in natural language (e.g., <i>"Who cleared the rate limit yesterday?"</i>), providing complete post-incident forensic capabilities.</p>
               
             </div>
             
