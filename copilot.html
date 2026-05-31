@@ -99,24 +99,37 @@
   <main class="main-shell wrap">
     <div class="main-inner">
 
-          <section class="section">
-            <div class="section-content">
-              <span class="section-kicker">AI Orchestration</span>
-              <h2>The Honu Copilot Engine.</h2>
-              <p>The <code>gateway/copilot.py</code> module is a massive 240KB AI orchestration engine built entirely in Python. Unlike standard chatbots, Honu holds absolutely zero built-in knowledge of the marine deployment. It acts strictly as an analytical bridge, utilizing a highly complex Tool Registry to dynamically route operator questions across 46 distinct internal APIs.</p>
-              
-            </div>
+          <section class="section section-block" style="background: rgba(0,0,0,0.4);">
+            <span class="section-kicker">AI Orchestration</span>
+            <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">The 46-Tool Action Registry.</h2>
+            <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">The <code>gateway/copilot.py</code> module is a massive 240KB orchestration loop. Small local LLMs (like Qwen2.5 7B) cannot reliably pick the correct tool if given a dump of 46 different functions. Honu solves this by mathematically filtering tools based on 13 strict Intent Groups.</p>
             
+            <div class="grid-3" style="margin-bottom: 2rem;">
+              <div class="panel" style="padding: 1.5rem;">
+                <span class="status-label status-implemented">Ocean Science</span>
+                <h3 style="font-size: 1.2rem;">Global Federations</h3>
+                <p style="font-size: 0.85rem;">Tools like <code>get_argo_floats</code>, <code>get_coral_reef_watch</code>, and <code>get_ocean_currents</code> allow the AI to autonomously query NASA and Copernicus databases.</p>
+              </div>
+              <div class="panel" style="padding: 1.5rem;">
+                <span class="status-label status-implemented">Maritime Security</span>
+                <h3 style="font-size: 1.2rem;">Fishing & SAR</h3>
+                <p style="font-size: 0.85rem;">The AI can use <code>search_fishing_vessels</code> and <code>get_gfw_fishing_stats</code> to pull Synthetic Aperture Radar hits from Global Fishing Watch.</p>
+              </div>
+              <div class="panel" style="padding: 1.5rem;">
+                <span class="status-label status-implemented">Fleet Navigation</span>
+                <h3 style="font-size: 1.2rem;">UI Automation</h3>
+                <p style="font-size: 0.85rem;">Tools like <code>navigate_to_page</code> and <code>highlight_element</code> allow Honu to actually drive the operator's React dashboard via WebSockets.</p>
+              </div>
+            </div>
           </section>
     
           <section class="section">
             <div class="section-content">
               <span class="section-kicker">Spatial Mathematics</span>
               <h2>Natural Language to Geo-Bounds.</h2>
-              <p>When an operator asks <i>"Show me buoys near Miami"</i>, the Copilot engine executes complex spatial reasoning. It translates the natural language into rigid, mathematical bounding boxes (Lat/Lon min and max). This box is then securely injected into the SQLite database engine to filter millions of historical telemetry rows down to the specific geospatial region requested.</p>
-              
+              <p>When an operator asks <i>"Show me buoys near the East Coast"</i>, feeding that raw string into an external API will fail. The Copilot engine executes strict spatial pre-processing before the LLM even sees the message.</p>
+              <p><strong>Execution:</strong> The Python <code>_preprocess_query</code> function scans the text against a registry of 30+ geographic regions. It translates "east coast" into a strict mathematical bounding box <code>[-82.0, 24.0, -66.0, 45.0]</code>. The engine then securely injects this box into the tool parameters. This eliminates AI hallucination—the model is physically unable to invent fake GPS coordinates.</p>
             </div>
-            
           </section>
     
           <section class="section">

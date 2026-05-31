@@ -123,16 +123,37 @@
         await inject_telemetry_to_mesh(binary_stream)</code></pre></div>
           </section>
     
+          <section class="section section-block" style="background: rgba(0,0,0,0.4);">
+            <span class="section-kicker">NATO Protocols</span>
+            <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">NATO-Standard Binary Framing.</h2>
+            <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">To combat severe multipath fading, OMEGA implements the NATO-standard <strong>JANUS</strong> acoustic protocol (STANAG 4748). The gateway strips JSON into highly compressed binary frames, packing telemetry into a dense 50-baud acoustic chirp stream.</p>
+            
+            <div class="grid-3" style="margin-bottom: 2rem;">
+              <div class="panel" style="padding: 1.5rem;">
+                <span class="status-label status-implemented">Step 1</span>
+                <h3 style="font-size: 1.2rem;">CBOR Crushing</h3>
+                <p style="font-size: 0.85rem;">Standard 400-byte JSON telemetry is crushed into a 45-byte CBOR array.</p>
+              </div>
+              <div class="panel" style="padding: 1.5rem;">
+                <span class="status-label status-implemented">Step 2</span>
+                <h3 style="font-size: 1.2rem;">JANUS Interleaving</h3>
+                <p style="font-size: 0.85rem;">The binary payload is fed through convolutional encoding and interleaving to mathematically recover data lost to sudden wave noise.</p>
+              </div>
+              <div class="panel" style="padding: 1.5rem;">
+                <span class="status-label status-implemented">Step 3</span>
+                <h3 style="font-size: 1.2rem;">FSK Modulation</h3>
+                <p style="font-size: 0.85rem;">The encoded bits are fired out of the hydrophone as Frequency-Shift Keyed audio chirps at exactly 11.5 kHz.</p>
+              </div>
+            </div>
+          </section>
+
           <section class="section">
             <div class="section-content">
-              <span class="section-kicker">NATO Protocols</span>
-              <h2>The JANUS Bridge.</h2>
-              <p>To combat the severe multipath fading and echo interference caused by sound bouncing wildly off the ocean floor and the surface waves, OMEGA implements the NATO-standard <strong>JANUS</strong> acoustic protocol (STANAG 4748).</p>
-<p><strong>How it works:</strong> The gateway translates standardized JSON mesh commands into Frequency-Shift Keyed (FSK) acoustic waveforms. It treats a massive hardware hydrophone exactly like it treats a standard terrestrial radio interface.</p>
-<p>By using the JANUS specification, OMEGA nodes can inherently interoperate with allied naval vessels, autonomous gliders, and university acoustic modems right out of the box, breaking proprietary vendor lock-in in the underwater communications space.</p>
-              
+              <span class="section-kicker">Acoustic Refraction</span>
+              <h2>Thermocline Bounce Mathematics.</h2>
+              <p>Ocean water is not uniform. Temperature and salinity changes create distinct layers (thermoclines and haloclines). When a sound wave hits one of these layers at a shallow angle, it doesn't pass through—it bounces off it, exactly like light hitting a fiber-optic cable.</p>
+              <p><strong>Execution:</strong> The OMEGA Gateway utilizes Argo float data to construct a live 3D Sound Speed Profile (SSP) of the local water column. Before a surface buoy attempts to transmit to a deep ROV, the pathing engine runs a ray-tracing simulation to calculate the optimal acoustic trajectory. It intentionally aims the hydrophone to bounce the JANUS signal off the deep scattering layer, effectively bending the sound over underwater mountains to reach ROVs that are physically blocked from line-of-sight.</p>
             </div>
-            
           </section>
     
           <section class="section">
