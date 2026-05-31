@@ -16,94 +16,7 @@
   
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌊</text></svg>">
   
-  <style>
-    :root {
-      --bg: #070b14; --bg-2: #0e1522; --panel: rgba(20, 30, 48, 0.6); --panel-soft: rgba(30, 42, 60, 0.5);
-      --ink: #ffffff; --ink-soft: #9aa2b1; --line: rgba(255, 255, 255, 0.1); --accent: #3b82f6; --accent-deep: #2563eb;
-      --accent-green: #10b981; --accent-yellow: #f59e0b;
-      --white: #ffffff; --radius: 1.25rem; --radius-sm: 18px;
-      --font-sans: Inter, sans-serif; --font-serif: "Iowan Old Style", Georgia, serif; --font-mono: Consolas, monospace;
-      --shadow: 0 22px 48px rgba(0, 0, 0, 0.5);
-    }
-    * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
-    html { scroll-behavior: smooth; }
-    body { margin: 0; color: var(--ink); background: var(--bg); font-family: var(--font-sans); line-height: 1.65; }
-    body::before { content: ""; position: fixed; inset: -50%; z-index: -2; background: radial-gradient(circle at 50% 0%, rgba(59, 130, 246, 0.15), transparent 60%); pointer-events: none;}
-    body::after {
-      content: ""; position: fixed; inset: 0; z-index: -1;
-      background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-      background-size: 2.2rem 2.2rem; mask-image: linear-gradient(180deg, rgba(0,0,0,0.8), rgba(0,0,0,0.25)); pointer-events: none;
-    }
-    a { color: inherit; text-decoration: none; }
-    .wrap { width: min(calc(100% - 2rem), 82rem); margin: 0 auto; }
-    
-    .topbar { position: sticky; top: 0; z-index: 40; backdrop-filter: blur(20px); background: rgba(7, 11, 20, 0.75); border-bottom: 1px solid var(--line); padding: 1.5rem 0; }
-    .topbar-inner { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
-    .brand-title { display: block; font-family: var(--font-serif); font-size: 1.4rem; color: var(--white); }
-    .brand-sub { display: block; font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); font-family: var(--font-mono); }
-    
-    .nav { display: flex; flex-wrap: wrap; gap: 1.2rem; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; font-family: var(--font-mono); align-items: center; }
-    .nav a { color: var(--ink-soft); transition: color 0.3s; padding: 0.5rem; }
-    .nav a:hover, .nav a.is-current { color: var(--white); }
-    
-    .dropdown { position: relative; display: inline-block; }
-    .dropbtn { color: var(--ink-soft); padding: 0.5rem; border: none; background: none; font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; cursor: pointer; transition: color 0.3s; }
-    .dropdown:hover .dropbtn { color: var(--white); }
-    .dropdown-content { display: none; position: absolute; background-color: rgba(14, 21, 34, 0.95); min-width: 160px; box-shadow: var(--shadow); z-index: 100; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; top: 100%; left: 0; backdrop-filter: blur(10px); }
-    .dropdown-content a { color: var(--ink-soft); padding: 0.8rem 1rem; text-decoration: none; display: block; text-transform: none; font-family: var(--font-sans); letter-spacing: normal; font-size: 0.85rem; border-bottom: 1px solid rgba(255,255,255,0.05); }
-    .dropdown-content a:last-child { border-bottom: none; }
-    .dropdown-content a:hover { background-color: rgba(59, 130, 246, 0.2); color: #fff; }
-    .dropdown:hover .dropdown-content { display: block; }
-
-    .hero { padding: 4rem 0 3rem; }
-    .eyebrow { font-family: var(--font-mono); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.2em; color: var(--accent); margin-bottom: 1rem; display: block; }
-    h1 { margin: 0 0 1.5rem; font-family: var(--font-serif); font-size: clamp(3rem, 6vw, 4.5rem); font-weight: 400; line-height: 1.1; max-width: 25ch; }
-    .hero p { max-width: 48rem; margin: 0 0 2.5rem; font-size: 1.25rem; color: var(--ink-soft); }
-    .btn { display: inline-flex; align-items: center; padding: 0.8rem 1.5rem; border-radius: 999px; font-family: var(--font-mono); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.15em; transition: all 0.2s; margin-right: 0.5rem; margin-bottom: 0.5rem;}
-    .btn-primary { background: var(--accent); color: #fff; border: 1px solid var(--accent); }
-    .btn-primary:hover { background: var(--accent-deep); transform: translateY(-2px); }
-    .btn-secondary { background: rgba(255, 255, 255, 0.05); color: #fff; border: 1px solid rgba(255, 255, 255, 0.2); }
-    .btn-secondary:hover { background: rgba(255, 255, 255, 0.1); transform: translateY(-2px); }
-
-    .main-shell { position: relative; margin-bottom: 4rem; }
-    .main-inner { background: var(--panel); border-radius: 1.5rem; overflow: clip; box-shadow: var(--shadow); border: 1px solid var(--line); }
-    .section { padding: 4rem; border-bottom: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 4rem; align-items: flex-start; }
-    .section:last-child { border-bottom: none; }
-    .section-content { flex: 1; min-width: 300px; }
-    .section-kicker { font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent); margin-bottom: 0.8rem; display: block; }
-    .section h2 { font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1.5rem; }
-    .section p { color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 1.5rem; line-height: 1.7; }
-
-    .section-visual { flex: 1; min-width: 300px; background: rgba(0,0,0,0.3); border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 2rem; }
-    .section-visual img { width: 100%; border-radius: 8px; border: 1px solid var(--line); box-shadow: var(--shadow); margin-bottom: 1rem; }
-    
-    .panel-kicker { display: inline-block; font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent); padding: 0.2rem 0.6rem; background: rgba(59,130,246,0.1); border-radius: 999px; margin-bottom: 1rem; }
-    
-    .callout { background: rgba(255,255,255,0.03); border: 1px solid var(--line); padding: 1.5rem; border-radius: 0.75rem; margin-top: 2rem; border-left: 4px solid var(--accent);}
-    .callout strong { display: block; font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 0.5rem;}
-    .callout p { font-size: 0.95rem; color: var(--ink-soft); margin-bottom: 0; }
-    
-    pre { background: rgba(10,15,25,0.9); padding: 1.5rem; border-radius: var(--radius-sm); overflow-x: auto; border: 1px solid var(--line); margin-bottom: 1.5rem; font-family: var(--font-mono); font-size: 0.85rem; line-height: 1.4;}
-    code { font-family: var(--font-mono); color: #e2e8f0; }
-    p code, li code { background: rgba(255,255,255,0.1); padding: 0.2rem 0.4rem; border-radius: 4px; font-size: 0.85em; color: #60a5fa;}
-
-    .footer { border-top: 1px solid var(--line); padding: 4rem 0; text-align: center; font-family: var(--font-mono); font-size: 0.8rem; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.15em; }
-    
-    /* Layout fix for Homepage which needs block display instead of flex */
-    .section-block { display: block; padding: 4rem; }
-    
-    .status-label { font-family: var(--font-mono); font-size: 0.65rem; padding: 0.2rem 0.5rem; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.1em; display: inline-block; margin-bottom: 0.5rem; }
-    .status-implemented { background: rgba(16, 185, 129, 0.1); color: var(--accent-green); border: 1px solid rgba(16, 185, 129, 0.3); }
-    .status-partial { background: rgba(245, 158, 11, 0.1); color: var(--accent-yellow); border: 1px solid rgba(245, 158, 11, 0.3); }
-    .status-planned { background: rgba(255, 255, 255, 0.05); color: var(--ink-soft); border: 1px solid rgba(255, 255, 255, 0.1); }
-    
-    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
-    .panel { background: rgba(0,0,0,0.2); border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 2rem; display: flex; flex-direction: column; transition: transform 0.2s, background 0.2s; }
-    .panel:hover { background: rgba(255,255,255,0.03); transform: translateY(-4px); border-color: rgba(255,255,255,0.2);}
-    .panel h3 { font-family: var(--font-serif); font-size: 1.5rem; margin: 0 0 1rem; }
-    .panel p { color: var(--ink-soft); font-size: 0.95rem; margin-bottom: 1.5rem; flex-grow: 1;}
-    
-  </style>
+  <link rel="stylesheet" href="style.css">
   <script type="module">
     import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
     mermaid.initialize({ startOnLoad: true, theme: 'dark', themeVariables: { fontFamily: 'Inter' } });
@@ -126,7 +39,7 @@
             <a href="gateway.html">Gateway</a>
             <a href="mesh-core.html" class="is-current">Mesh Core</a>
                         <a href="security.html">Security & RBAC</a>
-            <a href="fleet-asv.html">Fleet & ASV</a>
+            <a href="edge-nodes.html">Edge Nodes</a>
           </div>
         </div>
         
@@ -165,6 +78,7 @@
           <div class="dropdown-content">
             <a href="teaching-documentation.html">Education & Guides</a>
             <a href="build-guide.html">Build Guide</a>
+            <a href="deployment-scenarios.html">Deployment Scenarios</a>
             <a href="roadmap.html">Roadmap</a>
           </div>
         </div>
@@ -217,7 +131,7 @@
               <h2>Route Cost & AutoInterface.</h2>
               <p>In a mixed-bearer environment, the mesh gateway must constantly decide whether to send a packet over a fast but incredibly expensive satellite link (Iridium), a fast but short-range cellular link (LTE), or a slow but completely free sub-GHz RF link (LoRa).</p>
 <p>OMEGA utilizes a highly customized route-scoring algorithm that dynamically weighs <strong>Route Cost</strong> (the financial or bandwidth penalty of the transmission) against <strong>Route Weight</strong> (the physical latency or topological distance of the hop). The Python mesh router ranks every physical interface mapped to a target node.</p>
-<p><strong>Operational Use:</strong> For local mesh clustering, OMEGA implements a <strong>Reticulum-inspired AutoInterface</strong>. When a new ASV or Buoy is powered on, it immediately begins broadcasting UDP multicasts over its active hardware interfaces. Nearby nodes intercept these multicasts, extract the cryptographic public key, and instantly map a valid route to the new node without requiring a human to statically assign an IP address. It is true, zero-configuration networking in the field.</p>
+<p><strong>Operational Use:</strong> For local mesh clustering, OMEGA implements a <strong>Reticulum-inspired AutoInterface</strong>. When a new edge node or Buoy is powered on, it immediately begins broadcasting UDP multicasts over its active hardware interfaces. Nearby nodes intercept these multicasts, extract the cryptographic public key, and instantly map a valid route to the new node without requiring a human to statically assign an IP address. It is true, zero-configuration networking in the field.</p>
               <div class="callout"><strong>Acknowledgment-Aware Outboxes</strong><p>When a packet is dispatched over the DTN, it sits in an `awaiting_ack` state. If the target node fails to acknowledge within the timeout, the packet falls back to a heavier bearer.</p></div>
             </div>
             <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">gateway/fleet.py Route Scoring</span><pre><code class="language-python">def calculate_best_route(target_id: str, interfaces: dict) -> str:
@@ -243,7 +157,7 @@
               <span class="section-kicker">Long-Range Wi-Fi</span>
               <h2>IEEE 802.11ah HaLow Bridging.</h2>
               <p>Standard 900MHz LoRa is restricted to a few hundred bytes per second—perfect for telemetry, but entirely useless for streaming underwater video feeds. To solve this, OMEGA integrates T-HaLow ESP32-S3 boards.</p>
-<p><strong>Execution:</strong> The firmware configures one node as an <code>ap-root</code> (Access Point) and another as a <code>sta-client</code> (Station). This establishes a transparent IEEE 802.11ah Wi-Fi connection over sub-GHz frequencies. It creates a massive, long-range TCP/IP tunnel that bypasses standard 2.4GHz Wi-Fi limitations, allowing the ASV to stream live RTSP camera feeds directly to the shore gateway from over a kilometer away.</p>
+<p><strong>Execution:</strong> The firmware configures one node as an <code>ap-root</code> (Access Point) and another as a <code>sta-client</code> (Station). This establishes a transparent IEEE 802.11ah Wi-Fi connection over sub-GHz frequencies. It creates a massive, long-range TCP/IP tunnel that bypasses standard 2.4GHz Wi-Fi limitations, allowing the edge node to stream live RTSP camera feeds directly to the shore gateway from over a kilometer away.</p>
               
             </div>
             <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">thalow_gateway_control/platformio.ini</span><pre><code class="language-ini">[env:t_halow_ap_companion]
@@ -251,7 +165,7 @@ build_flags =
   -DOMEGA_NODE_ID="urn:omega-wave:node:shore-gateway:thalow-ap"
   -DOMEGA_DEVICE_ID="t-halow-ap-companion"
   -DOMEGA_HALOW_ROLE="ap-root"
-  -DOMEGA_HALOW_PEER_HINT="asv-or-buoy-sta"</code></pre></div>
+  -DOMEGA_HALOW_PEER_HINT="buoy-sta"</code></pre></div>
           </section>
     
           <section class="section">
@@ -268,7 +182,7 @@ build_flags =
             <div class="section-content">
               <span class="section-kicker">Remote Operations</span>
               <h2>Cloud CGNAT Tunneling.</h2>
-              <p>Field operations often rely on marine cellular routers, which are trapped behind massive Carrier-Grade NAT (CGNAT) firewalls. The <code>scripts/tunnel-up.ps1</code> daemon automates the execution of Cloudflared or Ngrok. It securely punches a reverse TCP tunnel from the ASV gateway out to the public internet, securely exposing the local React Mission Portal to oceanographic teams thousands of miles away.</p>
+              <p>Field operations often rely on marine cellular routers, which are trapped behind massive Carrier-Grade NAT (CGNAT) firewalls. The <code>scripts/tunnel-up.ps1</code> daemon automates the execution of Cloudflared or Ngrok. It securely punches a reverse TCP tunnel from the edge node gateway out to the public internet, securely exposing the local React Mission Portal to oceanographic teams thousands of miles away.</p>
               
             </div>
             
@@ -283,9 +197,9 @@ build_flags =
               
             </div>
             <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">lora-cbor-frame.example.json</span><pre><code class="language-json">{
-  "message_id": "lora-asv-health-0001",
+  "message_id": "lora-node-health-0001",
   "message_type": "compact_observation",
-  "node_id": "urn:omega-wave:node:asv:prototype-01",
+  "node_id": "urn:omega-wave:node:buoy:prototype-01",
   "device_id": "tbeam-1w-lora",
   "sequence": 1,
   "timestamp": "2026-04-29T15:35:00Z",
@@ -307,7 +221,7 @@ build_flags =
               <span class="section-kicker">Transport Fallback</span>
               <h2>MQTT Pub/Sub Bridging.</h2>
               <p>While the Delay Tolerant Network (DTN) LoRa mesh is the primary transport for remote operations, the gateway is highly opportunistic. It includes the <code>mqtt_bridge.py</code> architecture for high-bandwidth offloading.</p>
-<p><strong>How it works:</strong> If an ASV drifts back into range of a 4G/LTE cellular tower near the coast, it instantly detects the fast connection. It abandons the slow 1200bps LoRa protocol and begins dumping its massive backlog of high-resolution telemetry, acoustic recordings, and camera frames over a high-speed MQTT websocket directly to the cloud, rapidly draining its NVRAM queues before it heads back out to sea.</p>
+<p><strong>How it works:</strong> If a remote sensor drifts back into range of a 4G/LTE cellular tower near the coast, it instantly detects the fast connection. It abandons the slow 1200bps LoRa protocol and begins dumping its massive backlog of high-resolution telemetry, acoustic recordings, and camera frames over a high-speed MQTT websocket directly to the cloud, rapidly draining its NVRAM queues before it heads back out to sea.</p>
               
             </div>
             
@@ -333,6 +247,44 @@ build_flags =
               
             </div>
             
+          </section>
+    
+          <section class="section section-block" style="background: rgba(0,0,0,0.4);">
+            <span class="section-kicker">Resilient Telemetry</span>
+            <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Store & Forward Mechanics</h2>
+            <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">A true Delay Tolerant Network (DTN) assumes that the physical link will constantly break. OMEGA edge nodes use localized SQLite buffers to mathematically guarantee zero data loss during prolonged RF blackouts.</p>
+            
+            <div class="section-visual" style="padding: 1.5rem;">
+              <div class="mermaid">
+                sequenceDiagram
+                    participant SENS as Deep Water Sensor
+                    participant NODE as Floating Buoy
+                    participant RF as LoRa RF Link
+                    participant GATE as Shore Gateway
+                    
+                    SENS->>NODE: 1. High-Freq Telemetry stream
+                    NODE->>RF: 2. Transmit CBOR packet
+                    RF--xNODE: 3. FAIL: Link dropped (Wave interference)
+                    Note over NODE: Link state: OFFLINE
+                    NODE->>NODE: 4. Route to local SQLite NVRAM buffer
+                    Note right of SENS: Node continues collecting 10,000+ points
+                    NODE->>RF: 5. Probe RF Link (10 min later)
+                    RF-->>NODE: 6. SUCCESS: Link re-established
+                    Note over NODE: Link state: ONLINE
+                    NODE->>GATE: 7. Bulk sync 10,000 points via Zstd compression
+                    GATE-->>NODE: 8. ACK received
+                    NODE->>NODE: 9. Flush local SQLite buffer
+              </div>
+            </div>
+          </section>
+
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">RF Physics</span>
+              <h2>CSMA-CA Collision Avoidance.</h2>
+              <p>When deploying 50+ floating sensor nodes in a small coastal bay, transmitting simultaneously on the 915MHz LoRa band guarantees catastrophic packet collisions. OMEGA firmware implements low-level Carrier Sense Multiple Access with Collision Avoidance (CSMA-CA).</p>
+              <p><strong>Execution:</strong> Before any node fires a transmission, it drops its SX1262 transceiver into <code>CAD (Channel Activity Detection)</code> mode. The silicon mathematically scans the physical RF spectrum for existing LoRa preamble chirps. If the channel is active, the node backs off for a randomized exponential interval (slotted ALOHA). This decentralized coordination allows dense mesh networks to self-regulate without a master polling node.</p>
+            </div>
           </section>
     
     </div>
