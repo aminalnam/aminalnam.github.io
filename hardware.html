@@ -186,7 +186,7 @@
               <span class="section-kicker">Robotic Integration</span>
               <h2>Mapping ROV Interoperability.</h2>
               <p>The <code>firmware/mapping_rov_mega/</code> and <code>mapping_rov_esp32/</code> profiles bridge the gap between surface telemetry and deep-water Remotely Operated Vehicles. The C++ code parses high-frequency sonar ping data via serial from the ROV's internal control unit and dynamically maps it to the standardized SenML/CBOR envelope.</p>
-              <p>This approach allows an underwater ROV to stream structural maps and thruster status directly to the shore gateway via a surface tethered relay.</p>
+              <p>This approach allows an underwater ROV to stream structural maps and internal battery status directly to the shore gateway via a surface tethered relay.</p>
             </div>
             <div class="section-visual">
               <span class="panel-kicker">firmware/mapping_rov_esp32/src/sonar.cpp</span>
@@ -213,6 +213,32 @@
               <h2>LoRa Relay Nodes.</h2>
               <p>The <code>firmware/lora_relay_node/</code> profile acts purely as a transparent, "dumb" repeater in the Delay Tolerant Network. By stripping away all sensor and GNSS logic, the firmware focuses 100% of CPU time on listening for faint LoRa chirps.</p>
               <p>These nodes execute the <code>omega_lora_protocol.h</code> collision-avoidance (CSMA-CA) algorithms to catch weak packets bouncing over the waves, buffer them in RAM, and cleanly blast them out at +22dBm, effectively extending the mesh network's range over the horizon.</p>
+            </div>
+          </section>
+    
+          </section>
+
+          <section class="section section-block" style="background: rgba(0,0,0,0.4);">
+            <span class="section-kicker">Energy Physics</span>
+            <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Solar Budgets & Insolation.</h2>
+            <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">A remote node floating in the North Atlantic during winter might only receive 2 hours of direct solar insolation per day. The node must mathematically budget its stored energy (joules) to survive a 14-hour night.</p>
+            
+            <div class="grid-3" style="margin-bottom: 2rem;">
+              <div class="panel" style="padding: 1.5rem;">
+                <span class="status-label status-implemented">Dark Current</span>
+                <h3 style="font-size: 1.2rem;">The Silent Killer</h3>
+                <p style="font-size: 0.85rem;">Even when not actively transmitting, a spinning ESP32 processor draws a "dark current" of 100mA. Overnight, this will completely drain the lithium cell, causing the physical hardware to freeze.</p>
+              </div>
+              <div class="panel" style="padding: 1.5rem;">
+                <span class="status-label status-implemented">Deep Sleep</span>
+                <h3 style="font-size: 1.2rem;">15µA Survival</h3>
+                <p style="font-size: 0.85rem;">The OMEGA firmware physically cuts the MOSFET power rail to the GPS and LoRa chips, dropping the entire board into a 15 micro-amp deep sleep state between transmissions.</p>
+              </div>
+              <div class="panel" style="padding: 1.5rem;">
+                <span class="status-label status-implemented">Dynamic Polling</span>
+                <h3 style="font-size: 1.2rem;">Battery-Aware Rates</h3>
+                <p style="font-size: 0.85rem;">If the battery voltage drops below 3.6V, the firmware automatically downscales its sample rate from every 10 minutes to every 60 minutes, mathematically guaranteeing survival until sunrise.</p>
+              </div>
             </div>
           </section>
     

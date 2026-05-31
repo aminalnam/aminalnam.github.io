@@ -102,17 +102,17 @@
           <section class="section">
             <div class="section-content">
               <span class="section-kicker">Control Systems Engineering</span>
-              <h2>Pixhawk Sensor Fusion.</h2>
-              <p>Deploying autonomous vessels physically into the ocean requires a rigid, unbreakable separation of concerns. If a high-level Python script crashes, the vessel cannot be allowed to spin its propellers uncontrollably or drift into a shipping lane.</p>
-<p>The OMEGA Fleet node profile isolates safety-critical motor control from high-level, unpredictable mission planning. The edge node communicates exclusively via MAVLink protocols to a dedicated, low-level <strong>Pixhawk Autopilot</strong>.</p>
-<p><strong>Relevance:</strong> The Pixhawk is the ultimate, fail-safe arbiter of physical movement. It runs a hardened RTOS (Real-Time Operating System). If the primary compute layer crashes or burns out, the Pixhawk retains hard-coded Return-To-Launch (RTL) geofence failsafes, guaranteeing the multimillion-dollar asset safely returns to harbor without higher-level compute intervention.</p>
-              <div class="callout"><strong>Mission Intents vs Motor Control</strong><p>Operators do not send PWM motor signals over the mesh. They send abstract "Mission Intents" (e.g., "Survey Grid A"), which the primary compute layer expands into local waypoints.</p></div>
+              <h2>Sensor Array Fusion.</h2>
+              <p>Deploying autonomous vessels physically into the ocean requires a rigid, unbreakable separation of concerns. If a high-level Python script crashes, the edge node cannot be allowed to corrupt the local NVRAM or drain the battery.</p>
+<p>The OMEGA Fleet node profile isolates safety-critical power management from high-level, unpredictable mission routing.</p>
+<p><strong>Relevance:</strong> A dedicated hardware watchdog timer acts as the fail-safe arbiter. If the primary compute layer crashes or hangs due to a memory leak, the watchdog timer mathematically cuts the power rail and forces a hard reboot, guaranteeing the asset recovers without human intervention.</p>
+              <div class="callout"><strong>Mission Intents vs Raw AT Commands</strong><p>Operators do not send raw AT modem commands over the mesh. They send abstract "Mission Intents" (e.g., "Increase Sampling Rate"), which the primary compute layer expands into local hardware configurations.</p></div>
             </div>
             <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">gateway/node_controller.py</span><pre><code class="language-python">@app.post("/v1/node/mission-intent")
 def receive_intent(intent: MissionIntent):
     if intent.type == "survey_grid":
         waypoints = generate_coverage_path(intent.polygon)
-        pixhawk.upload_mission(waypoints)
+        hardware_watchdog.update_profile(waypoints)
         return {"status": "executing"}</code></pre></div>
           </section>
     
@@ -126,6 +126,30 @@ def receive_intent(intent: MissionIntent):
               
             </div>
             
+          </section>
+
+          <section class="section section-block" style="background: rgba(0,0,0,0.4);">
+            <span class="section-kicker">Marine Physics</span>
+            <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Archimedes' Principle & Wind Drag.</h2>
+            <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">A common question is: <i>"Why don't you just put a massive 40-lb car battery in the buoy to run the radio forever?"</i> The answer is brutal physical constraint.</p>
+            
+            <div class="grid-3" style="margin-bottom: 2rem;">
+              <div class="panel" style="padding: 1.5rem;">
+                <span class="status-label status-implemented">Archimedes' Law</span>
+                <h3 style="font-size: 1.2rem;">Buoyancy Deficit</h3>
+                <p style="font-size: 0.85rem;">To float a 40-lb lead-acid battery, Archimedes' Principle mathematically requires displacing 40 lbs of saltwater. This demands an incredibly massive, bulky foam hull.</p>
+              </div>
+              <div class="panel" style="padding: 1.5rem;">
+                <span class="status-label status-implemented">Aerodynamics</span>
+                <h3 style="font-size: 1.2rem;">Wind Shear</h3>
+                <p style="font-size: 0.85rem;">A massive foam hull exponentially increases the surface area exposed to wind drag. In a 15-knot ocean breeze, the buoy acts like a giant sail.</p>
+              </div>
+              <div class="panel" style="padding: 1.5rem;">
+                <span class="status-label status-implemented">System Failure</span>
+                <h3 style="font-size: 1.2rem;">Station-Keeping Loss</h3>
+                <p style="font-size: 0.85rem;">The massive wind drag would overcome the mooring line, dragging the anchor across the reef. We MUST use lightweight 18650 lithium cells to keep the hydrodynamic profile razor-thin.</p>
+              </div>
+            </div>
           </section>
     
           <section class="section">
@@ -190,7 +214,7 @@ def receive_intent(intent: MissionIntent):
               <span class="section-kicker">Autonomous Safety</span>
               <h2>Active Guard Geofencing.</h2>
               <p>The <code>active_guard.py</code> module acts as a merciless, unblinking watchdog over the physical fleet. During high winds or heavy chop, a remote sensor might struggle to maintain its commanded heading and slowly drift off-course.</p>
-<p><strong>Execution:</strong> Active Guard constantly calculates the cross-track error (the perpendicular distance from the planned path) of every edge node against predefined GeoJSON exclusion zones. If a vessel mathematically deviates into a dangerous shipping lane or a shallow reef, Active Guard instantly overrides the standard waypoint mission, sending an emergency heading correction to the Pixhawk to drag the vessel back into safe waters.</p>
+<p><strong>Execution:</strong> Active Guard constantly calculates the cross-track error (the perpendicular distance from the planned path) of every edge node against predefined GeoJSON exclusion zones. If a vessel mathematically deviates into a dangerous shipping lane or a shallow reef, Active Guard instantly overrides the standard waypoint mission, triggering an emergency acoustic beacon to alert recovery vessels before the node is lost.</p>
               
             </div>
             

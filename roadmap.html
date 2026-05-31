@@ -116,7 +116,7 @@
               <span class="section-kicker">Edge AI</span>
               <h2>Machine Learning Inferencing (TinyML).</h2>
               <p>Currently, edge nodes rely entirely on the shore Gateway to process complex data and detect anomalies. Future fleet iterations will push <strong>Machine Learning Inferencing (TinyML)</strong> directly onto the ESP32 and ESP32-S3 edge microcontrollers.</p>
-<p><strong>How it works:</strong> By training a highly compressed TensorFlow Lite model on thousands of hours of baseline vibration profiles and hydrophone acoustic data, the edge node will be able to detect complex mechanical anomalies locally. For example, if kelp wraps around a propeller, the vibration frequency shifts. The TinyML model detects this shift instantly and transmits a high-priority 50-byte alarm over LoRa, shutting down the motor before catastrophic physical failure occurs, without ever needing to transmit the massive raw vibration matrix to the cloud.</p>
+<p><strong>How it works:</strong> By training a highly compressed TensorFlow Lite model on thousands of hours of baseline vibration profiles and hydrophone acoustic data, the edge node will be able to detect complex mechanical anomalies locally. For example, if biofouling occludes the salinity probe, the vibration frequency shifts. The TinyML model detects this shift instantly and transmits a high-priority 50-byte alarm over LoRa, triggering a deep-sleep cycle to preserve the remaining battery, without ever needing to transmit the massive raw vibration matrix to the cloud.</p>
               
             </div>
             

@@ -215,7 +215,7 @@
               <span class="section-kicker">Autonomous Safety</span>
               <h2>Active Guard Geofencing.</h2>
               <p>The <code>active_guard.py</code> module acts as a merciless, unblinking watchdog over the physical fleet. During high winds or heavy chop, a remote sensor might struggle to maintain its commanded heading and slowly drift off-course.</p>
-              <p><strong>Execution:</strong> Active Guard constantly calculates the cross-track error (the perpendicular distance from the planned path) of every edge node against predefined GeoJSON exclusion zones. If a vessel mathematically deviates into a dangerous shipping lane or a shallow reef, Active Guard instantly overrides the standard waypoint mission, sending an emergency heading correction to the Pixhawk to drag the vessel back into safe waters.</p>
+              <p><strong>Execution:</strong> Active Guard constantly calculates the cross-track error (the perpendicular distance from the planned path) of every edge node against predefined GeoJSON exclusion zones. If a vessel mathematically deviates into a dangerous shipping lane or a shallow reef, Active Guard instantly overrides the standard waypoint mission, triggering an emergency acoustic beacon to alert recovery vessels before the node is lost.</p>
             </div>
             <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">gateway/active_guard.py</span><pre><code class="language-python">async def check_geofence_breach(node_id: str, current_lat: float, current_lon: float):
     # 1. Load active GeoJSON exclusion polygons (e.g. shipping lanes, shallow reefs)

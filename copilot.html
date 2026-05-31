@@ -136,9 +136,9 @@
             <div class="section-content">
               <span class="section-kicker">Safety Constraints</span>
               <h2>Absolute Read-Only Execution.</h2>
-              <p>AI hallucinations are dangerous, especially when dealing with physical thrusters on a multimillion-dollar edge node. The Honu prompt engine enforces absolute read-only constraints. It is physically impossible for the LLM to execute a mutating API call or alter remote fleet parameters.</p>
+              <p>AI hallucinations are dangerous, especially when dealing with physical hardware on a multimillion-dollar edge node. The Honu prompt engine enforces absolute read-only constraints. It is physically impossible for the LLM to execute a mutating API call or alter remote fleet parameters.</p>
 <p><strong>The Physics of Confinement:</strong> Unlike standard chatbot implementations that just "ask" the AI not to break things, OMEGA physically isolates the AI execution environment. The 46-tool registry exposed to the LLM explicitly does not contain functions that perform POST or PUT requests to the SQLite database. The AI is structurally blind to mutation endpoints.</p>
-<p><strong>Execution:</strong> The system prompt rigorously reinforces this architectural boundary. If the LLM attempts to hallucinate a command (e.g. `execute_thruster_burn`), the orchestration loop detects the unregistered tool attempt and mathematically drops the execution thread, returning an explicit safety violation to the operator.</p>
+<p><strong>Execution:</strong> The system prompt rigorously reinforces this architectural boundary. If the LLM attempts to hallucinate a command (e.g. `execute_format_nvram`), the orchestration loop detects the unregistered tool attempt and mathematically drops the execution thread, returning an explicit safety violation to the operator.</p>
               
             </div>
             <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">gateway/copilot.py</span><pre><code class="language-python">SYSTEM_PROMPT = """You are Honu, the OMEGA Intelligence Engine.

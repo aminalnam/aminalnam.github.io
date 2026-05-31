@@ -103,7 +103,7 @@
             <div class="section-content">
               <span class="section-kicker">System Bringup</span>
               <h2>Getting the Gateway Online.</h2>
-              <p>Configuring a local development environment for a system that spans React, FastAPI, SQLite, and MAVLink can be daunting. The OMEGA repository utilizes a master PowerShell script <code>omega_gateway_online.ps1</code> (and its bash equivalent) to orchestrate the entire bringup process.</p>
+              <p>Configuring a local development environment for a system that spans React, FastAPI, SQLite, and LoRa DTN can be daunting. The OMEGA repository utilizes a master PowerShell script <code>omega_gateway_online.ps1</code> (and its bash equivalent) to orchestrate the entire bringup process.</p>
 <p><strong>How to use it:</strong> Running this script automatically handles environment variable injection, PYTHONPATH resolution, database initialization, and launches the gateway via <code>uvicorn gateway.main:app --host 0.0.0.0</code>.</p>
 <p>Crucially, it actively handles binding the application to the physical network interface card (NIC), exposing the Gateway APIs and the Mission Portal to devices on the same Wi-Fi LAN. It also optionally hooks into daemonized tunneling services like <code>ngrok</code> or <code>cloudflared</code>, punching a secure reverse TCP tunnel out to the internet so remote oceanographic teams can monitor a gateway running on a boat thousand of miles away.</p>
               
