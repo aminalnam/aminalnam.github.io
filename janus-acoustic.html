@@ -189,12 +189,24 @@
             <div class="section-content">
               <span class="section-kicker">Acoustic Physics</span>
               <h2>Snell's Law & Refraction.</h2>
-              <p>Traditional radio waves (RF) attenuate and die almost immediately when striking seawater. To communicate with subsurface Remotely Operated Vehicles (ROVs) or deep-sea sensors, OMEGA must abandon the electromagnetic spectrum and utilize mechanical energy: acoustic waves.</p>
-<p>However, marine acoustics face severe physical physics challenges. As the water's temperature, salinity, and depth (pressure) change, the physical speed of sound shifts. According to <strong>Snell's Law of Refraction</strong>, sound waves do not travel in straight lines underwater; they aggressively bend toward regions of slower sound speed.</p>
-<p><strong>Relevance:</strong> This refraction creates massive acoustic "shadow zones" where communication is physically impossible, even if the ROV is only a few hundred meters away. OMEGA's acoustic processing algorithms account for these extreme environmental variables when predicting mesh connectivity.</p>
+              <p>Standard radio frequencies cannot penetrate water. To communicate with Remotely Operated Vehicles (ROVs) and benthic sensors, the surface fleet utilizes acoustic modems broadcasting the NATO-standard JANUS protocol (STANAG 4748).</p>
+<p><strong>Acoustic Modulation:</strong> Sound waves travel at ~1,500 m/s underwater, subject to massive multi-path reflections and thermocline refraction. The JANUS standard uses robust Frequency-Shift Keying (FSK) to encode binary data into audio chirps. The Python <code>janus_bridge.py</code> module listens for the distinct 86-bit JANUS wakeup tone, synchronizes the Phase-Locked Loop (PLL), and decodes the subsequent data blocks into standard JSON envelopes that can be bridged onto the LoRa mesh.</p>
               
             </div>
-            
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">gateway/janus_bridge.py</span><pre><code class="language-python">async def handle_acoustic_fsk_stream(audio_buffer: bytes):
+    # Detect and decode STANAG 4748 JANUS acoustic frames.
+    # 1. Execute Fast Fourier Transform (FFT) to detect wakeup tone
+    power_spectrum = np.abs(np.fft.rfft(audio_buffer))
+    wakeup_idx = np.argmax(power_spectrum)
+    
+    if is_janus_frequency(wakeup_idx):
+        logger.info("Acoustic Wakeup Detected. Synchronizing PLL...")
+        
+        # 2. Demodulate the FSK payload
+        binary_stream = _demodulate_fsk(audio_buffer)
+        
+        # 3. Bridge the acoustic data to the shore API
+        await inject_telemetry_to_mesh(binary_stream)</code></pre></div>
           </section>
     
           <section class="section">

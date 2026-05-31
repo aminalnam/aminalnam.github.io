@@ -189,12 +189,25 @@
             <div class="section-content">
               <span class="section-kicker">Synthetic Generation</span>
               <h2>Procedural Time-Step Environments.</h2>
-              <p>Physically testing a completely disconnected, Delay Tolerant Network (DTN) mesh is virtually impossible with a single static JSON payload. Real-world mesh networks behave unpredictably: nodes drift out of range, waves block RF signals, and packets are cached for hours before bursting across a newly formed link.</p>
-<p>OMEGA includes a massive <strong>Simulation Harness</strong> designed to stress-test the Gateway and Mission Portal logic. The engine procedurally generates stationary water-quality buoys, fast-moving drifters, completely disconnected ROV subsurface tracks, and JANUS acoustic anomaly alerts across thousands of defined temporal steps.</p>
-<p><strong>Relevance:</strong> This allows UI developers and backend engineers to visually debug how the system handles 500 nodes moving simultaneously, going offline, and dropping massive payload caches hours late, ensuring the SQLite WAL implementation and React state machines never crack under pressure.</p>
+              <p>Deploying a massive mesh network without testing is catastrophic. The <code>simulator.py</code> module spawns thousands of virtual "Digital Twins" that run the exact same networking logic as the physical edge nodes.</p>
+<p><strong>Procedural Generation:</strong> The Python engine dynamically generates synthetic nodes that mathematically drift according to fluid dynamics models. Each tick of the event loop evaluates the Haversine distance and RSSI dropoff between all virtual nodes. If Node A drifts out of range of Node B, the simulator physically severs the virtual connection, forcing the Mesh Core to dynamically recalculate its Delay Tolerant routing tables. This allows developers to stress-test the FastAPI event loop with 10,000 concurrent CBOR packets before touching actual hardware.</p>
               
             </div>
-            
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">gateway/simulator.py</span><pre><code class="language-python">async def tick_digital_twins(twins: list[DigitalTwin], mesh_router: MeshRouter):
+    # Simulate kinematic drift and evaluate RF topology.
+    for node in twins:
+        # Apply fluid dynamic drift (currents & wind)
+        node.apply_kinematic_drift()
+        
+        # Evaluate Line-of-Sight RF range against all other nodes
+        visible_peers = []
+        for peer in twins:
+            distance_km = haversine(node.lat, node.lon, peer.lat, peer.lon)
+            if distance_km < LORA_MAX_RANGE_KM:
+                visible_peers.append(peer.uuid)
+                
+        # Update the virtual routing table
+        await mesh_router.update_topology(node.uuid, visible_peers)</code></pre></div>
           </section>
     
           <section class="section">

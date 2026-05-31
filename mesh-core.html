@@ -189,12 +189,26 @@
             <div class="section-content">
               <span class="section-kicker">Network Graph Theory</span>
               <h2>Delay Tolerant Networks (DTN).</h2>
-              <p>Standard IP networking relies on the fundamental assumption that a direct, unbroken, end-to-end path exists between the source and destination at the exact moment of transmission. In the ocean—where nodes are thousands of miles apart, constantly moving, and operating on low-power radios over rolling waves—this assumption is entirely false.</p>
-<p>OMEGA operates a <strong>Delay Tolerant Network (DTN)</strong> overlay to mathematically handle this reality. It models the mesh network as a dynamic, temporal graph where edges (RF or acoustic connections) constantly appear and disappear. If an Autonomous Surface Vehicle (ASV) captures a crucial water-quality measurement but cannot reach the shore gateway, the packet is not simply dropped (as it would be in standard TCP/IP).</p>
-<p>Instead, the packet is stored in the ASV's local NVRAM queue. The physical ASV is then treated as a "data mule." It physically carries the packet across the ocean until it drifts into the RF range of a shore station or a relay buoy, at which point the graph edge reforms and the packet is forwarded. This architecture ensures 100% data preservation in extreme latency environments.</p>
+              <p>Transmitting raw JSON over a 900MHz LoRa link is catastrophic. At 1200bps, a standard 400-byte JSON telemetry envelope would exceed the strict LoRa airtime regulations (duty cycle) and cause massive packet collisions across the fleet.</p>
+<p><strong>The Mathematics of Compression:</strong> The <code>lora_cbor_bridge.py</code> engine performs structural crushing. Instead of sending the string key <code>"temperature_celsius"</code>, the Python dictionary uses an integer alias map (e.g., key <code>14</code>). It then passes this compacted dictionary into the <code>cbor2</code> (Concise Binary Object Representation) library, which serializes the payload into a dense byte array. A 450-byte human-readable JSON is mathematically crushed to ~92 bytes, drastically reducing the Time-on-Air (ToA) and extending the fleet's battery life.</p>
               
             </div>
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">gateway/lora_cbor_bridge.py</span><pre><code class="language-python">def pack_rf_frame(telemetry: dict) -> bytes:
+    # Crush a standard JSON envelope into a dense RF byte array.
+    # 1. Alias verbose keys to integer codes to save bytes
+    compact = {}
+    for key, val in telemetry.items():
+        if key in SENSOR_ALIAS_MAP:
+            compact[SENSOR_ALIAS_MAP[key]] = val
             
+    # 2. Serialize using Concise Binary Object Representation (RFC 8949)
+    raw_bytes = cbor2.dumps(compact)
+    
+    # 3. Apply optional Zstandard dictionary compression if enabled
+    if len(raw_bytes) > LORA_MAX_PAYLOAD_SIZE:
+        raw_bytes = zstd_compress(raw_bytes)
+        
+    return raw_bytes</code></pre></div>
           </section>
     
           <section class="section">

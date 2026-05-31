@@ -189,15 +189,20 @@
             <div class="section-content">
               <span class="section-kicker">Concurrency & IO Bound Limits</span>
               <h2>FastAPI Async Event Loop.</h2>
-              <p>The OMEGA Gateway sits at the highly volatile intersection of synchronous HTTP requests from the Mission Portal, asynchronous serial data streaming from LoRa modules, and unpredictable UDP acoustic packets from underwater nodes. Python's Global Interpreter Lock (GIL) traditionally struggles to juggle these massive I/O bound workloads simultaneously.</p>
-<p>To solve this, the gateway utilizes <strong>FastAPI and the Starlette framework</strong> to run on a high-performance asynchronous event loop (uvloop). This allows the gateway to `await` a slow I/O bound serial operation—like reading a 1200 baud LoRa transmission—without blocking the execution thread that is simultaneously serving a critical API response to the web dashboard.</p>
-<p><strong>Operational Use:</strong> When an Observation Envelope hits the `POST /v1/observations` endpoint, the gateway does not wait to process, validate, and write the data to disk. It immediately offloads the heavy normalization workload to a `BackgroundTasks` queue and returns a `202 Accepted` response within milliseconds. This guarantees that the edge node can go back to sleep instantly, saving precious battery life, while the gateway handles the database logic asynchronously.</p>
+              <p>The OMEGA Gateway is not a simple REST API; it is a high-performance, asynchronous edge router built on FastAPI and Uvicorn. Designed to run on embedded Linux (e.g. Raspberry Pi 5) deployed directly at the coastal shore, it acts as the master ingestion point for the entire Delay Tolerant Network.</p>
+<p><strong>Database Architecture:</strong> Telemetry arrives asynchronously via UDP and Serial ports at massive volumes. A standard SQLite configuration would instantly lock and crash under this concurrent write pressure. The Python backend physically rewrites the SQLite PRAGMA at boot, enforcing Write-Ahead Logging (<code>WAL</code>) mode and <code>NORMAL</code> synchronous behavior. This decouples the read/write locks, allowing the Mission Portal to execute massive <code>SELECT</code> queries over the historical arrays while the edge node bridges concurrently <code>INSERT</code> live CBOR frames without blocking.</p>
               <div class="callout"><strong>Background Tasks</strong><p>Heavy normalization operations are relegated to Starlette background tasks, ensuring the endpoint returns a 202 Accepted instantly.</p></div>
             </div>
-            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">FastAPI Concurrency</span><pre><code class="language-python">@app.post("/v1/observations")
-async def ingest_observation(envelope: ObservationEnvelope, db: Session = Depends(get_db)):
-    await background_tasks.add_task(normalize_and_store, db, envelope)
-    return {"status": "accepted"}</code></pre></div>
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">gateway/database.py</span><pre><code class="language-python">@event.listens_for(engine, "connect")
+def set_sqlite_pragma(dbapi_connection, connection_record):
+    # Optimize SQLite for extreme concurrent I/O at the edge
+    cursor = dbapi_connection.cursor()
+    cursor.execute("PRAGMA journal_mode=WAL")
+    cursor.execute("PRAGMA synchronous=NORMAL")
+    cursor.execute("PRAGMA cache_size=-64000") # 64MB cache
+    cursor.execute("PRAGMA temp_store=MEMORY")
+    cursor.execute("PRAGMA mmap_size=30000000000")
+    cursor.close()</code></pre></div>
           </section>
     
           <section class="section">

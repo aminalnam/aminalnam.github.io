@@ -189,12 +189,22 @@
             <div class="section-content">
               <span class="section-kicker">Oceanographic Formats</span>
               <h2>ERDDAP & NetCDF Structures.</h2>
-              <p>Global oceanographic datasets—such as global Sea Surface Temperature (SST), absolute Salinity, and oceanic current vectors—are distributed by international organizations in massive <strong>NetCDF (Network Common Data Form)</strong> files. These are not simple spreadsheets; they are massive multidimensional arrays plotting latitude, longitude, depth, and time.</p>
-<p>The OMEGA `erddap.py` adapter is built to interface directly with remote ERDDAP federations (like those run by NOAA and the IOOS). Instead of forcing the frontend to download gigabytes of raw NetCDF arrays, the Python gateway executes highly targeted spatiotemporal queries.</p>
-<p><strong>Relevance:</strong> The gateway parses the resulting tabular payloads and automatically projects the data into standardized GeoJSON feature collections. This allows the Mission Portal UI to instantly render massive, global external deployments (like the entire Argo float array) alongside native, local OMEGA mesh data without breaking a sweat.</p>
+              <p>Marine research requires massive contextual data. A surface temperature reading from an ASV is useless unless it is federated with regional satellite data. OMEGA integrates heavily with institutional ERDDAP (Environmental Research Division Data Access Program) servers.</p>
+<p><strong>Execution:</strong> The <code>erddap.py</code> ingestor runs as a background <code>asyncio</code> task. It queries massive tabular datasets (like NOAA buoy arrays or the Copernicus Marine Service) using the ERDDAP REST API. Because returning full NetCDF arrays over HTTP is slow, OMEGA mathematically translates its active ASV bounding-boxes into strict spatial constraints (Lat/Lon/Time) before making the HTTP GET request, only downloading the exact bytes relevant to the current fleet operation.</p>
               
             </div>
-            
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">gateway/erddap.py</span><pre><code class="language-python">async def fetch_regional_sst(lat_min: float, lat_max: float, lon_min: float, lon_max: float):
+    # Poll NOAA ERDDAP for Sea Surface Temperature within the ASV bounding box.
+    base_url = "https://coastwatch.pfeg.noaa.gov/erddap/griddap/jplMURSST41.csv"
+    
+    # Construct strict spatial constraints to avoid downloading the entire ocean
+    query = f"?analysed_sst[(last)][({lat_min}):({lat_max})][({lon_min}):({lon_max})]"
+    
+    async with httpx.AsyncClient() as client:
+        response = await client.get(base_url + query, timeout=30.0)
+        response.raise_for_status()
+        
+        return _parse_erddap_csv(response.text)</code></pre></div>
           </section>
     
           <section class="section">
