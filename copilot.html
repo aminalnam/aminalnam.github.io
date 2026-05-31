@@ -3,15 +3,15 @@
 <head>
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1" name="viewport"/>
-  <title>OMEGA — Build Guide</title>
+  <title>OMEGA — Honu AI Copilot</title>
   
   <meta name="description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
-  <meta property="og:title" content="OMEGA — Build Guide" />
+  <meta property="og:title" content="OMEGA — Honu AI Copilot" />
   <meta property="og:description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://jonathancapone.com/build-guide.html" />
+  <meta property="og:url" content="https://jonathancapone.com/copilot.html" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="OMEGA — Build Guide" />
+  <meta name="twitter:title" content="OMEGA — Honu AI Copilot" />
   <meta name="twitter:description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
   
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌊</text></svg>">
@@ -145,7 +145,7 @@
           <div class="dropdown-content">
             <a href="hardware.html">Hardware & Firmware</a>
             <a href="event-bus.html">Event Bus & Watches</a>
-            <a href="copilot.html">Honu AI Copilot</a>
+            <a href="copilot.html" class="is-current">Honu AI Copilot</a>
           </div>
         </div>
 
@@ -164,7 +164,7 @@
           <button class="dropbtn">Docs &#9662;</button>
           <div class="dropdown-content">
             <a href="teaching-documentation.html">Education & Guides</a>
-            <a href="build-guide.html" class="is-current">Build Guide</a>
+            <a href="build-guide.html">Build Guide</a>
             <a href="roadmap.html">Roadmap</a>
           </div>
         </div>
@@ -173,9 +173,9 @@
   </header>
 
   <section class="hero wrap">
-    <span class="eyebrow">Documentation</span>
-    <h1>Build Guide</h1>
-    <p>Compiling firmware and deploying the gateway.</p>
+    <span class="eyebrow">Honu AI Copilot</span>
+    <h1>AI Orchestration.</h1>
+    <p>Deep dive into the 240KB Python tool registry and Read-Only safety constraints.</p>
     <div class="hero-actions">
       <a class="btn btn-primary" href="https://github.com/aminalnam/OMEGA" target="_blank">View OMEGA on GitHub</a>
       <a class="btn btn-secondary" href="index.html">Back to Portfolio</a>
@@ -187,11 +187,9 @@
 
           <section class="section">
             <div class="section-content">
-              <span class="section-kicker">Embedded C++ Compilation</span>
-              <h2>PlatformIO Manifests.</h2>
-              <p>OMEGA firmware explicitly rejects the standard Arduino IDE. Managing complex, multi-library C++ projects across a dispersed engineering team using the Arduino IDE invariably leads to "works on my machine" dependency nightmares.</p>
-<p>Instead, OMEGA firmware is built exclusively using <strong>PlatformIO</strong>. This ensures deterministic, rigidly reproducible builds across different operator machines (Windows, Linux, macOS) by explicitly defining library dependencies, strict GCC compiler flags, and exact hardware environments in the <code>platformio.ini</code> manifest.</p>
-<p><strong>Relevance:</strong> By defining multiple profiles (e.g., <code>[env:tbeam-supreme-telemetry]</code> vs <code>[env:heltec-v3-relay]</code>), the Python gateway can automatically target and compile the exact C++ binary required for a specific piece of hardware before beaming it over the air.</p>
+              <span class="section-kicker">AI Orchestration</span>
+              <h2>The Honu Copilot Engine.</h2>
+              <p>The <code>gateway/copilot.py</code> module is a massive 240KB AI orchestration engine built entirely in Python. Unlike standard chatbots, Honu holds absolutely zero built-in knowledge of the marine deployment. It acts strictly as an analytical bridge, utilizing a highly complex Tool Registry to dynamically route operator questions across 46 distinct internal APIs.</p>
               
             </div>
             
@@ -199,10 +197,9 @@
     
           <section class="section">
             <div class="section-content">
-              <span class="section-kicker">RF Engineering</span>
-              <h2>Antenna Tuning & VSWR.</h2>
-              <p>Deploying 900MHz nodes into the field requires strict attention to RF Physics, specifically the <strong>Voltage Standing Wave Ratio (VSWR)</strong>. If an antenna is poorly tuned or mismatched to the transmission line impedance, the RF power is not radiated into the air; it reflects back down the cable into the LoRa amplifier.</p>
-<p>This reflected power causes massive thermal buildup and will rapidly destroy the SX1262 transceiver silicon. OMEGA operators are mathematically guided to utilize proper ground planes—often utilizing the aluminum hull of the ASV itself—to optimize the VSWR curve. This ensures maximum transmission efficiency, enabling 20+ kilometer line-of-sight hops over the water using a mere 30dBm of power.</p>
+              <span class="section-kicker">Spatial Mathematics</span>
+              <h2>Natural Language to Geo-Bounds.</h2>
+              <p>When an operator asks <i>"Show me buoys near Miami"</i>, the Copilot engine executes complex spatial reasoning. It translates the natural language into rigid, mathematical bounding boxes (Lat/Lon min and max). This box is then securely injected into the SQLite database engine to filter millions of historical telemetry rows down to the specific geospatial region requested.</p>
               
             </div>
             
@@ -210,31 +207,9 @@
     
           <section class="section">
             <div class="section-content">
-              <span class="section-kicker">Deterministic Builds</span>
-              <h2>PlatformIO Matrices.</h2>
-              <p>The Arduino IDE is wholly inadequate for managing complex, multi-layered C++ mesh networks across a dispersed engineering team. OMEGA firmware fundamentally relies on PlatformIO (<code>platformio.ini</code>) to enforce deterministic, repeatable builds.</p>
-<p><strong>Execution:</strong> The project defines strict build environments for entirely different ESP32 hardware profiles (e.g., LilyGO T-Beam vs Heltec V3). Specific compiler flags like <code>-DOMEGA_RADIO_KIND_LR1121=1</code> dynamically instruct the C++ preprocessor. This ensures that when the compiler runs, it seamlessly configures the correct internal SPI pinouts and power profiles for a Semtech LR1121 transceiver versus a standard SX1262, preventing hardware mismatch crashes.</p>
-              
-            </div>
-            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">platformio.ini</span><pre><code class="language-ini">[env:gateway_t3_s3_lr1121_subghz]
-platform = espressif32
-board = esp32-s3-devkitc-1
-framework = arduino
-build_flags =
-  -DARDUINO_USB_CDC_ON_BOOT=1
-  -DOMEGA_ENABLE_RADIOLIB=1
-  -DOMEGA_RADIO_KIND_LR1121=1
-  -DOMEGA_LORA_FREQ_MHZ=915.0
-  -DOMEGA_LORA_TX_DBM=17
-  -DRADIO_NSS=7
-  -DRADIO_DIO1=36</code></pre></div>
-          </section>
-    
-          <section class="section">
-            <div class="section-content">
-              <span class="section-kicker">Remote Operations</span>
-              <h2>Cloud CGNAT Tunneling.</h2>
-              <p>Field operations often rely on marine cellular routers, which are trapped behind massive Carrier-Grade NAT (CGNAT) firewalls. The <code>scripts/tunnel-up.ps1</code> daemon automates the execution of Cloudflared or Ngrok. It securely punches a reverse TCP tunnel from the ASV gateway out to the public internet, securely exposing the local React Mission Portal to oceanographic teams thousands of miles away.</p>
+              <span class="section-kicker">Safety Constraints</span>
+              <h2>Absolute Read-Only Execution.</h2>
+              <p>AI hallucinations are dangerous, especially when dealing with physical thrusters on a multimillion-dollar ASV. The Honu prompt engine enforces absolute read-only constraints. It is physically impossible for the LLM to execute a mutating API call or alter remote fleet parameters. If the LLM attempts to hallucinate a command, the gateway mathematically rejects it at the FastAPI dependency layer.</p>
               
             </div>
             
