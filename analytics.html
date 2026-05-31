@@ -189,10 +189,23 @@
             <div class="section-content">
               <span class="section-kicker">Time-Series Processing</span>
               <h2>Gateway Analytics Engine.</h2>
-              <p>The <code>gateway/analytics.py</code> engine is the mathematical workhorse of the shore system. It constantly crunches millions of historical SQLite telemetry points. By utilizing numpy and scipy, it generates moving averages, detects anomalous sensor drift, and pre-computes spatial statistics so the Mission Portal can render data instantly without blocking the main FastAPI event loop.</p>
+              <p>The <code>gateway/analytics.py</code> engine is the mathematical workhorse of the shore system. It constantly crunches millions of historical SQLite telemetry points. By utilizing numpy and scipy, it generates moving averages, detects anomalous sensor drift, and pre-computes spatial statistics.</p>
+<p><strong>The Mathematics:</strong> When analyzing marine telemetry (like Salinity or pH), rogue acoustic spikes are inevitable due to biological fouling or sensor glitches. Standard averages are destroyed by these massive outliers. OMEGA utilizes the QARTOD (Quality Assurance / Quality Control of Real-Time Oceanographic Data) standards, calculating a robust median absolute deviation (MAD) instead of a standard standard-deviation.</p>
+<p><strong>Execution:</strong> The numpy arrays execute vectorized operations to instantly threshold incoming data bundles. If a sensor value exceeds 3 robust-sigmas, it is mathematically flagged as "Suspect". At 6 sigmas, it is flagged as "Fail" and stripped from the active mapping visualization, protecting the operators from reacting to ghost data.</p>
               
             </div>
-            
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">gateway/qc.py</span><pre><code class="language-python">def _threshold_bundle(values: list[float]) -> dict[str, float] | None:
+    # Calculate QARTOD compliant statistical bounds
+    center = np.median(values)
+    mad = np.median(np.abs(values - center))
+    robust_sigma = mad * 1.4826
+    
+    return {
+        "gross_range_suspect_min": center - robust_sigma * 3,
+        "gross_range_suspect_max": center + robust_sigma * 3,
+        "gross_range_fail_min": center - robust_sigma * 6,
+        "gross_range_fail_max": center + robust_sigma * 6,
+    }</code></pre></div>
           </section>
     
           <section class="section">

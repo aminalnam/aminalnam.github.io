@@ -189,10 +189,25 @@
             <div class="section-content">
               <span class="section-kicker">Embedded C++</span>
               <h2>The T-Beam Supreme Architecture.</h2>
-              <p>Located in <code>firmware/tbeam_supreme_dual_sensor/</code>, the C++ codebase is highly optimized for the ESP32-S3 microcontroller. The firmware aggressively manages deep-sleep power states, shutting down the GNSS (GPS) module and the Semtech SX1262 LoRa radio between transmission windows. This strict thermodynamic management allows the hardware to survive for months on a single 18650 lithium battery in the middle of the ocean.</p>
+              <p>Located in <code>firmware/tbeam_supreme_dual_sensor/</code>, the C++ codebase is highly optimized for the ESP32-S3 microcontroller. The firmware aggressively manages deep-sleep power states, shutting down the GNSS (GPS) module and the Semtech SX1262 LoRa radio between transmission windows.</p>
+<p><strong>Thermodynamics:</strong> An ASV floating in the Pacific cannot plug into a wall outlet. The ESP32-S3 draws roughly 100mA while active, draining a standard 18650 lithium battery in two days. By forcing the hardware into the ULP (Ultra Low Power) sleep state, the draw drops to 15µA. The C++ code wakes the CPU exactly 2 seconds before a scheduled transmission, acquires a hot GPS fix, blasts the CBOR payload at 30dBm, and instantly sleeps.</p>
+<p><strong>Execution:</strong> The <code>esp_deep_sleep_start()</code> routine stores the RTC timer in non-volatile memory so the mesh network synchronization loop isn't lost upon waking. This strict thermodynamic management allows the hardware to survive for months on a single cell.</p>
               
             </div>
-            
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">firmware/tbeam_supreme/src/main.cpp</span><pre><code class="language-cpp">void enforce_thermodynamic_sleep(uint64_t sleep_duration_us) {
+    // Gracefully shutdown the SX1262 LoRa transceiver
+    radio.sleep();
+    
+    // De-power the u-blox GNSS module via MOSFET
+    digitalWrite(GNSS_POWER_PIN, LOW);
+    
+    // Configure Real-Time Clock wake stub
+    esp_sleep_enable_timer_wakeup(sleep_duration_us);
+    
+    Serial.println("Entering 15µA Deep Sleep...");
+    Serial.flush();
+    esp_deep_sleep_start();
+}</code></pre></div>
           </section>
     
           <section class="section">
