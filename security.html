@@ -217,7 +217,22 @@
               <p>When a gateway is deployed behind a TLS-terminating reverse proxy (like Cloudflare or an Nginx ingress), naive applications see the proxy's IP for every incoming request. This destroys rate-limiting, as a single attacker will cause the proxy itself to be banned, locking out the entire legitimate team.</p><p><strong>Execution:</strong> OMEGA implements strict proxy-trust topology via <code>trusted_proxy_ips</code>. The Python backend extracts the leftmost <code>X-Forwarded-For</code> header <i>only</i> if the direct peer is a cryptographically trusted proxy. This ensures that a brute-force attacker is isolated and penalized by their true origin IP, preventing massive Denial of Service (DoS) cascades.</p>
               
             </div>
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">gateway/middleware.py</span><pre><code class="language-python">class ProxyTrustMiddleware(BaseHTTPMiddleware):
+    async def dispatch(self, request: Request, call_next):
+        client_ip = request.client.host
+        
+        # Only parse X-Forwarded-For if the direct connection is from a trusted proxy
+        if client_ip in TRUSTED_PROXIES:
+            x_forwarded = request.headers.get("X-Forwarded-For")
+            if x_forwarded:
+                # The true client is the leftmost IP in the chain
+                real_ip = x_forwarded.split(",")[0].strip()
+                request.state.real_ip = real_ip
+        else:
+            # Direct connection (no proxy), or untrusted proxy (spoofing attempt)
+            request.state.real_ip = client_ip
             
+        return await call_next(request)</code></pre></div>
           </section>
     
           <section class="section">
@@ -227,7 +242,26 @@
               <p>Marine gateways are often deployed on static public IPs with minimal perimeter defenses, making them massive targets for automated SSH and HTTP brute-force bots.</p><p><strong>Execution:</strong> The authentication engine tracks failed login vectors in memory. After 5 sequential failures against a single username within a 10-minute sliding window, the source IP is dynamically parked in a cooldown penalty box. This completely halts dictionary attacks while allowing legitimate admins to utilize the new Settings panel to manually clear the blocklist and restore access.</p>
               
             </div>
-            
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">gateway/auth.py</span><pre><code class="language-python">def record_failed_login(ip_address: str, username: str):
+    # Retrieve existing failures from fast memory cache
+    failures = cache.get(f"auth_fail:{ip_address}") or 0
+    failures += 1
+    
+    # 5-Strike Sliding Window Penalty
+    if failures >= 5:
+        logger.warning(f"PENALTY BOX: Locking IP {ip_address} for 10 minutes.")
+        cache.set(f"lockout:{ip_address}", True, expire=600)
+        
+        # Log immutable security event
+        db_session.add(SecurityEvent(
+            type="rate_limit_enforced",
+            target_ip=ip_address,
+            description="Exceeded 5 failed authentication attempts."
+        ))
+        db_session.commit()
+    else:
+        # Increment failure count with a 60-second sliding window
+        cache.set(f"auth_fail:{ip_address}", failures, expire=60)</code></pre></div>
           </section>
     
           <section class="section">

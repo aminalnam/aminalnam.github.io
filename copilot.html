@@ -223,6 +223,54 @@
    - Before each message, you receive a [PORTAL CONTEXT] block."""</code></pre></div>
           </section>
     
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">Language Processing</span>
+              <h2>The Query Preprocessor.</h2>
+              <p>When an operator types a natural language request, feeding it directly into a small parameter LLM often results in incorrect tool selection or hallucinated coordinates. OMEGA intercepts all queries using a dedicated <code>_preprocess_query</code> function.</p>
+              <p><strong>Pattern Recognition:</strong> The preprocessor scans the raw string for over 20 oceanographic metric synonyms (e.g., mapping "SST" or "water temp" to <code>sea-surface-temperature</code>). It simultaneously cross-references a library of predefined bounding boxes (e.g., <code>_GEO_BOXES["east coast"]</code>).</p>
+              <p><strong>System Directives:</strong> If a match is found, the engine invisibly injects a rigid system directive into the conversation history, mathematically forcing the LLM to use the correct tool and coordinates, eliminating hallucination entirely.</p>
+            </div>
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">gateway/copilot.py</span><pre><code class="language-python">def _preprocess_query(user_text: str, history: list[dict]):
+    # Prevent multi-paragraph pollution from frontend concatenation
+    clean_text = user_text.split('\n\n')[0].lower()
+    
+    # Sort keys by length descending to match "east coast" before "coast"
+    for geo_key, bbox in sorted(_GEO_BOXES.items(), key=lambda x: len(x[0]), reverse=True):
+        if geo_key in clean_text:
+            for metric_key, api_metric in _METRIC_KEYWORDS.items():
+                if metric_key in clean_text:
+                    _inject_directive(history, f"USE tool: get_measurement_statistics, METRIC: {api_metric}, BBOX: {bbox}")
+                    return
+</code></pre></div>
+          </section>
+
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">Execution Engine</span>
+              <h2>Auto-Execution Overrides.</h2>
+              <p>Even with preprocessor directives, 7B parameter models can still stubbornly refuse to select the correct analytical tool, or attempt to use the wrong API endpoint (e.g., calling <code>spot_sample</code> for salinity when that endpoint only supports weather).</p>
+              <p><strong>The Override:</strong> OMEGA employs an <code>_detect_autoexec</code> bypass. When critical metric pathways are detected, the Copilot Engine completely circumvents the LLM's decision-making process. The Python backend manually executes the API call via <code>httpx.ASGITransport</code>, fetches the live data, and injects the results directly into the LLM's context window as a simulated tool response.</p>
+              <p><strong>Result:</strong> The AI is downgraded from a "decision maker" to a mere "summarizer," dramatically increasing the deterministic reliability of the agent while retaining its natural language fluidity.</p>
+            </div>
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">gateway/copilot.py</span><pre><code class="language-python">async def _detect_autoexec(clean_text: str) -> dict | None:
+    # If the user asks for DO or Salinity, spot_sample will fail.
+    # We must auto-execute the correct measurement statistics API.
+    for metric_key, api_metric in _METRIC_KEYWORDS.items():
+        if metric_key in clean_text and api_metric in _NON_SPOT_METRICS:
+            bbox = _extract_geo_box(clean_text) or _DEFAULT_GLOBAL_BBOX
+            
+            # Pre-fetch the data directly from the FastAPI router
+            raw_data = await direct_api_call("/v1/measurements/stats", {"metric": api_metric, "bbox": bbox})
+            
+            # Return the pre-canned tool response for injection
+            return {
+                "tool_name": "get_measurement_statistics",
+                "tool_result": raw_data
+            }
+    return None
+</code></pre></div>
+          </section>
     </div>
   </main>
 

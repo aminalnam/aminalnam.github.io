@@ -194,7 +194,24 @@
 <p><strong>Offline Capabilities:</strong> To save highly constrained bandwidth when an operator is accessing the portal from a ship in the middle of the ocean, the frontend aggressively caches Mapbox Vector Tiles (MVT) in the browser's IndexedDB. This ensures the map loads instantly from local storage, without requiring external API calls over the satellite link.</p>
               <div class="callout"><strong>Vector Tile Caching</strong><p>To save bandwidth on disconnected operations, the frontend aggressively caches Mapbox Vector Tiles (MVT) in the browser's IndexedDB.</p></div>
             </div>
-            
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">web/src/components/MapEngine.tsx</span><pre><code class="language-typescript">map.addSource('fleet-telemetry', {
+    type: 'geojson',
+    data: 'https://gateway.omega/v1/fleet/live',
+    cluster: true,
+    clusterMaxZoom: 14, // Max zoom to cluster points on
+    clusterRadius: 50   // Radius of each cluster in pixels
+});
+
+map.addLayer({
+    id: 'clusters',
+    type: 'circle',
+    source: 'fleet-telemetry',
+    filter: ['has', 'point_count'],
+    paint: {
+        'circle-color': ['step', ['get', 'point_count'], '#3b82f6', 100, '#10b981', 750, '#f59e0b'],
+        'circle-radius': ['step', ['get', 'point_count'], 20, 100, 30, 750, 40]
+    }
+});</code></pre></div>
           </section>
     
           <section class="section">
@@ -206,7 +223,31 @@
 <p><strong>How it works:</strong> If the connection drops mid-poll—which happens constantly in the field—the browser simply catches the timeout error and attempts the next stateless request. There are no dropped connection pipelines to rebuild. This makes the UI incredibly resilient to spotty, high-packet-loss internet.</p>
               
             </div>
-            
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">web/src/hooks/useLongPoll.ts</span><pre><code class="language-typescript">export function useLongPoll(endpoint: string) {
+  useEffect(() => {
+    let isActive = true;
+    
+    const poll = async () => {
+      while (isActive) {
+        try {
+          // Timeout set to 30s. If server has no data, it holds request until timeout.
+          const response = await fetch(endpoint, { signal: AbortSignal.timeout(30000) });
+          if (response.ok) {
+            const data = await response.json();
+            dispatch(updateFleetState(data));
+          }
+        } catch (error) {
+          // Silent catch on AbortError (timeout) or network drop.
+          // The loop simply restarts instantly without breaking the UI.
+          await new Promise(resolve => setTimeout(resolve, 1000));
+        }
+      }
+    };
+    poll();
+    
+    return () => { isActive = false; };
+  }, [endpoint]);
+}</code></pre></div>
           </section>
     
           <section class="section">
@@ -218,7 +259,26 @@
 <p><strong>Operational Relevance:</strong> This tripartite state machine ensures the human operator has absolute, unambiguous clarity on the synchronization gap between the cloud servers and the physical ocean surface.</p>
               
             </div>
-            
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">web/src/types/MissionState.ts</span><pre><code class="language-typescript">export type SyncStatus = 'pending' | 'synced' | 'reported' | 'failed';
+
+export interface DigitalTwinCommand {
+  command_id: string;
+  target_node: string;
+  intent: string;
+  payload: any;
+  
+  // Tripartite State Tracker
+  // pending: UI clicked, waiting on network
+  // synced: Shore gateway confirmed receipt
+  // reported: Physical ASV confirmed execution over LoRa
+  status: SyncStatus;
+  
+  timestamps: {
+    requested_at: string;
+    synced_at?: string;
+    reported_at?: string;
+  };
+}</code></pre></div>
           </section>
     
           <section class="section">
