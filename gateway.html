@@ -161,6 +161,30 @@ PRAGMA cache_size=-64000;</code></pre></div>
 3. AMNESIA PREVENTION: You cannot "see" the user's screen.
    - Before each message, you receive a [PORTAL CONTEXT] block showing the user's current view."""</code></pre></div>
           </section>
+
+          <section class="section section-block" style="background: rgba(0,0,0,0.4);">
+            <span class="section-kicker">Architectural Theory</span>
+            <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Clean Architecture Principles.</h2>
+            <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">A monolithic Python script quickly becomes an unmaintainable nightmare. The OMEGA gateway strictly enforces a 3-tier architectural separation of concerns.</p>
+            
+            <div class="grid-3" style="margin-bottom: 2rem;">
+              <div class="panel" style="padding: 1.5rem;">
+                <span class="status-label status-implemented">Layer 1</span>
+                <h3 style="font-size: 1.2rem;">The Routers</h3>
+                <p style="font-size: 0.85rem;">Routers handle exactly one thing: HTTP mechanics. They parse the JSON payload, check the API tokens, and immediately pass the data down. They contain ZERO business logic.</p>
+              </div>
+              <div class="panel" style="padding: 1.5rem;">
+                <span class="status-label status-implemented">Layer 2</span>
+                <h3 style="font-size: 1.2rem;">The Services</h3>
+                <p style="font-size: 0.85rem;">The pure business logic layer. Services calculate bounding boxes, execute algorithms, and transform arrays. They do not know what an HTTP request is, nor do they know what a database is.</p>
+              </div>
+              <div class="panel" style="padding: 1.5rem;">
+                <span class="status-label status-implemented">Layer 3</span>
+                <h3 style="font-size: 1.2rem;">The Repositories</h3>
+                <p style="font-size: 0.85rem;">The only place in the codebase where SQL exists. If we ever swap SQLite for PostgreSQL, we only rewrite the Repository layer. The Routers and Services remain completely untouched.</p>
+              </div>
+            </div>
+          </section>
     
     </div>
   </main>

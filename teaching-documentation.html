@@ -121,6 +121,70 @@
             </div>
             
           </section>
+
+          <section class="section section-block" style="background: rgba(0,0,0,0.4);">
+            <span class="section-kicker">Software Architecture</span>
+            <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">The Asynchronous Gateway.</h2>
+            <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">Why do we use FastAPI and <code>asyncio</code> instead of Flask? When 50 nodes transmit LoRa packets at the exact same moment, the gateway must handle severe concurrency without locking up.</p>
+            
+            <div class="grid-3" style="margin-bottom: 2rem;">
+              <div class="panel" style="padding: 1.5rem;">
+                <span class="status-label status-implemented">ASGI Event Loop</span>
+                <h3 style="font-size: 1.2rem;">Non-Blocking I/O</h3>
+                <p style="font-size: 0.85rem;">Python's Global Interpreter Lock (GIL) prevents true multi-threading. By using <code>await</code>, the main thread can instantly pause a database write, ingest an urgent radio packet, and resume the write, preventing dropped telemetry.</p>
+              </div>
+              <div class="panel" style="padding: 1.5rem;">
+                <span class="status-label status-implemented">Type Hinting</span>
+                <h3 style="font-size: 1.2rem;">Pydantic Schemas</h3>
+                <p style="font-size: 0.85rem;">FastAPI relies on rigid Pydantic models. If a corrupted, half-transmitted RF packet hits the API, Pydantic throws an HTTP 422 immediately, preventing malformed JSON from crashing the router.</p>
+              </div>
+              <div class="panel" style="padding: 1.5rem;">
+                <span class="status-label status-implemented">Hardware Limits</span>
+                <h3 style="font-size: 1.2rem;">Thread Starvation</h3>
+                <p style="font-size: 0.85rem;">If we used synchronous threads (like Flask) on a Raspberry Pi, 50 simultaneous connections would starve the CPU context switcher. Async tasks use negligible RAM, easily scaling to thousands of connections.</p>
+              </div>
+            </div>
+          </section>
+
+          <section class="section section-block" style="background: rgba(0,0,0,0.4);">
+            <span class="section-kicker">Database Theory</span>
+            <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">SQLite WAL Concurrency.</h2>
+            <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">A standard SQLite database locks the entire file during a write transaction. If 50 nodes dump telemetry simultaneously, the database will throw a <code>database is locked</code> exception. OMEGA configures extreme SQLite PRAGMAs to bypass this.</p>
+            
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;">
+              <span class="panel-kicker">gateway/database.py PRAGMAs</span>
+              <pre><code class="language-sql">-- 1. Enable Write-Ahead Logging (WAL)
+-- This allows simultaneous Readers and one Writer by appending to a -wal file.
+PRAGMA journal_mode = WAL;
+
+-- 2. Drop synchronous mode from FULL to NORMAL
+-- The Pi SD card is incredibly slow. We accept a tiny risk of data loss on sudden power failure to gain a 10x write speed boost.
+PRAGMA synchronous = NORMAL;
+
+-- 3. Increase memory-mapped cache
+-- Allow SQLite to use 64MB of RAM before flushing to the slow SD card.
+PRAGMA mmap_size = 67108864;</code></pre>
+            </div>
+          </section>
+
+          <section class="section section-block" style="background: rgba(0,0,0,0.4);">
+            <span class="section-kicker">Frontend Theory</span>
+            <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">React & The DOM.</h2>
+            <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">When a WebSocket pumps 10 incoming telemetry packets per second into the Mission Portal, a naive React app will re-render the entire DOM 10 times a second, freezing the user's browser.</p>
+            
+            <div class="grid-3" style="margin-bottom: 2rem;">
+              <div class="panel" style="padding: 1.5rem;">
+                <span class="status-label status-implemented">State Hydration</span>
+                <h3 style="font-size: 1.2rem;">React Context</h3>
+                <p style="font-size: 0.85rem;">The WebSocket listener dumps raw JSON directly into a React Context provider. Only specific components (like the voltage dial) subscribe to that specific slice of state, isolating the re-renders.</p>
+              </div>
+              <div class="panel" style="padding: 1.5rem;">
+                <span class="status-label status-implemented">Debouncing</span>
+                <h3 style="font-size: 1.2rem;">Throttle Hooks</h3>
+                <p style="font-size: 0.85rem;">If a node dumps a backlog of 500 queued points, the React <code>useThrottle</code> hook mathematically limits the visual map updates to 1 FPS, preventing the GPU from locking up while processing the GeoJSON.</p>
+              </div>
+            </div>
+          </section>
     
     </div>
   </main>

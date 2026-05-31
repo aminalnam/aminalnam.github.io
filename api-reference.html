@@ -125,34 +125,65 @@
           <section class="section">
             <div class="section-content">
               <span class="section-kicker">API Reference</span>
-              <h2>/v1/network Routers.</h2>
-              <p>The <code>main.py</code> API router acts as the central nervous system for the portal UI. It exposes endpoints like <code>/v1/network/remote-access</code> and <code>/v1/network/mesh-topology</code>.</p>
-<p><strong>Relevance:</strong> These specific endpoints do not return sensor data; they return the live mathematical graph definitions of the RF environment itself. This allows the Mission Portal to draw the exact Signal-to-Noise Ratio (SNR) and RSSI edges between floating relay nodes, allowing the operator to visually identify weak links in the mesh topology before a node drops entirely offline.</p>
-              
+              <h2>/v1/network/telemetry.</h2>
+              <p>The <code>/v1/network</code> router acts as the central nervous system. The telemetry endpoint does not just dump database rows; it mathematically filters by GeoJSON bounding boxes to prevent massive data egress.</p>
+              <p><strong>Relevance:</strong> By passing bounding parameters, operators retrieve only the telemetry actively generated within a specific operational theater.</p>
             </div>
-            
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;">
+              <span class="panel-kicker">cURL Execution: Fetch Bounding Box</span>
+              <pre><code class="language-bash">curl -X 'GET' \
+  'http://omega.local:8000/v1/network/telemetry?min_lat=36.0&max_lat=37.0&min_lon=-123.0&max_lon=-122.0' \
+  -H 'accept: application/json' \
+  -H 'X-OMEGA-API-Key: ops-token-123'</code></pre>
+            </div>
           </section>
     
           <section class="section">
             <div class="section-content">
               <span class="section-kicker">API Reference</span>
-              <h2>/v1/control Routers.</h2>
-              <p>The <code>/v1/control/commands</code> namespace is the most dangerous endpoint in the gateway. Strictly guarded by the <code>X-OMEGA-API-Key</code>, this router pushes imperative, physical commands directly into the DTN outbox.</p>
-<p><strong>Execution:</strong> An operator hitting this API can execute massive remote operations: triggering firmware OTA drops to 50 buoys simultaneously, altering the high-frequency sampling intervals of a remote sensor, or commanding an underwater modem to transmit a JANUS acoustic payload to a submerged ROV. It is the absolute command-and-control conduit.</p>
-              
+              <h2>/v1/control/intents/dispatch.</h2>
+              <p>The <code>/v1/control</code> namespace is strictly guarded by the <code>X-OMEGA-API-Key</code>. This router pushes imperative, physical commands directly into the DTN outbox.</p>
+              <p><strong>Execution:</strong> By dispatching an intent, the gateway handles all the low-level CBOR serialization and LoRa CSMA-CA timing, asynchronously firing the configuration to the remote buoy.</p>
             </div>
-            
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;">
+              <span class="panel-kicker">cURL Execution: Dispatch Configuration</span>
+              <pre><code class="language-bash">curl -X 'POST' \
+  'http://omega.local:8000/v1/control/intents/dispatch' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -H 'X-OMEGA-API-Key: ops-token-123' \
+  -d '{
+  "target_node_id": "urn:omega:node:buoy-alpha",
+  "intent_type": "SET_SAMPLING_RATE",
+  "parameters": {
+    "rate_seconds": 600
+  }
+}'</code></pre>
+            </div>
           </section>
     
           <section class="section">
             <div class="section-content">
               <span class="section-kicker">API Reference</span>
-              <h2>/v1/science Routers.</h2>
+              <h2>/v1/science/qc-eval.</h2>
               <p>The science namespace provides raw, unfiltered access to the gateway's analytical pipeline. Oceanographers do not need to use the visual map portal; they can interact programmatically with the gateway.</p>
-<p><strong>Operational Use:</strong> A Python script can hit the <code>/v1/science/qc-eval</code> endpoint with a massive CSV batch of raw time-series data. The gateway will run the dataset through the QARTOD engine and return a fully labeled dataset featuring robust sigma flags, flat-line detection parameters, and statistical deviations, providing massive computational power to external researchers.</p>
-              
+              <p><strong>Operational Use:</strong> A Python script can hit this endpoint with a massive JSON array of raw time-series data. The gateway runs the dataset through the QARTOD engine and returns a fully labeled dataset featuring robust sigma flags.</p>
             </div>
-            
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;">
+              <span class="panel-kicker">cURL Execution: QARTOD Quality Control</span>
+              <pre><code class="language-bash">curl -X 'POST' \
+  'http://omega.local:8000/v1/science/qc-eval' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -H 'X-OMEGA-API-Key: ops-token-123' \
+  -d '{
+  "metric_id": "water_temperature_celsius",
+  "timeseries": [15.2, 15.3, 15.4, 99.9, 15.3]
+}'
+
+# Returns:
+# {"flags": [1, 1, 1, 4, 1]} # Where '4' indicates a catastrophic sensor failure</code></pre>
+            </div>
           </section>
     
           <section class="section">

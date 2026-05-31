@@ -169,6 +169,25 @@
   }
 }</code></pre></div>
           </section>
+
+          <section class="section section-block" style="background: rgba(0,0,0,0.4);">
+            <span class="section-kicker">Data Theory</span>
+            <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">CBOR vs JSON Compression.</h2>
+            <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">The JSON envelope above is mathematically huge (~450 bytes) due to structural characters like quotes, spaces, and brackets. If transmitted over LoRa, it would consume dangerous amounts of airtime.</p>
+            
+            <div class="grid-2" style="margin-bottom: 2rem;">
+              <div class="panel" style="padding: 1.5rem;">
+                <span class="status-label status-implemented">Standard JSON (450 Bytes)</span>
+                <pre><code class="language-json">{"battery-voltage": {"u": "V", "v": 3.92}}</code></pre>
+                <p style="font-size: 0.85rem; margin-top: 1rem;">The JSON representation explicitly spells out every key. The string <code>"battery-voltage"</code> alone costs 15 bytes of payload capacity.</p>
+              </div>
+              <div class="panel" style="padding: 1.5rem;">
+                <span class="status-label status-implemented">CBOR Hex (92 Bytes)</span>
+                <pre><code class="language-text">0xa2 0x01 0x82 0xa2 0x02 0x03 0x03 0xfb 0x40 0x0f 0x5c ...</code></pre>
+                <p style="font-size: 0.85rem; margin-top: 1rem;">The <code>lora_cbor_bridge.py</code> crushes the string keys into integers (e.g., <code>1</code> = battery) and packs the floats into strict IEEE 754 binaries, mathematically reducing the payload by over 75%.</p>
+              </div>
+            </div>
+          </section>
     
     </div>
   </main>

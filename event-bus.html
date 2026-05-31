@@ -118,6 +118,25 @@
             </div>
             
           </section>
+
+          <section class="section section-block" style="background: rgba(0,0,0,0.4);">
+            <span class="section-kicker">Architectural Theory</span>
+            <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">The Pub/Sub Pattern.</h2>
+            <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">A monolithic architecture is incredibly fragile. If the Python script receiving radio packets directly calls the database <code>insert()</code> function, a slow SD card write will physically block the processor from receiving the next radio packet, dropping critical telemetry.</p>
+            
+            <div class="grid-2" style="margin-bottom: 2rem;">
+              <div class="panel" style="padding: 1.5rem;">
+                <span class="status-label status-implemented">Producers (Publishers)</span>
+                <h3 style="font-size: 1.2rem;">The Radio Receiver</h3>
+                <p style="font-size: 0.85rem;">The receiver script does exactly one thing: it parses raw bytes from the UART serial bus. Once verified, it blindly fires an <code>emit("telemetry.received", payload)</code> event onto the memory bus and immediately returns to listening for the next radio packet.</p>
+              </div>
+              <div class="panel" style="padding: 1.5rem;">
+                <span class="status-label status-implemented">Consumers (Subscribers)</span>
+                <h3 style="font-size: 1.2rem;">The Database Writer</h3>
+                <p style="font-size: 0.85rem;">Completely decoupled from the radio, the database writer script runs in an infinite <code>asyncio</code> loop, pulling payloads off the memory bus at its own speed and writing them to SQLite. If the database locks up, the memory queue simply grows, but no live RF packets are ever dropped.</p>
+              </div>
+            </div>
+          </section>
     
     </div>
   </main>
