@@ -14,6 +14,69 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌊</text></svg>">
   
   <link rel="stylesheet" href="style.css">
+  <style>
+    .tour-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(8px);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+    .tour-overlay.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .tour-modal {
+      background: rgba(20, 32, 51, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      border-radius: 12px;
+      padding: 2.5rem;
+      max-width: 500px;
+      text-align: center;
+      transform: translateY(20px);
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .tour-overlay.visible .tour-modal {
+      transform: translateY(0);
+    }
+    .tour-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+    .tour-title {
+      font-size: 1.5rem;
+      color: #fff;
+      margin-bottom: 1rem;
+      letter-spacing: 0.02em;
+    }
+    .tour-text {
+      color: var(--ink-soft);
+      line-height: 1.6;
+      margin-bottom: 2rem;
+      font-size: 0.95rem;
+    }
+    .tour-btn {
+      background: var(--accent-ocean);
+      color: #fff;
+      border: none;
+      padding: 0.75rem 2rem;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .tour-btn:hover {
+      background: #2563eb;
+    }
+  </style>
 </head>
 <body style="margin: 0; overflow: hidden; display: flex; flex-direction: column; height: 100vh;">
   <header class="topbar" style="flex-shrink: 0; z-index: 10;">
@@ -31,66 +94,66 @@
         <a href="proof-lab.html" class="is-current" style="color: var(--accent-ocean); font-weight: 600; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.05em;">Proof Lab</a>
         
         <div class="dropdown">
-          <button class="dropbtn">Core &#9662;</button>
+          <button class="dropbtn">Hardware & Physics &#9662;</button>
           <div class="dropdown-content">
-            <a href="getting-started.html">Getting Started</a>
-            <a href="system-architecture.html">System Architecture</a>
-            <a href="gateway.html">Gateway</a>
-            <a href="mesh-core.html">Mesh Core</a>
-            <a href="security.html">Security & RBAC</a>
+            <a href="hardware.html">Hardware & Firmware</a>
+            <a href="power-systems.html">Power & Thermodynamics</a>
+            <a href="mechanical-engineering.html">Mechanical & Buoyancy</a>
+            <a href="rf-physics.html">RF Physics & Propagation</a>
+            <a href="biofouling.html">Marine Biology (Fouling)</a>
             <a href="edge-nodes.html">Edge Nodes</a>
           </div>
         </div>
         
         <div class="dropdown">
-          <button class="dropbtn">Tools &#9662;</button>
+          <button class="dropbtn">Software & Arch &#9662;</button>
           <div class="dropdown-content">
-            <a href="mission-portal.html">Mission Portal</a>
-            <a href="janus-acoustic.html">JANUS Acoustics</a>
-            <a href="simulation.html">Simulation</a>
-            <a href="bathymetry.html">Bathymetry</a>
-            <a href="cloud-infrastructure.html">Cloud Infrastructure</a>
-          </div>
-        </div>
-        
-        <div class="dropdown">
-          <button class="dropbtn">Systems &#9662;</button>
-          <div class="dropdown-content">
-            <a href="rf-physics.html">RF Physics & Propagation</a>
-            <a href="hardware.html">Hardware & Firmware</a>
-            <a href="power-systems.html">Power & Thermodynamics</a>
-            <a href="mechanical-engineering.html">Mechanical & Buoyancy</a>
-            <a href="biofouling.html">Marine Biology (Fouling)</a>
+            <a href="system-architecture.html">System Architecture</a>
+            <a href="gateway.html">Gateway</a>
+            <a href="mesh-core.html">Mesh Core</a>
             <a href="software-decisions.html">Software Architecture</a>
             <a href="event-bus.html">Event Bus & Watches</a>
-            <a href="copilot.html">Honu AI Copilot</a>
+            <a href="security.html">Security & RBAC</a>
           </div>
         </div>
 
         <div class="dropdown">
-          <button class="dropbtn">Data &#9662;</button>
+          <button class="dropbtn">Data & AI &#9662;</button>
           <div class="dropdown-content">
             <a href="analytics.html">Analytics Pipeline</a>
+            <a href="copilot.html">Honu AI Copilot</a>
             <a href="machine-learning.html">Machine Learning</a>
             <a href="qc-eval.html">Data Quality (QARTOD)</a>
+            <a href="bathymetry.html">Bathymetry</a>
             <a href="calibration.html">Sensor Calibration</a>
-            <a href="data-providers.html">Data Providers</a>
             <a href="economic-model.html">Economic Model</a>
+          </div>
+        </div>
+        
+        <div class="dropdown">
+          <button class="dropbtn">Tools & API &#9662;</button>
+          <div class="dropdown-content">
+            <a href="mission-portal.html">Mission Portal</a>
+            <a href="janus-acoustic.html">JANUS Acoustics</a>
+            <a href="simulation.html">Simulation</a>
+            <a href="data-providers.html">Data Providers</a>
             <a href="external-data.html">External Integrations</a>
             <a href="examples.html">Data Examples</a>
+            <a href="cloud-infrastructure.html">Cloud Infrastructure</a>
             <a href="api-reference.html">API Reference</a>
           </div>
         </div>
         
         <div class="dropdown">
-          <button class="dropbtn">Docs &#9662;</button>
+          <button class="dropbtn">Guides & Ops &#9662;</button>
           <div class="dropdown-content">
-            <a href="manifesto.html">The Manifesto</a>
-            <a href="teaching-documentation.html">Education & Guides</a>
+            <a href="getting-started.html">Getting Started</a>
             <a href="build-guide.html">Build Guide</a>
             <a href="deployment-scenarios.html">Deployment Scenarios</a>
             <a href="marine-operations.html">Marine Operations</a>
+            <a href="teaching-documentation.html">Education & Guides</a>
             <a href="compliance.html">Legal & Compliance</a>
+            <a href="manifesto.html">The Manifesto</a>
             <a href="roadmap.html">Roadmap</a>
           </div>
         </div>
@@ -101,7 +164,37 @@
   <main style="flex-grow: 1; position: relative;">
     <iframe src="prooflab-site/dashboard.html" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;"></iframe>
   </main>
+
+  <div id="tourOverlay" class="tour-overlay">
+    <div class="tour-modal">
+      <div class="tour-icon">🔬</div>
+      <h2 class="tour-title">Welcome to Proof Lab</h2>
+      <p class="tour-text">
+        This is the <strong>Evidence Control Center</strong>. Proof Lab runs deterministic evaluations against OMEGA's hardware and software pipelines, benchmarking live ingest rates, validating QA matrices, and tracking stability regressions over time.
+      </p>
+      <button id="tourStartBtn" class="tour-btn">Start Exploring</button>
+    </div>
+  </div>
   
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const tourOverlay = document.getElementById('tourOverlay');
+      const tourStartBtn = document.getElementById('tourStartBtn');
+      
+      // Check if user has already seen the tour
+      if (!localStorage.getItem('proofLabTourSeen')) {
+        // Show modal after a brief delay for smooth effect
+        setTimeout(() => {
+          tourOverlay.classList.add('visible');
+        }, 300);
+      }
+      
+      tourStartBtn.addEventListener('click', () => {
+        tourOverlay.classList.remove('visible');
+        localStorage.setItem('proofLabTourSeen', 'true');
+      });
+    });
+  </script>
   <script src="main.js"></script>
 </body>
 </html>

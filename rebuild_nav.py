@@ -1,38 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8"/>
-  <meta content="width=device-width, initial-scale=1" name="viewport"/>
-  <title>OMEGA — API Reference</title>
-  
-  <meta name="description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
-  <meta property="og:title" content="OMEGA — API Reference" />
-  <meta property="og:description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://jonathancapone.com/api-reference.html" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="OMEGA — API Reference" />
-  <meta name="twitter:description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
-  
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌊</text></svg>">
-  
-  <link rel="stylesheet" href="style.css">
-  <script type="module">
-    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
-    mermaid.initialize({ startOnLoad: true, theme: 'dark', themeVariables: { fontFamily: 'Inter' } });
-  </script>
-</head>
-<body>
-  <header class="topbar">
-    <div class="wrap topbar-inner">
-      <a class="brand" href="index.html" style="display: flex; align-items: center; gap: 0.75rem;">
-        <img src="assets/images/logo.png" alt="OMEGA Logo" style="height: 48px; width: auto; object-fit: contain;">
-        <div>
-          <span class="brand-title" style="letter-spacing: 0.05em;">OMEGA</span>
-          <span class="brand-sub">Technical Portfolio</span>
-        </div>
-      </a>
-      <nav class="nav" aria-label="Main Navigation">
+import os
+import re
+
+NAV_TEMPLATE = """      <nav class="nav" aria-label="Main Navigation">
         <a href="index.html">Home</a>
         <a href="overview.html">Overview</a>
         <a href="proof-lab.html" style="color: var(--accent-ocean); font-weight: 600; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.05em;">Proof Lab</a>
@@ -84,7 +53,7 @@
             <a href="external-data.html">External Integrations</a>
             <a href="examples.html">Data Examples</a>
             <a href="cloud-infrastructure.html">Cloud Infrastructure</a>
-            <a href="api-reference.html" class="is-current">API Reference</a>
+            <a href="api-reference.html">API Reference</a>
           </div>
         </div>
         
@@ -101,34 +70,38 @@
             <a href="roadmap.html">Roadmap</a>
           </div>
         </div>
-      </nav>
-    </div>
-  </header>
+      </nav>"""
 
-  <section class="hero wrap">
-    <span class="eyebrow">Documentation</span>
-    <h1>API Reference</h1>
-    <p>FastAPI endpoints and OpenAPI schemas.</p>
-    <div class="hero-actions">
-      <a class="btn btn-primary" href="https://github.com/aminalnam/OMEGA" target="_blank">View OMEGA on GitHub</a>
-      <a class="btn btn-secondary" href="https://jonathancapone.art" target="_blank">Art Portfolio</a>
-    </div>
-  </section>
+def rebuild_nav(directory="."):
+    for root, _, files in os.walk(directory):
+        if "prooflab-site" in root:
+            continue
+        for file in files:
+            if file.endswith(".html"):
+                file_path = os.path.join(root, file)
+                
+                with open(file_path, "r", encoding="utf-8") as f:
+                    content = f.read()
 
-  <main class="main-shell wrap" role="main">
-    <div class="main-inner">
+                # Find the old nav block
+                nav_pattern = re.compile(r'^[ \t]*<nav.*?class="nav".*?</nav>', re.DOTALL | re.MULTILINE | re.IGNORECASE)
+                
+                if nav_pattern.search(content):
+                    # Customize template for current file
+                    custom_nav = re.sub(
+                        r'(href="' + re.escape(file) + r'")',
+                        r'\1 class="is-current"',
+                        NAV_TEMPLATE
+                    )
+                    
+                    new_content = nav_pattern.sub(custom_nav, content)
+                    
+                    if new_content != content:
+                        with open(file_path, "w", encoding="utf-8") as f:
+                            f.write(new_content)
+                        print(f"Rebuilt nav in {file}")
+                else:
+                    print(f"Warning: No nav found in {file}")
 
-          <section class="section" style="padding: 0; background: #fff; min-height: 800px; border-radius: 8px; overflow: hidden; margin-top: 2rem;">
-            <redoc spec-url="openapi.json" theme='{"colors":{"primary":{"main":"#10b981"}},"typography":{"fontFamily":"Inter, sans-serif"}}'></redoc>
-            <script src="https://cdn.redoc.ly/redoc/latest/bundles/redoc.standalone.js"></script>
-          </section>
-    
-    </div>
-  </main>
-
-  <footer class="footer wrap">
-    <span>© Jonathan Capone — Technical Portfolio. OMEGA (formerly OMEGA-wave).</span>
-  </footer>
-  <script src="main.js"></script>
-</body>
-</html>
+if __name__ == "__main__":
+    rebuild_nav()
