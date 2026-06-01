@@ -4,9 +4,8 @@ import re
 import shutil
 from pathlib import Path
 
-SOURCE_JSON = r"C:\Users\jdcap\OneDrive\Documents\OMEGA Proof\omega-proof-lab\.prooflab\site\data.json"
-TARGET_DIR = Path(__file__).parent / "data"
-TARGET_JS = TARGET_DIR / "prooflab_data.js"
+SOURCE_SITE_DIR = r"C:\Users\jdcap\OneDrive\Documents\OMEGA Proof\omega-proof-lab\.prooflab\site"
+TARGET_SITE_DIR = Path(__file__).parent / "prooflab-site"
 
 def sanitize_json(data):
     """Recursively sanitize absolute Windows paths to prevent leaking PII."""
@@ -15,8 +14,6 @@ def sanitize_json(data):
     elif isinstance(data, list):
         return [sanitize_json(v) for v in data]
     elif isinstance(data, str):
-        # Match standard Windows paths and replace with a generic path
-        # e.g., C:\Users\jdcap\OneDrive\Documents\OMEGA Proof\... -> <OMEGA-PROOF-ENV>/\...
         sanitized = re.sub(
             r'[A-Za-z]:\\[^"]*OMEGA Proof',
             '<OMEGA-PROOF-ENV>',
@@ -28,23 +25,32 @@ def sanitize_json(data):
         return data
 
 def main():
-    if not os.path.exists(SOURCE_JSON):
-        print(f"Error: Could not find Proof Lab data at {SOURCE_JSON}")
+    if not os.path.exists(SOURCE_SITE_DIR):
+        print(f"Error: Could not find Proof Lab site at {SOURCE_SITE_DIR}")
         return
 
-    print("Loading Proof Lab data...")
-    with open(SOURCE_JSON, "r", encoding="utf-8") as f:
-        data = json.load(f)
+    print(f"Syncing Proof Lab site from {SOURCE_SITE_DIR} to {TARGET_SITE_DIR}...")
+    
+    # Remove existing target to ensure clean copy
+    if os.path.exists(TARGET_SITE_DIR):
+        shutil.rmtree(TARGET_SITE_DIR)
+        
+    # Copy directory tree
+    shutil.copytree(SOURCE_SITE_DIR, TARGET_SITE_DIR)
+    print("Site files copied successfully.")
 
-    print("Sanitizing local file paths...")
-    clean_data = sanitize_json(data)
-
-    os.makedirs(TARGET_DIR, exist_ok=True)
-
-    print(f"Writing to {TARGET_JS}...")
-    with open(TARGET_JS, "w", encoding="utf-8") as f:
-        f.write("window.proofLabData = " + json.dumps(clean_data, indent=2) + ";\n")
-
+    # Sanitize data.json inside the copied directory
+    target_data_json = TARGET_SITE_DIR / "data.json"
+    if os.path.exists(target_data_json):
+        print("Sanitizing data.json...")
+        with open(target_data_json, "r", encoding="utf-8") as f:
+            data = json.load(f)
+            
+        clean_data = sanitize_json(data)
+        
+        with open(target_data_json, "w", encoding="utf-8") as f:
+            json.dump(clean_data, f, indent=2)
+            
     print("Sync complete.")
 
 if __name__ == "__main__":
