@@ -36,6 +36,7 @@
         <div class="dropdown">
           <button class="dropbtn">Core &#9662;</button>
           <div class="dropdown-content">
+            <a href="system-architecture.html">System Architecture</a>
             <a href="gateway.html">Gateway</a>
             <a href="mesh-core.html">Mesh Core</a>
                         <a href="security.html">Security & RBAC</a>
@@ -92,7 +93,7 @@
     <p>Deep dive into the T-Beam Supreme, Mapping ROVs, and Relay architectures.</p>
     <div class="hero-actions">
       <a class="btn btn-primary" href="https://github.com/aminalnam/OMEGA" target="_blank">View OMEGA on GitHub</a>
-      <a class="btn btn-secondary" href="index.html">Back to Portfolio</a>
+      <a class="btn btn-secondary" href="https://jonathancapone.art" target="_blank">Art Portfolio</a>
     </div>
   </section>
 
@@ -180,6 +181,15 @@
               </div>
             </div>
           </section>
+          
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">Active Cooling</span>
+              <h2>Thermal Management & TX-Burst Fan Control.</h2>
+              <p>For extreme-range shore nodes utilizing the <strong>T-Beam 1W</strong> or custom High Power Amplifiers (HPA) pushing +30 dBm, passive cooling is insufficient. Sustained transmissions at 1 Watt of RF power will rapidly thermally throttle or permanently damage the silicon.</p>
+              <p>OMEGA firmware implements dynamic <strong>TX-Burst Fan Control</strong>. Utilizing maximum GPIO drive strength, the ESP32-S3 physically spins up an external cooling fan seconds before a scheduled transmission burst, and spins it down immediately after the LoRa packet clears the antenna. This active thermal management guarantees silicon safety during full-power mesh operation while strictly preserving the power budget during deep sleep.</p>
+            </div>
+          </section>
     
           <section class="section">
             <div class="section-content">
@@ -213,6 +223,9 @@
               <h2>LoRa Relay Nodes.</h2>
               <p>The <code>firmware/lora_relay_node/</code> profile acts purely as a transparent, "dumb" repeater in the Delay Tolerant Network. By stripping away all sensor and GNSS logic, the firmware focuses 100% of CPU time on listening for faint LoRa chirps.</p>
               <p>These nodes execute the <code>omega_lora_protocol.h</code> collision-avoidance (CSMA-CA) algorithms to catch weak packets bouncing over the waves, buffer them in RAM, and cleanly blast them out at +22dBm, effectively extending the mesh network's range over the horizon.</p>
+            </div>
+            <div class="section-visual">
+              <img src="assets/images/buoy.png" alt="Rugged LoRa Relay Buoy floating in stormy sea" style="margin-top: 1rem;">
             </div>
           </section>
     
@@ -248,5 +261,6 @@
   <footer class="footer wrap">
     <span>© Jonathan Capone — Technical Portfolio. OMEGA (formerly OMEGA-wave).</span>
   </footer>
+  <script src="main.js"></script>
 </body>
 </html>

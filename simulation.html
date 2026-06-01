@@ -36,6 +36,7 @@
         <div class="dropdown">
           <button class="dropbtn">Core &#9662;</button>
           <div class="dropdown-content">
+            <a href="system-architecture.html">System Architecture</a>
             <a href="gateway.html">Gateway</a>
             <a href="mesh-core.html">Mesh Core</a>
                         <a href="security.html">Security & RBAC</a>
@@ -56,6 +57,7 @@
         <div class="dropdown">
           <button class="dropbtn">Systems &#9662;</button>
           <div class="dropdown-content">
+            <a href="rf-physics.html">RF Physics & Propagation</a>
             <a href="hardware.html">Hardware & Firmware</a>
             <a href="event-bus.html">Event Bus & Watches</a>
             <a href="copilot.html">Honu AI Copilot</a>
@@ -92,7 +94,7 @@
     <p>Synthetic data generation and Digital Twins.</p>
     <div class="hero-actions">
       <a class="btn btn-primary" href="https://github.com/aminalnam/OMEGA" target="_blank">View OMEGA on GitHub</a>
-      <a class="btn btn-secondary" href="index.html">Back to Portfolio</a>
+      <a class="btn btn-secondary" href="https://jonathancapone.art" target="_blank">Art Portfolio</a>
     </div>
   </section>
 
@@ -104,7 +106,7 @@
               <span class="section-kicker">Synthetic Generation</span>
               <h2>Procedural Time-Step Environments.</h2>
               <p>Deploying a massive mesh network without testing is catastrophic. The <code>simulator.py</code> module spawns thousands of virtual "Digital Twins" that run the exact same networking logic as the physical edge nodes.</p>
-<p><strong>Procedural Generation:</strong> The Python engine dynamically generates synthetic nodes that mathematically drift according to fluid dynamics models. Each tick of the event loop evaluates the Haversine distance and RSSI dropoff between all virtual nodes. If Node A drifts out of range of Node B, the simulator physically severs the virtual connection, forcing the Mesh Core to dynamically recalculate its Delay Tolerant routing tables. This allows developers to stress-test the FastAPI event loop with 10,000 concurrent CBOR packets before touching actual hardware.</p>
+<p><strong>Procedural Generation:</strong> The Python engine dynamically generates synthetic nodes that mathematically drift according to fluid dynamics models. Each tick of the event loop evaluates the Haversine distance and RSSI dropoff between all virtual nodes. If Node A drifts out of range of Node B, the simulator physically severs the virtual connection, forcing the Mesh Core to dynamically recalculate its Delay Tolerant routing tables. This allows developers to stress-test the FastAPI event loop with 10,000 concurrent Custom Binary TLV packets before touching actual hardware.</p>
               
             </div>
             <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">gateway/simulator.py</span><pre><code class="language-python">async def tick_digital_twins(twins: list[DigitalTwin], mesh_router: MeshRouter):
@@ -124,23 +126,73 @@
         await mesh_router.update_topology(node.uuid, visible_peers)</code></pre></div>
           </section>
     
-          <section class="section">
-            <div class="section-content">
-              <span class="section-kicker">Network Planning</span>
-              <h2>Monte Carlo Relay Drop Analysis.</h2>
-              <p>Deploying physical hardware into the ocean is incredibly expensive. Before a remote sensor physically drops a floating LoRa relay buoy into the water to extend the mesh network, the operational team must mathematically prove the drop zone is viable.</p>
-<p>The simulation harness runs thousands of <strong>Monte Carlo physics models</strong>. It ingests historical Copernicus wind and tidal current datasets, and simulates the physical drift of the unpowered relay buoy over 72 hours. It calculates the exact GPS coordinate to drop the relay, maximizing the statistical probability that the drifting relay will remain within RF line-of-sight (approx 15km) of both the shore gateway and the moving edge node for the duration of the mission.</p>
-              
+          <section class="section section-block" style="background: rgba(0,0,0,0.4);">
+            <span class="section-kicker">Physics Algorithms</span>
+            <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Time-Dilation Synchronization.</h2>
+            <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">Simulating the 3D fluid dynamics of ocean currents for 10,000 virtual buoys requires immense CPU power. If the Python simulator's clock falls behind the physical real-time clock, simulated telemetry collisions will become mathematically inaccurate.</p>
+            
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;">
+              <span class="panel-kicker">Time Dilation Loop</span>
+              <pre><code class="language-mermaid">sequenceDiagram
+    participant S as Sim Clock (Tick 1)
+    participant P as Python Physics Engine
+    participant DB as Virtual SQLite Matrix
+    participant R as Real-Time Clock
+    
+    S->>P: Calculate 10k buoy drift (dt=1s)
+    P->>DB: Apply fluid dynamic drag & update GPS
+    DB-->>P: Matrix Updated
+    P->>R: Request Wall-Clock Time
+    R-->>P: "1.2 seconds elapsed"
+    P->>P: CPU constraint detected!
+    P->>S: Halt Sim Clock. Engage Time Dilation.
+    S-->>S: Pause physics until real-time catches up.</code></pre>
             </div>
             
+            <p style="margin-top: 2rem;"><strong>Execution:</strong> The simulator implements a strict "Time Dilation" algorithm. It constantly queries the hardware wall-clock. If the Python engine requires 1.2 seconds to calculate 1.0 seconds of virtual physics, the engine will automatically pause the synthetic ocean, waiting until the real-world clock mathematically aligns, ensuring 100% deterministic reproducibility for routing table analysis.</p>
           </section>
     
           <section class="section">
             <div class="section-content">
               <span class="section-kicker">Embedded Physics</span>
               <h2>Hardware-in-the-Loop (HITL).</h2>
-              <p>Pure software simulation cannot expose obscure RTOS memory leaks or I2C bus lockups. OMEGA supports full <strong>Hardware-in-the-Loop (HITL)</strong> bridging.</p>
-              <p><strong>Execution:</strong> Developers can plug 5 physical ESP32 boards into a powered USB hub on their desk. The simulator logically injects these 5 physical chips into a massive 10,000-node virtual matrix running in the cloud. The physical boards "believe" they are deployed in the ocean, processing synthetic sensor data generated by the simulator and transmitting actual LoRa packets, which are mathematically attenuated by the simulator's synthetic distance algorithms. This exposes obscure hardware bugs before the silicon ever touches saltwater.</p>
+              <p>Pure software simulation cannot expose obscure RTOS memory leaks or I2C bus lockups. OMEGA supports full <strong>Hardware-in-the-Loop (HITL)</strong> bridging, allowing actual silicon chips to interface mathematically with the virtual ocean matrix.</p>
+              
+              <div class="markdown-table-wrapper" style="margin: 2rem 0; overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                  <thead>
+                    <tr style="border-bottom: 2px solid var(--ink-soft); color: var(--ink);">
+                      <th style="padding: 1rem;">Metric</th>
+                      <th style="padding: 1rem;">Pure Software Emulation</th>
+                      <th style="padding: 1rem;">HITL (Physical ESP32)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr style="border-bottom: 1px solid var(--line);">
+                      <td style="padding: 1rem;">Execution Speed</td>
+                      <td style="padding: 1rem;">10,000x Real-Time</td>
+                      <td style="padding: 1rem;">Strict 1.0x Real-Time</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid var(--line);">
+                      <td style="padding: 1rem;">Hardware Constraints</td>
+                      <td style="padding: 1rem;">Infinite Cloud RAM</td>
+                      <td style="padding: 1rem;">Strict 520 KB SRAM limit</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid var(--line);">
+                      <td style="padding: 1rem;">Packet Fidelity</td>
+                      <td style="padding: 1rem;">Synthetic UUIDs</td>
+                      <td style="padding: 1rem;">Cryptographically Signed TLV</td>
+                    </tr>
+                    <tr>
+                      <td style="padding: 1rem;">Primary Use Case</td>
+                      <td style="padding: 1rem;">Routing Table Optimization</td>
+                      <td style="padding: 1rem;">Firmware Regression Testing</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              
+              <p><strong>Execution:</strong> Developers plug 5 physical ESP32 boards into a powered USB hub. The simulator logically injects these physical chips into the cloud matrix. The physical boards "believe" they are deployed in the ocean, processing synthetic sensor data and transmitting actual LoRa packets. This exposes obscure memory fragmentation bugs before the silicon ever touches saltwater.</p>
             </div>
           </section>
     
@@ -150,5 +202,6 @@
   <footer class="footer wrap">
     <span>© Jonathan Capone — Technical Portfolio. OMEGA (formerly OMEGA-wave).</span>
   </footer>
+  <script src="main.js"></script>
 </body>
 </html>

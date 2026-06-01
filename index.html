@@ -36,6 +36,7 @@
         <div class="dropdown">
           <button class="dropbtn">Core &#9662;</button>
           <div class="dropdown-content">
+            <a href="system-architecture.html">System Architecture</a>
             <a href="gateway.html">Gateway</a>
             <a href="mesh-core.html">Mesh Core</a>
                         <a href="security.html">Security & RBAC</a>
@@ -56,6 +57,7 @@
         <div class="dropdown">
           <button class="dropbtn">Systems &#9662;</button>
           <div class="dropdown-content">
+            <a href="rf-physics.html">RF Physics & Propagation</a>
             <a href="hardware.html">Hardware & Firmware</a>
             <a href="event-bus.html">Event Bus & Watches</a>
             <a href="copilot.html">Honu AI Copilot</a>
@@ -87,146 +89,133 @@
   </header>
 
   <section class="hero wrap">
-    <span class="eyebrow">Technical Portfolio</span>
+    <span class="eyebrow">Technical & Pedagogical Portfolio</span>
     <h1>Jonathan Capone.</h1>
-    <p>I build complex, distributed systems. My work focuses on sensor fleets, edge-computing, resilient mesh networks, and fusing remote telemetry with massive global datasets.</p>
+    <p style="max-width: 800px; font-size: 1.25rem; color: var(--ink-soft); line-height: 1.7; margin-bottom: 2rem;">
+      I am an artist and educator working across photography, new media, physical computing, and project-based learning. 
+      This page collects the technical, pedagogical, and systems-building side of my practice while linking outward to my main art site.
+    </p>
     <div class="hero-actions">
-      <a class="btn btn-primary" href="https://github.com/aminalnam/OMEGA" target="_blank">View OMEGA on GitHub</a>
-      <a class="btn btn-secondary" href="index.html">Back to Portfolio</a>
+      <a class="btn btn-primary" href="https://jonathancapone.art" target="_blank">View Main Art Website</a>
+      <a class="btn btn-secondary" href="https://github.com/aminalnam" target="_blank">GitHub Profile</a>
     </div>
   </section>
 
   <main class="main-shell wrap">
     <div class="main-inner">
 
-      <section class="section section-block" style="background: rgba(0,0,0,0.4);">
-        <span class="section-kicker">Featured Project</span>
-        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">OMEGA</h2>
-        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">OMEGA is a mixed-bearer environmental sensing and maritime operations platform that connects field devices, gateways, public data sources, and mission tools into one resilient observation network. <span style="font-size: 0.8em; color: var(--ink-soft);">(OMEGA, formerly OMEGA).</span></p>
+      <section class="section section-block">
+        <span class="section-kicker">Education & Curriculum</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Teaching Practice.</h2>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">
+          These links surface the teaching documentation and curricula hosted on the main art site, focused on interdisciplinary making, engineering, and art/science integration.
+        </p>
         
-        <div class="hero-actions" style="margin-bottom: 4rem;">
-          <a class="btn btn-primary" href="https://github.com/aminalnam/OMEGA" target="_blank">View OMEGA on GitHub</a>
+        <div class="grid-3" style="margin-bottom: 2rem;">
+          <a href="https://jonathancapone.art/steam" target="_blank" class="panel">
+            <span class="status-label status-planned">Curriculum</span>
+            <h3>STEAM</h3>
+            <p>Teaching documentation focused on interdisciplinary making, engineering, and art/science integration.</p>
+          </a>
+          <a href="https://jonathancapone.art/media-arts" target="_blank" class="panel">
+            <span class="status-label status-planned">Curriculum</span>
+            <h3>Media Arts</h3>
+            <p>Curriculum and documentation related to digital media, moving image, and technology-based art instruction.</p>
+          </a>
+          <a href="https://jonathancapone.art/experiential-learning" target="_blank" class="panel">
+            <span class="status-label status-planned">Curriculum</span>
+            <h3>Experiential Learning</h3>
+            <p>Project-based learning structures and environmental education methodologies.</p>
+          </a>
+          <a href="https://jonathancapone.art/performing-arts" target="_blank" class="panel">
+            <span class="status-label status-planned">Curriculum</span>
+            <h3>Performing Arts</h3>
+            <p>Integration of technical systems, lighting, and sound into live performance spaces.</p>
+          </a>
+          <a href="https://jonathancapone.art/students-at-work" target="_blank" class="panel">
+            <span class="status-label status-planned">Gallery</span>
+            <h3>Students At Work</h3>
+            <p>Documentation of student projects, fabrication processes, and classroom environments.</p>
+          </a>
+        </div>
+      </section>
+
+      <section class="section section-block" style="background: rgba(0,0,0,0.4);">
+        <span class="section-kicker">Featured Technical Project</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">OMEGA Platform</h2>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">
+          A mixed-bearer environmental sensing and maritime operations platform that connects field devices, gateways, public data sources, and mission tools into one resilient observation network.
+        </p>
+        
+        <div class="hero-actions" style="margin-bottom: 3rem;">
+          <a class="btn btn-secondary" href="overview.html">Read The Full Overview</a>
+          <a class="btn btn-secondary" href="https://github.com/aminalnam/OMEGA" target="_blank">View Repository</a>
         </div>
         
         <span class="section-kicker">Platform Capabilities</span>
         <h3 style="font-family: var(--font-serif); font-size: 1.8rem; margin: 0 0 2rem;">System Modules</h3>
         
         <div class="grid-3">
-          
           <a href="gateway.html" class="panel">
             <span class="status-label status-implemented">Implemented</span>
             <h3>Gateway</h3>
             <p>The core Python edge router handling HTTP ingest, SQLite normalization, and OpenAPI.</p>
           </a>
-
           <a href="mesh-core.html" class="panel">
             <span class="status-label status-implemented">Mesh Core</span>
             <h3>Mesh Core</h3>
-            <p>Delay Tolerant Network (DTN) overlay using LoRa CSS and CBOR compression.</p>
+            <p>Delay Tolerant Network (DTN) overlay using LoRa CSS and Custom Binary TLV compression.</p>
           </a>
-
           <a href="mission-portal.html" class="panel">
             <span class="status-label status-implemented">Mission Portal</span>
             <h3>Mission Portal</h3>
             <p>WebGL mapping dashboard, live tiles, and real-time operations overview.</p>
           </a>
-
           <a href="edge-nodes.html" class="panel">
             <span class="status-label status-partial">Partial</span>
             <h3>Edge Nodes</h3>
             <p>Hardware provisioning, ESP32 thermodynamics, and OTA firmware updates.</p>
           </a>
-
           <a href="data-providers.html" class="panel">
             <span class="status-label status-implemented">Data Providers</span>
             <h3>Data Providers</h3>
             <p>External federation with ERDDAP, NOAA, and Copernicus Marine services.</p>
           </a>
-
           <a href="janus-acoustic.html" class="panel">
             <span class="status-label status-partial">Partial</span>
             <h3>JANUS Acoustics</h3>
             <p>NATO-standard acoustic modulation bridge for underwater nodes.</p>
           </a>
-
           <a href="wayfinding.html" class="panel">
             <span class="status-label status-planned">Planned</span>
             <h3>Wayfinding</h3>
             <p>Kinematic scenario generation using real-time fluid dynamics and currents.</p>
           </a>
-
           <a href="simulation.html" class="panel">
             <span class="status-label status-implemented">Simulation</span>
             <h3>Simulation</h3>
             <p>Procedural test harness for synthetic mesh traffic and Digital Twins.</p>
           </a>
-
           <a href="bathymetry.html" class="panel">
             <span class="status-label status-implemented">Bathymetry</span>
             <h3>Bathymetry</h3>
             <p>Inverse Distance Weighting (IDW) interpolation module for depth mapping.</p>
           </a>
-
         </div>
       </section>
 
-      <section class="section">
-        <div class="section-content">
-            <span class="section-kicker">Architecture</span>
-            <h2>System Diagram</h2>
-            <p>A resilient network bridging the gap between RF edge devices and cloud analytics.</p>
-        </div>
-        <div class="section-visual">
-            <div class="mermaid">
-            graph TD
-                A[Edge Nodes / LoRa / JANUS] -->|Telemetry| B(OMEGA Gateway)
-                B -->|Store & Forward| C{Mission Portal}
-                D[(External Providers)] -->|ERDDAP| B
-                C -->|Visualization| E[Operators]
-            </div>
-        </div>
-      </section>
-      
       <section class="section section-block">
-        <span class="section-kicker">Phase 6 & 7 Expansion</span>
-        <h3 style="font-family: var(--font-serif); font-size: 1.8rem; margin: 0 0 2rem;">The Engineering Deep Dive</h3>
-        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">OMEGA isn't just theory. We have embedded the live Python algorithms and raw JSON payloads directly from the Gateway engine into the documentation for absolute transparency.</p>
+        <span class="section-kicker">Geospatial & Data Tools</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Ocean Sensors.</h2>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">
+          A repository and documentation hub for underwater sensing, data logging, bathymetric mapping, and geospatial visualization workflows. Features Python algorithms for contour generation and Google Earth overlays.
+        </p>
         
         <div class="grid-3">
-          <a href="data-providers.html" class="panel">
-            <span class="status-label status-implemented">Raw JSON Payload</span>
-            <h3>Observation Envelope</h3>
-            <p>View the raw SenML structure and distributed UUIDs used by the fleet.</p>
-          </a>
-          <a href="edge-nodes.html" class="panel">
-            <span class="status-label status-implemented">Raw Python Algorithm</span>
-            <h3>Sensor Relays</h3>
-            <p>View the Haversine distance and RSSI logic used by the edge node to drop floats.</p>
-          </a>
-          <a href="mesh-core.html" class="panel">
-            <span class="status-label status-implemented">Raw Compression</span>
-            <h3>CBOR RF Frames</h3>
-            <p>View how a 450-byte JSON is mathematically crushed to ~180 bytes for LoRa.</p>
-          </a>
-          <a href="gateway.html" class="panel">
-            <span class="status-label status-implemented">Raw Python Algorithm</span>
-            <h3>Honu AI Copilot</h3>
-            <p>View the strict system constraints enforcing read-only operations.</p>
-          </a>
-          <a href="edge-nodes.html" class="panel">
-            <span class="status-label status-implemented">Raw Python Algorithm</span>
-            <h3>Live Firmware OTA</h3>
-            <p>View the Python subprocess wrappers for deploying PlatformIO environments.</p>
-          </a>
-          <a href="data-providers.html" class="panel">
-            <span class="status-label status-implemented">Raw Python Algorithm</span>
-            <h3>QARTOD Quality Control</h3>
-            <p>View the exact statistical math used to isolate signal spikes and calculate robust sigma.</p>
-          </a>
-          <a href="wayfinding.html" class="panel">
-            <span class="status-label status-implemented">Raw JSON Payload</span>
-            <h3>edge node Waypoint Execution</h3>
-            <p>View the schema for dropping geofence limits and kinetic routing points.</p>
+          <a href="https://github.com/aminalnam/Ocean-Sensors" target="_blank" class="panel">
+            <span class="status-label status-implemented">Open Source Python</span>
+            <h3>Bathymetric Mapping</h3>
+            <p>Python scripts for Inverse Distance Weighting (IDW) interpolation, generating topographic depth contours from sparse acoustic soundings.</p>
           </a>
         </div>
       </section>
@@ -237,5 +226,6 @@
   <footer class="footer wrap">
     <span>© Jonathan Capone — Technical Portfolio. OMEGA (formerly OMEGA-wave).</span>
   </footer>
+  <script src="main.js"></script>
 </body>
 </html>

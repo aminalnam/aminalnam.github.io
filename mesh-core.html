@@ -36,6 +36,7 @@
         <div class="dropdown">
           <button class="dropbtn">Core &#9662;</button>
           <div class="dropdown-content">
+            <a href="system-architecture.html">System Architecture</a>
             <a href="gateway.html">Gateway</a>
             <a href="mesh-core.html" class="is-current">Mesh Core</a>
                         <a href="security.html">Security & RBAC</a>
@@ -56,6 +57,7 @@
         <div class="dropdown">
           <button class="dropbtn">Systems &#9662;</button>
           <div class="dropdown-content">
+            <a href="rf-physics.html">RF Physics & Propagation</a>
             <a href="hardware.html">Hardware & Firmware</a>
             <a href="event-bus.html">Event Bus & Watches</a>
             <a href="copilot.html">Honu AI Copilot</a>
@@ -92,7 +94,7 @@
     <p>LoRa CSS, CBOR compression, and DTN logic.</p>
     <div class="hero-actions">
       <a class="btn btn-primary" href="https://github.com/aminalnam/OMEGA" target="_blank">View OMEGA on GitHub</a>
-      <a class="btn btn-secondary" href="index.html">Back to Portfolio</a>
+      <a class="btn btn-secondary" href="https://jonathancapone.art" target="_blank">Art Portfolio</a>
     </div>
   </section>
 
@@ -104,25 +106,50 @@
               <span class="section-kicker">Network Graph Theory</span>
               <h2>Delay Tolerant Networks (DTN).</h2>
               <p>Transmitting raw JSON over a 900MHz LoRa link is catastrophic. At 1200bps, a standard 400-byte JSON telemetry envelope would exceed the strict LoRa airtime regulations (duty cycle) and cause massive packet collisions across the fleet.</p>
-<p><strong>The Mathematics of Compression:</strong> The <code>lora_cbor_bridge.py</code> engine performs structural crushing. Instead of sending the string key <code>"temperature_celsius"</code>, the Python dictionary uses an integer alias map (e.g., key <code>14</code>). It then passes this compacted dictionary into the <code>cbor2</code> (Concise Binary Object Representation) library, which serializes the payload into a dense byte array. A 450-byte human-readable JSON is mathematically crushed to ~92 bytes, drastically reducing the Time-on-Air (ToA) and extending the fleet's battery life.</p>
+<p><strong>The Mathematics of Compression:</strong> OMEGA replaces JSON-over-LoRa entirely with a custom versioned <strong>TLV (Type-Length-Value) Binary Protocol</strong>. By utilizing bit-packed fields and custom scaling (e.g., deci-Celsius, milligees), a full Sensor + GPS + Health frame is crushed from 283 bytes down to just 84 bytes (a 70% savings). This outperforms even CBOR and Protobuf, ensuring massive Time-on-Air (ToA) reductions and extending the fleet's battery life.</p>
               
             </div>
-            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">gateway/lora_cbor_bridge.py</span><pre><code class="language-python">def pack_rf_frame(telemetry: dict) -> bytes:
-    # Crush a standard JSON envelope into a dense RF byte array.
-    # 1. Alias verbose keys to integer codes to save bytes
-    compact = {}
-    for key, val in telemetry.items():
-        if key in SENSOR_ALIAS_MAP:
-            compact[SENSOR_ALIAS_MAP[key]] = val
-            
-    # 2. Serialize using Concise Binary Object Representation (RFC 8949)
-    raw_bytes = cbor2.dumps(compact)
-    
-    # 3. Apply optional Zstandard dictionary compression if enabled
-    if len(raw_bytes) > LORA_MAX_PAYLOAD_SIZE:
-        raw_bytes = zstd_compress(raw_bytes)
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">gateway/mesh_binary_codec.py</span><pre><code class="language-python">def encode_telemetry_frame(telemetry: dict) -> bytes:
+    # 1. 11-Byte Fixed Header
+    # version (1B) | origin_id (2B) | dest_id (2B) | hop (1B) | type (1B) | sequence (4B)
+    header = struct.pack("&lt;B H H B B I", 
+        0x01, get_node_id(origin), get_node_id(dest), hop_count, FRAME_TELEMETRY, seq)
         
-    return raw_bytes</code></pre></div>
+    # 2. Append TLV payloads (Type, Length, Value)
+    payload = bytearray()
+    payload.extend(encode_tlv(TAG_ENV, telemetry.get("environment")))
+    payload.extend(encode_tlv(TAG_GPS, telemetry.get("gnss")))
+    
+    return header + payload</code></pre></div>
+          </section>
+
+          <section class="section section-block" style="background: rgba(0,0,0,0.4);">
+            <span class="section-kicker">Signal Processing</span>
+            <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Lossless Predictive Coding.</h2>
+            <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">To achieve high-frequency sampling (e.g., 3-second cadence) over ultra-low bandwidth, OMEGA utilizes <strong>Multi-Sample Batching</strong> backed by a first-order predictive encoder.</p>
+            
+            <div class="grid-2" style="margin-bottom: 2rem;">
+              <div class="panel" style="padding: 1.5rem;">
+                <span class="status-label status-implemented">Delta Encoding</span>
+                <h3 style="font-size: 1.2rem;">First-Order Predictor</h3>
+                <p style="font-size: 0.85rem;">Instead of sending raw floats, the encoder calculates the residual deltas between readings: <code>actual[i+1] = actual[i] + residual[i]</code>. It dynamically packs these residuals into ultra-dense 4-bit or 8-bit widths based on the variance.</p>
+              </div>
+              <div class="panel" style="padding: 1.5rem;">
+                <span class="status-label status-implemented">Data Purity</span>
+                <h3 style="font-size: 1.2rem;">Strictly Lossless</h3>
+                <p style="font-size: 0.85rem;">Scientific data integrity is paramount. If a sudden anomaly causes a delta spike that exceeds 8 bits, the encoder mathematically <em>refuses</em> to quantize it and gracefully falls back to sending verbatim scalar TLVs. The data purity is perfectly preserved.</p>
+              </div>
+            </div>
+            
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;">
+              <span class="panel-kicker">Performance Metrics</span>
+              <pre><code class="language-text">Batch Frame Yields:
+  - 30 readings (10 per 3 signals) + full GPS + full health = 104 B per frame
+  - Compared to prior scalar frame (3 readings total) = 84 B
+
+Result: 10× the sensor data for only ~24% more packet size.
+Leaves 146 B of free headroom remaining in the 250 B LoRa legal packet limit!</code></pre>
+            </div>
           </section>
     
           <section class="section">
@@ -143,10 +170,9 @@
           <section class="section">
             <div class="section-content">
               <span class="section-kicker">Binary Optimization</span>
-              <h2>CBOR Payload Compression.</h2>
-              <p>Sending verbose, human-readable JSON strings over a 900MHz LoRa radio is an egregious waste of constrained RF airtime. LoRa provides massive range by utilizing Chirp Spread Spectrum modulation, but at the cost of extremely low bitrates (often <1kbps).</p>
-<p>OMEGA compresses all edge payloads using <strong>CBOR (Concise Binary Object Representation, RFC 8949)</strong>. CBOR strips the structural overhead of JSON—such as quotes, colons, brackets, and whitespace—and converts keys and numeric values into strict bit-packed formats, while flawlessly maintaining the exact dictionary mapping.</p>
-<p><strong>Relevance:</strong> This compression often reduces the byte size of an Observation Envelope by 40-60%. In the field, smaller payloads directly translate to vastly reduced radio duty cycles, lower battery power consumption during transmissions, and a significantly lower mathematical probability of packet collisions over the shared RF spectrum.</p>
+              <h2>Custom TLV vs Standard Formats.</h2>
+              <p>Why did OMEGA build a custom binary protocol instead of using industry standards like CBOR or Cayenne LPP? When operating at sub-1kbps bitrates on 900MHz LoRa, every byte is expensive.</p>
+<p><strong>Architecture:</strong> CBOR and MessagePack carry structural overhead (~150B per frame). Cayenne LPP has rigid type registries that do not fit OMEGA's Delay Tolerant routing metadata. The custom binary format drops the payload to 84B, requires zero external firmware parsing libraries, and enables trivial relay paths where intermediary nodes simply bump a single <code>hop_count</code> byte in the header without having to de-serialize and re-encode the entire payload.</p>
               
             </div>
             
@@ -190,38 +216,10 @@ build_flags =
     
           <section class="section">
             <div class="section-content">
-              <span class="section-kicker">RF Optimization</span>
-              <h2>LoRa CBOR Frame Compression.</h2>
-              <p>The <code>compact_observation.json</code> payload, when transmitted as a raw JSON string, consumes approximately 448 bytes. Over a 900MHz LoRa radio operating at SF10, this incurs a massive Time-On-Air (ToA) penalty, legally violating FCC duty cycles and dramatically increasing the probability of a packet collision.</p>
-<p><strong>Execution:</strong> The gateway intercepts this payload and passes it through the Python <code>cbor2</code> library. This algorithm aggressively crushes the structural overhead—eliminating all keys, quotes, colons, and spaces—down to a dense ~180-byte binary buffer. This allows the critical telemetry to fit effortlessly inside a single LoRa CSS packet window, ensuring instant transmission and drastically improved range.</p>
-              
-            </div>
-            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">lora-cbor-frame.example.json</span><pre><code class="language-json">{
-  "message_id": "lora-node-health-0001",
-  "message_type": "compact_observation",
-  "node_id": "urn:omega-wave:node:buoy:prototype-01",
-  "device_id": "tbeam-1w-lora",
-  "sequence": 1,
-  "timestamp": "2026-04-29T15:35:00Z",
-  "lat": 36.81,
-  "lon": -122.41,
-  "priority": "high",
-  "payload_kind": "system_health",
-  "payload": {
-    "battery-percent": 86,
-    "rssi-dbm": -97,
-    "snr-db": 6.5,
-    "leak-detected": false
-  }
-}</code></pre></div>
-          </section>
-    
-          <section class="section">
-            <div class="section-content">
-              <span class="section-kicker">Transport Fallback</span>
-              <h2>MQTT Pub/Sub Bridging.</h2>
-              <p>While the Delay Tolerant Network (DTN) LoRa mesh is the primary transport for remote operations, the gateway is highly opportunistic. It includes the <code>mqtt_bridge.py</code> architecture for high-bandwidth offloading.</p>
-<p><strong>How it works:</strong> If a remote sensor drifts back into range of a 4G/LTE cellular tower near the coast, it instantly detects the fast connection. It abandons the slow 1200bps LoRa protocol and begins dumping its massive backlog of high-resolution telemetry, acoustic recordings, and camera frames over a high-speed MQTT websocket directly to the cloud, rapidly draining its NVRAM queues before it heads back out to sea.</p>
+              <span class="section-kicker">Bidirectional Mesh</span>
+              <h2>Cloud-to-Node Command Architecture.</h2>
+              <p>In Phase 1, edge nodes were purely telemetry broadcasters. With the new binary protocol, OMEGA implements a fully bidirectional mesh. The shore gateway can now construct binary <code>COMMAND</code> frames and route them over the mesh directly to specific nodes.</p>
+<p><strong>Execution:</strong> By injecting a <code>dest_id</code> into the binary header, commands like <code>restart</code>, <code>set-telemetry-interval</code>, or <code>set-tx-power</code> are routed across the ocean. Intermediary nodes receive the packet, check the destination, and automatically re-transmit (relay) the packet if it is not meant for them. This creates a true, self-healing bidirectional mesh network.</p>
               
             </div>
             
@@ -229,21 +227,10 @@ build_flags =
     
           <section class="section">
             <div class="section-content">
-              <span class="section-kicker">Low-Level Networking</span>
-              <h2>TCP JSONL Socket Streaming.</h2>
-              <p>Many legacy scientific instruments (like older Sonde profilers or serial-based weather stations) completely lack the hardware to run an HTTP stack or a complex REST client. The gateway accommodates these devices by exposing raw TCP sockets via <code>tcp_jsonl_bridge.py</code>.</p>
-<p><strong>Relevance:</strong> Legacy devices can simply connect to port 9000 and pipe raw, newline-delimited JSON strings (JSONL) into the open socket. The gateway buffers the stream, detects the line breaks, and automatically normalizes the raw strings into the standard Observation Pipeline, instantly modernizing 10-year-old oceanographic hardware.</p>
-              
-            </div>
-            
-          </section>
-    
-          <section class="section">
-            <div class="section-content">
-              <span class="section-kicker">Protocol Engineering</span>
-              <h2>LoRa CBOR Compression.</h2>
-              <p>As detailed in the core Mesh sections, sending pure JSON strings over a 900MHz LoRa link is catastrophic for bandwidth. The <code>lora_cbor_bridge.py</code> engine is the workhorse that performs the actual structural crushing.</p>
-<p><strong>Execution:</strong> It takes the verbose SenML Observation Envelopes and translates them into Concise Binary Object Representation (CBOR). This conversion shrinks a massive 400-byte payload into a dense 90-byte binary frame. This minimizes the physical time-on-air (ToA), legally circumvents FCC transmission duty-cycle limitations, and massively reduces the probability of packet collisions.</p>
+              <span class="section-kicker">RF Physics & Firmware</span>
+              <h2>Hardware PA Clamping & RX Boost.</h2>
+              <p>Achieving absolute maximum range requires hardware-level tuning of the silicon. OMEGA firmware interfaces directly with the Semtech SX126x radio registers to bypass standard defaults.</p>
+<p><strong>Execution:</strong> The firmware enables <code>RxBoostedGainMode</code>, physically increasing the Low-Noise Amplifier (LNA) gain by ~3 dB at the cost of ~2 mA extra RX current. For short-duty mesh nodes, this provides a massive mathematical advantage, allowing them to decode marginal cross-family packets that previously failed at the noise floor. Concurrently, internal Power Amplifiers (PA) are strictly clamped at +22 dBm to prevent silicon burnout when driving external 1-Watt High Power Amplifiers (HPA).</p>
               
             </div>
             
@@ -354,5 +341,6 @@ build_flags =
   <footer class="footer wrap">
     <span>© Jonathan Capone — Technical Portfolio. OMEGA (formerly OMEGA-wave).</span>
   </footer>
+  <script src="main.js"></script>
 </body>
 </html>

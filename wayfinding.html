@@ -36,6 +36,7 @@
         <div class="dropdown">
           <button class="dropbtn">Core &#9662;</button>
           <div class="dropdown-content">
+            <a href="system-architecture.html">System Architecture</a>
             <a href="gateway.html">Gateway</a>
             <a href="mesh-core.html">Mesh Core</a>
                         <a href="security.html">Security & RBAC</a>
@@ -56,6 +57,7 @@
         <div class="dropdown">
           <button class="dropbtn">Systems &#9662;</button>
           <div class="dropdown-content">
+            <a href="rf-physics.html">RF Physics & Propagation</a>
             <a href="hardware.html">Hardware & Firmware</a>
             <a href="event-bus.html">Event Bus & Watches</a>
             <a href="copilot.html">Honu AI Copilot</a>
@@ -92,7 +94,7 @@
     <p>Kinematics and fluid dynamic scenario generation.</p>
     <div class="hero-actions">
       <a class="btn btn-primary" href="https://github.com/aminalnam/OMEGA" target="_blank">View OMEGA on GitHub</a>
-      <a class="btn btn-secondary" href="index.html">Back to Portfolio</a>
+      <a class="btn btn-secondary" href="https://jonathancapone.art" target="_blank">Art Portfolio</a>
     </div>
   </section>
 
@@ -118,9 +120,23 @@
               <p>Standard terrestrial routing algorithms (like Google Maps) assume static roads with fixed speed limits. Marine routing requires navigating a completely dynamic, continuously shifting fluid field where the "cost" of moving from Point A to Point B changes depending on the direction of the tide.</p>
 <p>OMEGA implements adapted A* algorithms operating over a time-stepped geometric grid. The algorithm assigns extreme traversal penalties to nodes featuring strong counter-currents (which would drain the battery rapidly) and rewards nodes featuring following currents (which allow the edge node to surf for free).</p>
 <p><strong>How it works:</strong> The resulting path often looks bizarre to a human operator—it might curve wildly to avoid an invisible eddy—but it mathematically optimizes for total fuel efficiency rather than strict linear distance, allowing small solar-powered edge nodes to cross massive oceanic basins without draining their lithium reserves.</p>
-              
             </div>
-            
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;">
+              <span class="panel-kicker">Dynamic A* Vector Evaluation</span>
+              <pre><code class="language-mermaid">graph TD
+    S(Start) --> N1[Node A: Cross-Current<br>Cost: +5]
+    S --> N2[Node B: Counter-Current<br>Cost: +20]
+    S --> N3[Node C: Following Current<br>Cost: -2]
+    
+    N1 --> G(Goal)
+    N2 -.->|Battery Exhausted| F((Fail))
+    N3 --> G(Goal)
+    
+    style N2 stroke:#ef4444,stroke-width:2px,stroke-dasharray: 5 5
+    style N3 stroke:#10b981,stroke-width:2px
+    style S fill:#3b82f6,color:#fff
+    style G fill:#3b82f6,color:#fff</code></pre>
+            </div>
           </section>
     
           <section class="section">
@@ -242,5 +258,6 @@
   <footer class="footer wrap">
     <span>© Jonathan Capone — Technical Portfolio. OMEGA (formerly OMEGA-wave).</span>
   </footer>
+  <script src="main.js"></script>
 </body>
 </html>

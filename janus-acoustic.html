@@ -36,6 +36,7 @@
         <div class="dropdown">
           <button class="dropbtn">Core &#9662;</button>
           <div class="dropdown-content">
+            <a href="system-architecture.html">System Architecture</a>
             <a href="gateway.html">Gateway</a>
             <a href="mesh-core.html">Mesh Core</a>
                         <a href="security.html">Security & RBAC</a>
@@ -56,6 +57,7 @@
         <div class="dropdown">
           <button class="dropbtn">Systems &#9662;</button>
           <div class="dropdown-content">
+            <a href="rf-physics.html">RF Physics & Propagation</a>
             <a href="hardware.html">Hardware & Firmware</a>
             <a href="event-bus.html">Event Bus & Watches</a>
             <a href="copilot.html">Honu AI Copilot</a>
@@ -92,7 +94,7 @@
     <p>NATO-standard acoustic modulation.</p>
     <div class="hero-actions">
       <a class="btn btn-primary" href="https://github.com/aminalnam/OMEGA" target="_blank">View OMEGA on GitHub</a>
-      <a class="btn btn-secondary" href="index.html">Back to Portfolio</a>
+      <a class="btn btn-secondary" href="https://jonathancapone.art" target="_blank">Art Portfolio</a>
     </div>
   </section>
 
@@ -131,8 +133,8 @@
             <div class="grid-3" style="margin-bottom: 2rem;">
               <div class="panel" style="padding: 1.5rem;">
                 <span class="status-label status-implemented">Step 1</span>
-                <h3 style="font-size: 1.2rem;">CBOR Crushing</h3>
-                <p style="font-size: 0.85rem;">Standard 400-byte JSON telemetry is crushed into a 45-byte CBOR array.</p>
+                <h3 style="font-size: 1.2rem;">Binary TLV Crushing</h3>
+                <p style="font-size: 0.85rem;">Standard 400-byte JSON telemetry is crushed into a dense 45-byte Custom Binary TLV envelope.</p>
               </div>
               <div class="panel" style="padding: 1.5rem;">
                 <span class="status-label status-implemented">Step 2</span>
@@ -171,7 +173,7 @@
               <span class="section-kicker">Acoustic Subsea Frames</span>
               <h2>JANUS Initialization.</h2>
               <p>Because underwater acoustic physics are incredibly hostile, bandwidth is severely limited—often maxing out at a mere 80 bits per second (bps). Therefore, OMEGA cannot stream complex JSON over a hydrophone.</p>
-<p><strong>How it works:</strong> The <code>janus-announce.json</code> structure represents the simulated NATO-standard JANUS initialization frame. The payload explicitly defines the <code>center_frequency_hz</code> and the <code>rx_level_db</code>. The Gateway uses this payload to align the hydrophone's physical oscillator. Once aligned, the actual data transferred via the acoustic bridge is strictly limited to heavily compressed initialization vectors and critical emergency stop commands, preserving the fragile acoustic channel.</p>
+<p><strong>How it works:</strong> The JSON structure below represents the <em>source representation</em> of the simulated NATO-standard JANUS initialization frame before it undergoes Binary TLV compression. The payload explicitly defines the <code>center_frequency_hz</code> and the <code>rx_level_db</code>. The Gateway crushes this into a binary string and uses it to align the hydrophone's physical oscillator. Once aligned, the actual data transferred via the acoustic bridge is strictly limited to heavily compressed initialization vectors and critical emergency stop commands, preserving the fragile acoustic channel.</p>
               
             </div>
             <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">janus-announce.example.json</span><pre><code class="language-json">{
@@ -219,5 +221,6 @@
   <footer class="footer wrap">
     <span>© Jonathan Capone — Technical Portfolio. OMEGA (formerly OMEGA-wave).</span>
   </footer>
+  <script src="main.js"></script>
 </body>
 </html>

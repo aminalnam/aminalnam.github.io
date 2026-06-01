@@ -36,6 +36,7 @@
         <div class="dropdown">
           <button class="dropbtn">Core &#9662;</button>
           <div class="dropdown-content">
+            <a href="system-architecture.html">System Architecture</a>
             <a href="gateway.html">Gateway</a>
             <a href="mesh-core.html">Mesh Core</a>
             <a href="security.html">Security & RBAC</a>
@@ -56,6 +57,7 @@
         <div class="dropdown">
           <button class="dropbtn">Systems &#9662;</button>
           <div class="dropdown-content">
+            <a href="rf-physics.html">RF Physics & Propagation</a>
             <a href="hardware.html">Hardware & Firmware</a>
             <a href="event-bus.html">Event Bus & Watches</a>
             <a href="copilot.html">Honu AI Copilot</a>
@@ -92,7 +94,7 @@
     <p>Real-world operational configurations for the OMEGA platform.</p>
     <div class="hero-actions">
       <a class="btn btn-primary" href="https://github.com/aminalnam/OMEGA" target="_blank">View OMEGA on GitHub</a>
-      <a class="btn btn-secondary" href="index.html">Back to Portfolio</a>
+      <a class="btn btn-secondary" href="https://jonathancapone.art" target="_blank">Art Portfolio</a>
     </div>
   </section>
 
@@ -125,7 +127,7 @@
             <p style="color: var(--ink-soft); font-size: 1rem; line-height: 1.6; max-width: 800px;">
               <strong>Operational Threat:</strong> Marine heatwaves can cause catastrophic coral bleaching within days. Traditional loggers require physical retrieval, meaning researchers discover the event weeks after the coral is dead.
               <br><br>
-              <strong>OMEGA Solution:</strong> A dense cluster of 20 cheap, ESP32-based drifting buoys are deployed across the reef. They compress their data via CBOR and utilize CSMA-CA to avoid packet collisions. A single T-Beam Relay Node is anchored at the edge of the reef, capturing the weak transmissions and boosting them at 30dBm over the horizon to a solar-powered shore gateway. The shore gateway ingests the data into SQLite, raises an Event Bus trigger on a high temperature spike, and alerts researchers instantly.
+              <strong>OMEGA Solution:</strong> A dense cluster of 20 cheap, ESP32-based drifting buoys are deployed across the reef. They compress their data via a <strong>Custom Binary TLV Protocol</strong> and utilize CSMA-CA to avoid packet collisions. A single T-Beam Relay Node is anchored at the edge of the reef, capturing the weak transmissions and boosting them at 30dBm over the horizon to a solar-powered shore gateway. The shore gateway ingests the data into SQLite, raises an Event Bus trigger on a high temperature spike, and alerts researchers instantly.
             </p>
           </section>
 
@@ -138,12 +140,12 @@
               <div class="panel" style="padding: 1.5rem;">
                 <span class="status-label status-implemented">Subsea Layer</span>
                 <h3 style="font-size: 1.2rem;">Mapping ROV</h3>
-                <p style="font-size: 0.85rem;">An autonomous ROV surveys a damaged underwater pipeline using high-frequency multibeam sonar, converting the point-cloud into CBOR.</p>
+                <p style="font-size: 0.85rem;">An autonomous ROV surveys a damaged underwater pipeline using high-frequency multibeam sonar, converting the point-cloud into ultra-dense Binary TLV frames.</p>
               </div>
               <div class="panel" style="padding: 1.5rem;">
                 <span class="status-label status-implemented">Acoustic Link</span>
                 <h3 style="font-size: 1.2rem;">JANUS Modem</h3>
-                <p style="font-size: 0.85rem;">The ROV transmits the CBOR frames through the water column using NATO standard JANUS acoustic frequencies to a surface relay.</p>
+                <p style="font-size: 0.85rem;">The ROV transmits the binary frames through the water column using NATO standard JANUS acoustic frequencies to a surface relay.</p>
               </div>
               <div class="panel" style="padding: 1.5rem;">
                 <span class="status-label status-implemented">Shore Link</span>
@@ -153,11 +155,42 @@
             </div>
           </section>
 
+          <section class="section section-block" style="background: rgba(0,0,0,0.4); margin-top: 2rem;">
+            <span class="section-kicker">Scenario Gamma</span>
+            <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Over-The-Horizon Deep Sea Relay</h2>
+            <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">Establishing a resilient, multi-hop mesh network across massive expanses of open ocean where Earth's curvature completely blocks direct line-of-sight to the shore.</p>
+            
+            <div class="section-visual" style="padding: 1.5rem;">
+                <div class="mermaid">
+                graph LR
+                    subgraph Open Ocean Swarm
+                        D1[Drifter Node] -.->|LoRa 22dBm| R1[T-Beam 1W Relay]
+                        D2[Drifter Node] -.->|LoRa 22dBm| R1
+                    end
+                    subgraph Over-The-Horizon
+                        R1 -.->|LoRa 30dBm / 20km| R2[LR1121 Coastal Relay]
+                        R2 -.->|LoRa 22dBm / 5km| G[Shore Gateway]
+                    end
+                    
+                    classDef default fill:#0a0f1d,stroke:#9aa2b1,stroke-width:1px,color:#9aa2b1;
+                    classDef node fill:#101529,stroke:#3b82f6,stroke-width:2px,color:#fff;
+                    class D1,D2,R1,R2,G node;
+                </div>
+            </div>
+            
+            <p style="color: var(--ink-soft); font-size: 1rem; line-height: 1.6; max-width: 800px;">
+              <strong>Operational Threat:</strong> Transmitting data from 25 kilometers offshore is impossible for standard 100mW transmitters due to the geometric horizon and severe Fresnel zone blockage from massive ocean swells.
+              <br><br>
+              <strong>OMEGA Solution:</strong> The deployment utilizes a multi-hop, multi-hardware strategy. Standard drifter nodes transmit at +22dBm to a localized <strong>T-Beam 1W</strong> relay buoy floating in the swarm. This relay utilizes active TX-Burst Fan Cooling to fire a full 1-Watt (+30dBm) LoRa payload across the horizon to an anchored LR1121 coastal relay. The coastal relay, utilizing cross-family synchronization (`PUBLIC 0x34` Sync Word), catches the packet and performs the final hop to the Shore Gateway.
+            </p>
+          </section>
+
     </div>
   </main>
 
   <footer class="footer wrap">
     <span>© Jonathan Capone — Technical Portfolio. OMEGA (formerly OMEGA-wave).</span>
   </footer>
+  <script src="main.js"></script>
 </body>
 </html>

@@ -36,6 +36,7 @@
         <div class="dropdown">
           <button class="dropbtn">Core &#9662;</button>
           <div class="dropdown-content">
+            <a href="system-architecture.html">System Architecture</a>
             <a href="gateway.html">Gateway</a>
             <a href="mesh-core.html">Mesh Core</a>
                         <a href="security.html" class="is-current">Security & RBAC</a>
@@ -56,6 +57,7 @@
         <div class="dropdown">
           <button class="dropbtn">Systems &#9662;</button>
           <div class="dropdown-content">
+            <a href="rf-physics.html">RF Physics & Propagation</a>
             <a href="hardware.html">Hardware & Firmware</a>
             <a href="event-bus.html">Event Bus & Watches</a>
             <a href="copilot.html">Honu AI Copilot</a>
@@ -92,7 +94,7 @@
     <p>Immutable audit trails, dynamic rate limiting, and Role-Based Access Control.</p>
     <div class="hero-actions">
       <a class="btn btn-primary" href="https://github.com/aminalnam/OMEGA" target="_blank">View OMEGA on GitHub</a>
-      <a class="btn btn-secondary" href="index.html">Back to Portfolio</a>
+      <a class="btn btn-secondary" href="https://jonathancapone.art" target="_blank">Art Portfolio</a>
     </div>
   </section>
 
@@ -205,6 +207,26 @@
                 <p style="font-size: 0.85rem;">To encrypt payloads dynamically, OMEGA utilizes Authenticated Encryption with Associated Data (AEAD). The GCM mode calculates a mathematical GHASH tag appended to the end of the payload. If a rogue actor intercepts the packet and flips a single bit, the GHASH tag is instantly destroyed, forcing the gateway to silently drop the packet.</p>
               </div>
             </div>
+            
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;">
+              <span class="panel-kicker">Cryptographic Handshake</span>
+              <pre><code class="language-mermaid">sequenceDiagram
+    participant E as Edge Node (ESP32)
+    participant G as Gateway (Python)
+    
+    Note over E,G: 1. Asymmetric Key Exchange
+    E->>G: Hello (Buoy Public Key: secp256r1)
+    G->>E: Acknowledge (Gateway Public Key)
+    
+    Note over E,G: 2. ECDH Shared Secret Generation
+    E->>E: Math: (Gateway Pub * Buoy Priv) = Secret
+    G->>G: Math: (Buoy Pub * Gateway Priv) = Secret
+    
+    Note over E,G: 3. Symmetric AEAD Tunnel Established
+    E->>G: AES-GCM Encrypted Telemetry + GHASH Tag
+    G->>G: Decrypt using Shared Secret. Verify GHASH.
+    G-->>E: 200 OK (Encrypted ACK)</code></pre>
+            </div>
           </section>
 
           <section class="section">
@@ -222,5 +244,6 @@
   <footer class="footer wrap">
     <span>© Jonathan Capone — Technical Portfolio. OMEGA (formerly OMEGA-wave).</span>
   </footer>
+  <script src="main.js"></script>
 </body>
 </html>

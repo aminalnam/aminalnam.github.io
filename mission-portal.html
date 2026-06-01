@@ -36,6 +36,7 @@
         <div class="dropdown">
           <button class="dropbtn">Core &#9662;</button>
           <div class="dropdown-content">
+            <a href="system-architecture.html">System Architecture</a>
             <a href="gateway.html">Gateway</a>
             <a href="mesh-core.html">Mesh Core</a>
                         <a href="security.html">Security & RBAC</a>
@@ -56,6 +57,7 @@
         <div class="dropdown">
           <button class="dropbtn">Systems &#9662;</button>
           <div class="dropdown-content">
+            <a href="rf-physics.html">RF Physics & Propagation</a>
             <a href="hardware.html">Hardware & Firmware</a>
             <a href="event-bus.html">Event Bus & Watches</a>
             <a href="copilot.html">Honu AI Copilot</a>
@@ -92,7 +94,7 @@
     <p>The WebGL mapping dashboard and control interface.</p>
     <div class="hero-actions">
       <a class="btn btn-primary" href="https://github.com/aminalnam/OMEGA" target="_blank">View OMEGA on GitHub</a>
-      <a class="btn btn-secondary" href="index.html">Back to Portfolio</a>
+      <a class="btn btn-secondary" href="https://jonathancapone.art" target="_blank">Art Portfolio</a>
     </div>
   </section>
 
@@ -195,14 +197,28 @@ export interface DigitalTwinCommand {
 }</code></pre></div>
           </section>
     
-          <section class="section">
-            <div class="section-content">
-              <span class="section-kicker">Data Science Workflows</span>
-              <h2>The Visualization Studio.</h2>
-              <p>The Mission Portal is not just a map; it is a full time-series analysis suite. The built-in <strong>Visualization Studio</strong> generates processed statistical overlays, histograms, anomaly diagnostics, and expanded correlation statistics directly in the browser, allowing oceanographers to perform QA/QC checks without ever opening a Jupyter Notebook.</p>
-              
+          <section class="section section-block" style="background: rgba(0,0,0,0.4);">
+            <span class="section-kicker">Data Operations</span>
+            <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Live Tile Dashboard & Quick Actions.</h2>
+            <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">The portal's Inspect panel abandons the traditional "long-scroll" paradigm in favor of a dense, viewport-fit dashboard. It is engineered for outcome-oriented operations, automatically surfacing the most critical telemetry the second the page loads.</p>
+
+            <div class="grid-3" style="margin-bottom: 2rem;">
+              <div class="panel" style="padding: 1.5rem;">
+                <span class="status-label status-implemented">Live Tiles</span>
+                <h3 style="font-size: 1.2rem;">Real-Time Polling</h3>
+                <p style="font-size: 0.85rem;">The Inspect tab continuously polls <code>/v1/measurements/latest</code> every 5 seconds, rendering massive data tiles that immediately reveal the freshest edge node readings, units, and ages. Stale nodes are flagged with a distinct amber border.</p>
+              </div>
+              <div class="panel" style="padding: 1.5rem;">
+                <span class="status-label status-implemented">Quick Actions</span>
+                <h3 style="font-size: 1.2rem;">One-Click Outcomes</h3>
+                <p style="font-size: 0.85rem;">Six one-click cards (e.g., <i>"My gateway right now"</i> or <i>"Where are my nodes?"</i>) automatically pre-fill the Custom Query modals and execute the fetch, completely removing setup friction for common tasks.</p>
+              </div>
+              <div class="panel" style="padding: 1.5rem;">
+                <span class="status-label status-implemented">Stepped Layout</span>
+                <h3 style="font-size: 1.2rem;">Modal Drill-Down</h3>
+                <p style="font-size: 0.85rem;">Clicking any Live Tile instantly opens a pre-configured Custom Query modal. The workflow is strictly stepped: "1 · Pick a dataset" → "2 · Refine + load" → "3 · View Results / Chart", keeping the interface clean and entirely within the viewport.</p>
+              </div>
             </div>
-            
           </section>
     
           <section class="section section-block" style="background: rgba(0,0,0,0.4);">
@@ -285,5 +301,6 @@ export interface DigitalTwinCommand {
   <footer class="footer wrap">
     <span>© Jonathan Capone — Technical Portfolio. OMEGA (formerly OMEGA-wave).</span>
   </footer>
+  <script src="main.js"></script>
 </body>
 </html>

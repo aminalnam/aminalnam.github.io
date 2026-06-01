@@ -36,6 +36,7 @@
         <div class="dropdown">
           <button class="dropbtn">Core &#9662;</button>
           <div class="dropdown-content">
+            <a href="system-architecture.html">System Architecture</a>
             <a href="gateway.html">Gateway</a>
             <a href="mesh-core.html">Mesh Core</a>
                         <a href="security.html">Security & RBAC</a>
@@ -56,6 +57,7 @@
         <div class="dropdown">
           <button class="dropbtn">Systems &#9662;</button>
           <div class="dropdown-content">
+            <a href="rf-physics.html">RF Physics & Propagation</a>
             <a href="hardware.html">Hardware & Firmware</a>
             <a href="event-bus.html">Event Bus & Watches</a>
             <a href="copilot.html">Honu AI Copilot</a>
@@ -92,7 +94,7 @@
     <p>Deep dive into gateway analytics, numpy processing, and bathymetry grids.</p>
     <div class="hero-actions">
       <a class="btn btn-primary" href="https://github.com/aminalnam/OMEGA" target="_blank">View OMEGA on GitHub</a>
-      <a class="btn btn-secondary" href="index.html">Back to Portfolio</a>
+      <a class="btn btn-secondary" href="https://jonathancapone.art" target="_blank">Art Portfolio</a>
     </div>
   </section>
 
@@ -124,11 +126,30 @@
           <section class="section">
             <div class="section-content">
               <span class="section-kicker">Depth Mapping</span>
-              <h2>Bathymetry Pipelines.</h2>
-              <p>The <code>gateway/bathymetry_ingest.py</code> and <code>bathymetry_export.py</code> modules handle massive acoustic sounding files (CSV). The pipeline normalizes millions of overlapping sonar pings, filters out acoustic multipath errors, and passes the clean data into the 3D Inverse Distance Weighting (IDW) interpolation engine, creating the continuous ocean floor topology.</p>
-              
+              <h2>Bathymetry & IDW Math.</h2>
+              <p>The <code>gateway/bathymetry_ingest.py</code> and <code>bathymetry_export.py</code> modules handle massive acoustic sounding files (CSV). The pipeline normalizes millions of overlapping sonar pings, filters out acoustic multipath errors, and passes the clean data into the 3D Inverse Distance Weighting (IDW) interpolation engine.</p>
+              <p><strong>The Mathematics:</strong> Edge node acoustic sweeps are fundamentally sparse—they only collect data along the physical transit path. To generate a continuous topological surface, OMEGA uses the mathematical IDW formula: <code>Z_est = Σ (Z_i / D_i^p) / Σ (1 / D_i^p)</code>. A target cell's depth is calculated by sampling known data points within a radius. Points physically closer to the target cell (small <code>D_i</code>) exert exponentially higher gravitational "pull" on the final estimate, governed by the power parameter <code>p</code>.</p>
+              <p><strong>Execution:</strong> The Python engine calculates this massive N-body problem using heavily vectorized NumPy matrix broadcasting. It generates a high-resolution 2D grid, which is mathematically translated into GeoJSON contour polygons for the Mission Portal's WebGL engine.</p>
             </div>
-            
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;">
+              <span class="panel-kicker">gateway/bathymetry_core.py</span>
+              <pre><code class="language-python">def calculate_idw(grid_x, grid_y, points, values, power=2.0):
+    # Flatten the grid for vectorized NumPy distance calculation
+    grid_points = np.c_[grid_x.ravel(), grid_y.ravel()]
+    
+    # Calculate the Euclidian distance matrix between grid and known soundings
+    dist = cdist(grid_points, points)
+    
+    # Apply the Inverse Distance Weighting mathematics
+    # Prevent divide-by-zero for points directly on top of soundings
+    dist = np.where(dist == 0, 1e-10, dist)
+    weights = 1.0 / (dist ** power)
+    
+    # Calculate the normalized topological estimate
+    z_est = np.sum(weights * values, axis=1) / np.sum(weights, axis=1)
+    
+    return z_est.reshape(grid_x.shape)</code></pre>
+            </div>
           </section>
     
           <section class="section section-block" style="background: rgba(0,0,0,0.4);">
@@ -161,5 +182,6 @@
   <footer class="footer wrap">
     <span>© Jonathan Capone — Technical Portfolio. OMEGA (formerly OMEGA-wave).</span>
   </footer>
+  <script src="main.js"></script>
 </body>
 </html>

@@ -36,6 +36,7 @@
         <div class="dropdown">
           <button class="dropbtn">Core &#9662;</button>
           <div class="dropdown-content">
+            <a href="system-architecture.html">System Architecture</a>
             <a href="gateway.html">Gateway</a>
             <a href="mesh-core.html">Mesh Core</a>
                         <a href="security.html">Security & RBAC</a>
@@ -56,6 +57,7 @@
         <div class="dropdown">
           <button class="dropbtn">Systems &#9662;</button>
           <div class="dropdown-content">
+            <a href="rf-physics.html">RF Physics & Propagation</a>
             <a href="hardware.html">Hardware & Firmware</a>
             <a href="event-bus.html">Event Bus & Watches</a>
             <a href="copilot.html">Honu AI Copilot</a>
@@ -92,7 +94,7 @@
     <p>Inverse Distance Weighting depth approximation.</p>
     <div class="hero-actions">
       <a class="btn btn-primary" href="https://github.com/aminalnam/OMEGA" target="_blank">View OMEGA on GitHub</a>
-      <a class="btn btn-secondary" href="index.html">Back to Portfolio</a>
+      <a class="btn btn-secondary" href="https://jonathancapone.art" target="_blank">Art Portfolio</a>
     </div>
   </section>
 
@@ -140,6 +142,18 @@
               <p>The <code>bathymetry-sounding.json</code> envelope is generated thousands of times per hour by the sensor's active sonar pinging the lakebed. Note the specific metric <code>bathymetry-depth: 12.4m</code> encoded in the strict SenML format.</p>
 <p><strong>Execution:</strong> The gateway consumes these disparate envelopes and stores them as massive arrays of raw coordinate points in SQLite. The Mission Portal then queries these points and executes an Inverse Distance Weighting (IDW) interpolation algorithm directly in the client's browser. This mathematics transforms discrete, scattered sonar pings into a beautiful, continuous 3D contour map, giving operators instant, real-time feedback on the topography of the unmapped ocean floor.</p>
               
+            </div>
+          </section>
+          
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">Offline Processing</span>
+              <h2>Data Pipeline Scripts.</h2>
+              <p>While the Mission Portal handles real-time IDW rendering, OMEGA also provides a suite of offline Python scripts for generating publishable scientific assets directly from raw CSV exports.</p>
+              <ul>
+                <li style="margin-bottom: 1rem;"><strong><code>csv_to_png_depth_contours.py</code></strong>: Generates high-resolution, static 2D heatmaps with distinct topological contour lines using matplotlib and scipy. These static PNGs are designed for inclusion in formal academic papers.</li>
+                <li style="margin-bottom: 1rem;"><strong><code>csv_to_kmz_depth_overlay.py</code></strong>: Takes the interpolated depth arrays and projects them over satellite imagery, packaging the result into a compressed KMZ file. This allows marine biologists to drag-and-drop the 3D bathymetric overlay directly into Google Earth Pro for geospatial fusion with historical coral reef datasets.</li>
+              </ul>
             </div>
             <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">bathymetry-sounding.example.json</span><pre><code class="language-json">{
   "spec": "omega-wave.observation-envelope/1",
@@ -218,5 +232,6 @@
   <footer class="footer wrap">
     <span>© Jonathan Capone — Technical Portfolio. OMEGA (formerly OMEGA-wave).</span>
   </footer>
+  <script src="main.js"></script>
 </body>
 </html>

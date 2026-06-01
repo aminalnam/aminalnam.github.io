@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <title>OMEGA — System Architecture</title>
+  
+  <meta name="description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
+  <meta property="og:title" content="OMEGA — Platform Overview" />
+  <meta property="og:description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://jonathancapone.com/overview.html" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="OMEGA — Platform Overview" />
+  <meta name="twitter:description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
+  
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌊</text></svg>">
+  
+  <link rel="stylesheet" href="style.css">
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ startOnLoad: true, theme: 'dark', themeVariables: { fontFamily: 'Inter' } });
+  </script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap topbar-inner">
+      <a class="brand" href="index.html">
+        <span class="brand-title">Jonathan Capone</span>
+        <span class="brand-sub">Technical Portfolio</span>
+      </a>
+      <nav class="nav">
+        <a href="index.html">Home</a>
+        <a href="overview.html" >Overview</a>
+        
+        <div class="dropdown">
+          <button class="dropbtn">Core &#9662;</button>
+          <div class="dropdown-content">
+            <a href="system-architecture.html">System Architecture</a>
+            <a href="gateway.html">Gateway</a>
+            <a href="mesh-core.html">Mesh Core</a>
+                        <a href="security.html">Security & RBAC</a>
+            <a href="edge-nodes.html">Edge Nodes</a>
+          </div>
+        </div>
+        
+        <div class="dropdown">
+          <button class="dropbtn">Tools &#9662;</button>
+          <div class="dropdown-content">
+            <a href="mission-portal.html">Mission Portal</a>
+            <a href="janus-acoustic.html">JANUS Acoustics</a>
+            <a href="simulation.html">Simulation</a>
+            <a href="bathymetry.html">Bathymetry</a>
+          </div>
+        </div>
+        
+        <div class="dropdown">
+          <button class="dropbtn">Systems &#9662;</button>
+          <div class="dropdown-content">
+            <a href="rf-physics.html">RF Physics & Propagation</a>
+            <a href="hardware.html">Hardware & Firmware</a>
+            <a href="event-bus.html">Event Bus & Watches</a>
+            <a href="copilot.html">Honu AI Copilot</a>
+          </div>
+        </div>
+
+        <div class="dropdown">
+          <button class="dropbtn">Data &#9662;</button>
+          <div class="dropdown-content">
+            <a href="analytics.html">Analytics Pipeline</a>
+            <a href="data-providers.html">Data Providers</a>
+            <a href="external-data.html">External Integrations</a>
+            <a href="examples.html">Data Examples</a>
+            <a href="api-reference.html">API Reference</a>
+          </div>
+        </div>
+        
+        <div class="dropdown">
+          <button class="dropbtn">Docs &#9662;</button>
+          <div class="dropdown-content">
+            <a href="teaching-documentation.html">Education & Guides</a>
+            <a href="build-guide.html">Build Guide</a>
+            <a href="deployment-scenarios.html">Deployment Scenarios</a>
+            <a href="roadmap.html">Roadmap</a>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero wrap">
+    <span class="eyebrow">OMEGA Platform</span>
+    <h1>System Architecture.</h1>
+    <p>A masterclass in 4-layer edge-to-cloud environmental routing.</p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="https://github.com/aminalnam/OMEGA" target="_blank">View OMEGA on GitHub</a>
+      <a class="btn btn-secondary" href="https://jonathancapone.art" target="_blank">Art Portfolio</a>
+    </div>
+  </section>
+
+  <main class="main-shell wrap">
+    <div class="main-inner">
+      <section class="section section-block" style="background: rgba(0,0,0,0.4);">
+        <span class="section-kicker">Network Topology</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">The 4-Layer Stack.</h2>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">OMEGA is built upon a rigid, decoupled 4-layer architecture. From extreme physical environments at the edge to high-performance data visualization in the cloud, every component strictly enforces an architectural boundary.</p>
+        
+        <div class="section-visual" style="margin-bottom: 3rem;">
+          <div class="mermaid">
+            flowchart TD
+                subgraph L1 [Layer 1: Physical / Hardware]
+                    E1(Buoy: T-Beam Supreme)
+                    E2(Relay: LR1121)
+                end
+                subgraph L2 [Layer 2: Mesh Transport]
+                    DTN{DTN: Binary TLV + Batching}
+                end
+                subgraph L3 [Layer 3: Gateway]
+                    USB(USB-CDC Serial Bridge)
+                    ASGI[FastAPI / SQLite WAL]
+                end
+                subgraph L4 [Layer 4: Presentation]
+                    UI((React WebGL Portal))
+                end
+
+                E1 <-->|LoRa 900MHz| L2
+                E2 <-->|LoRa 900MHz| L2
+                L2 <-->|LoRa / CSMA-CA| USB
+                USB <-->|JSON Stream| ASGI
+                ASGI <-->|HTTP Long-Polling| UI
+
+                classDef default fill:#0a0f1d,stroke:#9aa2b1,stroke-width:1px,color:#9aa2b1;
+                classDef node fill:#101529,stroke:#3b82f6,stroke-width:2px,color:#fff;
+                class E1,E2,USB,ASGI,UI node;
+          </div>
+        </div>
+
+        <div class="grid-3" style="margin-bottom: 2rem;">
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">Layer 1</span>
+            <h3 style="font-size: 1.2rem;">Physical / Hardware</h3>
+            <p style="font-size: 0.85rem;">Edge Nodes, T-Beam Supremes, and LR1121 modules operating in cross-family synchronization. Features active thermal management, +30dBm HPAs, and 15µA deep sleep cycles.</p>
+          </div>
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">Layer 2</span>
+            <h3 style="font-size: 1.2rem;">Mesh Transport</h3>
+            <p style="font-size: 0.85rem;">Delay Tolerant Network (DTN) running a Custom Binary TLV protocol. Features lossless predictive coding, multi-sample batching, and CSMA-CA collision avoidance over LoRa.</p>
+          </div>
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">Layer 3</span>
+            <h3 style="font-size: 1.2rem;">Gateway / Edge Server</h3>
+            <p style="font-size: 0.85rem;">Python FastAPI ASGI Router running on embedded Linux. Tethered via USB-CDC to the RF mesh, writing asynchronously to a SQLite database in pure WAL mode.</p>
+          </div>
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">Layer 4</span>
+            <h3 style="font-size: 1.2rem;">Presentation / Client</h3>
+            <p style="font-size: 0.85rem;">React WebGL Mission Portal. A state-driven Digital Twin pulling Live Tiles via 5-second long-polling, rendering massive geospatial data.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-content">
+          <span class="section-kicker">Layer 1: Physical</span>
+          <h2>Cross-Family Hardware Interoperability.</h2>
+          <p>Deploying a mixed-fleet of edge nodes requires extreme RF coordination. OMEGA utilizes both Semtech SX1262 (for telemetry) and LR1121 (for routing/relaying) chips. Because the silicon drivers behave differently at the sub-GHz level, achieving cross-family interoperability was a massive engineering hurdle.</p>
+          <p><strong>Execution:</strong> By enforcing a <code>PUBLIC 0x34</code> Sync Word, disabling Low Data Rate Optimization (<code>forceLDRO(false)</code>), and jittering the heartbeat cadence to prevent synchronous collisions, OMEGA achieves a >95% successful cross-family LoRa frame decode rate.</p>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-content">
+          <span class="section-kicker">Layer 2: Transport</span>
+          <h2>The Bidirectional DTN.</h2>
+          <p>Standard IoT relies on persistent MQTT or HTTP connections. Over the ocean, those connections do not exist. OMEGA operates a <strong>Delay Tolerant Network (DTN)</strong> utilizing a Custom Binary TLV Protocol that crushes a 283B JSON payload into a highly dense 84B frame.</p>
+          <p><strong>Cloud-to-Node Control:</strong> The mesh is not just for broadcasting telemetry; it is fully bidirectional. The cloud application can wrap a binary <code>COMMAND</code> frame (such as <code>set-tx-power</code>) and inject it into the edge mesh via the Gateway's USB-CDC serial bridge. The network autonomously routes the command over multiple hops to the targeted marine node.</p>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-content">
+          <span class="section-kicker">Layer 3: Gateway</span>
+          <h2>Concurrent Edge Routing.</h2>
+          <p>The OMEGA Gateway acts as the translation boundary between the physical RF mesh and the digital cloud. Built in Python using FastAPI, the routing layer strictly adheres to Clean Architecture—separating API Mechanics, Business Logic (Services), and Database operations (Repositories).</p>
+          <p><strong>High-Throughput IO:</strong> To prevent <code>database is locked</code> exceptions when 50 nodes are spamming telemetry, the backend physically rewrites the SQLite PRAGMA at boot to enforce <strong>WAL (Write-Ahead Logging)</strong>. This decouples the read/write locks, allowing the UI to query massive historical arrays concurrently while the RF bridge constantly inserts live data.</p>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="footer wrap">
+    <span>© Jonathan Capone — Technical Portfolio. OMEGA (formerly OMEGA-wave).</span>
+  </footer>
+  <script src="main.js"></script>
+</body>
+</html>

@@ -36,6 +36,7 @@
         <div class="dropdown">
           <button class="dropbtn">Core &#9662;</button>
           <div class="dropdown-content">
+            <a href="system-architecture.html">System Architecture</a>
             <a href="gateway.html">Gateway</a>
             <a href="mesh-core.html">Mesh Core</a>
                         <a href="security.html">Security & RBAC</a>
@@ -56,6 +57,7 @@
         <div class="dropdown">
           <button class="dropbtn">Systems &#9662;</button>
           <div class="dropdown-content">
+            <a href="rf-physics.html">RF Physics & Propagation</a>
             <a href="hardware.html">Hardware & Firmware</a>
             <a href="event-bus.html">Event Bus & Watches</a>
             <a href="copilot.html">Honu AI Copilot</a>
@@ -92,7 +94,7 @@
     <p>External APIs, NOAA, and Copernicus fusion.</p>
     <div class="hero-actions">
       <a class="btn btn-primary" href="https://github.com/aminalnam/OMEGA" target="_blank">View OMEGA on GitHub</a>
-      <a class="btn btn-secondary" href="index.html">Back to Portfolio</a>
+      <a class="btn btn-secondary" href="https://jonathancapone.art" target="_blank">Art Portfolio</a>
     </div>
   </section>
 
@@ -419,23 +421,41 @@
             <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Argo Float Economics.</h2>
             <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">Surface sensors only tell half the story. The ocean is composed of distinct thermal and halocline layers. The <code>argo_calibration.py</code> module actively queries the global Argo network—a decentralized fleet of 4,000 autonomous profiling floats that constantly dive to 2,000 meters and resurface.</p>
             
-            <div class="grid-3" style="margin-bottom: 2rem;">
-              <div class="panel" style="padding: 1.5rem;">
-                <span class="status-label status-implemented">The Financial Reality</span>
-                <h3 style="font-size: 1.2rem;">$20,000 Hardware</h3>
-                <p style="font-size: 0.85rem;">A single Argo float requires a precision-machined titanium pressure hull and complex hydraulic buoyancy engines to survive crushing depths, making them incredibly expensive to manufacture.</p>
-              </div>
-              <div class="panel" style="padding: 1.5rem;">
-                <span class="status-label status-implemented">The Telemetry Cost</span>
-                <h3 style="font-size: 1.2rem;">$200 / 10 Days</h3>
-                <p style="font-size: 0.85rem;">Once an Argo float surfaces, it transmits its profile via the Iridium satellite constellation. This proprietary data link costs hundreds of dollars a month per float.</p>
-              </div>
-              <div class="panel" style="padding: 1.5rem;">
-                <span class="status-label status-implemented">The OMEGA Hijack</span>
-                <h3 style="font-size: 1.2rem;">Free Calibration</h3>
-                <p style="font-size: 0.85rem;">Instead of building our own $20k floats, OMEGA simply pulls the live, open-source Argo CTD casts and mathematically cross-references them against our $200 surface buoys, ensuring scientific accuracy for free.</p>
-              </div>
+            <div class="markdown-table-wrapper" style="margin: 2rem 0; overflow-x: auto;">
+              <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                <thead>
+                  <tr style="border-bottom: 2px solid var(--ink-soft); color: var(--ink);">
+                    <th style="padding: 1rem;">Economic Metric</th>
+                    <th style="padding: 1rem;">Argo Profiling Float</th>
+                    <th style="padding: 1rem;">OMEGA Surface Node</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr style="border-bottom: 1px solid var(--line);">
+                    <td style="padding: 1rem;">Hardware Cost</td>
+                    <td style="padding: 1rem;">$20,000 (Titanium/Hydraulics)</td>
+                    <td style="padding: 1rem;">$200 (ESP32/PVC)</td>
+                  </tr>
+                  <tr style="border-bottom: 1px solid var(--line);">
+                    <td style="padding: 1rem;">Telemetry Cost</td>
+                    <td style="padding: 1rem;">$200 / 10 days (Iridium Sat)</td>
+                    <td style="padding: 1rem;">$0 (Free LoRa RF)</td>
+                  </tr>
+                  <tr style="border-bottom: 1px solid var(--line);">
+                    <td style="padding: 1rem;">Transmission Limit</td>
+                    <td style="padding: 1rem;">1 burst every 10 days</td>
+                    <td style="padding: 1rem;">Continuous (Solar)</td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 1rem;">Calibration Strategy</td>
+                    <td style="padding: 1rem;">Primary Ground Truth Source</td>
+                    <td style="padding: 1rem;">Mathematically hijacks Argo data</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
+            
+            <p style="margin-top: 2rem;"><strong>Execution:</strong> Instead of building our own $20k floats, OMEGA simply pulls the live, open-source Argo CTD (Conductivity, Temperature, Depth) casts via ERDDAP. The gateway mathematically cross-references these deep-ocean profiles against our cheap $200 surface buoys, ensuring scientific accuracy for free.</p>
           </section>
     
           <section class="section">
@@ -513,5 +533,6 @@
   <footer class="footer wrap">
     <span>© Jonathan Capone — Technical Portfolio. OMEGA (formerly OMEGA-wave).</span>
   </footer>
+  <script src="main.js"></script>
 </body>
 </html>

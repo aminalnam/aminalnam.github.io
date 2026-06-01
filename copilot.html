@@ -36,6 +36,7 @@
         <div class="dropdown">
           <button class="dropbtn">Core &#9662;</button>
           <div class="dropdown-content">
+            <a href="system-architecture.html">System Architecture</a>
             <a href="gateway.html">Gateway</a>
             <a href="mesh-core.html">Mesh Core</a>
                         <a href="security.html">Security & RBAC</a>
@@ -56,6 +57,7 @@
         <div class="dropdown">
           <button class="dropbtn">Systems &#9662;</button>
           <div class="dropdown-content">
+            <a href="rf-physics.html">RF Physics & Propagation</a>
             <a href="hardware.html">Hardware & Firmware</a>
             <a href="event-bus.html">Event Bus & Watches</a>
             <a href="copilot.html" class="is-current">Honu AI Copilot</a>
@@ -92,7 +94,7 @@
     <p>Deep dive into the 240KB Python tool registry and Read-Only safety constraints.</p>
     <div class="hero-actions">
       <a class="btn btn-primary" href="https://github.com/aminalnam/OMEGA" target="_blank">View OMEGA on GitHub</a>
-      <a class="btn btn-secondary" href="index.html">Back to Portfolio</a>
+      <a class="btn btn-secondary" href="https://jonathancapone.art" target="_blank">Art Portfolio</a>
     </div>
   </section>
 
@@ -130,8 +132,26 @@
               <p>When an operator asks <i>"Show me buoys near the East Coast"</i>, feeding that raw string into an external API will fail. The Copilot engine executes strict spatial pre-processing before the LLM even sees the message.</p>
               <p><strong>Execution:</strong> The Python <code>_preprocess_query</code> function scans the text against a registry of 30+ geographic regions. It translates "east coast" into a strict mathematical bounding box <code>[-82.0, 24.0, -66.0, 45.0]</code>. The engine then securely injects this box into the tool parameters. This eliminates AI hallucination—the model is physically unable to invent fake GPS coordinates.</p>
             </div>
-          </section>
+            
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;">
+              <span class="panel-kicker">Honu Execution Loop</span>
+              <pre><code class="language-mermaid">sequenceDiagram
+    participant U as Operator
+    participant P as Intent Preprocessor
+    participant M as LLM Engine
+    participant R as Tool Registry
+    participant DB as SQLite WAL
     
+    U->>P: "Are there Argo floats near Hawaii?"
+    P->>P: Extract "Hawaii" -> bbox[-160, 18, -154, 22]
+    P->>M: Inject [PORTAL CONTEXT] & system prompt
+    M->>R: call: `get_argo_floats_in_bbox`
+    R->>DB: SELECT * FROM argo WHERE lat/lon in bbox
+    DB-->>R: Return JSON array
+    R-->>M: Inject data into context
+    M-->>U: "Found 12 floats. I've highlighted them."</code></pre>
+            </div>
+          </section>
           <section class="section">
             <div class="section-content">
               <span class="section-kicker">Safety Constraints</span>
@@ -155,8 +175,8 @@
               <span class="section-kicker">Language Processing</span>
               <h2>The Query Preprocessor.</h2>
               <p>When an operator types a natural language request, feeding it directly into a small parameter LLM often results in incorrect tool selection or hallucinated coordinates. OMEGA intercepts all queries using a dedicated <code>_preprocess_query</code> function.</p>
-              <p><strong>Pattern Recognition:</strong> The preprocessor scans the raw string for over 20 oceanographic metric synonyms (e.g., mapping "SST" or "water temp" to <code>sea-surface-temperature</code>). It simultaneously cross-references a library of predefined bounding boxes (e.g., <code>_GEO_BOXES["east coast"]</code>).</p>
-              <p><strong>System Directives:</strong> If a match is found, the engine invisibly injects a rigid system directive into the conversation history, mathematically forcing the LLM to use the correct tool and coordinates, eliminating hallucination entirely.</p>
+              <p><strong>Pattern Recognition:</strong> The preprocessor scans the raw string for over 20 oceanographic metric synonyms (e.g., mapping "SST" or "water temp" to <code>sea-surface-temperature</code>). It simultaneously cross-references a library of predefined bounding boxes (e.g., <code>_GEO_BOXES["east coast"]</code>). To prevent "east coast" from accidentally triggering a generic "us" bounding box, the Python engine mathematically sorts the keys by string length descending.</p>
+              <p><strong>System Directives:</strong> Because the frontend concatenates previous chat turns into a single payload, the preprocessor strictly trims the payload to the first paragraph (<code>\n\n</code>). If a match is found, the engine invisibly injects a rigid system directive into the conversation history, mathematically forcing the LLM to use the correct tool and coordinates, eliminating hallucination entirely.</p>
             </div>
             <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">gateway/copilot.py</span><pre><code class="language-python">def _preprocess_query(user_text: str, history: list[dict]):
     # Prevent multi-paragraph pollution from frontend concatenation
@@ -176,8 +196,8 @@
             <div class="section-content">
               <span class="section-kicker">Execution Engine</span>
               <h2>Auto-Execution Overrides.</h2>
-              <p>Even with preprocessor directives, 7B parameter models can still stubbornly refuse to select the correct analytical tool, or attempt to use the wrong API endpoint (e.g., calling <code>spot_sample</code> for salinity when that endpoint only supports weather).</p>
-              <p><strong>The Override:</strong> OMEGA employs an <code>_detect_autoexec</code> bypass. When critical metric pathways are detected, the Copilot Engine completely circumvents the LLM's decision-making process. The Python backend manually executes the API call via <code>httpx.ASGITransport</code>, fetches the live data, and injects the results directly into the LLM's context window as a simulated tool response.</p>
+              <p>Even with preprocessor directives, 7B parameter models can still stubbornly refuse to select the correct analytical tool. For example, the <code>spot_sample</code> tool only returns weather data—it completely lacks <code>salinity</code> and <code>dissolved-oxygen</code> arrays. If an operator asks for salinity, the LLM will often hallucinate and blindly fire <code>spot_sample</code> anyway.</p>
+              <p><strong>The Override:</strong> OMEGA employs an <code>_detect_autoexec</code> bypass. When critical metric pathways (like salinity) are detected, the Copilot Engine completely circumvents the LLM's decision-making process. The Python backend manually executes the API call via <code>httpx.ASGITransport</code> against the <code>get_measurement_statistics</code> endpoint, fetches the live data, and injects the results directly into the LLM's context window as a simulated tool response.</p>
               <p><strong>Result:</strong> The AI is downgraded from a "decision maker" to a mere "summarizer," dramatically increasing the deterministic reliability of the agent while retaining its natural language fluidity.</p>
             </div>
             <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">gateway/copilot.py</span><pre><code class="language-python">async def _detect_autoexec(clean_text: str) -> dict | None:
@@ -204,5 +224,6 @@
   <footer class="footer wrap">
     <span>© Jonathan Capone — Technical Portfolio. OMEGA (formerly OMEGA-wave).</span>
   </footer>
+  <script src="main.js"></script>
 </body>
 </html>

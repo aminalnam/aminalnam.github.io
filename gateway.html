@@ -56,6 +56,7 @@
         <div class="dropdown">
           <button class="dropbtn">Systems &#9662;</button>
           <div class="dropdown-content">
+            <a href="rf-physics.html">RF Physics & Propagation</a>
             <a href="hardware.html">Hardware & Firmware</a>
             <a href="event-bus.html">Event Bus & Watches</a>
             <a href="copilot.html">Honu AI Copilot</a>
@@ -92,7 +93,7 @@
     <p>The Python FastAPI edge gateway.</p>
     <div class="hero-actions">
       <a class="btn btn-primary" href="https://github.com/aminalnam/OMEGA" target="_blank">View OMEGA on GitHub</a>
-      <a class="btn btn-secondary" href="index.html">Back to Portfolio</a>
+      <a class="btn btn-secondary" href="https://jonathancapone.art" target="_blank">Art Portfolio</a>
     </div>
   </section>
 
@@ -140,6 +141,20 @@ PRAGMA cache_size=-64000;</code></pre></div>
               <p>Disparate marine sensors natively produce chaotic, proprietary data formats—a YSI sonde outputs ASCII strings, while a BlueRobotics pressure sensor outputs raw hex. OMEGA standardizes all incoming telemetry into a strict <strong>Observation Envelope</strong> schema.</p>
 <p>This schema is the universal currency of the OMEGA platform. It mathematically guarantees that every measurement entering the system possesses a cryptographic UUID, an ISO-8601 timestamp, explicit SI units, and spatial coordinates (Latitude/Longitude/Depth).</p>
 <p><strong>How it works:</strong> By enforcing this envelope at the boundary layer via Pydantic models, downstream systems—such as bathymetry processors, machine learning models, or QARTOD Quality Control algorithms—do not need to write custom parsers for different manufacturer formats. They simply ingest the normalized Envelope, process the payload, and output a new Envelope. This strict data contract enables massive interoperability across the fleet.</p>
+            </div>
+            
+            <div class="section-visual">
+              <span class="panel-kicker">Shore Gateway Enclosure</span>
+              <img src="assets/images/gateway.png" alt="Rugged Shore Gateway hardware pelican case" style="margin-top: 1rem;">
+            </div>
+          </section>
+
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">Hardware Interfacing</span>
+              <h2>Bidirectional Serial Bridge.</h2>
+              <p>The FastAPI gateway does not have a physical LoRa radio. Instead, it is USB-tethered to a dedicated "shore node" running the OMEGA firmware. In Phase 1, this bridge was strictly one-way (receiving telemetry). The gateway now implements a fully bidirectional <strong>Streaming State Machine</strong>.</p>
+<p><strong>Execution:</strong> The Python <code>gateway.mesh_command</code> module constructs binary TLV frames and wraps them in a strict USB-CDC framing envelope (<code>0x55 0xAA len_lo len_hi</code>). It streams these bytes over serial to the tethered node. The node's C++ <code>UsbFrameReader</code> decodes the bytes on the fly. If the command's destination ID matches the tethered node, it executes it immediately (e.g., <code>set-tx-power</code>). If the destination ID belongs to a buoy 10 miles offshore, it automatically re-transmits the binary payload over the LoRa RF mesh.</p>
               
             </div>
             
@@ -192,5 +207,6 @@ PRAGMA cache_size=-64000;</code></pre></div>
   <footer class="footer wrap">
     <span>© Jonathan Capone — Technical Portfolio. OMEGA (formerly OMEGA-wave).</span>
   </footer>
+  <script src="main.js"></script>
 </body>
 </html>
