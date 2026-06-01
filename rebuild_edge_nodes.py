@@ -1,94 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8"/>
-  <meta content="width=device-width, initial-scale=1" name="viewport"/>
-  <title>OMEGA — Edge Nodes</title>
-  
-  <meta name="description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
-  <meta property="og:title" content="OMEGA — Edge Nodes" />
-  <meta property="og:description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://jonathancapone.com/edge-nodes.html" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="OMEGA — Edge Nodes" />
-  <meta name="twitter:description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
-  
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌊</text></svg>">
-  
-  <link rel="stylesheet" href="style.css">
-  <script type="module">
-    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
-    mermaid.initialize({ startOnLoad: true, theme: 'dark', themeVariables: { fontFamily: 'Inter' } });
-  </script>
-</head>
-<body>
-  <header class="topbar">
-    <div class="wrap topbar-inner">
-      <a class="brand" href="index.html">
-        <span class="brand-title">Jonathan Capone</span>
-        <span class="brand-sub">Technical Portfolio</span>
-      </a>
-      <nav class="nav">
-        <a href="index.html">Home</a>
-        <a href="overview.html">Overview</a>
-        
-        <div class="dropdown">
-          <button class="dropbtn">Core &#9662;</button>
-          <div class="dropdown-content">
-            <a href="system-architecture.html">System Architecture</a>
-            <a href="gateway.html">Gateway</a>
-            <a href="mesh-core.html">Mesh Core</a>
-                        <a href="security.html">Security & RBAC</a>
-            <a href="edge-nodes.html" class="is-current">Edge Nodes</a>
-          </div>
-        </div>
-        
-        <div class="dropdown">
-          <button class="dropbtn">Tools &#9662;</button>
-          <div class="dropdown-content">
-            <a href="mission-portal.html">Mission Portal</a>
-            <a href="janus-acoustic.html">JANUS Acoustics</a>
-            <a href="simulation.html">Simulation</a>
-            <a href="bathymetry.html">Bathymetry</a>
-          </div>
-        </div>
-        
-        <div class="dropdown">
-          <button class="dropbtn">Systems &#9662;</button>
-          <div class="dropdown-content">
-            <a href="rf-physics.html">RF Physics & Propagation</a>
-            <a href="hardware.html">Hardware & Firmware</a>
-            <a href="event-bus.html">Event Bus & Watches</a>
-            <a href="copilot.html">Honu AI Copilot</a>
-          </div>
-        </div>
+import re
 
-        <div class="dropdown">
-          <button class="dropbtn">Data &#9662;</button>
-          <div class="dropdown-content">
-            <a href="analytics.html">Analytics Pipeline</a>
-            <a href="data-providers.html">Data Providers</a>
-            <a href="external-data.html">External Integrations</a>
-            <a href="examples.html">Data Examples</a>
-            <a href="api-reference.html">API Reference</a>
-          </div>
-        </div>
-        
-        <div class="dropdown">
-          <button class="dropbtn">Docs &#9662;</button>
-          <div class="dropdown-content">
-            <a href="teaching-documentation.html">Education & Guides</a>
-            <a href="build-guide.html">Build Guide</a>
-            <a href="deployment-scenarios.html">Deployment Scenarios</a>
-            <a href="roadmap.html">Roadmap</a>
-          </div>
-        </div>
-      </nav>
-    </div>
-  </header>
+def rebuild():
+    with open('edge-nodes.html', 'r', encoding='utf-8') as f:
+        html = f.read()
 
-  <section class="hero wrap">
+    # Find the start of the hero
+    hero_start = html.find('<section class="hero wrap">')
+    
+    # Find the end of main
+    main_end = html.find('</main>') + len('</main>')
+    
+    if hero_start == -1 or main_end == -1:
+        print("Could not find hero or main tags.")
+        return
+
+    new_content = """<section class="hero wrap">
     <span class="eyebrow">Component</span>
     <h1>Sensor Nodes.</h1>
     <p>Hardware provisioning, lithium battery science, MPPT solar controllers, and environmental thermodynamics.</p>
@@ -155,11 +81,14 @@
           </section>
     
     </div>
-  </main>
+  </main>"""
 
-  <footer class="footer wrap">
-    <span>© Jonathan Capone — Technical Portfolio. OMEGA (formerly OMEGA-wave).</span>
-  </footer>
-  <script src="main.js"></script>
-</body>
-</html>
+    final_html = html[:hero_start] + new_content + html[main_end:]
+    
+    with open('edge-nodes.html', 'w', encoding='utf-8') as f:
+        f.write(final_html)
+    
+    print("Successfully rebuilt edge-nodes.html.")
+
+if __name__ == '__main__':
+    rebuild()

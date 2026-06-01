@@ -173,7 +173,7 @@
           <span class="section-kicker">Layer 2: Transport</span>
           <h2>The Bidirectional DTN.</h2>
           <p>Standard IoT relies on persistent MQTT or HTTP connections. Over the ocean, those connections do not exist. OMEGA operates a <strong>Delay Tolerant Network (DTN)</strong> utilizing a Custom Binary TLV Protocol that crushes a 283B JSON payload into a highly dense 84B frame.</p>
-          <p><strong>Cloud-to-Node Control:</strong> The mesh is not just for broadcasting telemetry; it is fully bidirectional. The cloud application can wrap a binary <code>COMMAND</code> frame (such as <code>set-tx-power</code>) and inject it into the edge mesh via the Gateway's USB-CDC serial bridge. The network autonomously routes the command over multiple hops to the targeted marine node.</p>
+          <p><strong>Cloud-to-Node Control:</strong> The mesh is not just for broadcasting telemetry; it is fully bidirectional. The cloud application can wrap a binary <code>COMMAND</code> frame (such as <code>set-tx-power</code>) and inject it into the edge mesh via the Gateway's USB-CDC serial bridge. The network automatically routes the command over multiple hops to the targeted marine node.</p>
         </div>
       </section>
 

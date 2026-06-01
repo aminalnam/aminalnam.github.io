@@ -105,9 +105,9 @@
             <div class="section-content">
               <span class="section-kicker">Authentication Boundary</span>
               <h2>Security Posture & Headers.</h2>
-              <p>Marine autonomous networks operate in completely untrusted environments. If a malicious actor intercepts the LoRa traffic or scans the public IP of the shore gateway, they cannot be allowed to inject false waypoints into a remote sensor.</p>
+              <p>Marine autonomous networks operate in completely untrusted environments. If a malicious actor intercepts the LoRa traffic or scans the public IP of the shore gateway, they cannot be allowed to inject false commands into a remote sensor.</p>
 <p>All physical hardware endpoints and critical telemetry streams are protected by a strict <strong>Authentication Boundary</strong>. The gateway enforces the <code>X-OMEGA-API-Key</code> HTTP header using FastAPI dependency injection.</p>
-<p><strong>Operational Security:</strong> This boundary ensures that public, unauthenticated users can safely query observational data (like current water temperatures via GET requests), but only authenticated, cryptographically verified operators can interact with the <code>/v1/control/commands</code> namespace, completely preventing the hostile hijacking of multimillion-dollar autonomous assets.</p>
+<p><strong>Operational Security:</strong> This boundary ensures that public, unauthenticated users can safely query observational data (like current water temperatures via GET requests), but only authenticated, cryptographically verified operators can interact with the <code>/v1/control/commands</code> namespace, completely preventing the hostile hijacking of multimillion-dollar hardware nodes.</p>
               
             </div>
             
