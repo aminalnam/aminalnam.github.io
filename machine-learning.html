@@ -132,6 +132,31 @@
             <p style="font-size: 0.85rem;">For complex, multi-variate forecasting (e.g., predicting how wind speed, salinity, and temperature will interact 48 hours from now), we export the data to train Long Short-Term Memory (LSTM) neural networks using TensorFlow. This allows the system to predict coastal thermal anomalies and warn researchers days before coral bleaching actually occurs.</p>
           </div>
         </div>
+        
+        <div class="section-visual" style="max-height: 800px; overflow-y: auto;">
+          <span class="panel-kicker">machine_learning/train_lstm.py</span>
+          <pre><code class="language-python">import tensorflow as tf
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import LSTM, Dense, Dropout
+
+def build_thermal_anomaly_model(input_shape):
+    model = Sequential([
+        # 1. Recurrent Layer for temporal memory (e.g. 48 hours of past data)
+        LSTM(64, return_sequences=True, input_shape=input_shape),
+        Dropout(0.2), # Prevent overfitting on noisy ocean data
+        
+        # 2. Deep abstraction layer
+        LSTM(32, return_sequences=False),
+        Dropout(0.2),
+        
+        # 3. Output Layer (Predicting T+1 Temperature)
+        Dense(16, activation='relu'),
+        Dense(1, activation='linear')
+    ])
+    
+    model.compile(optimizer='adam', loss='mse', metrics=['mae'])
+    return model</code></pre>
+        </div>
       </section>
     </div>
   </main>

@@ -133,6 +133,24 @@
             <p style="font-size: 0.85rem;">OMEGA hardware utilizes dedicated MPPT ICs (like the CN3791 or BQ25895) acting as buck-boost DC-DC converters. These chips constantly sample the incoming solar voltage at thousands of Hz. If the voltage begins to dip, the chip dynamically reduces the current draw, riding the exact crest of the P=I*V power curve to extract maximum wattage regardless of cloud cover or wave pitch.</p>
           </div>
         </div>
+        
+        <div class="section-visual" style="max-height: 800px; overflow-y: auto;">
+          <span class="panel-kicker">MPPT Algorithm (Perturb and Observe)</span>
+          <pre><code class="language-cpp">float current_power = get_solar_voltage() * get_solar_current();
+if (current_power > previous_power) {
+    if (voltage > previous_voltage) {
+        increase_duty_cycle(); // Keep climbing the curve
+    } else {
+        decrease_duty_cycle();
+    }
+} else {
+    if (voltage > previous_voltage) {
+        decrease_duty_cycle(); // We passed the peak, back up
+    } else {
+        increase_duty_cycle();
+    }
+}</code></pre>
+        </div>
       </section>
 
       <section class="section section-block" style="background: rgba(0,0,0,0.4); margin-top: 2rem;">

@@ -126,7 +126,25 @@
 <p><strong>Execution:</strong> Every mutating API endpoint (e.g. <code>/v1/control/commands</code>) is guarded by FastAPI dependency injection (<code>_require_operator</code>). If an unauthorized researcher attempts to wipe the database, the API mathematically rejects the bearer token with an HTTP 403, absolutely preventing accidental fleet commands.</p>
               
             </div>
-            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">gateway/auth_sessions.py</span><pre><code class="language-python">async def _require_operator(
+            
+            <div class="grid-2" style="margin-top: 2rem;">
+              <div class="section-visual" style="max-height: 800px; overflow-y: auto;">
+                <span class="panel-kicker">RBAC Policy (JWT Payload)</span>
+                <pre><code class="language-json">{
+  "sub": "jcapone",
+  "role": "bossadmin",
+  "permissions": [
+    "mesh:read",
+    "mesh:write",
+    "nodes:reboot",
+    "nodes:wipe_nvram"
+  ],
+  "exp": 1735689600
+}</code></pre>
+              </div>
+              <div class="section-visual" style="max-height: 800px; overflow-y: auto;">
+                <span class="panel-kicker">gateway/auth_sessions.py</span>
+                <pre><code class="language-python">async def _require_operator(
     token: str = Depends(oauth2_scheme),
     db: Session = Depends(get_db)
 ):

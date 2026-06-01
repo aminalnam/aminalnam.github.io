@@ -154,6 +154,34 @@
                 <p style="font-size: 0.85rem;">Completely decoupled from the radio, the database writer script runs in an infinite <code>asyncio</code> loop, pulling payloads off the memory bus at its own speed and writing them to SQLite. If the database locks up, the memory queue simply grows, but no live RF packets are ever dropped.</p>
               </div>
             </div>
+            
+            <div class="grid-2" style="margin-top: 2rem;">
+              <div class="section-visual" style="max-height: 800px; overflow-y: auto;">
+                <span class="panel-kicker">gateway/database.py (LISTEN/NOTIFY)</span>
+                <pre><code class="language-python">async def listen_to_pg_events():
+    """Binds directly to PostgreSQL internal PubSub bus"""
+    conn = await asyncpg.connect(DSN)
+    # The database itself fires this trigger instantly on INSERT
+    await conn.add_listener('telemetry_inserted', broadcast_to_websockets)
+    
+    while True:
+        await asyncio.sleep(3600) # Keep event loop alive</code></pre>
+              </div>
+
+              <div class="section-visual" style="max-height: 800px; overflow-y: auto;">
+                <span class="panel-kicker">gateway/routers/websockets.py</span>
+                <pre><code class="language-python">@router.websocket("/ws/live")
+async def websocket_endpoint(websocket: WebSocket):
+    await manager.connect(websocket)
+    try:
+        while True:
+            # The client just holds the TCP socket open.
+            # We push JSON from the PostgreSQL listener directly to React.
+            data = await websocket.receive_text()
+    except WebSocketDisconnect:
+        manager.disconnect(websocket)</code></pre>
+              </div>
+            </div>
           </section>
     
     </div>
