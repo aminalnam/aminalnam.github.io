@@ -163,6 +163,26 @@
                 <p style="font-size: 0.85rem;">The encoded bits are fired out of the hydrophone as Frequency-Shift Keyed audio chirps at exactly 11.5 kHz.</p>
               </div>
             </div>
+
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;">
+              <span class="panel-kicker">Frequency-Shift Keying (FSK) Math</span>
+              <pre><code class="language-python">def modulate_fsk(binary_string: str, f_space=11000, f_mark=12000, baud=50, fs=44100):
+    # Mathematically construct the analog audio wave
+    t = np.arange(0, 1/baud, 1/fs)
+    audio_wave = np.array([])
+    
+    for bit in binary_string:
+        # 0 = Space (11.0 kHz), 1 = Mark (12.0 kHz)
+        freq = f_mark if bit == '1' else f_space
+        
+        # S(t) = A * sin(2π * f * t)
+        chirp = np.sin(2 * np.pi * freq * t)
+        
+        # Append the continuous wave
+        audio_wave = np.concatenate((audio_wave, chirp))
+        
+    return audio_wave</code></pre>
+            </div>
           </section>
 
           <section class="section section-block" style="background: rgba(0,0,0,0.4);">

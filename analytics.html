@@ -137,6 +137,40 @@
         "gross_range_fail_min": center - robust_sigma * 6,
         "gross_range_fail_max": center + robust_sigma * 6,
     }</code></pre></div>
+
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto; margin-top: 2rem;">
+              <span class="panel-kicker">gateway/analytics_merge.py</span>
+              <pre><code class="language-python">import pandas as pd
+import sqlite3
+
+def build_multivariate_dataset(db_path: str):
+    """
+    Oceanographic sensors sample at different frequencies. 
+    Temperatures arrive every 15m; Salinity arrives every 1h.
+    We must use Pandas merge_asof() to align time-series backward 
+    in time to the nearest exact sample, avoiding future-data leakage.
+    """
+    conn = sqlite3.connect(db_path)
+    
+    # Load raw telemetry into DataFrames
+    df_temp = pd.read_sql("SELECT timestamp, temperature FROM telemetry", conn)
+    df_salt = pd.read_sql("SELECT timestamp, salinity FROM telemetry", conn)
+    
+    # Sort by time required for asof merge
+    df_temp.sort_values("timestamp", inplace=True)
+    df_salt.sort_values("timestamp", inplace=True)
+    
+    # Merge Salinity to Temperature, looking backward up to 2 hours
+    df_merged = pd.merge_asof(
+        df_temp, 
+        df_salt, 
+        on="timestamp", 
+        direction="backward",
+        tolerance=pd.Timedelta("2h")
+    )
+    
+    return df_merged.dropna()</code></pre>
+            </div>
           </section>
     
           <section class="section">
