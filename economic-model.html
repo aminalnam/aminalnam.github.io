@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <title>OMEGA — Economic Model</title>
+  
+  <meta name="description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
+  <meta property="og:title" content="OMEGA — Economic Model" />
+  <meta property="og:description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://jonathancapone.com/economic-model.html" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="OMEGA — Economic Model" />
+  <meta name="twitter:description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
+  
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌊</text></svg>">
+  
+  <link rel="stylesheet" href="style.css">
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ startOnLoad: true, theme: 'dark', themeVariables: { fontFamily: 'Inter' } });
+  </script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap topbar-inner">
+      <a class="brand" href="index.html" style="display: flex; align-items: center; gap: 0.75rem;">
+        <img src="assets/images/logo.png" alt="OMEGA Logo" style="height: 48px; width: auto; object-fit: contain;">
+        <div>
+          <span class="brand-title" style="letter-spacing: 0.05em;">OMEGA</span>
+          <span class="brand-sub">Technical Portfolio</span>
+        </div>
+      </a>
+      <nav class="nav">
+        <a href="index.html">Home</a>
+        <a href="overview.html">Overview</a>
+        
+        <div class="dropdown">
+          <button class="dropbtn">Core &#9662;</button>
+          <div class="dropdown-content">
+            <a href="system-architecture.html">System Architecture</a>
+            <a href="gateway.html">Gateway</a>
+            <a href="mesh-core.html">Mesh Core</a>
+            <a href="security.html">Security & RBAC</a>
+            <a href="edge-nodes.html">Edge Nodes</a>
+          </div>
+        </div>
+        
+        <div class="dropdown">
+          <button class="dropbtn">Tools &#9662;</button>
+          <div class="dropdown-content">
+            <a href="mission-portal.html">Mission Portal</a>
+            <a href="janus-acoustic.html">JANUS Acoustics</a>
+            <a href="simulation.html">Simulation</a>
+            <a href="bathymetry.html">Bathymetry</a>
+          </div>
+        </div>
+        
+        <div class="dropdown">
+          <button class="dropbtn">Systems &#9662;</button>
+          <div class="dropdown-content">
+            <a href="rf-physics.html">RF Physics & Propagation</a>
+            <a href="hardware.html">Hardware & Firmware</a>
+            <a href="power-systems.html">Power & Thermodynamics</a>
+            <a href="event-bus.html">Event Bus & Watches</a>
+            <a href="copilot.html">Honu AI Copilot</a>
+          </div>
+        </div>
+
+        <div class="dropdown">
+          <button class="dropbtn">Data &#9662;</button>
+          <div class="dropdown-content">
+            <a href="analytics.html">Analytics Pipeline</a>
+            <a href="data-providers.html">Data Providers</a>
+            <a href="economic-model.html" class="is-current">Economic Model</a>
+            <a href="external-data.html">External Integrations</a>
+            <a href="examples.html">Data Examples</a>
+            <a href="api-reference.html">API Reference</a>
+          </div>
+        </div>
+        
+        <div class="dropdown">
+          <button class="dropbtn">Docs &#9662;</button>
+          <div class="dropdown-content">
+            <a href="teaching-documentation.html">Education & Guides</a>
+            <a href="build-guide.html">Build Guide</a>
+            <a href="deployment-scenarios.html">Deployment Scenarios</a>
+            <a href="roadmap.html">Roadmap</a>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero wrap">
+    <span class="eyebrow">Financial Analytics</span>
+    <h1>The Economic Model.</h1>
+    <p>Democratizing oceanography by collapsing the $20,000 Argo standard to $200 LoRa mesh nodes.</p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="https://github.com/aminalnam/OMEGA" target="_blank">View OMEGA on GitHub</a>
+      <a class="btn btn-secondary" href="https://jonathancapone.art" target="_blank">Art Portfolio</a>
+    </div>
+  </section>
+
+  <main class="main-shell wrap">
+    <div class="main-inner">
+
+      <section class="section section-block" style="background: rgba(0,0,0,0.4);">
+        <span class="section-kicker">The Legacy Standard</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Argo Floats vs OMEGA</h2>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">The global standard for ocean data collection is the Argo Float. While incredibly sophisticated, their massive price tag restricts environmental monitoring to heavily-funded nation-states and elite universities.</p>
+        
+        <div class="grid-2" style="margin-bottom: 2rem;">
+          <div class="panel" style="padding: 1.5rem; border-left: 4px solid #ef4444;">
+            <span class="status-label status-pending">Traditional Argo Float</span>
+            <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem;">$20,000 / unit</h3>
+            <ul style="font-size: 0.9rem; line-height: 1.5; color: var(--ink-soft);">
+                <li><strong>Telemetry:</strong> $1,500/year Iridium Satellite subscription.</li>
+                <li><strong>Power:</strong> Non-rechargeable. Once the battery dies after 4 years, the $20k unit becomes ocean trash.</li>
+                <li><strong>Deployment:</strong> Requires a multi-million dollar research vessel and crane to physically drop into the water.</li>
+            </ul>
+          </div>
+          <div class="panel" style="padding: 1.5rem; border-left: 4px solid #10b981;">
+            <span class="status-label status-implemented">OMEGA Mesh Node</span>
+            <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem;">$200 / unit</h3>
+            <ul style="font-size: 0.9rem; line-height: 1.5; color: var(--ink-soft);">
+                <li><strong>Telemetry:</strong> $0/year. Free ISM-band LoRa mesh networking.</li>
+                <li><strong>Power:</strong> Infinite. MPPT Solar charging + 18650 Li-ion cells.</li>
+                <li><strong>Deployment:</strong> Tossed off the side of a $500 civilian fishing skiff by local community volunteers.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-block" style="background: rgba(0,0,0,0.4); margin-top: 2rem;">
+        <span class="section-kicker">Bill of Materials</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">The Hardware BOM</h2>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">OMEGA leverages the massive economies of scale generated by the IoT and drone industries to source ultra-cheap, highly reliable commercial off-the-shelf (COTS) components.</p>
+        
+        <div style="overflow-x: auto; margin-bottom: 2rem;">
+          <table style="width: 100%; text-align: left; border-collapse: collapse; font-family: var(--font-mono); font-size: 0.9rem;">
+            <thead>
+              <tr style="border-bottom: 1px solid var(--border-color); color: var(--brand-cyan);">
+                <th style="padding: 1rem;">Component</th>
+                <th style="padding: 1rem;">Description</th>
+                <th style="padding: 1rem; text-align: right;">Cost (USD)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                <td style="padding: 1rem;">LILYGO T-Beam Supreme</td>
+                <td style="padding: 1rem; color: var(--ink-soft);">ESP32-S3 Logic Core + Semtech LR1121 RF Transceiver</td>
+                <td style="padding: 1rem; text-align: right;">$45.00</td>
+              </tr>
+              <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                <td style="padding: 1rem;">U-Blox MAX-M10S</td>
+                <td style="padding: 1rem; color: var(--ink-soft);">High-precision GNSS/GPS module for geospatial tagging</td>
+                <td style="padding: 1rem; text-align: right;">$20.00</td>
+              </tr>
+              <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                <td style="padding: 1rem;">Samsung 35E 18650</td>
+                <td style="padding: 1rem; color: var(--ink-soft);">3500mAh Lithium-Ion Cell (x2)</td>
+                <td style="padding: 1rem; text-align: right;">$12.00</td>
+              </tr>
+              <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                <td style="padding: 1rem;">6V 2W Solar Panel</td>
+                <td style="padding: 1rem; color: var(--ink-soft);">Epoxy-sealed monocrystalline panel</td>
+                <td style="padding: 1rem; text-align: right;">$15.00</td>
+              </tr>
+              <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                <td style="padding: 1rem;">DS18B20 Thermistor</td>
+                <td style="padding: 1rem; color: var(--ink-soft);">Waterproof 1-Wire temperature sensor probe</td>
+                <td style="padding: 1rem; text-align: right;">$8.00</td>
+              </tr>
+              <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                <td style="padding: 1rem;">PETG Hull Enclosure</td>
+                <td style="padding: 1rem; color: var(--ink-soft);">3D Printed (FDM) Hull with Marine Epoxy coating</td>
+                <td style="padding: 1rem; text-align: right;">$25.00</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--border-color); font-weight: bold; background: rgba(0,0,0,0.5);">
+                <td style="padding: 1rem;" colspan="2">Total BOM Estimate</td>
+                <td style="padding: 1rem; text-align: right; color: var(--brand-cyan);">~$125.00</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="section section-block" style="background: rgba(0,0,0,0.4); margin-top: 2rem;">
+        <span class="section-kicker">Architectural Philosophy</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Swarm Economics</h2>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">When a $20,000 Argo float is destroyed by a ship propeller or shark bite, it is a catastrophic loss for the research grant. This financial risk forces conservative deployments.</p>
+        <p style="color: var(--ink-soft); font-size: 1rem; line-height: 1.6; max-width: 800px;">
+          <strong>The OMEGA Paradigm:</strong> By collapsing the cost by two orders of magnitude, OMEGA introduces the concept of "Swarm Economics". If an NGO deploys 100 OMEGA nodes for the same price as a single Argo float, they achieve a massive geospatial resolution advantage. Furthermore, if 20% of the nodes are destroyed by hurricanes, biofouling, or ship strikes, the network seamlessly routes around the damage using DTN mesh networking. High mortality rates become a statistically acceptable reality rather than a catastrophic failure.
+        </p>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="footer wrap">
+    <span>© Jonathan Capone — Technical Portfolio. OMEGA (formerly OMEGA-wave).</span>
+  </footer>
+  <script src="main.js"></script>
+</body>
+</html>
