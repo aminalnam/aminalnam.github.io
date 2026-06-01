@@ -26,12 +26,6 @@ def update_nav(directory):
                     re.IGNORECASE
                 )
                 
-                # Insert proof-lab into Data dropdown after api-reference
-                proof_lab_pattern = re.compile(
-                    r'(<a href="api-reference\.html"[^>]*>API Reference</a>)',
-                    re.IGNORECASE
-                )
-                
                 # Insert compliance into Docs dropdown after deployment-scenarios
                 docs_pattern = re.compile(
                     r'(<a href="deployment-scenarios\.html"[^>]*>Deployment Scenarios</a>)',
@@ -45,9 +39,6 @@ def update_nav(directory):
                 
                 if 'qc-eval.html' not in content:
                     content = data_pattern.sub(r'\1\n            <a href="qc-eval.html">Data Quality (QARTOD)</a>', content)
-                    
-                if 'proof-lab.html' not in content:
-                    content = proof_lab_pattern.sub(r'\1\n            <a href="proof-lab.html">Proof Lab Output</a>', content)
                 
                 if 'compliance.html' not in content:
                     content = docs_pattern.sub(r'\1\n            <a href="compliance.html">Legal & Compliance</a>', content)
