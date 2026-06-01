@@ -107,28 +107,46 @@
       
       <!-- MISSION & PITCH -->
       <section class="section section-block" style="padding-top: 0; padding-bottom: 2rem;">
-        <span class="section-kicker">Mission Statement</span>
-        <h2 style="font-family: var(--font-serif); font-size: 2.8rem; margin: 0 0 1.5rem; letter-spacing: -0.02em;">Connectivity where cellular networks fail.</h2>
-        <p style="color: var(--ink-soft); font-size: 1.25rem; margin-bottom: 2.5rem; max-width: 850px; line-height: 1.7;">
-          The ocean is a disconnected, hostile environment. Standard IoT paradigms rely on persistent MQTT or HTTP connections, which do not exist offshore. 
-          OMEGA bridges the gap by deploying an ultra-low-power, <strong>Delay Tolerant Network (DTN)</strong> that links deep-sea acoustic sensors and drifting buoys directly to a shore-based Python gateway using +22dBm LoRa RF links.
+        <span class="section-kicker" style="color: var(--accent);">The Frontier</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.8rem; margin: 0 0 1.5rem; letter-spacing: -0.02em;">The ocean is the last disconnected environment on Earth.</h2>
+        <p style="color: var(--ink-soft); font-size: 1.25rem; margin-bottom: 3.5rem; max-width: 850px; line-height: 1.7;">
+          The majority of our planet's surface is a communications black hole. While terrestrial systems enjoy ubiquitous 5G and fiber-optic backbones, marine environments remain fundamentally isolated. Cellular networks die 10 miles offshore. Commercial satellite uplinks cost thousands of dollars per month per node. Consequently, critical subsea infrastructure, fragile coral reef ecosystems, and severe coastal weather fronts remain dangerously unmonitored in real-time.
+        </p>
+
+        <span class="section-kicker" style="color: var(--accent);">The Paradigm Shift</span>
+        <h3 style="font-family: var(--font-serif); font-size: 2.2rem; margin: 0 0 1.5rem;">Democratizing Marine Operations.</h3>
+        <p style="color: var(--ink-soft); font-size: 1.15rem; margin-bottom: 1.5rem; max-width: 850px; line-height: 1.7;">
+          OMEGA is not just a sensor network; it is a fundamental paradigm shift in maritime telemetry. By leveraging ultra-long-range Sub-GHz LoRa modulation and a decentralized Delay Tolerant Network (DTN), OMEGA allows us to blanket entire coastlines and archipelagos with thousands of resilient, self-healing sensor nodes at a fraction of the cost of traditional acoustic modems or satellite arrays.
+        </p>
+        <p style="color: var(--ink-soft); font-size: 1.15rem; margin-bottom: 3.5rem; max-width: 850px; line-height: 1.7;">
+          This enables unprecedented capabilities:
+          <br><br>
+          <strong style="color: var(--white);">Climate Science:</strong> Real-time, hyper-dense thermal mapping of coral reef bleaching events.<br>
+          <strong style="color: var(--white);">Coastal Defense:</strong> Immutable, cryptographically secure acoustic monitoring of subsea pipelines.<br>
+          <strong style="color: var(--white);">Maritime Safety:</strong> Live-streaming barometric pressure drops directly from the eye of coastal storm surges.
+        </p>
+
+        <span class="section-kicker" style="color: var(--accent);">The Engineering Reality</span>
+        <h3 style="font-family: var(--font-serif); font-size: 2.2rem; margin: 0 0 1.5rem;">A War Against Physics.</h3>
+        <p style="color: var(--ink-soft); font-size: 1.15rem; margin-bottom: 2.5rem; max-width: 850px; line-height: 1.7;">
+          Deploying silicon and lithium into the ocean is an act of war against physics. Saltwater corrodes hardware, rolling waves physically block RF signals, and winter storms obliterate solar charging budgets. Standard IoT frameworks instantly collapse in this environment. To survive, OMEGA relies on extreme, bare-metal engineering:
         </p>
         
         <div class="grid-3" style="margin-bottom: 4rem;">
           <div class="panel" style="padding: 2rem;">
-            <span class="status-label status-implemented">Deep Sleep</span>
-            <h3 style="font-size: 1.4rem;">15µA Thermodynamics</h3>
+            <span class="status-label status-implemented">Thermodynamics</span>
+            <h3 style="font-size: 1.4rem;">15µA Deep Sleep</h3>
             <p style="font-size: 0.95rem;">Edge nodes mathematically budget incoming solar joules, physically cutting power rails to drop into 15µA deep-sleep cycles to survive 14-hour winter nights.</p>
           </div>
           <div class="panel" style="padding: 2rem;">
-            <span class="status-label status-implemented">DTN Mesh</span>
-            <h3 style="font-size: 1.4rem;">Binary TLV Compression</h3>
+            <span class="status-label status-implemented">Compression</span>
+            <h3 style="font-size: 1.4rem;">Binary TLV Frames</h3>
             <p style="font-size: 0.95rem;">JSON is too heavy for the ocean. OMEGA crushes 283B payloads into highly dense 84B Custom Binary TLV frames, vastly increasing network throughput.</p>
           </div>
           <div class="panel" style="padding: 2rem;">
-            <span class="status-label status-implemented">Security</span>
-            <h3 style="font-size: 1.4rem;">Cryptographic Logging</h3>
-            <p style="font-size: 0.95rem;">Marine networks operate in untrusted environments. A strict Role-Based Access Control (RBAC) loop enforces immutable cryptographic audit trails for every physical command.</p>
+            <span class="status-label status-implemented">Resilience</span>
+            <h3 style="font-size: 1.4rem;">SQLite WAL Routing</h3>
+            <p style="font-size: 0.95rem;">The FastAPI backend writes asynchronously to a SQLite WAL database to prevent total system lockups during massive RF data influxes from the physical mesh.</p>
           </div>
         </div>
 
