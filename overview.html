@@ -34,6 +34,7 @@
       </a>
       <nav class="nav" aria-label="Main Navigation">
         <a href="index.html">Home</a>
+        <a href="manifesto.html">Manifesto</a>
         <a href="overview.html" class="is-current">Overview</a>
         <a href="proof-lab.html" style="color: var(--accent-ocean); font-weight: 600; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.05em;">Proof Lab</a>
         
@@ -97,7 +98,6 @@
             <a href="marine-operations.html">Marine Operations</a>
             <a href="teaching-documentation.html">Education & Guides</a>
             <a href="compliance.html">Legal & Compliance</a>
-            <a href="manifesto.html">The Manifesto</a>
             <a href="roadmap.html">Roadmap</a>
           </div>
         </div>
@@ -117,6 +117,65 @@
 
   <main class="main-shell wrap" role="main">
     <div class="main-inner">
+
+      <section class="section section-block" style="padding-top: 0; padding-bottom: 2rem;">
+        <span class="section-kicker" style="color: var(--accent);">The Engineering Reality</span>
+        <h3 style="font-family: var(--font-serif); font-size: 2.2rem; margin: 0 0 1.5rem;">Designing for the Extremes.</h3>
+        <p style="color: var(--ink-soft); font-size: 1.15rem; margin-bottom: 2.5rem; max-width: 850px; line-height: 1.7;">
+          Deploying delicate silicon and lithium into the ocean demands extreme adaptation. Saltwater corrodes hardware, rolling waves physically block RF signals, and winter storms severely limit solar charging budgets. Standard IoT frameworks instantly collapse under these conditions. To survive and operate autonomously, OMEGA relies on hyper-resilient, bare-metal engineering:
+        </p>
+        
+        <div class="grid-3" style="margin-bottom: 4rem;">
+          <div class="panel" style="padding: 2rem;">
+            <span class="status-label status-implemented">Thermodynamics</span>
+            <h3 style="font-size: 1.4rem;">15µA Deep Sleep</h3>
+            <p style="font-size: 0.95rem;">Edge nodes mathematically budget incoming solar joules, physically cutting power rails to drop into 15µA deep-sleep cycles to survive 14-hour winter nights.</p>
+          </div>
+          <div class="panel" style="padding: 2rem;">
+            <span class="status-label status-implemented">Compression</span>
+            <h3 style="font-size: 1.4rem;">Binary TLV Frames</h3>
+            <p style="font-size: 0.95rem;">JSON is too heavy for the ocean. OMEGA crushes 283B payloads into highly dense 84B Custom Binary TLV frames, vastly increasing network throughput.</p>
+          </div>
+          <div class="panel" style="padding: 2rem;">
+            <span class="status-label status-implemented">Resilience</span>
+            <h3 style="font-size: 1.4rem;">SQLite WAL Routing</h3>
+            <p style="font-size: 0.95rem;">The FastAPI backend writes asynchronously to a SQLite WAL database to prevent total system lockups during massive RF data influxes from the physical mesh.</p>
+          </div>
+        </div>
+
+        <span class="section-kicker">System Architecture</span>
+        <h3 style="font-family: var(--font-serif); font-size: 2.2rem; margin: 0 0 2rem;">The 4-Layer Stack.</h3>
+        
+        <div class="section-visual" style="margin-bottom: 2rem;">
+          <div class="mermaid">
+            flowchart TD
+                subgraph L1 [Layer 1: Physical / Hardware]
+                    E1(Buoy: T-Beam Supreme)
+                    E2(Relay: LR1121)
+                end
+                subgraph L2 [Layer 2: Mesh Transport]
+                    DTN{DTN: Binary TLV + Batching}
+                end
+                subgraph L3 [Layer 3: Gateway]
+                    USB(USB-CDC Serial Bridge)
+                    ASGI[FastAPI / SQLite WAL]
+                end
+                subgraph L4 [Layer 4: Presentation]
+                    UI((React WebGL Portal))
+                end
+
+                E1 <-->|LoRa 900MHz| L2
+                E2 <-->|LoRa 900MHz| L2
+                L2 <-->|LoRa / CSMA-CA| USB
+                USB <-->|JSON Stream| ASGI
+                ASGI <-->|HTTP Long-Polling| UI
+
+                classDef default fill:#0a0f1d,stroke:#9aa2b1,stroke-width:1px,color:#9aa2b1;
+                classDef node fill:#101529,stroke:#3b82f6,stroke-width:2px,color:#fff;
+                class E1,E2,USB,ASGI,UI node;
+          </div>
+        </div>
+      </section>
 
           <section class="section section-block" style="background: rgba(0,0,0,0.4);">
             <span class="section-kicker">The Genesis</span>
