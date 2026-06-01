@@ -33,18 +33,31 @@
       pointer-events: auto;
     }
     .tour-modal {
-      background: rgba(20, 32, 51, 0.95);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      background: rgba(15, 23, 36, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
       border-radius: 12px;
       padding: 2.5rem;
-      max-width: 500px;
+      width: 90%;
+      max-width: 550px;
       text-align: center;
       transform: translateY(20px);
       transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
     }
     .tour-overlay.visible .tour-modal {
       transform: translateY(0);
+    }
+    .tour-step {
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+    .tour-step.active {
+      display: block;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(5px); }
+      to { opacity: 1; transform: translateY(0); }
     }
     .tour-icon {
       font-size: 3rem;
@@ -62,19 +75,64 @@
       margin-bottom: 2rem;
       font-size: 0.95rem;
     }
+    .tour-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 1.5rem;
+    }
+    .tour-dots {
+      display: flex;
+      gap: 6px;
+    }
+    .tour-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
+      transition: background 0.2s;
+    }
+    .tour-dot.active {
+      background: var(--accent-ocean);
+    }
     .tour-btn {
       background: var(--accent-ocean);
       color: #fff;
       border: none;
-      padding: 0.75rem 2rem;
+      padding: 0.6rem 1.5rem;
       border-radius: 6px;
       font-weight: 600;
-      font-size: 1rem;
+      font-size: 0.95rem;
       cursor: pointer;
       transition: background 0.2s;
     }
     .tour-btn:hover {
       background: #2563eb;
+    }
+    .tour-btn.secondary {
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.2);
+      color: #cbd5e1;
+    }
+    .tour-btn.secondary:hover {
+      background: rgba(255,255,255,0.05);
+    }
+    .replay-tour-btn {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      background: rgba(15, 23, 36, 0.8);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: #94a3b8;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      z-index: 50;
+      backdrop-filter: blur(4px);
+    }
+    .replay-tour-btn:hover {
+      background: rgba(15, 23, 36, 1);
+      color: #fff;
     }
   </style>
 </head>
@@ -163,36 +221,110 @@
 
   <main style="flex-grow: 1; position: relative;">
     <iframe src="prooflab-site/dashboard.html" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;"></iframe>
+    <button id="replayBtn" class="replay-tour-btn">Replay Tour ↺</button>
   </main>
 
   <div id="tourOverlay" class="tour-overlay">
     <div class="tour-modal">
-      <div class="tour-icon">🔬</div>
-      <h2 class="tour-title">Welcome to Proof Lab</h2>
-      <p class="tour-text">
-        This is the <strong>Evidence Control Center</strong>. Proof Lab runs deterministic evaluations against OMEGA's hardware and software pipelines, benchmarking live ingest rates, validating QA matrices, and tracking stability regressions over time.
-      </p>
-      <button id="tourStartBtn" class="tour-btn">Start Exploring</button>
+      
+      <!-- Step 1 -->
+      <div class="tour-step active" data-step="1">
+        <div class="tour-icon">🔬</div>
+        <h2 class="tour-title">Evidence Control Center</h2>
+        <p class="tour-text">
+          Welcome to the Proof Lab. This is an embedded, live view of OMEGA's deterministic evaluation engine. Whenever we update the backend code, Proof Lab runs simulated field telemetry through the Gateway to verify the system hasn't broken.
+        </p>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="tour-step" data-step="2">
+        <div class="tour-icon">📉</div>
+        <h2 class="tour-title">Tracking Regressions</h2>
+        <p class="tour-text">
+          Look at the <strong>Metric Drilldowns</strong> inside the dashboard. It continuously measures <em>Ingest Throughput</em> (obs/s) and <em>Query p95 Latency</em> (ms). If a new code commit slows the system down compared to the baseline, the Proof Lab flags it as a <span style="color:#ef4444; font-weight:bold;">Regression</span>.
+        </p>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="tour-step" data-step="3">
+        <div class="tour-icon">🐢</div>
+        <h2 class="tour-title">AI Copilot Analysis</h2>
+        <p class="tour-text">
+          Notice the <strong>"Next Moves"</strong> section on the Overview page? After each simulated test, the local Honu AI agent reads the performance matrices and automatically writes Jira-style tickets to tell our engineers exactly what they need to fix next.
+        </p>
+      </div>
+
+      <div class="tour-controls">
+        <button id="tourPrevBtn" class="tour-btn secondary" style="visibility: hidden;">Back</button>
+        <div class="tour-dots">
+          <div class="tour-dot active" data-dot="1"></div>
+          <div class="tour-dot" data-dot="2"></div>
+          <div class="tour-dot" data-dot="3"></div>
+        </div>
+        <button id="tourNextBtn" class="tour-btn">Next</button>
+      </div>
+
     </div>
   </div>
   
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       const tourOverlay = document.getElementById('tourOverlay');
-      const tourStartBtn = document.getElementById('tourStartBtn');
+      const replayBtn = document.getElementById('replayBtn');
+      const nextBtn = document.getElementById('tourNextBtn');
+      const prevBtn = document.getElementById('tourPrevBtn');
+      const steps = document.querySelectorAll('.tour-step');
+      const dots = document.querySelectorAll('.tour-dot');
       
-      // Check if user has already seen the tour
-      if (!localStorage.getItem('proofLabTourSeen')) {
-        // Show modal after a brief delay for smooth effect
-        setTimeout(() => {
-          tourOverlay.classList.add('visible');
-        }, 300);
+      let currentStep = 1;
+      const totalSteps = steps.length;
+
+      function showStep(stepNum) {
+        steps.forEach(s => s.classList.remove('active'));
+        dots.forEach(d => d.classList.remove('active'));
+        
+        document.querySelector(`.tour-step[data-step="${stepNum}"]`).classList.add('active');
+        document.querySelector(`.tour-dot[data-dot="${stepNum}"]`).classList.add('active');
+        
+        prevBtn.style.visibility = stepNum === 1 ? 'hidden' : 'visible';
+        
+        if (stepNum === totalSteps) {
+          nextBtn.textContent = 'Start Exploring';
+        } else {
+          nextBtn.textContent = 'Next';
+        }
       }
-      
-      tourStartBtn.addEventListener('click', () => {
-        tourOverlay.classList.remove('visible');
-        localStorage.setItem('proofLabTourSeen', 'true');
+
+      function startTour() {
+        currentStep = 1;
+        showStep(1);
+        tourOverlay.classList.add('visible');
+      }
+
+      nextBtn.addEventListener('click', () => {
+        if (currentStep < totalSteps) {
+          currentStep++;
+          showStep(currentStep);
+        } else {
+          tourOverlay.classList.remove('visible');
+          localStorage.setItem('proofLabTourSeen', 'true');
+        }
       });
+
+      prevBtn.addEventListener('click', () => {
+        if (currentStep > 1) {
+          currentStep--;
+          showStep(currentStep);
+        }
+      });
+
+      replayBtn.addEventListener('click', () => {
+        startTour();
+      });
+      
+      if (!localStorage.getItem('proofLabTourSeen')) {
+        setTimeout(startTour, 300);
+      }
     });
   </script>
   <script src="main.js"></script>

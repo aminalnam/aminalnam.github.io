@@ -117,33 +117,88 @@
 
   <main class="main-shell wrap" role="main">
     <div class="main-inner">
-      <section class="section section-block" style="background: rgba(0,0,0,0.4);">
+      
+      <!-- ARIMA Section -->
+      <section class="section section-block" style="background: rgba(0,0,0,0.4); margin-bottom: 2rem;">
         <span class="section-kicker">Predictive Analytics</span>
         <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Time-Series Forecasting</h2>
-        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">Plotting current temperatures on a map is useful for monitoring, but it is fundamentally reactive. To truly protect an ecosystem, we must become predictive.</p>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">Plotting current temperatures on a map is useful for monitoring, but it is fundamentally reactive. To truly protect an ecosystem from events like coral bleaching, OMEGA must become predictive.</p>
         
         <div class="grid-2" style="margin-bottom: 2rem;">
-          <div class="panel" style="padding: 1.5rem;">
+          <div class="panel" style="padding: 2rem;">
             <span class="status-label status-implemented">ARIMA Models</span>
-            <h3 style="font-size: 1.2rem;">Statistical Baselines</h3>
-            <p style="font-size: 0.85rem;">For highly seasonal data (e.g., daily tidal heating cycles), we utilize AutoRegressive Integrated Moving Average (ARIMA) models. These statistical models run natively on the Python backend, analyzing the SQLite database to establish the "normal" sinusoidal rhythm of the bay, instantly flagging any statistical deviation.</p>
+            <h3 style="font-size: 1.4rem; margin: 1rem 0;">Statistical Baselines</h3>
+            <p style="font-size: 0.95rem; color: var(--ink-soft); line-height: 1.6; margin-bottom: 1.5rem;">For highly seasonal, localized data (e.g., daily tidal heating cycles at a specific reef), we utilize AutoRegressive Integrated Moving Average (ARIMA) models. These statistical models analyze historical telemetry to establish the "normal" sinusoidal rhythm of the ocean, instantly flagging any statistical deviations.</p>
+            
+            <div style="background: rgba(0,0,0,0.3); padding: 1.5rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); font-family: monospace; font-size: 0.9rem; color: #a5b4fc; text-align: center; margin-bottom: 1rem;">
+              y'<sub>t</sub> = c + φ<sub>1</sub>y'<sub>t-1</sub> + ... + φ<sub>p</sub>y'<sub>t-p</sub> + θ<sub>1</sub>ε<sub>t-1</sub> + ... + θ<sub>q</sub>ε<sub>t-q</sub> + ε<sub>t</sub>
+            </div>
+            <p style="font-size: 0.8rem; color: #64748b; text-align: center;">Where <strong>p</strong> = autoregressive lag, <strong>q</strong> = moving average window, and <strong>y'</strong> = differenced telemetry.</p>
           </div>
-          <div class="panel" style="padding: 1.5rem;">
+
+          <div class="panel" style="padding: 2rem;">
             <span class="status-label status-pending">LSTM Neural Nets</span>
-            <h3 style="font-size: 1.2rem;">Deep Learning</h3>
-            <p style="font-size: 0.85rem;">For complex, multi-variate forecasting (e.g., predicting how wind speed, salinity, and temperature will interact 48 hours from now), we export the data to train Long Short-Term Memory (LSTM) neural networks using TensorFlow. This allows the system to predict coastal thermal anomalies and warn researchers days before coral bleaching actually occurs.</p>
+            <h3 style="font-size: 1.4rem; margin: 1rem 0;">Deep Learning</h3>
+            <p style="font-size: 0.95rem; color: var(--ink-soft); line-height: 1.6;">For complex, multi-variate forecasting—such as predicting how wind speed, salinity, and temperature will dynamically interact 48 hours from now—we export data to train Long Short-Term Memory (LSTM) neural networks using TensorFlow. Unlike ARIMA, LSTMs can identify non-linear relationships across massive spatial networks, warning researchers days before anomalies occur.</p>
           </div>
         </div>
+      </section>
+
+      <!-- Architecture Section -->
+      <section class="section section-block">
+        <span class="section-kicker">Network Architecture</span>
+        <h2 style="font-size: 2rem; margin: 0 0 1rem;">LSTM Tensor Flow</h2>
+        <p style="color: var(--ink-soft); max-width: 800px; margin-bottom: 2rem; line-height: 1.6;">Because oceanographic data is sequential, standard feed-forward networks suffer from the vanishing gradient problem. OMEGA uses LSTMs, which maintain an internal "cell state" allowing the network to remember critical multi-day heating trends while forgetting irrelevant short-term noise.</p>
         
-        <div class="section-visual" style="max-height: 800px; overflow-y: auto;">
-          <span class="panel-kicker">machine_learning/train_lstm.py</span>
-          <pre><code class="language-python">import tensorflow as tf
+        <div class="section-visual" style="margin-bottom: 2rem; padding: 2rem; background: var(--surface-float);">
+          <pre><code class="language-mermaid">graph TD
+    subgraph Multi-Variate Input [t = 0]
+        T1[Temperature] --> Concat
+        S1[Salinity] --> Concat
+        W1[Wind Speed] --> Concat
+    end
+    
+    Concat[Tensor Concatenation] --> LSTM1
+    
+    subgraph LSTM Cell [48 Hour Memory]
+        LSTM1[Forget Gate] --> LSTM2[Input Gate]
+        LSTM2 --> LSTM3[Cell State Update]
+        LSTM3 --> LSTM4[Output Gate]
+    end
+    
+    LSTM4 --> Dense1[Dense Layer 16 units]
+    Dense1 --> Out[T+48 Predicted Temp]
+    
+    style LSTM1 fill:#1e293b,stroke:#3b82f6,stroke-width:2px
+    style LSTM2 fill:#1e293b,stroke:#3b82f6,stroke-width:2px
+    style LSTM3 fill:#1e293b,stroke:#10b981,stroke-width:2px
+    style LSTM4 fill:#1e293b,stroke:#3b82f6,stroke-width:2px</code></pre>
+        </div>
+      </section>
+
+      <!-- Feature Engineering Section -->
+      <section class="section section-block" style="background: rgba(0,0,0,0.4);">
+        <div class="grid-2" style="align-items: center; gap: 4rem;">
+          <div>
+            <span class="section-kicker">Data Pipeline</span>
+            <h2 style="font-size: 2rem; margin: 0 0 1rem;">Feature Engineering</h2>
+            <p style="color: var(--ink-soft); line-height: 1.6; margin-bottom: 1.5rem;">Raw telemetry cannot be fed directly into an LSTM. OMEGA's backend pipeline automatically normalizes the SQLite time-series data, imputes missing transmission gaps using linear interpolation, and structures the data into overlapping 24-hour windows.</p>
+            <ul style="color: var(--ink-soft); padding-left: 1.2rem; line-height: 1.6;">
+              <li><strong>Min-Max Scaling:</strong> Prevents variables with large ranges (e.g. atmospheric pressure) from dominating smaller variables (e.g. pH).</li>
+              <li><strong>Cyclical Encoding:</strong> Time-of-day is encoded using <code>sin()</code> and <code>cos()</code> transformations to preserve the continuous nature of midnight crossing.</li>
+              <li><strong>Tensor Slicing:</strong> Data is structured into 3D tensors <code>[samples, timesteps, features]</code>.</li>
+            </ul>
+          </div>
+          
+          <div class="section-visual" style="max-height: 600px; overflow-y: auto;">
+            <span class="panel-kicker">machine_learning/train_lstm.py</span>
+            <pre><code class="language-python">import tensorflow as tf
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import LSTM, Dense, Dropout
 
 def build_thermal_anomaly_model(input_shape):
     model = Sequential([
-        # 1. Recurrent Layer for temporal memory (e.g. 48 hours of past data)
+        # 1. Recurrent Layer for temporal memory (48-hr context)
         LSTM(64, return_sequences=True, input_shape=input_shape),
         Dropout(0.2), # Prevent overfitting on noisy ocean data
         
@@ -151,15 +206,17 @@ def build_thermal_anomaly_model(input_shape):
         LSTM(32, return_sequences=False),
         Dropout(0.2),
         
-        # 3. Output Layer (Predicting T+1 Temperature)
+        # 3. Output Layer (Predicting T+48 Temperature)
         Dense(16, activation='relu'),
         Dense(1, activation='linear')
     ])
     
     model.compile(optimizer='adam', loss='mse', metrics=['mae'])
     return model</code></pre>
+          </div>
         </div>
       </section>
+      
     </div>
   </main>
 
