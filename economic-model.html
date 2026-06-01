@@ -204,6 +204,30 @@
         <p style="color: var(--ink-soft); font-size: 1rem; line-height: 1.6; max-width: 800px;">
           <strong>The OMEGA Paradigm:</strong> By collapsing the cost by two orders of magnitude, OMEGA introduces the concept of "Swarm Economics". If an NGO deploys 100 OMEGA nodes for the same price as a single Argo float, they achieve a massive geospatial resolution advantage. Furthermore, if 20% of the nodes are destroyed by hurricanes, biofouling, or ship strikes, the network seamlessly routes around the damage using DTN mesh networking. High mortality rates become a statistically acceptable reality rather than a catastrophic failure.
         </p>
+        
+        <div class="section-visual" style="max-height: 800px; overflow-y: auto; margin-top: 2rem;">
+          <span class="panel-kicker">analytics/swarm_economics.py</span>
+          <pre><code class="language-python">def calculate_swarm_survival(fleet_size: int, daily_mortality_rate: float, days: int) -> list[int]:
+    """
+    Mathematically prove that a cheap swarm outlives a single expensive asset.
+    If an Argo float dies, coverage drops from 100% to 0%.
+    A swarm of 100 nodes degrades gracefully, maintaining acceptable coverage 
+    even with a catastrophic 1% daily mortality rate.
+    """
+    surviving_nodes = []
+    current_fleet = fleet_size
+    
+    for day in range(days):
+        # Apply statistical mortality (storms, biofouling, ship strikes)
+        current_fleet = current_fleet * (1.0 - daily_mortality_rate)
+        surviving_nodes.append(int(current_fleet))
+        
+    return surviving_nodes
+
+# Even after 60 days of brutal conditions, 54 nodes still remain operational,
+# providing vastly superior resolution to a single $20,000 asset.
+print(calculate_swarm_survival(fleet_size=100, daily_mortality_rate=0.01, days=60))</code></pre>
+        </div>
       </section>
 
     </div>

@@ -125,6 +125,31 @@
               
             </div>
             
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto; margin-top: 2rem;">
+              <span class="panel-kicker">gateway/satellites.py</span>
+              <pre><code class="language-python">import ephem
+from datetime import datetime
+
+def calculate_leo_pass(observer_lat: float, observer_lon: float, tle_line1: str, tle_line2: str):
+    # Initialize the physical edge node location
+    node = ephem.Observer()
+    node.lat, node.lon = str(observer_lat), str(observer_lon)
+    node.elevation = 0  # Sea level
+    node.date = datetime.utcnow()
+    
+    # Initialize the satellite using Two-Line Elements (TLE)
+    sat = ephem.readtle("Iridium NEXT", tle_line1, tle_line2)
+    
+    # Compute the next orbital pass
+    sat.compute(node)
+    next_pass = node.next_pass(sat)
+    
+    return {
+        "rise_time": next_pass[0].datetime(),
+        "peak_elevation_deg": next_pass[3] * 180.0 / ephem.pi,
+        "set_time": next_pass[4].datetime()
+    }</code></pre>
+            </div>
           </section>
     
           <section class="section">

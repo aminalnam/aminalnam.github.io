@@ -205,6 +205,34 @@
                 <p style="font-size: 0.85rem; margin-top: 1rem;">The <code>lora_tlv_bridge.py</code> crushes the string keys into integers (e.g., <code>1</code> = battery) and packs the floats into strict IEEE 754 binaries, mathematically reducing the payload by over 75%.</p>
               </div>
             </div>
+
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;">
+              <span class="panel-kicker">lora_tlv_bridge.py</span>
+              <pre><code class="language-python">import struct
+
+def pack_tlv_battery(voltage: float) -> bytes:
+    """
+    T = Tag (0x01 for Battery Voltage)
+    L = Length (0x04 for 4-byte float)
+    V = Value (IEEE 754 32-bit float representation)
+    """
+    tag = 0x01
+    length = 0x04
+    # Pack the float 'f' into a big-endian '>' 4-byte binary string
+    value = struct.pack('>f', voltage)
+    
+    return bytes([tag, length]) + value
+
+def unpack_tlv_battery(payload: bytes) -> float:
+    # If the tag matches 0x01, extract the 4-byte float
+    if payload[0] == 0x01 and payload[1] == 0x04:
+        voltage_tuple = struct.unpack('>f', payload[2:6])
+        return round(voltage_tuple[0], 2)
+    return 0.0
+
+# Example: 3.92V becomes b'\x01\x04@z\xe1H' (Only 6 bytes total!)
+binary_frame = pack_tlv_battery(3.92)</code></pre>
+            </div>
           </section>
     
     </div>

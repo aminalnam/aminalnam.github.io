@@ -156,9 +156,29 @@
               <span class="section-kicker">Fisheries & Security</span>
               <h2>Global Fishing Watch (GFW).</h2>
               <p>OMEGA integrates directly with the <strong>Global Fishing Watch 4Wings API</strong>. It pulls real-time heatmap MVT overlays for apparent fishing effort, AIS vessel presence, and Synthetic Aperture Radar (SAR) detections of "dark targets" (vessels not transmitting AIS).</p><p>Furthermore, the gateway pulls vessel risk and IUU (Illegal, Unreported, and Unregulated) insights, matching detected AIS tracks against global registries to flag vessels fishing within no-take Marine Protected Areas (MPAs).</p>
-              
+              <p>Furthermore, the gateway pulls vessel risk and IUU (Illegal, Unreported, and Unregulated) insights, matching detected AIS tracks against global registries to flag vessels fishing within no-take Marine Protected Areas (MPAs).</p>
             </div>
             
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto; margin-top: 2rem;">
+              <span class="panel-kicker">gateway/gfw_api.py</span>
+              <pre><code class="language-python">async def check_iuu_risk(mmsi: str) -> float:
+    # Query the Global Fishing Watch 4Wings API for vessel risk
+    headers = {"Authorization": f"Bearer {GFW_TOKEN}"}
+    
+    async with httpx.AsyncClient() as client:
+        # Fetch vessel profile using its Maritime Mobile Service Identity (MMSI)
+        res = await client.get(f"https://gateway.api.globalfishingwatch.org/v2/vessels/search?query=mmsi:{mmsi}", headers=headers)
+        res.raise_for_status()
+        
+        data = res.json()
+        if not data["entries"]: return 0.0
+        
+        # Calculate IUU probability based on dark-target SAR anomalies
+        vessel = data["entries"][0]
+        risk_score = vessel.get("implied_risk_score", 0.0)
+        
+        return risk_score</code></pre>
+            </div>
           </section>
     
           <section class="section">

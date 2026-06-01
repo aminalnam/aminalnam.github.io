@@ -138,6 +138,31 @@
               
             </div>
             
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto; margin-top: 2rem;">
+              <span class="panel-kicker">gateway/schemas/intents.py</span>
+              <pre><code class="language-python">from pydantic import BaseModel, Field
+
+class IntentDispatchRequest(BaseModel):
+    """
+    Pydantic guarantees this structure at the FastAPI boundary.
+    If 'target_node_id' is missing, FastAPI automatically returns 
+    a 422 Unprocessable Entity, preventing malformed DB writes.
+    """
+    target_node_id: str = Field(
+        ..., 
+        description="The URN of the edge node.", 
+        example="urn:omega:node:buoy-alpha"
+    )
+    intent_type: str = Field(
+        ..., 
+        description="The imperative command to execute.",
+        example="SET_SAMPLING_RATE"
+    )
+    parameters: dict[str, float | str | int] = Field(
+        default_factory=dict,
+        description="Dynamic arguments for the command payload."
+    )</code></pre>
+            </div>
           </section>
     
           <section class="section">
