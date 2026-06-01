@@ -954,3 +954,19 @@ main.has-toc {
     page-break-after: always;
   }
 }
+
+/* Terminal Glitch Transition */
+.terminal-glitch {
+  animation: glitch-anim 0.2s linear infinite;
+  background-color: #000 !important;
+  color: #0f0 !important;
+  filter: invert(1) hue-rotate(180deg);
+}
+@keyframes glitch-anim {
+  0% { transform: translate(0) }
+  20% { transform: translate(-5px, 5px) }
+  40% { transform: translate(-5px, -5px) }
+  60% { transform: translate(5px, 5px) }
+  80% { transform: translate(5px, -5px) }
+  100% { transform: translate(0) }
+}

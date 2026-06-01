@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>OMEGA — SECURE TERMINAL</title>
+  
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⬛</text></svg>">
+  
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+    
+    :root {
+      --crt-green: #0f0;
+      --crt-dark: #001100;
+      --crt-glow: 0 0 10px #0f0, 0 0 20px #0f0;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #000;
+      color: var(--crt-green);
+      font-family: 'VT323', monospace;
+      font-size: 1.2rem;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* CRT Scanline Overlay */
+    body::before {
+      content: " ";
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(18, 16, 16, 0) 50%,
+        rgba(0, 0, 0, 0.25) 50%
+      );
+      background-size: 100% 4px;
+      z-index: 50;
+      pointer-events: none;
+    }
+
+    /* Vignette */
+    body::after {
+      content: " ";
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      background: radial-gradient(circle, rgba(0,0,0,0) 60%, rgba(0,0,0,0.6) 100%);
+      z-index: 51;
+      pointer-events: none;
+    }
+
+    #terminal-container {
+      flex: 1;
+      padding: 2rem;
+      overflow-y: auto;
+      text-shadow: var(--crt-glow);
+    }
+
+    .output-line {
+      margin: 0.2rem 0;
+      word-wrap: break-word;
+      white-space: pre-wrap;
+    }
+
+    .input-line {
+      display: flex;
+      margin-top: 0.5rem;
+    }
+
+    .prompt {
+      margin-right: 0.5rem;
+      color: var(--crt-green);
+    }
+
+    #cmdline {
+      background: transparent;
+      border: none;
+      color: var(--crt-green);
+      font-family: 'VT323', monospace;
+      font-size: 1.2rem;
+      flex: 1;
+      outline: none;
+      text-shadow: var(--crt-glow);
+      caret-color: transparent; /* custom block caret below */
+    }
+
+    /* Custom Blinking Block Caret */
+    .caret-wrapper {
+      position: relative;
+      flex: 1;
+      display: flex;
+    }
+    
+    #cursor {
+      display: inline-block;
+      width: 0.6em;
+      height: 1.2em;
+      background-color: var(--crt-green);
+      animation: blink 1s step-end infinite;
+      position: absolute;
+      top: 0;
+      pointer-events: none;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    /* Scrollbar hiding for terminal feel */
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #000;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #0f0;
+      opacity: 0.3;
+    }
+  </style>
+</head>
+<body>
+  <div id="terminal-container">
+    <div id="output"></div>
+    <div class="input-line">
+      <span class="prompt">root@omega-gateway:~#</span>
+      <div class="caret-wrapper">
+        <input type="text" id="cmdline" autocomplete="off" spellcheck="false" autofocus />
+        <span id="cursor"></span>
+      </div>
+    </div>
+  </div>
+
+  <script src="terminal.js"></script>
+</body>
+</html>

@@ -252,3 +252,25 @@ function initSearchPalette() {
     });
   }
 }
+
+// ==========================================
+// Easter Egg: Konami Code -> Terminal
+// ==========================================
+const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+let konamiIndex = 0;
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === konamiCode[konamiIndex]) {
+    konamiIndex++;
+    if (konamiIndex === konamiCode.length) {
+      // Trigger glitch
+      document.body.classList.add('terminal-glitch');
+      setTimeout(() => {
+        window.location.href = 'terminal.html';
+      }, 1500);
+      konamiIndex = 0;
+    }
+  } else {
+    konamiIndex = 0;
+  }
+});
