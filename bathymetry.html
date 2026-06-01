@@ -85,6 +85,7 @@
             <a href="external-data.html">External Integrations</a>
             <a href="examples.html">Data Examples</a>
             <a href="api-reference.html">API Reference</a>
+            <a href="proof-lab.html">Proof Lab Output</a>
           </div>
         </div>
         
@@ -124,14 +125,57 @@
             
             <div class="grid-2" style="margin-bottom: 2rem;">
               <div class="panel" style="padding: 1.5rem;">
-                <span class="status-label status-implemented">Inverse Distance Weighting</span>
-                <h3 style="font-size: 1.2rem;">Deterministic Math</h3>
-                <p style="font-size: 0.85rem;">For rapid edge-compute, OMEGA utilizes Inverse Distance Weighting (IDW). The algorithm assumes that nearby points are more related than distant points. The unknown depth <code>Z</code> is calculated as <code>Z = Σ(zi / d_i^p) / Σ(1 / d_i^p)</code>. By utilizing <code>scipy.spatial.cKDTree</code>, the Python Gateway rapidly executes this O(n log n) spatial query, projecting millions of points into a GeoJSON raster almost instantly.</p>
+                <span class="status-label status-implemented">gateway/bathymetry.py</span>
+                <h3 style="font-size: 1.2rem;">Inverse Distance Weighting (IDW)</h3>
+                <p style="font-size: 0.85rem;">When generating the bathymetric grid, OMEGA uses an IDW algorithm to estimate the depth of unmapped coordinates based on nearby soundings. It projects the coordinates to a localized flat plane using the Earth's radius (<code>6,371,008.8m</code>).</p>
+                <pre><code class="language-python" style="font-size: 0.75rem;">def _estimate_depth(
+    points: list[dict[str, Any]], *,
+    center_x: float, center_y: float,
+    power: float, neighbors: int,
+) -> tuple[float, float] | None:
+    # ... distance calculation ...
+    distances.sort(key=lambda item: item[0])
+    selected = distances[:neighbors]
+    numerator = 0.0
+    denominator = 0.0
+    for distance, depth_m in selected:
+        # Distance clamped to 0.25m to prevent division by zero
+        weight = 1.0 / max(distance, 0.25) ** power
+        numerator += depth_m * weight
+        denominator += weight
+
+    if denominator == 0:
+        return None
+    return numerator / denominator, selected[0][0]</code></pre>
+                <p style="font-size: 0.85rem; margin-top: 1rem;">The math applies a <code>power</code> weight (default 2.0) so a ping 2 meters away has 4 times less influence. Distances are clamped to <code>max(distance, 0.25)</code> to prevent infinite weights at exact coordinates.</p>
               </div>
               <div class="panel" style="padding: 1.5rem;">
-                <span class="status-label status-implemented">Kriging Interpolation</span>
-                <h3 style="font-size: 1.2rem;">Geostatistical Math</h3>
-                <p style="font-size: 0.85rem;">For high-accuracy academic exports, IDW is insufficient because it ignores spatial autocorrelation (the fact that underwater trenches run in continuous lines). OMEGA utilizes Kriging to mathematically model the variogram of the dataset. This creates a statistically optimal map that not only predicts the unmapped depth but mathematically quantifies the variance (uncertainty) of that specific prediction.</p>
+                <span class="status-label status-implemented">gateway/bathymetry_grid.py</span>
+                <h3 style="font-size: 1.2rem;">ETOPO Fallback Grid</h3>
+                <p style="font-size: 0.85rem;">Because deployed sensors only report bathymetry where they sit, an open-ocean route has no depth context by default. OMEGA bundles a coarse global elevation grid (0.25 degrees, sourced from NOAA's ETOPO) to fill the gaps between real soundings.</p>
+                <pre><code class="language-python" style="font-size: 0.75rem;">def seafloor_depth_m(lat: float, lon: float) -> float | None:
+    # Bilinear sampling of the 0.25-degree grid
+    fi = (lat - _LAT0) / GRID_RESOLUTION_DEG
+    fj = (lon - _LON0) / GRID_RESOLUTION_DEG
+    i0 = min(max(int(fi), 0), n_lat - 2)
+    j0 = min(max(int(fj), 0), n_lon - 2)
+    ti = min(max(fi - i0, 0.0), 1.0)
+    tj = min(max(fj - j0, 0.0), 1.0)
+
+    a00 = float(grid[i0, j0])
+    a01 = float(grid[i0, j0 + 1])
+    a10 = float(grid[i0 + 1, j0])
+    a11 = float(grid[i0 + 1, j0 + 1])
+    
+    # Any land corner means this cell straddles a coastline.
+    # Leave near-shore depth to sensor soundings.
+    if a00 >= 0.0 or a01 >= 0.0 or a10 >= 0.0 or a11 >= 0.0:
+        return None
+        
+    top = a00 + (a01 - a00) * tj
+    bottom = a10 + (a11 - a10) * tj
+    altitude = top + (bottom - top) * ti
+    return round(-altitude, 1)</code></pre>
               </div>
             </div>
           </section>

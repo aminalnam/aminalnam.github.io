@@ -85,6 +85,7 @@
             <a href="external-data.html">External Integrations</a>
             <a href="examples.html">Data Examples</a>
             <a href="api-reference.html">API Reference</a>
+            <a href="proof-lab.html">Proof Lab Output</a>
           </div>
         </div>
         
@@ -126,18 +127,35 @@
 <p><strong>The Mathematics of Compression:</strong> OMEGA replaces JSON-over-LoRa entirely with a custom versioned <strong>TLV (Type-Length-Value) Binary Protocol</strong>. By utilizing bit-packed fields and custom scaling (e.g., deci-Celsius, milligees), a full Sensor + GPS + Health frame is crushed from 283 bytes down to just 84 bytes (a 70% savings). This outperforms even CBOR and Protobuf, ensuring massive Time-on-Air (ToA) reductions and extending the fleet's battery life.</p>
               
             </div>
-            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">gateway/mesh_binary_codec.py</span><pre><code class="language-python">def encode_telemetry_frame(telemetry: dict) -> bytes:
-    # 1. 11-Byte Fixed Header
-    # version (1B) | origin_id (2B) | dest_id (2B) | hop (1B) | type (1B) | sequence (4B)
-    header = struct.pack("&lt;B H H B B I", 
-        0x01, get_node_id(origin), get_node_id(dest), hop_count, FRAME_TELEMETRY, seq)
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">gateway/lora_cbor_bridge.py</span><pre><code class="language-python">def encode_cbor_payload(payload: dict[str, Any], *, compact_keys: bool = True) -> bytes:
+    normalized = normalize_lora_payload(payload)
+    if compact_keys:
+        encoded_payload: dict[Any, Any] = {}
+        for key, value in normalized.items():
+            # 1. Substitute long JSON keys for integer indices
+            encoded_key = COMPACT_KEYS_BY_NAME.get(key, key)
+            
+            # 2. Compress enums into single-byte integers
+            if key == "message_type" and isinstance(value, str):
+                value = MESSAGE_TYPE_TO_CODE.get(value, value)
+            elif key == "priority" and isinstance(value, str):
+                value = PRIORITY_TO_CODE.get(value, value)
+            elif key == "ack_mode" and isinstance(value, str):
+                value = ACK_TO_CODE.get(value, value)
+            encoded_payload[encoded_key] = value
+    else:
+        encoded_payload = normalized
         
-    # 2. Append TLV payloads (Type, Length, Value)
-    payload = bytearray()
-    payload.extend(encode_tlv(TAG_ENV, telemetry.get("environment")))
-    payload.extend(encode_tlv(TAG_GPS, telemetry.get("gnss")))
+    # 3. Serialize down to raw CBOR binary
+    return cbor2.dumps(encoded_payload)
+
+def encode_serial_frame(payload: dict[str, Any] | bytes, *, flags: int = 0) -> bytes:
+    cbor_payload = payload if isinstance(payload, bytes) else encode_cbor_payload(payload)
     
-    return header + payload</code></pre></div>
+    # 4. Wrap with the 11-byte OMEGA Serial Header (Magic, Version, Length, CRC32)
+    checksum = crc32(cbor_payload) & 0xFFFFFFFF
+    header = SERIAL_HEADER.pack(SERIAL_MAGIC, SERIAL_VERSION, flags, len(cbor_payload), checksum)
+    return header + cbor_payload</code></pre></div>
           </section>
 
           <section class="section section-block" style="background: rgba(0,0,0,0.4);">

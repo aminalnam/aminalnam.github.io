@@ -85,6 +85,7 @@
             <a href="external-data.html">External Integrations</a>
             <a href="examples.html">Data Examples</a>
             <a href="api-reference.html">API Reference</a>
+            <a href="proof-lab.html">Proof Lab Output</a>
           </div>
         </div>
         
@@ -126,30 +127,32 @@
 <p><strong>Database Architecture:</strong> Telemetry arrives asynchronously via UDP and Serial ports at massive volumes. A standard SQLite configuration would instantly lock and crash under this concurrent write pressure. The Python backend physically rewrites the SQLite PRAGMA at boot, enforcing Write-Ahead Logging (<code>WAL</code>) mode and <code>NORMAL</code> synchronous behavior. This decouples the read/write locks, allowing the Mission Portal to execute massive <code>SELECT</code> queries over the historical arrays while the edge node bridges concurrently <code>INSERT</code> live TLV frames without blocking.</p>
               <div class="callout"><strong>Background Tasks</strong><p>Heavy normalization operations are relegated to Starlette background tasks, ensuring the endpoint returns a 202 Accepted instantly.</p></div>
             </div>
-            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">gateway/database.py</span><pre><code class="language-python">@event.listens_for(engine, "connect")
-def set_sqlite_pragma(dbapi_connection, connection_record):
-    # Optimize SQLite for extreme concurrent I/O at the edge
-    cursor = dbapi_connection.cursor()
-    cursor.execute("PRAGMA journal_mode=WAL")
-    cursor.execute("PRAGMA synchronous=NORMAL")
-    cursor.execute("PRAGMA cache_size=-64000") # 64MB cache
-    cursor.execute("PRAGMA temp_store=MEMORY")
-    cursor.execute("PRAGMA mmap_size=30000000000")
-    cursor.close()</code></pre>            </div>
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">gateway/main.py</span><pre><code class="language-python">    @asynccontextmanager
+    async def _lifespan(fastapi_app: FastAPI) -> AsyncIterator[None]:
+        scheduler = getattr(fastapi_app.state, "scheduler", None)
+        notif_bus = getattr(fastapi_app.state, "notification_bus", None)
+        
+        # Attach internal NotificationBus to the async loop
+        if notif_bus is not None:
+            notif_bus.attach_loop(asyncio.get_running_loop())
             
-            <div class="section-visual" style="max-height: 800px; overflow-y: auto;">
-              <span class="panel-kicker">gateway/routers/telemetry.py</span>
-              <pre><code class="language-python">@router.post("/ingest", status_code=202)
-async def ingest_telemetry_batch(
-    payload: TelemetryBatch,
-    background_tasks: BackgroundTasks,
-    db: Session = Depends(get_db)
-):
-    # 1. Instantly return 202 Accepted so the Edge Node can sleep
-    # 2. Push heavy SQLite IO and decoding to an async background worker
-    background_tasks.add_task(process_telemetry_worker, payload, db)
-    return {"status": "accepted", "queued": len(payload.frames)}</code></pre>
-            </div>
+        # Start periodic tasks (e.g. evaluating active watches)
+        if scheduler is not None:
+            await scheduler.start()
+            
+        try:
+            yield
+        finally:
+            if scheduler is not None:
+                await scheduler.stop()
+            if notif_bus is not None:
+                notif_bus.detach_loop()
+
+    app = FastAPI(
+        title="OMEGA Gateway",
+        description="Gateway API for a mixed-bearer environmental sensor mesh.",
+        lifespan=_lifespan,
+    )</code></pre>            </div>
           </section>
     
           <section class="section">
