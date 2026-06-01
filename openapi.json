@@ -1,0 +1,195 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OMEGA Gateway API",
+    "description": "REST API for OMEGA-wave maritime telemetry and control.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://omega.local:8000"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-OMEGA-API-Key"
+      }
+    },
+    "schemas": {
+      "TelemetryResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "message_id": {
+                  "type": "string"
+                },
+                "node_id": {
+                  "type": "string"
+                },
+                "sampled_at": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "metrics": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      },
+      "IntentDispatchRequest": {
+        "type": "object",
+        "required": [
+          "target_node_id",
+          "intent_type"
+        ],
+        "properties": {
+          "target_node_id": {
+            "type": "string",
+            "description": "The URN of the edge node.",
+            "example": "urn:omega:node:buoy-alpha"
+          },
+          "intent_type": {
+            "type": "string",
+            "description": "The imperative command to execute.",
+            "example": "SET_SAMPLING_RATE"
+          },
+          "parameters": {
+            "type": "object",
+            "description": "Dynamic arguments for the command payload.",
+            "additionalProperties": {
+              "oneOf": [
+                { "type": "string" },
+                { "type": "number" },
+                { "type": "integer" }
+              ]
+            }
+          }
+        }
+      },
+      "QcEvalRequest": {
+        "type": "object",
+        "required": ["metric_id", "timeseries"],
+        "properties": {
+          "metric_id": {
+            "type": "string"
+          },
+          "timeseries": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          }
+        }
+      }
+    }
+  },
+  "security": [
+    {
+      "ApiKeyAuth": []
+    }
+  ],
+  "paths": {
+    "/v1/network/telemetry": {
+      "get": {
+        "summary": "Fetch Bounding Box Telemetry",
+        "description": "Fetch telemetry points within a specific GeoJSON bounding box.",
+        "parameters": [
+          {
+            "name": "min_lat",
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "max_lat",
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "min_lon",
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "max_lon",
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TelemetryResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/control/intents/dispatch": {
+      "post": {
+        "summary": "Dispatch Intent",
+        "description": "Push imperative commands to the DTN outbox.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/IntentDispatchRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Intent Accepted"
+          }
+        }
+      }
+    },
+    "/v1/science/qc-eval": {
+      "post": {
+        "summary": "Evaluate Quality Control",
+        "description": "Run QARTOD analytics on a raw time-series.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/QcEvalRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response"
+          }
+        }
+      }
+    }
+  }
+}
