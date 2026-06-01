@@ -103,6 +103,11 @@
 
   <main class="main-shell wrap">
     <div class="main-inner">
+    
+          <!-- VISUAL ANCHOR -->
+          <section class="section section-block" style="padding: 0; overflow: hidden; border-radius: 12px; margin-bottom: 3rem; background: rgba(0,0,0,0.2);">
+            <img src="assets/images/portal_ui.png" alt="OMEGA Mission Portal UI" style="width: 100%; display: block; border-radius: 12px; opacity: 0.95; transition: opacity 0.3s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.95'">
+          </section>
 
           <section class="section">
             <div class="section-content">
@@ -253,7 +258,7 @@ export interface DigitalTwinCommand {
               <span class="section-kicker">Real-Time Data</span>
               <h2>WebSocket Firehose.</h2>
               <p>While the dashboard relies on resilient HTTP long-polling for poor field connections, it dynamically upgrades to a high-speed WebSocket Firehose when connected to fiber or 5G.</p>
-              <p><strong>Execution:</strong> The Python FastAPI backend maintains a pub/sub event loop. The second a LoRa packet is received, decrypted, and validated, the `websocket_manager` pipes the parsed CBOR payload directly into the React DOM at 10Hz, instantly updating the map vectors without a single polling request.</p>
+              <p><strong>Execution:</strong> The Python FastAPI backend maintains a pub/sub event loop. The second a LoRa packet is received, decrypted, and validated, the `websocket_manager` pipes the parsed Binary TLV payload directly into the React DOM at 10Hz, instantly updating the map vectors without a single polling request.</p>
             </div>
           </section>
 

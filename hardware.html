@@ -140,7 +140,7 @@
                 <div class="panel" style="padding: 1.5rem;">
                   <span class="status-label status-implemented">Core</span>
                   <h3 style="font-size: 1.2rem;">ESP32-S3</h3>
-                  <p style="font-size: 0.85rem;">Dual-core XTensa LX7 @ 240MHz. Handles CBOR compression and mesh logic.</p>
+                  <p style="font-size: 0.85rem;">Dual-core XTensa LX7 @ 240MHz. Handles TLV compression and mesh logic.</p>
                 </div>
                 <div class="panel" style="padding: 1.5rem;">
                   <span class="status-label status-implemented">RF Transceiver</span>
@@ -215,7 +215,7 @@
     };
     
     // 3. Compress to CBOR & enqueue for RF
-    enqueue_cbor_payload(&obs);
+    enqueue_tlv_payload(&obs);
 }</code></pre>
             </div>
           </section>

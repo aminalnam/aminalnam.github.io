@@ -102,13 +102,18 @@
 
   <main class="main-shell wrap">
     <div class="main-inner">
+    
+          <!-- VISUAL ANCHOR -->
+          <section class="section section-block" style="padding: 0; overflow: hidden; border-radius: 12px; margin-bottom: 3rem; background: rgba(0,0,0,0.2);">
+            <img src="assets/images/gateway.png" alt="OMEGA Shore Gateway Hardware" style="width: 100%; display: block; border-radius: 12px; opacity: 0.95; transition: opacity 0.3s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.95'">
+          </section>
 
           <section class="section">
             <div class="section-content">
               <span class="section-kicker">Concurrency & IO Bound Limits</span>
               <h2>FastAPI Async Event Loop.</h2>
               <p>The OMEGA Gateway is not a simple REST API; it is a high-performance, asynchronous edge router built on FastAPI and Uvicorn. Designed to run on embedded Linux (e.g. Raspberry Pi 5) deployed directly at the coastal shore, it acts as the master ingestion point for the entire Delay Tolerant Network.</p>
-<p><strong>Database Architecture:</strong> Telemetry arrives asynchronously via UDP and Serial ports at massive volumes. A standard SQLite configuration would instantly lock and crash under this concurrent write pressure. The Python backend physically rewrites the SQLite PRAGMA at boot, enforcing Write-Ahead Logging (<code>WAL</code>) mode and <code>NORMAL</code> synchronous behavior. This decouples the read/write locks, allowing the Mission Portal to execute massive <code>SELECT</code> queries over the historical arrays while the edge node bridges concurrently <code>INSERT</code> live CBOR frames without blocking.</p>
+<p><strong>Database Architecture:</strong> Telemetry arrives asynchronously via UDP and Serial ports at massive volumes. A standard SQLite configuration would instantly lock and crash under this concurrent write pressure. The Python backend physically rewrites the SQLite PRAGMA at boot, enforcing Write-Ahead Logging (<code>WAL</code>) mode and <code>NORMAL</code> synchronous behavior. This decouples the read/write locks, allowing the Mission Portal to execute massive <code>SELECT</code> queries over the historical arrays while the edge node bridges concurrently <code>INSERT</code> live TLV frames without blocking.</p>
               <div class="callout"><strong>Background Tasks</strong><p>Heavy normalization operations are relegated to Starlette background tasks, ensuring the endpoint returns a 202 Accepted instantly.</p></div>
             </div>
             <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">gateway/database.py</span><pre><code class="language-python">@event.listens_for(engine, "connect")

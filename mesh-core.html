@@ -94,7 +94,7 @@
   <section class="hero wrap">
     <span class="eyebrow">Component</span>
     <h1>Mesh Core</h1>
-    <p>LoRa CSS, CBOR compression, and DTN logic.</p>
+    <p>LoRa CSS, TLV compression, and DTN logic.</p>
     <div class="hero-actions">
       <a class="btn btn-primary" href="https://github.com/aminalnam/OMEGA" target="_blank">View OMEGA on GitHub</a>
       <a class="btn btn-secondary" href="https://jonathancapone.art" target="_blank">Art Portfolio</a>
@@ -253,7 +253,7 @@ build_flags =
                     participant GATE as Shore Gateway
                     
                     SENS->>NODE: 1. High-Freq Telemetry stream
-                    NODE->>RF: 2. Transmit CBOR packet
+                    NODE->>RF: 2. Transmit Binary TLV packet
                     RF--xNODE: 3. FAIL: Link dropped (Wave interference)
                     Note over NODE: Link state: OFFLINE
                     NODE->>NODE: 4. Route to local SQLite NVRAM buffer
