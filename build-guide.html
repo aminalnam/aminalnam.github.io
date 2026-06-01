@@ -118,6 +118,52 @@
     <div class="main-inner">
 
       <section class="section section-block" style="background: rgba(0,0,0,0.4);">
+        <span class="section-kicker">Step 0: The Bill of Materials</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Component Sourcing</h2>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">OMEGA strictly adheres to COTS (Commercial Off-The-Shelf) hardware to eliminate proprietary vendor lock-in. The entire edge node can be sourced for under $100.</p>
+        
+        <table class="data-table" style="width: 100%; border-collapse: collapse; margin-bottom: 2rem; font-family: var(--font-mono); font-size: 0.9rem;">
+          <thead>
+            <tr style="border-bottom: 2px solid var(--line); text-align: left;">
+              <th style="padding: 1rem; color: var(--brand-cyan);">Component</th>
+              <th style="padding: 1rem; color: var(--brand-cyan);">Purpose</th>
+              <th style="padding: 1rem; color: var(--brand-cyan);">Est. Cost</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+              <td style="padding: 1rem;">LILYGO T-Beam Supreme</td>
+              <td style="padding: 1rem; color: var(--ink-soft);">ESP32-S3 + SX1262 LoRa + MAX-M10S GPS</td>
+              <td style="padding: 1rem; color: #10b981;">$45.00</td>
+            </tr>
+            <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+              <td style="padding: 1rem;">DS18B20 Thermistor</td>
+              <td style="padding: 1rem; color: var(--ink-soft);">1-Wire Waterproof Temperature Probe</td>
+              <td style="padding: 1rem; color: #10b981;">$8.00</td>
+            </tr>
+            <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+              <td style="padding: 1rem;">18650 Li-Ion (3500mAh)</td>
+              <td style="padding: 1rem; color: var(--ink-soft);">Primary Power Storage</td>
+              <td style="padding: 1rem; color: #10b981;">$12.00</td>
+            </tr>
+            <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+              <td style="padding: 1rem;">6V 2W Solar Panel</td>
+              <td style="padding: 1rem; color: var(--ink-soft);">Trickle Charging (MPPT)</td>
+              <td style="padding: 1rem; color: #10b981;">$15.00</td>
+            </tr>
+            <tr>
+              <td style="padding: 1rem;">IP68 Hull Enclosure</td>
+              <td style="padding: 1rem; color: var(--ink-soft);">3D Printed PETG + Epoxy Resin Seal</td>
+              <td style="padding: 1rem; color: #10b981;">$8.00</td>
+            </tr>
+          </tbody>
+        </table>
+        
+        <h3 style="color: var(--ink); margin-top: 2rem;">3D Printing Parameters (Hull Fabrication)</h3>
+        <p style="color: var(--ink-soft); font-size: 1rem; line-height: 1.6; max-width: 800px;">To survive ocean pressure and UV degradation, PLA is completely unacceptable. The hull must be fabricated using <strong>PETG</strong> or <strong>ASA</strong> filament. Print parameters must be strictly tuned for structural watertightness rather than speed: <br><br><code>Nozzle: 260°C</code> | <code>Bed: 80°C</code> | <code>Walls: 6 perimeters</code> | <code>Infill: 40% Gyroid</code> | <code>Cooling: 20% max</code></p>
+      </section>
+
+      <section class="section section-block" style="background: rgba(0,0,0,0.4); margin-top: 2rem;">
         <span class="section-kicker">Step 1: The Hardware</span>
         <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Physical Wiring Schematic</h2>
         <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">To build your own OMEGA node, you do not need a multi-million dollar grant. You need an ESP32 microcontroller, a LoRa transceiver, a battery, and a sensor.</p>
