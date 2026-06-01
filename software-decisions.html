@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <title>OMEGA — Software Architecture Decisions</title>
+  
+  <meta name="description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
+  <meta property="og:title" content="OMEGA — Software Architecture Decisions" />
+  <meta property="og:description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://jonathancapone.com/software-decisions.html" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="OMEGA — Software Architecture Decisions" />
+  <meta name="twitter:description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
+  
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌊</text></svg>">
+  
+  <link rel="stylesheet" href="style.css">
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ startOnLoad: true, theme: 'dark', themeVariables: { fontFamily: 'Inter' } });
+  </script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap topbar-inner">
+      <a class="brand" href="index.html" style="display: flex; align-items: center; gap: 0.75rem;">
+        <img src="assets/images/logo.png" alt="OMEGA Logo" style="height: 48px; width: auto; object-fit: contain;">
+        <div>
+          <span class="brand-title" style="letter-spacing: 0.05em;">OMEGA</span>
+          <span class="brand-sub">Technical Portfolio</span>
+        </div>
+      </a>
+      <nav class="nav">
+        <a href="index.html">Home</a>
+        <a href="overview.html">Overview</a>
+        
+        <div class="dropdown">
+          <button class="dropbtn">Core &#9662;</button>
+          <div class="dropdown-content">
+            <a href="system-architecture.html">System Architecture</a>
+            <a href="gateway.html">Gateway</a>
+            <a href="mesh-core.html">Mesh Core</a>
+            <a href="security.html">Security & RBAC</a>
+            <a href="edge-nodes.html">Edge Nodes</a>
+          </div>
+        </div>
+        
+        <div class="dropdown">
+          <button class="dropbtn">Tools &#9662;</button>
+          <div class="dropdown-content">
+            <a href="mission-portal.html">Mission Portal</a>
+            <a href="janus-acoustic.html">JANUS Acoustics</a>
+            <a href="simulation.html">Simulation</a>
+            <a href="bathymetry.html">Bathymetry</a>
+          </div>
+        </div>
+        
+        <div class="dropdown">
+          <button class="dropbtn">Systems &#9662;</button>
+          <div class="dropdown-content">
+            <a href="rf-physics.html">RF Physics & Propagation</a>
+            <a href="hardware.html">Hardware & Firmware</a>
+            <a href="power-systems.html">Power & Thermodynamics</a>
+            <a href="software-decisions.html" class="is-current">Software Architecture</a>
+            <a href="event-bus.html">Event Bus & Watches</a>
+            <a href="copilot.html">Honu AI Copilot</a>
+          </div>
+        </div>
+
+        <div class="dropdown">
+          <button class="dropbtn">Data &#9662;</button>
+          <div class="dropdown-content">
+            <a href="analytics.html">Analytics Pipeline</a>
+            <a href="data-providers.html">Data Providers</a>
+            <a href="economic-model.html">Economic Model</a>
+            <a href="external-data.html">External Integrations</a>
+            <a href="examples.html">Data Examples</a>
+            <a href="api-reference.html">API Reference</a>
+          </div>
+        </div>
+        
+        <div class="dropdown">
+          <button class="dropbtn">Docs &#9662;</button>
+          <div class="dropdown-content">
+            <a href="manifesto.html">The Manifesto</a>
+            <a href="teaching-documentation.html">Education & Guides</a>
+            <a href="build-guide.html">Build Guide</a>
+            <a href="deployment-scenarios.html">Deployment Scenarios</a>
+            <a href="roadmap.html">Roadmap</a>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero wrap">
+    <span class="eyebrow">The Engineering Trade-offs</span>
+    <h1>Software Decisions.</h1>
+    <p>Understanding why OMEGA is built with Python, SQLite, and React, and the hard constraints that forced these choices.</p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="https://github.com/aminalnam/OMEGA" target="_blank">View OMEGA on GitHub</a>
+      <a class="btn btn-secondary" href="https://jonathancapone.art" target="_blank">Art Portfolio</a>
+    </div>
+  </section>
+
+  <main class="main-shell wrap">
+    <div class="main-inner">
+
+      <section class="section section-block" style="background: rgba(0,0,0,0.4);">
+        <span class="section-kicker">Language Choice</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Why Python over Go or Rust?</h2>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">For an extreme-scale telemetry gateway handling raw binary bytes over UART, high-performance compiled languages like Rust or Go seem like the obvious choice. So why does OMEGA run on Python?</p>
+        
+        <div class="grid-2" style="margin-bottom: 2rem;">
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">The Trade-off</span>
+            <h3 style="font-size: 1.2rem;">Speed vs Science</h3>
+            <p style="font-size: 0.85rem;">Python is mathematically slower than C++ or Rust due to its Global Interpreter Lock (GIL). However, the target audience for OMEGA isn't elite backend software engineers—it's marine biologists, climatologists, and university researchers. By writing the entire gateway in Python, researchers can natively inject <code>pandas</code>, <code>scipy</code>, and <code>numpy</code> models directly into the pipeline without needing to learn a low-level systems language.</p>
+          </div>
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">The Mitigation</span>
+            <h3 style="font-size: 1.2rem;">FastAPI & ASGI</h3>
+            <p style="font-size: 0.85rem;">To offset Python's speed penalty, the Gateway is built entirely on FastAPI and the <code>asyncio</code> event loop. By strictly enforcing non-blocking I/O operations (using <code>await</code> for all database queries and HTTP requests), the Gateway achieves concurrency levels more than adequate for handling thousands of 50-baud LoRa packets.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-block" style="background: rgba(0,0,0,0.4); margin-top: 2rem;">
+        <span class="section-kicker">Database Choice</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Why SQLite over PostgreSQL?</h2>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">A monolithic SQLite file is generally considered an anti-pattern in modern microservice architecture. Why didn't we use a containerized PostgreSQL instance?</p>
+        <p style="color: var(--ink-soft); font-size: 1rem; line-height: 1.6; max-width: 800px;">
+          <strong>The Constraint:</strong> The physical OMEGA gateway is often a Raspberry Pi 4 operating on a constantly pitching vessel in a highly corrosive marine environment. Power is frequently lost without warning when waves crash over solar panels. SD cards in Raspberry Pis are notorious for catastrophic sector corruption under heavy write loads or sudden power loss.
+          <br><br>
+          <strong>The Decision:</strong> Running a heavy Docker daemon with a PostgreSQL volume is a massive operational risk on a fragile SD card. SQLite compiles directly into the Python process, eliminating the daemon dependency. A SQLite database is a single, physical <code>.db</code> file on the filesystem. This means field operators can literally unplug a USB stick, copy <code>omega.db</code>, and instantly have a 100% complete, air-gapped backup of their entire deployment. By enabling Write-Ahead Logging (<code>PRAGMA journal_mode=WAL</code>), we bypass SQLite's concurrent locking limitations, achieving the safety of a flat file with the speed of a networked database.
+        </p>
+      </section>
+
+      <section class="section section-block" style="background: rgba(0,0,0,0.4); margin-top: 2rem;">
+        <span class="section-kicker">Frontend Choice</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Why React & deck.gl over basic HTML Maps?</h2>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">Standard mapping libraries like Leaflet.js manipulate the browser's Document Object Model (DOM). When OMEGA begins plotting 50,000 historical temperature readings or a 2-million-point bathymetry cloud, the DOM crashes.</p>
+        
+        <div class="section-visual" style="padding: 1.5rem;">
+            <div class="mermaid">
+            graph LR
+                subgraph DOM Rendering
+                    L[Leaflet.js] -->|Generates| D1[SVG Node 1]
+                    L -->|Generates| D2[SVG Node 50,000]
+                    D2 --> Crash[Browser Freezes]
+                end
+                subgraph GPU Rendering
+                    R[React State] -->|Array Buffer| W[deck.gl / WebGL]
+                    W -->|Direct Write| G[GPU Canvas]
+                    G --> Fast[60 FPS]
+                end
+                
+                classDef bad fill:#3f1010,stroke:#ef4444,stroke-width:2px,color:#fff;
+                classDef good fill:#101529,stroke:#3b82f6,stroke-width:2px,color:#fff;
+                class Crash bad;
+                class Fast good;
+            </div>
+        </div>
+        
+        <p style="color: var(--ink-soft); font-size: 1rem; line-height: 1.6; max-width: 800px;">
+          <strong>The Decision:</strong> The Mission Portal is built with React explicitly to manage the complex, high-frequency state updates pumping through the WebSocket firehose. For geospatial rendering, we abandoned DOM-based SVGs entirely and adopted Uber's <strong>deck.gl</strong>. This framework bypasses the browser's DOM entirely, passing massive TypedArrays of coordinates directly into the computer's Graphics Processing Unit (GPU) via WebGL. This allows a standard operator laptop to render the entire Pacific Ocean at 60 Frames-Per-Second without breaking a sweat.
+        </p>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="footer wrap">
+    <span>© Jonathan Capone — Technical Portfolio. OMEGA (formerly OMEGA-wave).</span>
+  </footer>
+  <script src="main.js"></script>
+</body>
+</html>

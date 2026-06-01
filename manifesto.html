@@ -3,15 +3,15 @@
 <head>
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1" name="viewport"/>
-  <title>OMEGA — RF Physics & Propagation</title>
+  <title>OMEGA — The Manifesto</title>
   
   <meta name="description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
-  <meta property="og:title" content="OMEGA — Platform Overview" />
+  <meta property="og:title" content="OMEGA — The Manifesto" />
   <meta property="og:description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://jonathancapone.com/overview.html" />
+  <meta property="og:url" content="https://jonathancapone.com/manifesto.html" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="OMEGA — Platform Overview" />
+  <meta name="twitter:title" content="OMEGA — The Manifesto" />
   <meta name="twitter:description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
   
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌊</text></svg>">
@@ -34,7 +34,7 @@
       </a>
       <nav class="nav">
         <a href="index.html">Home</a>
-        <a href="overview.html" >Overview</a>
+        <a href="overview.html">Overview</a>
         
         <div class="dropdown">
           <button class="dropbtn">Core &#9662;</button>
@@ -42,7 +42,7 @@
             <a href="system-architecture.html">System Architecture</a>
             <a href="gateway.html">Gateway</a>
             <a href="mesh-core.html">Mesh Core</a>
-                        <a href="security.html">Security & RBAC</a>
+            <a href="security.html">Security & RBAC</a>
             <a href="edge-nodes.html">Edge Nodes</a>
           </div>
         </div>
@@ -84,7 +84,7 @@
         <div class="dropdown">
           <button class="dropbtn">Docs &#9662;</button>
           <div class="dropdown-content">
-            <a href="manifesto.html">The Manifesto</a>
+            <a href="manifesto.html" class="is-current">The Manifesto</a>
             <a href="teaching-documentation.html">Education & Guides</a>
             <a href="build-guide.html">Build Guide</a>
             <a href="deployment-scenarios.html">Deployment Scenarios</a>
@@ -96,9 +96,9 @@
   </header>
 
   <section class="hero wrap">
-    <span class="eyebrow">Oceanic Measurement Array</span>
-    <h1>RF Physics & Propagation.</h1>
-    <p>The hard math of operating Delay Tolerant Networks in extreme maritime environments.</p>
+    <span class="eyebrow">The Big Questions</span>
+    <h1>The Manifesto.</h1>
+    <p>Who owns the ocean's data? Democratizing climate science through open-source mesh networks.</p>
     <div class="hero-actions">
       <a class="btn btn-primary" href="https://github.com/aminalnam/OMEGA" target="_blank">View OMEGA on GitHub</a>
       <a class="btn btn-secondary" href="https://jonathancapone.art" target="_blank">Art Portfolio</a>
@@ -107,60 +107,44 @@
 
   <main class="main-shell wrap">
     <div class="main-inner">
-    
 
       <section class="section section-block" style="background: rgba(0,0,0,0.4);">
-        <span class="section-kicker">Electromagnetics</span>
-        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Saltwater Fresnel Zones.</h2>
-        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">Operating sub-GHz LoRa over the ocean introduces brutal physical constraints. Unlike a terrestrial deployment where signals pass through air and trees, seawater acts as a near-perfect reflective ground plane that aggressively induces multipath fading and signal cancellation.</p>
+        <span class="section-kicker">The Problem</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Locked Behind Paywalls.</h2>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">The ocean produces 50% of the oxygen we breathe and drives the entire global climate engine. Yet, our understanding of it is severely bottlenecked by the sheer cost of observing it.</p>
         
-        <div class="grid-3" style="margin-bottom: 2rem;">
+        <div class="grid-2" style="margin-bottom: 2rem;">
           <div class="panel" style="padding: 1.5rem;">
-            <span class="status-label status-implemented">Constraint</span>
-            <h3 style="font-size: 1.2rem;">Earth Curvature</h3>
-            <p style="font-size: 0.85rem;">At an antenna height of just 1 meter (typical for a drifting buoy), the absolute geometric horizon is roughly 3.5 kilometers. Without atmospheric ducting, 900MHz RF physically cannot penetrate the earth's curvature past this point.</p>
+            <span class="status-label status-pending">The Scientific Elite</span>
+            <h3 style="font-size: 1.2rem;">$20,000 Hardware</h3>
+            <p style="font-size: 0.85rem;">Currently, massive research institutions and nation-states dominate oceanography because traditional Argo floats cost upwards of $20,000. This mathematically excludes local universities, indigenous coastal communities, and non-profit conservation groups from participating in primary data collection.</p>
           </div>
           <div class="panel" style="padding: 1.5rem;">
-            <span class="status-label status-implemented">Constraint</span>
-            <h3 style="font-size: 1.2rem;">Fresnel Blockage</h3>
-            <p style="font-size: 0.85rem;">The Fresnel Zone is the elliptical region between the TX and RX antennas. Over the ocean, massive 3-meter swells dynamically block the lower half of the first Fresnel zone, causing intermittent signal blackout.</p>
-          </div>
-          <div class="panel" style="padding: 1.5rem;">
-            <span class="status-label status-implemented">Solution</span>
-            <h3 style="font-size: 1.2rem;">Boosted Sensitivity</h3>
-            <p style="font-size: 0.85rem;">To combat multipath fading, OMEGA forces the SX126x transceivers into <code>RX Boosted Gain Mode</code>, achieving a receiver sensitivity of -137 dBm (+3dB improvement) at the cost of 2mA extra current draw.</p>
+            <span class="status-label status-pending">The Telemetry Monopoly</span>
+            <h3 style="font-size: 1.2rem;">Iridium Fees</h3>
+            <p style="font-size: 0.85rem;">Even if a community group could afford a buoy, the data must be transmitted back to shore. Satellite networks like Iridium charge exorbitant yearly subscription fees per byte. Environmental data is effectively held hostage by telecommunication conglomerates.</p>
           </div>
         </div>
       </section>
 
-      <section class="section">
-        <div class="section-content">
-          <span class="section-kicker">Thermodynamics</span>
-          <h2>The 1-Watt Thermal Envelope.</h2>
-          <p>To punch through ocean swells and achieve true over-the-horizon transmission, OMEGA employs custom High Power Amplifiers (HPA) and the <strong>T-Beam 1W</strong> to push a blistering +30dBm (1 Watt) of RF output power. However, generating 1 Watt of RF inside a hermetically sealed IP67 waterproof enclosure creates a thermal crisis.</p>
-          <p><strong>Silicon Constraints:</strong> The SX1262 chip itself is physically incapable of driving +30dBm; attempting to do so will permanently destroy the silicon. OMEGA safely caps the internal SX1262 PA at +22dBm, routing the signal into the external HPA.</p>
-          <p><strong>TX-Burst Fan Control:</strong> To survive the thermal load, the ESP32-S3 physically spins up an external cooling fan on maximum GPIO drive just seconds before a transmission burst, and spins it down immediately after the packet clears the antenna. This prevents thermal throttling while strictly preserving the power budget during deep sleep.</p>
-        </div>
-        
-        <div class="section-visual">
-          <span class="panel-kicker">TX-Burst Cooling Matrix</span>
-          <div class="mermaid">
-            graph TD
-              A[Deep Sleep - 15µA] --> B[RTC Wake]
-              B --> C{Temp Check}
-              C -- > 45°C --> D[Spin up Fan on Max GPIO]
-              C -- < 45°C --> E[Passive Cooling Sufficient]
-              D --> F[SX1262 Fire @ +22dBm]
-              E --> F
-              F --> G[External HPA Boosts to +30dBm]
-              G --> H[LoRa Packet TX]
-              H --> I[Spin Down Fan]
-              I --> A
-              
-              classDef node fill:#101529,stroke:#3b82f6,stroke-width:2px,color:#fff;
-              class A,B,C,D,E,F,G,H,I node;
-          </div>
-        </div>
+      <section class="section section-block" style="background: rgba(0,0,0,0.4); margin-top: 2rem;">
+        <span class="section-kicker">The Solution</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Democratizing the Coastline.</h2>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">OMEGA exists to obliterate this economic barrier. We are asking a fundamental question: What happens when you drop the cost of a marine sensor node from $20,000 to $200?</p>
+        <p style="color: var(--ink-soft); font-size: 1rem; line-height: 1.6; max-width: 800px;">
+          By leveraging the massive economies of scale generated by the drone and IoT industries (ESP32 microcontrollers, 18650 lithium cells, ISM-band LoRa radios), OMEGA enables the concept of <strong>Swarm Science</strong>. 
+          <br><br>
+          A local fishing community in the Pacific Islands shouldn't have to wait for a multinational research vessel to tell them why their coral reef is dying. With OMEGA, that community can 3D print a dozen waterproof hulls, solder $40 microcontrollers, toss them into the bay, and utilize an open-source Delay Tolerant Network to bounce the data back to their own laptops for absolutely zero cost. The telemetry is encrypted, owned, and operated by the people who rely on the ecosystem the most.
+        </p>
+      </section>
+
+      <section class="section section-block" style="background: rgba(0,0,0,0.4); margin-top: 2rem;">
+        <span class="section-kicker">The OMEGA Philosophy</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Resilience over Perfection.</h2>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">The ocean is fundamentally hostile to electronics. Traditional engineering attempts to defeat the ocean by building massive, indestructible, expensive hulls. OMEGA accepts that the ocean will eventually win.</p>
+        <p style="color: var(--ink-soft); font-size: 1rem; line-height: 1.6; max-width: 800px;">
+          If an OMEGA node is smashed by a ship's propeller or sinks due to biofouling, it is not a catastrophic $20,000 failure—it is a statistically acceptable $200 loss. The Mesh Network autonomously detects the missing heartbeat, dynamically re-routes the RF traffic through surviving nodes, and continues operations uninterrupted. We design for acceptable mortality, prioritizing <strong>systemic resilience over individual perfection.</strong>
+        </p>
       </section>
 
     </div>

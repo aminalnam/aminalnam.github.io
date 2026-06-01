@@ -42,7 +42,7 @@
             <a href="system-architecture.html">System Architecture</a>
             <a href="gateway.html">Gateway</a>
             <a href="mesh-core.html">Mesh Core</a>
-                        <a href="security.html">Security & RBAC</a>
+            <a href="security.html">Security & RBAC</a>
             <a href="edge-nodes.html">Edge Nodes</a>
           </div>
         </div>
@@ -63,6 +63,7 @@
             <a href="rf-physics.html">RF Physics & Propagation</a>
             <a href="hardware.html">Hardware & Firmware</a>
             <a href="power-systems.html">Power & Thermodynamics</a>
+            <a href="software-decisions.html">Software Architecture</a>
             <a href="event-bus.html">Event Bus & Watches</a>
             <a href="copilot.html">Honu AI Copilot</a>
           </div>
@@ -83,6 +84,7 @@
         <div class="dropdown">
           <button class="dropbtn">Docs &#9662;</button>
           <div class="dropdown-content">
+            <a href="manifesto.html">The Manifesto</a>
             <a href="teaching-documentation.html" class="is-current">Education & Guides</a>
             <a href="build-guide.html">Build Guide</a>
             <a href="deployment-scenarios.html">Deployment Scenarios</a>
@@ -94,9 +96,9 @@
   </header>
 
   <section class="hero wrap">
-    <span class="eyebrow">Documentation</span>
-    <h1>Education</h1>
-    <p>Deployment guides for Gateway infrastructure and field nodes.</p>
+    <span class="eyebrow">The System Integrator</span>
+    <h1>Lifecycle of a Byte.</h1>
+    <p>How it all comes together: Tracing a single temperature reading across 5 different programming languages and 3 different physical mediums.</p>
     <div class="hero-actions">
       <a class="btn btn-primary" href="https://github.com/aminalnam/OMEGA" target="_blank">View OMEGA on GitHub</a>
       <a class="btn btn-secondary" href="https://jonathancapone.art" target="_blank">Art Portfolio</a>
@@ -106,93 +108,65 @@
   <main class="main-shell wrap">
     <div class="main-inner">
 
-          <section class="section">
-            <div class="section-content">
-              <span class="section-kicker">System Bringup</span>
-              <h2>Getting the Gateway Online.</h2>
-              <p>Configuring a local development environment for a system that spans React, FastAPI, SQLite, and LoRa DTN can be daunting. The OMEGA repository utilizes a master PowerShell script <code>omega_gateway_online.ps1</code> (and its bash equivalent) to orchestrate the entire bringup process.</p>
-<p><strong>How to use it:</strong> Running this script automatically handles environment variable injection, PYTHONPATH resolution, database initialization, and launches the gateway via <code>uvicorn gateway.main:app --host 0.0.0.0</code>.</p>
-<p>Crucially, it actively handles binding the application to the physical network interface card (NIC), exposing the Gateway APIs and the Mission Portal to devices on the same Wi-Fi LAN. It also optionally hooks into daemonized tunneling services like <code>ngrok</code> or <code>cloudflared</code>, punching a secure reverse TCP tunnel out to the internet so remote oceanographic teams can monitor a gateway running on a boat thousand of miles away.</p>
-              
-            </div>
-            
-          </section>
-    
-          <section class="section">
-            <div class="section-content">
-              <span class="section-kicker">Field Hardware</span>
-              <h2>Raspberry Pi Gateway Mesh.</h2>
-              <p>The ultimate goal of OMEGA is remote, unassisted field deployment. While testing on a Windows laptop is convenient, the physical gateway is usually a headless Raspberry Pi 4 bolted inside a pelican case on a bouncing vessel.</p>
-<p>We provide exhaustive deployment guides on configuring the Pi for the harsh realities of marine deployments. This includes setting up rigid <code>systemd</code> daemon services that automatically restart the Python application if it crashes, configuring the OS to mount root filesystems as Read-Only to prevent catastrophic SD card corruption during abrupt power losses, and ensuring the SQLite database WAL files are cleanly flushed to disk.</p>
-              
-            </div>
-            
-          </section>
+      <section class="section section-block" style="background: rgba(0,0,0,0.4);">
+        <span class="section-kicker">The Journey</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">From the Ocean to the GPU</h2>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">To truly understand OMEGA, you must trace the flow of data. A system is not just code; it is a pipeline. Here is the exact path a single water temperature reading takes through the entire stack.</p>
+        
+        <div class="section-visual" style="padding: 1.5rem;">
+            <div class="mermaid">
+            sequenceDiagram
+                participant O as Ocean (Physical)
+                participant E as ESP32 Edge Node (C++)
+                participant R as LoRa Relay (Airwaves)
+                participant G as Python Gateway (ASGI)
+                participant D as SQLite WAL (Disk)
+                participant W as React Portal (WebGL)
 
-          <section class="section section-block" style="background: rgba(0,0,0,0.4);">
-            <span class="section-kicker">Software Architecture</span>
-            <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">The Asynchronous Gateway.</h2>
-            <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">Why do we use FastAPI and <code>asyncio</code> instead of Flask? When 50 nodes transmit LoRa packets at the exact same moment, the gateway must handle severe concurrency without locking up.</p>
-            
-            <div class="grid-3" style="margin-bottom: 2rem;">
-              <div class="panel" style="padding: 1.5rem;">
-                <span class="status-label status-implemented">ASGI Event Loop</span>
-                <h3 style="font-size: 1.2rem;">Non-Blocking I/O</h3>
-                <p style="font-size: 0.85rem;">Python's Global Interpreter Lock (GIL) prevents true multi-threading. By using <code>await</code>, the main thread can instantly pause a database write, ingest an urgent radio packet, and resume the write, preventing dropped telemetry.</p>
-              </div>
-              <div class="panel" style="padding: 1.5rem;">
-                <span class="status-label status-implemented">Type Hinting</span>
-                <h3 style="font-size: 1.2rem;">Pydantic Schemas</h3>
-                <p style="font-size: 0.85rem;">FastAPI relies on rigid Pydantic models. If a corrupted, half-transmitted RF packet hits the API, Pydantic throws an HTTP 422 immediately, preventing malformed JSON from crashing the router.</p>
-              </div>
-              <div class="panel" style="padding: 1.5rem;">
-                <span class="status-label status-implemented">Hardware Limits</span>
-                <h3 style="font-size: 1.2rem;">Thread Starvation</h3>
-                <p style="font-size: 0.85rem;">If we used synchronous threads (like Flask) on a Raspberry Pi, 50 simultaneous connections would starve the CPU context switcher. Async tasks use negligible RAM, easily scaling to thousands of connections.</p>
-              </div>
+                O->>E: Analog Thermistor (12-bit ADC)
+                E->>E: Compress into Binary TLV
+                E->>R: 915MHz RF Transmission (LoRa CSS)
+                R->>G: USB CDC Serial UART Bridge
+                G->>G: Unpack Binary to JSON
+                G->>D: Async SQL INSERT (WAL mode)
+                D-->>G: Acknowledge Write
+                G->>W: WebSocket Push (10Hz)
+                W->>W: deck.gl GPU Context Render
             </div>
-          </section>
+        </div>
+      </section>
 
-          <section class="section section-block" style="background: rgba(0,0,0,0.4);">
-            <span class="section-kicker">Database Theory</span>
-            <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">SQLite WAL Concurrency.</h2>
-            <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">A standard SQLite database locks the entire file during a write transaction. If 50 nodes dump telemetry simultaneously, the database will throw a <code>database is locked</code> exception. OMEGA configures extreme SQLite PRAGMAs to bypass this.</p>
-            
-            <div class="section-visual" style="max-height: 800px; overflow-y: auto;">
-              <span class="panel-kicker">gateway/database.py PRAGMAs</span>
-              <pre><code class="language-sql">-- 1. Enable Write-Ahead Logging (WAL)
--- This allows simultaneous Readers and one Writer by appending to a -wal file.
-PRAGMA journal_mode = WAL;
+      <section class="section section-block" style="background: rgba(0,0,0,0.4); margin-top: 2rem;">
+        <span class="section-kicker">Phase 1: The Benthic Layer</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Analog to Digital</h2>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">The journey begins in the physical world. The ocean water cools the DS18B20 thermistor probe. This physical temperature drop increases the electrical resistance of the wire. The ESP32's internal Analog-to-Digital Converter (ADC) reads this voltage drop and maps it to an integer (e.g., `2048` = `12.5°C`).</p>
+      </section>
 
--- 2. Drop synchronous mode from FULL to NORMAL
--- The Pi SD card is incredibly slow. We accept a tiny risk of data loss on sudden power failure to gain a 10x write speed boost.
-PRAGMA synchronous = NORMAL;
+      <section class="section section-block" style="background: rgba(0,0,0,0.4); margin-top: 2rem;">
+        <span class="section-kicker">Phase 2: The Edge Compute</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Binary TLV Packing</h2>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">The C++ firmware (`src/main.cpp`) intercepts this integer. Sending `{ "temperature": 12.5 }` over the radio wastes precious bandwidth. Instead, the code packs it into a raw <strong>Type-Length-Value (TLV) byte array</strong>. The reading is crushed down into exactly 3 bytes: `[0x01, 0x01, 0x7D]`.</p>
+      </section>
 
--- 3. Increase memory-mapped cache
--- Allow SQLite to use 64MB of RAM before flushing to the slow SD card.
-PRAGMA mmap_size = 67108864;</code></pre>
-            </div>
-          </section>
+      <section class="section section-block" style="background: rgba(0,0,0,0.4); margin-top: 2rem;">
+        <span class="section-kicker">Phase 3: The Transport Layer</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Chirp Spread Spectrum</h2>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">The C++ array is passed to the SX1262 LoRa transceiver. The silicon modulates the 3 bytes into a sweeping analog radio frequency (Chirp Spread Spectrum) and blasts it out the antenna at 1-Watt. The invisible RF wave bounces across the ocean surface, fighting through fog and saltwater absorption, until it physically strikes the antenna of the Shore Gateway.</p>
+      </section>
 
-          <section class="section section-block" style="background: rgba(0,0,0,0.4);">
-            <span class="section-kicker">Frontend Theory</span>
-            <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">React & The DOM.</h2>
-            <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">When a WebSocket pumps 10 incoming telemetry packets per second into the Mission Portal, a naive React app will re-render the entire DOM 10 times a second, freezing the user's browser.</p>
-            
-            <div class="grid-3" style="margin-bottom: 2rem;">
-              <div class="panel" style="padding: 1.5rem;">
-                <span class="status-label status-implemented">State Hydration</span>
-                <h3 style="font-size: 1.2rem;">React Context</h3>
-                <p style="font-size: 0.85rem;">The WebSocket listener dumps raw JSON directly into a React Context provider. Only specific components (like the voltage dial) subscribe to that specific slice of state, isolating the re-renders.</p>
-              </div>
-              <div class="panel" style="padding: 1.5rem;">
-                <span class="status-label status-implemented">Debouncing</span>
-                <h3 style="font-size: 1.2rem;">Throttle Hooks</h3>
-                <p style="font-size: 0.85rem;">If a node dumps a backlog of 500 queued points, the React <code>useThrottle</code> hook mathematically limits the visual map updates to 1 FPS, preventing the GPU from locking up while processing the GeoJSON.</p>
-              </div>
-            </div>
-          </section>
-    
+      <section class="section section-block" style="background: rgba(0,0,0,0.4); margin-top: 2rem;">
+        <span class="section-kicker">Phase 4: The Shore Gateway</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Python & ASGI</h2>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">The Shore Relay catches the wave, converts it back to the 3 bytes, and pushes it over a USB cable. The Python `asyncio` event loop catches the bytes via `pyserial`. The Python code unpacks the TLV back into a Python Dictionary: `{"temp": 12.5}`. It then immediately triggers a non-blocking `INSERT` query into the SQLite `.db` file using WAL mode to prevent SD card locking.</p>
+      </section>
+
+      <section class="section section-block" style="background: rgba(0,0,0,0.4); margin-top: 2rem;">
+        <span class="section-kicker">Phase 5: The Presentation Layer</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">React & GPU WebGL</h2>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">Simultaneously, the Python FastAPI router fires the JSON over an active WebSocket connection. A React frontend on a scientist's laptop receives the payload. Instead of manipulating standard HTML, React passes the coordinate and temperature data directly into `deck.gl`, writing the data directly to the computer's Graphics Card (GPU) memory. A glowing red point instantly appears on the 3D map.</p>
+        <p style="color: var(--brand-cyan); font-weight: bold; text-align: center; margin-top: 2rem;">From the freezing ocean thermistor to the glowing pixel on a screen in under 400 milliseconds.</p>
+      </section>
+
     </div>
   </main>
 
