@@ -3,15 +3,15 @@
 <head>
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1" name="viewport"/>
-  <title>OMEGA — Build Guide</title>
+  <title>OMEGA — Cloud Infrastructure</title>
   
   <meta name="description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
-  <meta property="og:title" content="OMEGA — Build Guide" />
+  <meta property="og:title" content="OMEGA — Cloud Infrastructure" />
   <meta property="og:description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://jonathancapone.com/build-guide.html" />
+  <meta property="og:url" content="https://jonathancapone.com/cloud-infrastructure.html" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="OMEGA — Build Guide" />
+  <meta name="twitter:title" content="OMEGA — Cloud Infrastructure" />
   <meta name="twitter:description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
   
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌊</text></svg>">
@@ -54,7 +54,7 @@
             <a href="janus-acoustic.html">JANUS Acoustics</a>
             <a href="simulation.html">Simulation</a>
             <a href="bathymetry.html">Bathymetry</a>
-            <a href="cloud-infrastructure.html">Cloud Infrastructure</a>
+            <a href="cloud-infrastructure.html" class="is-current">Cloud Infrastructure</a>
           </div>
         </div>
         
@@ -92,7 +92,7 @@
           <div class="dropdown-content">
             <a href="manifesto.html">The Manifesto</a>
             <a href="teaching-documentation.html">Education & Guides</a>
-            <a href="build-guide.html" class="is-current">Build Guide</a>
+            <a href="build-guide.html">Build Guide</a>
             <a href="deployment-scenarios.html">Deployment Scenarios</a>
             <a href="marine-operations.html">Marine Operations</a>
             <a href="compliance.html">Legal & Compliance</a>
@@ -104,9 +104,9 @@
   </header>
 
   <section class="hero wrap">
-    <span class="eyebrow">Practical Deployment</span>
-    <h1>Build Guide.</h1>
-    <p>A step-by-step practical schematic for wiring your first physical edge node and firing your first radio packet.</p>
+    <span class="eyebrow">DevOps & CI/CD</span>
+    <h1>Cloud Infrastructure.</h1>
+    <p>Scaling from a local Raspberry Pi to a globally distributed, highly available data hub.</p>
     <div class="hero-actions">
       <a class="btn btn-primary" href="https://github.com/aminalnam/OMEGA" target="_blank">View OMEGA on GitHub</a>
       <a class="btn btn-secondary" href="https://jonathancapone.art" target="_blank">Art Portfolio</a>
@@ -115,123 +115,33 @@
 
   <main class="main-shell wrap">
     <div class="main-inner">
-
       <section class="section section-block" style="background: rgba(0,0,0,0.4);">
-        <span class="section-kicker">Step 1: The Hardware</span>
-        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Physical Wiring Schematic</h2>
-        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">To build your own OMEGA node, you do not need a multi-million dollar grant. You need an ESP32 microcontroller, a LoRa transceiver, a battery, and a sensor.</p>
+        <span class="section-kicker">The Cloud Architecture</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Docker & Kubernetes</h2>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">While the primary Gateway runs physically on the shore, the Mission Portal and the aggregate database must be accessible to scientists globally. We orchestrate the cloud infrastructure using modern DevOps principles.</p>
         
         <div class="section-visual" style="padding: 1.5rem;">
             <div class="mermaid">
             graph LR
-                subgraph Power Block
-                    S[6V Solar Panel] -->|+5V In| M[MPPT Charge Controller]
-                    B[18650 Battery] <-->|3.7V| M
-                    M -->|+3.3V Out| E[ESP32-S3 Microcontroller]
+                subgraph Physical Edge
+                    R[Raspberry Pi 4] -->|Ngrok / Cloudflared| I[Internet]
                 end
                 
-                subgraph Logic Block
-                    E -->|SPI Bus| L[SX1262 LoRa Radio]
-                    E -->|I2C Bus| G[MAX-M10S GPS]
-                    E -->|ADC Pin 34| T[DS18B20 Thermistor]
+                subgraph Cloud Environment (AWS/GCP)
+                    I --> K[Kubernetes Ingress]
+                    K --> F[FastAPI Aggregator Pod]
+                    K --> P[React Portal Pod]
+                    F <--> DB[(Managed PostgreSQL)]
                 end
                 
-                subgraph Transmit
-                    L -->|UFL Coax| A[915MHz Dipole Antenna]
-                end
-
-                classDef power fill:#1e3a8a,stroke:#3b82f6,stroke-width:2px,color:#fff;
-                classDef logic fill:#0f766e,stroke:#14b8a6,stroke-width:2px,color:#fff;
-                classDef tx fill:#991b1b,stroke:#ef4444,stroke-width:2px,color:#fff;
-                
-                class S,B,M power;
-                class E,L,G,T logic;
-                class A tx;
+                classDef logic fill:#101529,stroke:#3b82f6,stroke-width:2px,color:#fff;
+                class F,P logic;
             </div>
         </div>
+        <p style="color: var(--ink-soft); font-size: 1rem; line-height: 1.6; max-width: 800px; margin-top: 1rem;">
+          The Python API and React Portal are heavily containerized using Docker. Through GitHub Actions CI/CD pipelines, any push to the `main` branch automatically builds a new container image, pushes it to the Docker Hub registry, and triggers a rolling update across the Kubernetes cluster, ensuring zero downtime for the data firehose.
+        </p>
       </section>
-
-      <section class="section section-block" style="background: rgba(0,0,0,0.4); margin-top: 2rem;">
-        <span class="section-kicker">Step 2: The Firmware</span>
-        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">The C++ "Hello World"</h2>
-        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">Once physically wired, you must flash the C++ firmware using PlatformIO. This code block shows the exact, absolute minimum logic required to initialize the SX1262 silicon over the SPI bus and blast a telemetry packet over the ocean.</p>
-        
-        <div class="section-visual" style="max-height: 800px; overflow-y: auto;">
-          <span class="panel-kicker">src/main.cpp</span>
-          <pre><code class="language-cpp">#include &lt;Arduino.h&gt;
-#include &lt;RadioLib.h&gt;
-
-// Define SPI pins mapping the ESP32 to the Semtech SX1262
-#define RADIO_NSS   7
-#define RADIO_DIO1  36
-#define RADIO_RESET 12
-#define RADIO_BUSY  13
-
-// Initialize the LoRa Radio Module
-SX1262 radio = new Module(RADIO_NSS, RADIO_DIO1, RADIO_RESET, RADIO_BUSY);
-
-void setup() {
-  Serial.begin(115200);
-  Serial.println("OMEGA Node Booting...");
-
-  // Initialize Radio: 915 MHz, Bandwidth 125kHz, Spreading Factor 10, Coding Rate 4/5
-  int state = radio.begin(915.0, 125.0, 10, 5, 0x34, 17, 8, 1.6);
-  if (state == RADIOLIB_ERR_NONE) {
-    Serial.println("SX1262 Initialized!");
-  } else {
-    Serial.print("Radio failed, code: ");
-    Serial.println(state);
-    while (true); // Hard halt
-  }
-}
-
-void loop() {
-  // 1. Read the physical sensor (e.g. analog thermistor voltage)
-  int raw_temp = analogRead(34);
-  
-  // 2. Format a simple payload
-  String payload = "NODE_01:TEMP:" + String(raw_temp);
-  
-  // 3. Transmit the packet into the airwaves
-  Serial.println("Transmitting...");
-  radio.transmit(payload);
-  
-  // 4. Sleep to prevent battery drain
-  delay(15000); 
-}</code></pre>
-        </div>
-      </section>
-
-      <section class="section section-block" style="background: rgba(0,0,0,0.4); margin-top: 2rem;">
-        <span class="section-kicker">Step 3: The Gateway</span>
-        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Catching the Signal</h2>
-        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">A second ESP32 node sits on the shore plugged into your laptop via USB. The shore node catches the RF wave, converts it back to digital logic, and pushes it over the USB serial port to the Python Gateway.</p>
-        
-        <div class="section-visual" style="max-height: 800px; overflow-y: auto;">
-          <span class="panel-kicker">gateway/listen.py</span>
-          <pre><code class="language-python">import serial
-import time
-
-# Open the physical USB port connected to the Shore Relay
-ser = serial.Serial('COM3', 115200, timeout=1)
-
-print("Listening for OMEGA Swarm...")
-
-while True:
-    if ser.in_waiting > 0:
-        # Read the raw byte buffer from the USB connection
-        raw_line = ser.readline()
-        
-        # Decode the bytes back into a human-readable string
-        packet = raw_line.decode('utf-8').strip()
-        
-        print(f"[PACKET RECEIVED] {packet}")
-        
-        # Next Step: Parse this string and insert into SQLite database!
-</code></pre>
-        </div>
-      </section>
-
     </div>
   </main>
 
