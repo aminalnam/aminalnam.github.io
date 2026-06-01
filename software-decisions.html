@@ -175,6 +175,38 @@
         <p style="color: var(--ink-soft); font-size: 1rem; line-height: 1.6; max-width: 800px;">
           <strong>The Decision:</strong> The Mission Portal is built with React explicitly to manage the complex, high-frequency state updates pumping through the WebSocket firehose. For geospatial rendering, we abandoned DOM-based SVGs entirely and adopted Uber's <strong>deck.gl</strong>. This framework bypasses the browser's DOM entirely, passing massive TypedArrays of coordinates directly into the computer's Graphics Processing Unit (GPU) via WebGL. This allows a standard operator laptop to render the entire Pacific Ocean at 60 Frames-Per-Second without breaking a sweat.
         </p>
+
+        <div class="section-visual" style="max-height: 800px; overflow-y: auto;">
+          <span class="panel-kicker">React Deck.gl Implementation</span>
+          <pre><code class="language-javascript">import { DeckGL } from '@deck.gl/react';
+import { ScatterplotLayer } from '@deck.gl/layers';
+
+// Rendering 50,000 historical telemetry points at 60 FPS
+function TelemetryMap({ data }) {
+  const layer = new ScatterplotLayer({
+    id: 'telemetry-layer',
+    data,
+    // WebGL bypasses the DOM and injects directly to the GPU
+    getPosition: d => [d.longitude, d.latitude],
+    getFillColor: d => {
+      // Color map based on raw temperature
+      if (d.temperature > 25) return [239, 68, 68]; // Red
+      return [59, 130, 246]; // Blue
+    },
+    getRadius: d => 10,
+    radiusUnits: 'pixels',
+    pickable: true
+  });
+
+  return (
+    &lt;DeckGL
+      initialViewState={{ longitude: -157, latitude: 21, zoom: 6 }}
+      controller={true}
+      layers={[layer]}
+    /&gt;
+  );
+}</code></pre>
+        </div>
       </section>
 
     </div>
