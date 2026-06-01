@@ -3,141 +3,27 @@
 <head>
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1" name="viewport"/>
-  <title>OMEGA — Proof Lab Analytics</title>
+  <title>OMEGA — Proof Lab</title>
   
-  <meta name="description" content="Daily Output & Analytics from OMEGA Proof Lab." />
-  <meta property="og:title" content="OMEGA — Proof Lab Analytics" />
+  <meta name="description" content="OMEGA Proof Lab: The Deterministic Evaluation Engine." />
+  <meta property="og:title" content="OMEGA — Proof Lab" />
   <meta property="og:description" content="Evidence tracking, system evaluation, and AI reporting for the OMEGA platform." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://jonathancapone.com/proof-lab.html" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="OMEGA — Proof Lab" />
+  <meta name="twitter:description" content="Evidence tracking, system evaluation, and AI reporting for the OMEGA platform." />
   
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌊</text></svg>">
   
   <link rel="stylesheet" href="style.css">
-  <style>
-    .tour-overlay {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0, 0, 0, 0.7);
-      backdrop-filter: blur(8px);
-      z-index: 1000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.4s ease;
-    }
-    .tour-overlay.visible {
-      opacity: 1;
-      pointer-events: auto;
-    }
-    .tour-modal {
-      background: rgba(15, 23, 36, 0.95);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
-      border-radius: 12px;
-      padding: 2.5rem;
-      width: 90%;
-      max-width: 550px;
-      text-align: center;
-      transform: translateY(20px);
-      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-      position: relative;
-    }
-    .tour-overlay.visible .tour-modal {
-      transform: translateY(0);
-    }
-    .tour-step {
-      display: none;
-      animation: fadeIn 0.3s ease;
-    }
-    .tour-step.active {
-      display: block;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(5px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .tour-icon {
-      font-size: 3rem;
-      margin-bottom: 1rem;
-    }
-    .tour-title {
-      font-size: 1.5rem;
-      color: #fff;
-      margin-bottom: 1rem;
-      letter-spacing: 0.02em;
-    }
-    .tour-text {
-      color: var(--ink-soft);
-      line-height: 1.6;
-      margin-bottom: 2rem;
-      font-size: 0.95rem;
-    }
-    .tour-controls {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 1.5rem;
-    }
-    .tour-dots {
-      display: flex;
-      gap: 6px;
-    }
-    .tour-dot {
-      width: 8px; height: 8px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.2);
-      transition: background 0.2s;
-    }
-    .tour-dot.active {
-      background: var(--accent-ocean);
-    }
-    .tour-btn {
-      background: var(--accent-ocean);
-      color: #fff;
-      border: none;
-      padding: 0.6rem 1.5rem;
-      border-radius: 6px;
-      font-weight: 600;
-      font-size: 0.95rem;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-    .tour-btn:hover {
-      background: #2563eb;
-    }
-    .tour-btn.secondary {
-      background: transparent;
-      border: 1px solid rgba(255,255,255,0.2);
-      color: #cbd5e1;
-    }
-    .tour-btn.secondary:hover {
-      background: rgba(255,255,255,0.05);
-    }
-    .replay-tour-btn {
-      position: absolute;
-      bottom: 20px;
-      right: 20px;
-      background: rgba(15, 23, 36, 0.8);
-      border: 1px solid rgba(255,255,255,0.1);
-      color: #94a3b8;
-      padding: 8px 12px;
-      border-radius: 6px;
-      font-size: 0.8rem;
-      cursor: pointer;
-      z-index: 50;
-      backdrop-filter: blur(4px);
-    }
-    .replay-tour-btn:hover {
-      background: rgba(15, 23, 36, 1);
-      color: #fff;
-    }
-  </style>
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ startOnLoad: true, theme: 'dark', themeVariables: { fontFamily: 'Inter' } });
+  </script>
 </head>
-<body style="margin: 0; overflow: hidden; display: flex; flex-direction: column; height: 100vh;">
-  <header class="topbar" style="flex-shrink: 0; z-index: 10;">
+<body>
+  <header class="topbar">
     <div class="wrap topbar-inner">
       <a class="brand" href="index.html" style="display: flex; align-items: center; gap: 0.75rem;">
         <img src="assets/images/logo.png" alt="OMEGA Logo" style="height: 48px; width: auto; object-fit: contain;">
@@ -219,114 +105,80 @@
     </div>
   </header>
 
-  <main style="flex-grow: 1; position: relative;">
-    <iframe src="prooflab-site/dashboard.html" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;"></iframe>
-    <button id="replayBtn" class="replay-tour-btn">Replay Tour ↺</button>
-  </main>
+  <section class="hero wrap" style="text-align: center;">
+    <span class="eyebrow" style="color: var(--accent-ocean);">Evaluation Engine</span>
+    <h1 style="font-size: 3.5rem; margin-bottom: 1rem;">Proof Lab.</h1>
+    <p style="max-width: 800px; margin: 0 auto 2.5rem; font-size: 1.25rem; color: var(--ink-soft); line-height: 1.7;">
+      The deterministic evaluation engine for OMEGA. Proof Lab continuously subjects the Gateway architecture to simulated environmental telemetry, measuring pipeline latency, detecting performance regressions, and generating AI-driven remediation tickets.
+    </p>
+    <div class="hero-actions" style="justify-content: center;">
+      <a class="btn btn-primary" href="proof-lab-dashboard.html" style="font-size: 1.1rem; padding: 1rem 2rem; box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.5);">Launch Live Dashboard</a>
+      <a class="btn btn-secondary" href="https://github.com/aminalnam/OMEGA-wave" target="_blank">View Test Suite</a>
+    </div>
+  </section>
 
-  <div id="tourOverlay" class="tour-overlay">
-    <div class="tour-modal">
-      
-      <!-- Step 1 -->
-      <div class="tour-step active" data-step="1">
-        <div class="tour-icon">🔬</div>
-        <h2 class="tour-title">Evidence Control Center</h2>
-        <p class="tour-text">
-          Welcome to the Proof Lab. This is an embedded, live view of OMEGA's deterministic evaluation engine. Whenever we update the backend code, Proof Lab runs simulated field telemetry through the Gateway to verify the system hasn't broken.
-        </p>
-      </div>
+  <main class="main-shell wrap" role="main">
+    <div class="main-inner">
 
-      <!-- Step 2 -->
-      <div class="tour-step" data-step="2">
-        <div class="tour-icon">📉</div>
-        <h2 class="tour-title">Tracking Regressions</h2>
-        <p class="tour-text">
-          Look at the <strong>Metric Drilldowns</strong> inside the dashboard. It continuously measures <em>Ingest Throughput</em> (obs/s) and <em>Query p95 Latency</em> (ms). If a new code commit slows the system down compared to the baseline, the Proof Lab flags it as a <span style="color:#ef4444; font-weight:bold;">Regression</span>.
-        </p>
-      </div>
-
-      <!-- Step 3 -->
-      <div class="tour-step" data-step="3">
-        <div class="tour-icon">🐢</div>
-        <h2 class="tour-title">AI Copilot Analysis</h2>
-        <p class="tour-text">
-          Notice the <strong>"Next Moves"</strong> section on the Overview page? After each simulated test, the local Honu AI agent reads the performance matrices and automatically writes Jira-style tickets to tell our engineers exactly what they need to fix next.
-        </p>
-      </div>
-
-      <div class="tour-controls">
-        <button id="tourPrevBtn" class="tour-btn secondary" style="visibility: hidden;">Back</button>
-        <div class="tour-dots">
-          <div class="tour-dot active" data-dot="1"></div>
-          <div class="tour-dot" data-dot="2"></div>
-          <div class="tour-dot" data-dot="3"></div>
+      <section class="section section-block" style="background: rgba(0,0,0,0.4);">
+        <span class="section-kicker">The Methodology</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Evidence-Based Engineering.</h2>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">When building a complex system that sits between unpredictable physical edge hardware and high-frequency backend databases, "it works on my machine" is an unacceptable standard. Every commit pushed to the OMEGA gateway must be empirically proven to handle chaotic telemetry floods without locking the SQLite WAL or dropping HTTP connections.</p>
+        
+        <div class="grid-3" style="margin-bottom: 2rem;">
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">Telemetry Generator</span>
+            <h3 style="font-size: 1.2rem;">Deterministic Fuzzing</h3>
+            <p style="font-size: 0.85rem;">The lab generates thousands of synthetic LoRa payload injections—simulating multiple drifting buoys, acoustic anomalies, and deliberate malformed hardware packets.</p>
+          </div>
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">Performance Matrices</span>
+            <h3 style="font-size: 1.2rem;">Tracking Regressions</h3>
+            <p style="font-size: 0.85rem;">The system tracks the <em>P95 Query Latency</em> and <em>Ingest Throughput</em> over time. If a new software build drops the ingestion rate below 250 obs/sec, a regression flag is thrown.</p>
+          </div>
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">Automated Remediation</span>
+            <h3 style="font-size: 1.2rem;">AI Copilot Ticketing</h3>
+            <p style="font-size: 0.85rem;">Post-run, the Honu AI Agent analyzes the performance deltas. If a regression is detected, it automatically writes a Jira-style technical ticket outlining the suspected bottleneck.</p>
+          </div>
         </div>
-        <button id="tourNextBtn" class="tour-btn">Next</button>
-      </div>
+      </section>
+
+      <section class="section section-block" style="padding-top: 2rem;">
+        <span class="section-kicker">The Pipeline</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 2rem;">Automated Evaluation Flow.</h2>
+        
+        <div class="section-visual" style="margin-bottom: 2rem;">
+          <div class="mermaid">
+            sequenceDiagram
+              autonumber
+              participant CI as CI/CD Pipeline
+              participant Synth as Synthetic Injector
+              participant GW as OMEGA Gateway
+              participant DB as SQLite WAL
+              participant AI as Honu AI Copilot
+              
+              CI->>Synth: Trigger Nightly Evaluation
+              Synth->>GW: Inject 10,000 Fuzzed Payloads (LoRa TLV)
+              GW->>DB: Asynchronous WAL Writes
+              GW-->>Synth: Measure HTTP Response Times
+              Synth->>CI: Output Metrics (P95, Throughput)
+              
+              alt Throughput Drops Below Baseline
+                  CI->>AI: Send Failure Matrix
+                  AI->>AI: Analyze Database Locks & Timings
+                  AI->>CI: Generate "Next Moves" Actionable Ticket
+              end
+          </div>
+        </div>
+      </section>
 
     </div>
-  </div>
-  
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const tourOverlay = document.getElementById('tourOverlay');
-      const replayBtn = document.getElementById('replayBtn');
-      const nextBtn = document.getElementById('tourNextBtn');
-      const prevBtn = document.getElementById('tourPrevBtn');
-      const steps = document.querySelectorAll('.tour-step');
-      const dots = document.querySelectorAll('.tour-dot');
-      
-      let currentStep = 1;
-      const totalSteps = steps.length;
+  </main>
 
-      function showStep(stepNum) {
-        steps.forEach(s => s.classList.remove('active'));
-        dots.forEach(d => d.classList.remove('active'));
-        
-        document.querySelector(`.tour-step[data-step="${stepNum}"]`).classList.add('active');
-        document.querySelector(`.tour-dot[data-dot="${stepNum}"]`).classList.add('active');
-        
-        prevBtn.style.visibility = stepNum === 1 ? 'hidden' : 'visible';
-        
-        if (stepNum === totalSteps) {
-          nextBtn.textContent = 'Start Exploring';
-        } else {
-          nextBtn.textContent = 'Next';
-        }
-      }
-
-      function startTour() {
-        currentStep = 1;
-        showStep(1);
-        tourOverlay.classList.add('visible');
-      }
-
-      nextBtn.addEventListener('click', () => {
-        if (currentStep < totalSteps) {
-          currentStep++;
-          showStep(currentStep);
-        } else {
-          tourOverlay.classList.remove('visible');
-          localStorage.setItem('proofLabTourSeen', 'true');
-        }
-      });
-
-      prevBtn.addEventListener('click', () => {
-        if (currentStep > 1) {
-          currentStep--;
-          showStep(currentStep);
-        }
-      });
-
-      replayBtn.addEventListener('click', () => {
-        startTour();
-      });
-      
-      if (!localStorage.getItem('proofLabTourSeen')) {
-        setTimeout(startTour, 300);
-      }
-    });
-  </script>
+  <footer class="footer wrap">
+    <span>© Jonathan Capone — Technical Portfolio. OMEGA (formerly OMEGA-wave).</span>
+  </footer>
   <script src="main.js"></script>
 </body>
 </html>
