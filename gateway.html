@@ -142,7 +142,7 @@ PRAGMA cache_size=-64000;</code></pre></div>
               <span class="section-kicker">Data Structures</span>
               <h2>The Observation Envelope.</h2>
               <p>Disparate marine sensors natively produce chaotic, proprietary data formats—a YSI sonde outputs ASCII strings, while a BlueRobotics pressure sensor outputs raw hex. OMEGA standardizes all incoming telemetry into a strict <strong>Observation Envelope</strong> schema.</p>
-<p>This schema is the universal currency of the OMEGA platform. It mathematically guarantees that every measurement entering the system possesses a cryptographic UUID, an ISO-8601 timestamp, explicit SI units, and spatial coordinates (Latitude/Longitude/Depth).</p>
+<p>This schema is the universal currency of the OMEGA network. It mathematically guarantees that every measurement entering the system possesses a cryptographic UUID, an ISO-8601 timestamp, explicit SI units, and spatial coordinates (Latitude/Longitude/Depth).</p>
 <p><strong>How it works:</strong> By enforcing this envelope at the boundary layer via Pydantic models, downstream systems—such as bathymetry processors, machine learning models, or QARTOD Quality Control algorithms—do not need to write custom parsers for different manufacturer formats. They simply ingest the normalized Envelope, process the payload, and output a new Envelope. This strict data contract enables massive interoperability across the fleet.</p>
             </div>
             
