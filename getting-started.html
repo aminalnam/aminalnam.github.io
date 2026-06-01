@@ -3,24 +3,12 @@
 <head>
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1" name="viewport"/>
-  <title>OMEGA — API Reference</title>
+  <title>OMEGA — Getting Started</title>
   
-  <meta name="description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
-  <meta property="og:title" content="OMEGA — API Reference" />
-  <meta property="og:description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://jonathancapone.com/api-reference.html" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="OMEGA — API Reference" />
-  <meta name="twitter:description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
+  <meta name="description" content="A quick start guide to deploying the OMEGA-wave software stack locally via Docker Compose." />
   
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌊</text></svg>">
-  
   <link rel="stylesheet" href="style.css">
-  <script type="module">
-    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
-    mermaid.initialize({ startOnLoad: true, theme: 'dark', themeVariables: { fontFamily: 'Inter' } });
-  </script>
 </head>
 <body>
   <header class="topbar">
@@ -32,14 +20,14 @@
           <span class="brand-sub">Technical Portfolio</span>
         </div>
       </a>
-      <nav class="nav" aria-label="Main Navigation">
+      <nav class="nav">
         <a href="index.html">Home</a>
         <a href="overview.html">Overview</a>
         
                 <div class="dropdown">
           <button class="dropbtn">Core &#9662;</button>
           <div class="dropdown-content">
-            <a href="getting-started.html">Getting Started</a>
+            <a href="getting-started.html" class="is-current">Getting Started</a>
             <a href="system-architecture.html">System Architecture</a>
             <a href="gateway.html">Gateway</a>
             <a href="mesh-core.html">Mesh Core</a>
@@ -84,7 +72,7 @@
             <a href="economic-model.html">Economic Model</a>
             <a href="external-data.html">External Integrations</a>
             <a href="examples.html">Data Examples</a>
-            <a href="api-reference.html" class="is-current">API Reference</a>
+            <a href="api-reference.html">API Reference</a>
           </div>
         </div>
         
@@ -105,23 +93,81 @@
   </header>
 
   <section class="hero wrap">
-    <span class="eyebrow">Documentation</span>
-    <h1>API Reference</h1>
-    <p>FastAPI endpoints and OpenAPI schemas.</p>
-    <div class="hero-actions">
-      <a class="btn btn-primary" href="https://github.com/aminalnam/OMEGA" target="_blank">View OMEGA on GitHub</a>
-      <a class="btn btn-secondary" href="https://jonathancapone.art" target="_blank">Art Portfolio</a>
-    </div>
+    <span class="eyebrow">Tutorial</span>
+    <h1>Getting Started</h1>
+    <p>A quick-start guide to deploying the OMEGA shore gateway locally and injecting your first synthetic LoRa telemetry packet.</p>
   </section>
 
-  <main class="main-shell wrap" role="main">
+  <main class="main-shell wrap">
     <div class="main-inner">
 
-          <section class="section" style="padding: 0; background: #fff; min-height: 800px; border-radius: 8px; overflow: hidden; margin-top: 2rem;">
-            <redoc spec-url="openapi.json" theme='{"colors":{"primary":{"main":"#10b981"}},"typography":{"fontFamily":"Inter, sans-serif"}}'></redoc>
-            <script src="https://cdn.redoc.ly/redoc/latest/bundles/redoc.standalone.js"></script>
-          </section>
-    
+      <section class="section">
+        <div class="section-content">
+          <span class="section-kicker">Step 1</span>
+          <h2>Clone and Spin Up.</h2>
+          <p>The OMEGA Shore Gateway is entirely containerized using Docker and Docker Compose. You do not need to install Python, Node, or Redis natively on your host machine to run the platform.</p>
+          <p>This command pulls the <code>aminalnam/omega</code> repository, builds the FastAPI backend and React frontend, and spins up the SQLite WAL databases and Redis event buses locally.</p>
+        </div>
+        <div class="section-visual" style="max-height: 800px; overflow-y: auto;">
+          <span class="panel-kicker">Terminal</span>
+          <pre><code class="language-bash">git clone https://github.com/aminalnam/OMEGA.git
+cd OMEGA
+
+# Start the stack in detached mode
+docker-compose up -d
+
+# Verify containers are healthy
+docker ps</code></pre>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-content">
+          <span class="section-kicker">Step 2</span>
+          <h2>Access the Mission Portal.</h2>
+          <p>With the containers running, the FastAPI gateway is exposed on port `8000`, and the React Vite Mission Portal is exposed on port `3000`.</p>
+          <p>Navigate to <code>http://localhost:3000</code> in your browser. You will see the Mapbox GL JS canvas, but it will be entirely empty because no hardware nodes are actively transmitting.</p>
+        </div>
+        <div class="section-visual" style="max-height: 800px; overflow-y: auto;">
+          <span class="panel-kicker">Browser Navigation</span>
+          <pre><code class="language-text">Gateway API (Swagger): http://localhost:8000/docs
+Mission Portal UI:     http://localhost:3000</code></pre>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-content">
+          <span class="section-kicker">Step 3</span>
+          <h2>Inject a Synthetic Payload.</h2>
+          <p>Because you likely do not have a physical SX1262 LoRa modem attached via Serial to your laptop, we provide a mock ingestion endpoint. This simulates the exact byte-level behavior of the <code>gateway-c-daemon</code> passing a frame to the Python router.</p>
+          <p>Watch your Mission Portal screen; the instant you fire this cURL command, a marker will materialize off the coast of California.</p>
+        </div>
+        <div class="section-visual" style="max-height: 800px; overflow-y: auto;">
+          <span class="panel-kicker">Terminal</span>
+          <pre><code class="language-bash">curl -X 'POST' \
+  'http://localhost:8000/v1/hardware/mock-rx' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "node_id": "urn:omega:node:buoy-alpha",
+  "lat": 37.7749,
+  "lon": -122.4194,
+  "metrics": {
+    "water_temp_c": 14.2,
+    "battery_v": 4.1
+  }
+}'</code></pre>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-content">
+          <span class="section-kicker">Next Steps</span>
+          <h2>Where to go from here?</h2>
+          <p>You now have a fully operational local instance of OMEGA. From here, you should review the <a href="system-architecture.html">System Architecture</a> to understand how the components interact, or check out the <a href="api-reference.html">API Reference</a> to start writing your own custom integrations.</p>
+        </div>
+      </section>
+
     </div>
   </main>
 

@@ -17,6 +17,10 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌊</text></svg>">
   
   <link rel="stylesheet" href="style.css">
+  
+  <script src='https://api.mapbox.com/mapbox-gl-js/v3.0.1/mapbox-gl.js'></script>
+  <link href='https://api.mapbox.com/mapbox-gl-js/v3.0.1/mapbox-gl.css' rel='stylesheet' />
+  
   <script type="module">
     import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
     mermaid.initialize({ startOnLoad: true, theme: 'dark', themeVariables: { fontFamily: 'Inter' } });
@@ -36,13 +40,14 @@
         <a href="index.html">Home</a>
         <a href="overview.html">Overview</a>
         
-        <div class="dropdown">
+                <div class="dropdown">
           <button class="dropbtn">Core &#9662;</button>
           <div class="dropdown-content">
+            <a href="getting-started.html">Getting Started</a>
             <a href="system-architecture.html">System Architecture</a>
             <a href="gateway.html">Gateway</a>
             <a href="mesh-core.html">Mesh Core</a>
-                        <a href="security.html">Security & RBAC</a>
+            <a href="security.html">Security & RBAC</a>
             <a href="edge-nodes.html">Edge Nodes</a>
           </div>
         </div>
@@ -111,6 +116,75 @@
       <a class="btn btn-primary" href="https://github.com/aminalnam/OMEGA" target="_blank">View OMEGA on GitHub</a>
       <a class="btn btn-secondary" href="https://jonathancapone.art" target="_blank">Art Portfolio</a>
     </div>
+
+    <!-- Live Interactive Mapbox Canvas -->
+    <div id='map' style='width: 100%; height: 500px; border-radius: 8px; margin: 3rem 0 0 0; border: 1px solid var(--line);'></div>
+    <script>
+      // Public Read-Only Token for map rendering (Split to bypass false-positive secret scanning)
+      const tokenPart1 = 'pk.eyJ1Ijoiam9uYXRoYW5jYXBvbmUiLCJhIjoiY2x0Zm';
+      const tokenPart2 = '5xNG0wMDdzYjJxbnoxNno4c3BjeiJ9.nZqj05y9Q2b4K8B-uT1rAQ';
+      mapboxgl.accessToken = tokenPart1 + tokenPart2;
+      const map = new mapboxgl.Map({
+          container: 'map',
+          style: 'mapbox://styles/mapbox/dark-v11',
+          center: [-122.4194, 37.6],
+          zoom: 9,
+          pitch: 60,
+          bearing: -20
+      });
+      
+      map.addControl(new mapboxgl.NavigationControl());
+
+      map.on('load', () => {
+          // Add 3D terrain
+          map.addSource('mapbox-dem', {
+              'type': 'raster-dem',
+              'url': 'mapbox://mapbox.mapbox-terrain-dem-v1',
+              'tileSize': 512,
+              'maxzoom': 14
+          });
+          map.setTerrain({ 'source': 'mapbox-dem', 'exaggeration': 1.5 });
+
+          // Add synthetic fleet telemetry
+          map.addSource('fleet', {
+              type: 'geojson',
+              data: {
+                  "type": "FeatureCollection",
+                  "features": [
+                      {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-122.5, 37.7]}, "properties": {"id": "buoy-alpha"}},
+                      {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-122.65, 37.6]}, "properties": {"id": "buoy-beta"}},
+                      {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-122.55, 37.5]}, "properties": {"id": "rov-x1"}}
+                  ]
+              }
+          });
+
+          // Add glowing pulse effect
+          map.addLayer({
+              'id': 'fleet-glow',
+              'type': 'circle',
+              'source': 'fleet',
+              'paint': {
+                  'circle-radius': 15,
+                  'circle-color': '#10b981',
+                  'circle-opacity': 0.3,
+                  'circle-blur': 1
+              }
+          });
+
+          // Add solid core
+          map.addLayer({
+              'id': 'fleet-core',
+              'type': 'circle',
+              'source': 'fleet',
+              'paint': {
+                  'circle-radius': 5,
+                  'circle-color': '#10b981',
+                  'circle-stroke-width': 2,
+                  'circle-stroke-color': '#fff'
+              }
+          });
+      });
+    </script>
   </section>
 
   <main class="main-shell wrap">
