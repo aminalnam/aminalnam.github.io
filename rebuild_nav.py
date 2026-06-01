@@ -5,7 +5,7 @@ NAV_TEMPLATE = """      <nav class="nav" aria-label="Main Navigation">
         <a href="index.html">Home</a>
         <a href="manifesto.html">Manifesto</a>
         <a href="overview.html">Overview</a>
-        <a href="proof-lab.html" style="color: var(--accent-ocean); font-weight: 600; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.05em;">Proof Lab</a>
+        <a href="crucible.html" style="color: var(--accent-ocean); font-weight: 600; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.05em;">Crucible</a>
         
         <div class="dropdown">
           <button class="dropbtn">Hardware & Physics &#9662;</button>
@@ -72,9 +72,31 @@ NAV_TEMPLATE = """      <nav class="nav" aria-label="Main Navigation">
         </div>
       </nav>"""
 
+def generate_nav(current_file):
+    nav_html = NAV_TEMPLATE
+    
+    # 1. Clear default states
+    nav_html = nav_html.replace('href="index.html" class="is-current"', 'href="index.html"')
+    
+    # 2. Add current state to active file
+    if current_file == 'index.html':
+        nav_html = nav_html.replace('href="index.html"', 'href="index.html" class="is-current"')
+    elif current_file == 'manifesto.html':
+        nav_html = nav_html.replace('href="manifesto.html"', 'href="manifesto.html" class="is-current"')
+    elif current_file == 'overview.html':
+        nav_html = nav_html.replace('href="overview.html"', 'href="overview.html" class="is-current"')
+    elif current_file in ['crucible.html', 'crucible-dashboard.html']:
+        nav_html = nav_html.replace('href="crucible.html"', 'href="crucible.html" class="is-current"')
+    else:
+        # Standard dropdown highlight
+        target = f'href="{current_file}"'
+        replacement = f'href="{current_file}" class="is-current"'
+        nav_html = nav_html.replace(target, replacement)
+    return nav_html
+
 def rebuild_nav(directory="."):
     for root, _, files in os.walk(directory):
-        if "prooflab-site" in root:
+        if "crucible" in root:
             continue
         for file in files:
             if file.endswith(".html"):
@@ -88,11 +110,7 @@ def rebuild_nav(directory="."):
                 
                 if nav_pattern.search(content):
                     # Customize template for current file
-                    custom_nav = re.sub(
-                        r'(href="' + re.escape(file) + r'")',
-                        r'\1 class="is-current"',
-                        NAV_TEMPLATE
-                    )
+                    custom_nav = generate_nav(file)
                     
                     new_content = nav_pattern.sub(custom_nav, content)
                     
