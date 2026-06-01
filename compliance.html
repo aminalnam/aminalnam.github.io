@@ -3,15 +3,15 @@
 <head>
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1" name="viewport"/>
-  <title>OMEGA — Event Bus & Watches</title>
+  <title>OMEGA — Legal & Compliance</title>
   
   <meta name="description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
-  <meta property="og:title" content="OMEGA — Event Bus & Watches" />
+  <meta property="og:title" content="OMEGA — Legal & Compliance" />
   <meta property="og:description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://jonathancapone.com/event-bus.html" />
+  <meta property="og:url" content="https://jonathancapone.com/compliance.html" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="OMEGA — Event Bus & Watches" />
+  <meta name="twitter:title" content="OMEGA — Legal & Compliance" />
   <meta name="twitter:description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
   
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌊</text></svg>">
@@ -42,7 +42,7 @@
             <a href="system-architecture.html">System Architecture</a>
             <a href="gateway.html">Gateway</a>
             <a href="mesh-core.html">Mesh Core</a>
-                        <a href="security.html">Security & RBAC</a>
+            <a href="security.html">Security & RBAC</a>
             <a href="edge-nodes.html">Edge Nodes</a>
           </div>
         </div>
@@ -65,7 +65,7 @@
             <a href="power-systems.html">Power & Thermodynamics</a>
             <a href="mechanical-engineering.html">Mechanical & Buoyancy</a>
             <a href="software-decisions.html">Software Architecture</a>
-            <a href="event-bus.html" class="is-current">Event Bus & Watches</a>
+            <a href="event-bus.html">Event Bus & Watches</a>
             <a href="copilot.html">Honu AI Copilot</a>
           </div>
         </div>
@@ -90,7 +90,7 @@
             <a href="teaching-documentation.html">Education & Guides</a>
             <a href="build-guide.html">Build Guide</a>
             <a href="deployment-scenarios.html">Deployment Scenarios</a>
-            <a href="compliance.html">Legal & Compliance</a>
+            <a href="compliance.html" class="is-current">Legal & Compliance</a>
             <a href="roadmap.html">Roadmap</a>
           </div>
         </div>
@@ -99,9 +99,9 @@
   </header>
 
   <section class="hero wrap">
-    <span class="eyebrow">Schedulers & Event Bus</span>
-    <h1>Automated Watches.</h1>
-    <p>Deep dive into the asyncio scheduler, node offline watchdogs, and notifications.</p>
+    <span class="eyebrow">The Legal Framework</span>
+    <h1>Legal & Compliance.</h1>
+    <p>Navigating international maritime law, RF regulations, and the constraints of operating autonomous hardware in the ocean.</p>
     <div class="hero-actions">
       <a class="btn btn-primary" href="https://github.com/aminalnam/OMEGA" target="_blank">View OMEGA on GitHub</a>
       <a class="btn btn-secondary" href="https://jonathancapone.art" target="_blank">Art Portfolio</a>
@@ -111,46 +111,36 @@
   <main class="main-shell wrap">
     <div class="main-inner">
 
+      <section class="section section-block" style="background: rgba(0,0,0,0.4);">
+        <span class="section-kicker">Radio Frequency Law</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">FCC vs ITU Regulations</h2>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">You cannot simply blast a 1-Watt radio signal over the ocean without consequences. OMEGA operates in the license-free Industrial, Scientific, and Medical (ISM) radio bands, but these bands are heavily regulated by regional governments.</p>
+        
+        <div class="grid-2" style="margin-bottom: 2rem;">
+          <div class="panel" style="padding: 1.5rem; border-left: 4px solid #3b82f6;">
+            <span class="status-label status-implemented">United States (FCC Part 15)</span>
+            <h3 style="font-size: 1.2rem;">915 MHz</h3>
+            <p style="font-size: 0.85rem;">In the US, the FCC allows transmission in the 902-928 MHz band up to 1 Watt (30 dBm) provided the system utilizes Frequency Hopping Spread Spectrum (FHSS) or Digital Modulation. OMEGA's LoRa Chirp Spread Spectrum satisfies this, allowing for aggressive, high-power long-distance transmissions without strict time-on-air limits.</p>
+          </div>
+          <div class="panel" style="padding: 1.5rem; border-left: 4px solid #f59e0b;">
+            <span class="status-label status-pending">Europe (ETSI / ITU)</span>
+            <h3 style="font-size: 1.2rem;">868 MHz & 1% Duty Cycle</h3>
+            <p style="font-size: 0.85rem;">In Europe, the ETSI regulations are brutally strict. You are limited to 25 mW (14 dBm) and a <strong>1% Duty Cycle</strong>. This means a buoy can only transmit for 36 seconds per hour. The OMEGA firmware dynamically detects its GPS region and mathematically throttles the CSMA-CA queue to ensure it never violates the legal duty cycle limit.</p>
+          </div>
+        </div>
+      </section>
 
-          <section class="section">
-            <div class="section-content">
-              <span class="section-kicker">Asynchronous Loop</span>
-              <h2>The Gateway Scheduler.</h2>
-              <p>The <code>gateway/scheduler.py</code> module manages a strict Python `asyncio` event loop. This cron-like engine dictates when the gateway should pull satellite ephemeris data, when it should poll NOAA for weather updates, and when it should execute the QARTOD compliance engine across the massive historical SQLite database.</p>
-              
-            </div>
-            
-          </section>
-    
-          <section class="section">
-            <div class="section-content">
-              <span class="section-kicker">System Watchdogs</span>
-              <h2>Automated Fleet Watches.</h2>
-              <p>The <code>gateway/watches.py</code> module is an active monitoring service. It constantly evaluates the timestamp of the last received ping from every edge node in the mesh. If a buoy goes completely silent and misses its Delay Tolerant Network heartbeat window, the Watchdog automatically generates a critical "Node Offline" alarm on the Notification Bus.</p>
-              
-            </div>
-            
-          </section>
+      <section class="section section-block" style="background: rgba(0,0,0,0.4); margin-top: 2rem;">
+        <span class="section-kicker">Maritime Law</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">UNCLOS & Drifting Sensors</h2>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">The United Nations Convention on the Law of the Sea (UNCLOS) governs all activities in the ocean. Operating unmanned autonomous hardware introduces significant legal gray areas.</p>
+        <p style="color: var(--ink-soft); font-size: 1rem; line-height: 1.6; max-width: 800px;">
+          <strong>Data Ownership:</strong> Under UNCLOS, marine scientific research conducted within a nation's Exclusive Economic Zone (EEZ) requires the consent of the coastal state. Because OMEGA nodes are free-drifting, ocean currents routinely push them across international borders. The platform automatically tags all telemetry with high-precision GNSS coordinates, allowing researchers to mathematically filter out data collected in restricted geopolitical zones to remain compliant.
+          <br><br>
+          <strong>Hazards to Navigation:</strong> A major legal liability for autonomous buoys is ship strikes. A fiberglass yacht striking a massive steel buoy can cause catastrophic damage and loss of life. OMEGA nodes mitigate this legal liability entirely through their physical design: by utilizing lightweight PVC, FDM plastics, and a breakaway elastic mooring, the buoy will simply shatter harmlessly if struck by a vessel, protecting the mariners at the expense of the $200 hardware.
+        </p>
+      </section>
 
-          <section class="section section-block" style="background: rgba(0,0,0,0.4);">
-            <span class="section-kicker">Architectural Theory</span>
-            <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">The Pub/Sub Pattern.</h2>
-            <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">A monolithic architecture is incredibly fragile. If the Python script receiving radio packets directly calls the database <code>insert()</code> function, a slow SD card write will physically block the processor from receiving the next radio packet, dropping critical telemetry.</p>
-            
-            <div class="grid-2" style="margin-bottom: 2rem;">
-              <div class="panel" style="padding: 1.5rem;">
-                <span class="status-label status-implemented">Producers (Publishers)</span>
-                <h3 style="font-size: 1.2rem;">The Radio Receiver</h3>
-                <p style="font-size: 0.85rem;">The receiver script does exactly one thing: it parses raw bytes from the UART serial bus. Once verified, it blindly fires an <code>emit("telemetry.received", payload)</code> event onto the memory bus and immediately returns to listening for the next radio packet.</p>
-              </div>
-              <div class="panel" style="padding: 1.5rem;">
-                <span class="status-label status-implemented">Consumers (Subscribers)</span>
-                <h3 style="font-size: 1.2rem;">The Database Writer</h3>
-                <p style="font-size: 0.85rem;">Completely decoupled from the radio, the database writer script runs in an infinite <code>asyncio</code> loop, pulling payloads off the memory bus at its own speed and writing them to SQLite. If the database locks up, the memory queue simply grows, but no live RF packets are ever dropped.</p>
-              </div>
-            </div>
-          </section>
-    
     </div>
   </main>
 
