@@ -4,8 +4,8 @@ import re
 NAV_TEMPLATE = """      <nav class="nav" aria-label="Main Navigation">
         <a href="index.html">Home</a>
         <a href="manifesto.html">Manifesto</a>
-        <a href="overview.html">Overview</a>
-        <a href="proof-lab.html" style="color: var(--accent-ocean); font-weight: 600; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.05em;">Proof Lab</a>
+        <a href="overview.html">OMEGA</a>
+        <a href="beta-overview.html" style="color: var(--accent-ocean); font-weight: 600; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.05em;">BETA</a>
         
         <div class="dropdown">
           <button class="dropbtn">Hardware & Physics &#9662;</button>
@@ -35,6 +35,7 @@ NAV_TEMPLATE = """      <nav class="nav" aria-label="Main Navigation">
           <button class="dropbtn">Data & AI &#9662;</button>
           <div class="dropdown-content">
             <a href="analytics.html">Analytics Pipeline</a>
+            <a href="omega-beta.html">OMEGA BETA Analytics</a>
             <a href="copilot.html">Honu AI Copilot</a>
             <a href="machine-learning.html">Machine Learning</a>
             <a href="qc-eval.html">Data Quality (QARTOD)</a>
@@ -85,8 +86,8 @@ def generate_nav(current_file):
         nav_html = nav_html.replace('href="manifesto.html"', 'href="manifesto.html" class="is-current"')
     elif current_file == 'overview.html':
         nav_html = nav_html.replace('href="overview.html"', 'href="overview.html" class="is-current"')
-    elif current_file in ['proof-lab.html', 'proof-lab-dashboard.html']:
-        nav_html = nav_html.replace('href="proof-lab.html"', 'href="proof-lab.html" class="is-current"')
+    elif current_file == 'beta-overview.html':
+        nav_html = nav_html.replace('href="beta-overview.html"', 'href="beta-overview.html" class="is-current"')
     else:
         # Standard dropdown highlight
         target = f'href="{current_file}"'
@@ -96,7 +97,7 @@ def generate_nav(current_file):
 
 def rebuild_nav(directory="."):
     for root, _, files in os.walk(directory):
-        if "prooflab" in root:
+        if "omega-beta-site" in root:
             continue
         for file in files:
             if file.endswith(".html"):

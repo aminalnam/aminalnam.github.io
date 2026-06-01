@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 from pathlib import Path
 
 SOURCE_SITE_DIR = r"C:\Users\jdcap\OneDrive\Documents\OMEGA Proof\omega-proof-lab\.prooflab\site"
-TARGET_SITE_DIR = Path(__file__).parent / "prooflab-site"
+TARGET_SITE_DIR = Path(__file__).parent / "omega-beta-site"
 
 def sanitize_json(data):
     """Recursively sanitize absolute Windows paths to prevent leaking PII."""
@@ -28,10 +28,10 @@ def sanitize_json(data):
 
 def main():
     if not os.path.exists(SOURCE_SITE_DIR):
-        print(f"Error: Could not find Proof Lab site at {SOURCE_SITE_DIR}")
+        print(f"Error: Could not find OMEGA BETA site at {SOURCE_SITE_DIR}")
         return
 
-    print(f"Syncing Proof Lab site from {SOURCE_SITE_DIR} to {TARGET_SITE_DIR}...")
+    print(f"Syncing OMEGA BETA site from {SOURCE_SITE_DIR} to {TARGET_SITE_DIR}...")
     
     # Remove existing target to ensure clean copy
     if os.path.exists(TARGET_SITE_DIR):

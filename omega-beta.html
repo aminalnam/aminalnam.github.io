@@ -3,15 +3,15 @@
 <head>
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1" name="viewport"/>
-  <title>OMEGA — Proof Lab Analytics</title>
+  <title>OMEGA BETA — Analytics Dashboard</title>
   
-  <meta name="description" content="Daily Output & Analytics from Proof Lab." />
-  <meta property="og:title" content="OMEGA — Proof Lab Analytics" />
+  <meta name="description" content="Daily Output & Analytics from OMEGA BETA." />
+  <meta property="og:title" content="OMEGA BETA — Analytics Dashboard" />
   <meta property="og:description" content="Evidence tracking, system evaluation, and AI reporting." />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://jonathancapone.com/proof-lab.html" />
+  <meta property="og:url" content="https://jonathancapone.com/omega-beta.html" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="OMEGA — Proof Lab Analytics" />
+  <meta name="twitter:title" content="OMEGA BETA — Analytics Dashboard" />
   <meta name="twitter:description" content="Evidence tracking, system evaluation, and AI reporting." />
   
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌊</text></svg>">
@@ -152,8 +152,8 @@
       <nav class="nav" aria-label="Main Navigation">
         <a href="index.html">Home</a>
         <a href="manifesto.html">Manifesto</a>
-        <a href="overview.html">Overview</a>
-        <a href="proof-lab.html" class="is-current" style="color: var(--accent-ocean); font-weight: 600; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.05em;">Proof Lab</a>
+        <a href="overview.html">OMEGA</a>
+        <a href="beta-overview.html" style="color: var(--accent-ocean); font-weight: 600; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.05em;">BETA</a>
         
         <div class="dropdown">
           <button class="dropbtn">Hardware & Physics &#9662;</button>
@@ -183,6 +183,7 @@
           <button class="dropbtn">Data & AI &#9662;</button>
           <div class="dropdown-content">
             <a href="analytics.html">Analytics Pipeline</a>
+            <a href="omega-beta.html" class="is-current">OMEGA BETA Analytics</a>
             <a href="copilot.html">Honu AI Copilot</a>
             <a href="machine-learning.html">Machine Learning</a>
             <a href="qc-eval.html">Data Quality (QARTOD)</a>
@@ -223,7 +224,7 @@
   </header>
 
   <main style="flex-grow: 1; position: relative;">
-    <iframe src="prooflab-site/dashboard.html" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;"></iframe>
+    <iframe src="omega-beta-site/dashboard.html" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;"></iframe>
     <button id="replayBtn" class="replay-tour-btn">Replay Tour ↺</button>
   </main>
 
@@ -235,7 +236,7 @@
         <div class="tour-icon">🔬</div>
         <h2 class="tour-title">Evidence Control Center</h2>
         <p class="tour-text">
-          Welcome to the Proof Lab. This is an embedded, live view of the deterministic evaluation engine. Whenever we update the backend code, Proof Lab runs simulated field telemetry through the target architecture to verify the system hasn't broken.
+          Welcome to OMEGA BETA. This is an embedded, live view of the deterministic evaluation engine testing the OMEGA network. Whenever we update the backend code, the BETA engine runs simulated field telemetry through the target architecture to verify the system hasn't broken.
         </p>
       </div>
 
@@ -244,7 +245,7 @@
         <div class="tour-icon">📉</div>
         <h2 class="tour-title">Tracking Regressions</h2>
         <p class="tour-text">
-          Look at the <strong>Metric Drilldowns</strong> inside the dashboard. It continuously measures <em>Ingest Throughput</em> (obs/s) and <em>Query p95 Latency</em> (ms). If a new code commit slows the system down compared to the baseline, the Proof Lab flags it as a <span style="color:#ef4444; font-weight:bold;">Regression</span>.
+          Look at the <strong>Metric Drilldowns</strong> inside the dashboard. It continuously measures <em>Ingest Throughput</em> (obs/s) and <em>Query p95 Latency</em> (ms). If a new code commit slows the system down compared to the baseline, the BETA framework flags it as a <span style="color:#ef4444; font-weight:bold;">Regression</span>.
         </p>
       </div>
 
