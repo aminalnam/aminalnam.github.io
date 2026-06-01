@@ -5,7 +5,7 @@ NAV_TEMPLATE = """      <nav class="nav" aria-label="Main Navigation">
         <a href="index.html">Home</a>
         <a href="manifesto.html">Manifesto</a>
         <a href="overview.html">Overview</a>
-        <a href="crucible.html" style="color: var(--accent-ocean); font-weight: 600; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.05em;">Crucible</a>
+        <a href="beta.html" style="color: var(--accent-ocean); font-weight: 600; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.05em;">BETA</a>
         
         <div class="dropdown">
           <button class="dropbtn">Hardware & Physics &#9662;</button>
@@ -85,8 +85,8 @@ def generate_nav(current_file):
         nav_html = nav_html.replace('href="manifesto.html"', 'href="manifesto.html" class="is-current"')
     elif current_file == 'overview.html':
         nav_html = nav_html.replace('href="overview.html"', 'href="overview.html" class="is-current"')
-    elif current_file in ['crucible.html', 'crucible-dashboard.html']:
-        nav_html = nav_html.replace('href="crucible.html"', 'href="crucible.html" class="is-current"')
+    elif current_file in ['beta.html', 'beta-dashboard.html']:
+        nav_html = nav_html.replace('href="beta.html"', 'href="beta.html" class="is-current"')
     else:
         # Standard dropdown highlight
         target = f'href="{current_file}"'
@@ -96,7 +96,7 @@ def generate_nav(current_file):
 
 def rebuild_nav(directory="."):
     for root, _, files in os.walk(directory):
-        if "crucible" in root:
+        if "beta" in root:
             continue
         for file in files:
             if file.endswith(".html"):
