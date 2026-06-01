@@ -34,7 +34,7 @@
       </a>
       <nav class="nav">
         <a href="index.html">Home</a>
-        <a href="overview.html" >Overview</a>
+        <a href="overview.html">Overview</a>
         
         <div class="dropdown">
           <button class="dropbtn">Core &#9662;</button>
@@ -42,7 +42,7 @@
             <a href="system-architecture.html">System Architecture</a>
             <a href="gateway.html">Gateway</a>
             <a href="mesh-core.html">Mesh Core</a>
-                        <a href="security.html">Security & RBAC</a>
+            <a href="security.html">Security & RBAC</a>
             <a href="edge-nodes.html">Edge Nodes</a>
           </div>
         </div>
@@ -61,7 +61,7 @@
         <div class="dropdown">
           <button class="dropbtn">Systems &#9662;</button>
           <div class="dropdown-content">
-            <a href="rf-physics.html">RF Physics & Propagation</a>
+            <a href="rf-physics.html" class="is-current">RF Physics & Propagation</a>
             <a href="hardware.html">Hardware & Firmware</a>
             <a href="power-systems.html">Power & Thermodynamics</a>
             <a href="mechanical-engineering.html">Mechanical & Buoyancy</a>
@@ -116,13 +116,31 @@
   <main class="main-shell wrap">
     <div class="main-inner">
     
-
       <section class="section section-block" style="background: rgba(0,0,0,0.4);">
         <span class="section-kicker">Electromagnetics</span>
         <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Saltwater Fresnel Zones.</h2>
         <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">Operating sub-GHz LoRa over the ocean introduces brutal physical constraints. Unlike a terrestrial deployment where signals pass through air and trees, seawater acts as a near-perfect reflective ground plane that aggressively induces multipath fading and signal cancellation.</p>
         
-        <div class="grid-3" style="margin-bottom: 2rem;">
+        <div class="section-visual" style="max-height: 800px; overflow-y: auto;">
+          <span class="panel-kicker">The Mathematics of Clearance</span>
+          <pre><code class="language-text">Fresnel Zone Radius Calculation (First Zone):
+R = 17.32 * sqrt((d1 * d2) / (f * D))
+
+Where:
+  R = Radius of the zone in meters
+  d1 = Distance from Transmitter to the obstacle (km)
+  d2 = Distance from Receiver to the obstacle (km)
+  D = Total Distance of the link (km)
+  f = Frequency (915 MHz)
+
+For a 10km link at 915MHz, the maximum radius of the first Fresnel zone is ~28.6 meters.
+To maintain 60% clearance (the absolute minimum for reliable line-of-sight), the antennas 
+must be mounted at least 17.1 meters above the ocean surface. 
+Because drifting buoys are physically limited to 1 meter in height, the geometric horizon 
+and ocean swells actively clip the Fresnel zone, enforcing the necessity of the DTN buffer.</code></pre>
+        </div>
+
+        <div class="grid-3" style="margin-top: 2rem;">
           <div class="panel" style="padding: 1.5rem;">
             <span class="status-label status-implemented">Constraint</span>
             <h3 style="font-size: 1.2rem;">Earth Curvature</h3>
@@ -130,13 +148,13 @@
           </div>
           <div class="panel" style="padding: 1.5rem;">
             <span class="status-label status-implemented">Constraint</span>
-            <h3 style="font-size: 1.2rem;">Fresnel Blockage</h3>
-            <p style="font-size: 0.85rem;">The Fresnel Zone is the elliptical region between the TX and RX antennas. Over the ocean, massive 3-meter swells dynamically block the lower half of the first Fresnel zone, causing intermittent signal blackout.</p>
+            <h3 style="font-size: 1.2rem;">Multi-path Fading</h3>
+            <p style="font-size: 0.85rem;">Radio waves do not travel in a perfectly straight line; they bounce off the conductive saltwater. When these reflected ghost signals hit the receiving antenna out-of-phase with the direct signal, they destructively interfere, driving the Signal-to-Noise Ratio (SNR) below the noise floor.</p>
           </div>
           <div class="panel" style="padding: 1.5rem;">
             <span class="status-label status-implemented">Solution</span>
-            <h3 style="font-size: 1.2rem;">Boosted Sensitivity</h3>
-            <p style="font-size: 0.85rem;">To combat multipath fading, OMEGA forces the SX126x transceivers into <code>RX Boosted Gain Mode</code>, achieving a receiver sensitivity of -137 dBm (+3dB improvement) at the cost of 2mA extra current draw.</p>
+            <h3 style="font-size: 1.2rem;">Chirp Spread Spectrum</h3>
+            <p style="font-size: 0.85rem;">LoRa's CSS modulation is mathematically immune to multipath fading. Because the signal sweeps across a wide frequency band over time, the delayed ghost reflections are mathematically orthogonal to the primary chirp and are easily filtered by the silicon.</p>
           </div>
         </div>
       </section>

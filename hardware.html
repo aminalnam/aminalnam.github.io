@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1" name="viewport"/>
-  <title>OMEGA — Firmware & Embedded</title>
+  <title>OMEGA — Hardware & Firmware</title>
   
   <meta name="description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
   <meta property="og:title" content="OMEGA — Firmware & Embedded" />
@@ -42,7 +42,7 @@
             <a href="system-architecture.html">System Architecture</a>
             <a href="gateway.html">Gateway</a>
             <a href="mesh-core.html">Mesh Core</a>
-                        <a href="security.html">Security & RBAC</a>
+            <a href="security.html">Security & RBAC</a>
             <a href="edge-nodes.html">Edge Nodes</a>
           </div>
         </div>
@@ -61,6 +61,7 @@
         <div class="dropdown">
           <button class="dropbtn">Systems &#9662;</button>
           <div class="dropdown-content">
+            <a href="rf-physics.html">RF Physics & Propagation</a>
             <a href="hardware.html" class="is-current">Hardware & Firmware</a>
             <a href="power-systems.html">Power & Thermodynamics</a>
             <a href="mechanical-engineering.html">Mechanical & Buoyancy</a>
@@ -103,9 +104,9 @@
   </header>
 
   <section class="hero wrap">
-    <span class="eyebrow">Firmware & Embedded Systems</span>
-    <h1>C++ Edge Nodes.</h1>
-    <p>Deep dive into the T-Beam Supreme, Mapping ROVs, and Relay architectures.</p>
+    <span class="eyebrow">Firmware & Printed Circuit Boards</span>
+    <h1>Hardware Engineering.</h1>
+    <p>Deep dive into PCB trace impedance, I2C pull-ups, and embedded C++ architecture.</p>
     <div class="hero-actions">
       <a class="btn btn-primary" href="https://github.com/aminalnam/OMEGA" target="_blank">View OMEGA on GitHub</a>
       <a class="btn btn-secondary" href="https://jonathancapone.art" target="_blank">Art Portfolio</a>
@@ -115,161 +116,101 @@
   <main class="main-shell wrap">
     <div class="main-inner">
 
+      <section class="section section-block" style="background: rgba(0,0,0,0.4);">
+        <span class="section-kicker">PCB Design</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">RF Trace Impedance</h2>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">When designing the Printed Circuit Board (PCB) for an OMEGA node, routing the signal from the Semtech SX1262 pin to the SMA antenna connector is not as simple as drawing a copper line. At 915 MHz, electricity behaves as a wave, not a direct current.</p>
+        
+        <div class="grid-2" style="margin-bottom: 2rem;">
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">50-Ohm Matching</span>
+            <h3 style="font-size: 1.2rem;">Transmission Lines</h3>
+            <p style="font-size: 0.85rem;">To prevent the RF wave from bouncing off the antenna and reflecting back into the chip (VSWR), the copper trace must have exactly a 50-ohm characteristic impedance. We calculate the trace width (e.g., 0.3mm) and the dielectric spacing to the ground plane beneath it using coplanar waveguide equations.</p>
+          </div>
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">Pi-Matching Network</span>
+            <h3 style="font-size: 1.2rem;">Inductors & Capacitors</h3>
+            <p style="font-size: 0.85rem;">Even with perfect trace width, parasitic capacitance exists. We place a Pi-Network (two capacitors and one inductor) immediately before the SMA connector. Using a Vector Network Analyzer (VNA), we physically tune these components to ensure maximum power transfer to the antenna.</p>
+          </div>
+        </div>
+      </section>
 
-          <section class="section section-block" style="background: rgba(0,0,0,0.4);">
-            <span class="section-kicker">Hardware Topology</span>
-            <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Network Architecture</h2>
-            <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">A comprehensive view of the physical hardware layers connecting deep-water sensors to the shore-based Python gateway via resilient LoRa RF links.</p>
-            
-            <div class="section-visual" style="padding: 1.5rem;">
-                <div class="mermaid">
-                graph TD
-                    subgraph Underwater
-                        A[Mapping ROV<br>High-Freq Sonar] -->|Acoustic / Tether| B
-                    end
-                    subgraph Surface Level
-                        B(Surface Relay Node<br>ESP32 + SX1262) -.->|LoRa 915MHz| C(edge node Fleet Node<br>T-Beam Supreme)
-                        C -.->|LoRa 915MHz| D(Shore Gateway Node)
-                    end
-                    subgraph Edge Computing
-                        D -->|Serial UART| E[OMEGA Python Gateway<br>SQLite / FastAPI]
-                        E -->|HTTP/REST| F[Mission Portal Dashboard]
-                    end
-                    
-                    classDef node fill:#101529,stroke:#3b82f6,stroke-width:2px,color:#fff;
-                    classDef default fill:#0a0f1d,stroke:#9aa2b1,stroke-width:1px,color:#9aa2b1;
-                    class A,B,C,D,E node;
-                </div>
-            </div>
-          </section>
+      <section class="section section-block" style="background: rgba(0,0,0,0.4); margin-top: 2rem;">
+        <span class="section-kicker">Sensor Wiring</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">I2C Bus Capacitance</h2>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">The I2C protocol was designed for communication between chips on the <em>same</em> circuit board (Inter-Integrated Circuit). OMEGA physically abuses this protocol by running I2C cables 5 meters down into the ocean to reach benthic sensors.</p>
+        
+        <div class="section-visual" style="max-height: 800px; overflow-y: auto;">
+          <span class="panel-kicker">The Mathematics of Pull-Up Resistors</span>
+          <pre><code class="language-text">As the sensor cable gets longer, the physical copper wire acts as a capacitor. 
+When the ESP32 tries to send a digital HIGH (3.3V) or LOW (0V) square wave, the 
+capacitance smooths the wave into a slow curve. If the curve is too slow, the 
+sensor fails to read the bit.
 
-          <section class="section">
-            <div class="section-content">
-              <span class="section-kicker">Embedded C++</span>
-              <h2>T-Beam Supreme Architecture.</h2>
-              <p>Located in <code>firmware/tbeam_supreme_dual_sensor/</code>, the C++ codebase is highly optimized for the ESP32-S3 microcontroller. The firmware aggressively manages deep-sleep power states, shutting down the GNSS (GPS) module and the Semtech SX1262 LoRa radio between transmission windows.</p>
-              
-              <div class="grid-3" style="margin-top: 2rem; margin-bottom: 2rem;">
-                <div class="panel" style="padding: 1.5rem;">
-                  <span class="status-label status-implemented">Core</span>
-                  <h3 style="font-size: 1.2rem;">ESP32-S3</h3>
-                  <p style="font-size: 0.85rem;">Dual-core XTensa LX7 @ 240MHz. Handles TLV compression and mesh logic.</p>
-                </div>
-                <div class="panel" style="padding: 1.5rem;">
-                  <span class="status-label status-implemented">RF Transceiver</span>
-                  <h3 style="font-size: 1.2rem;">Semtech SX1262</h3>
-                  <p style="font-size: 0.85rem;">LoRa CSS modulation. Capable of +22dBm output for over-the-horizon links.</p>
-                </div>
-                <div class="panel" style="padding: 1.5rem;">
-                  <span class="status-label status-implemented">Location</span>
-                  <h3 style="font-size: 1.2rem;">u-blox MAX-M10S</h3>
-                  <p style="font-size: 0.85rem;">Ultra-low-power GNSS. Acquires hot-fixes in &lt;2 seconds before sleeping.</p>
-                </div>
-              </div>
+The Solution: Stronger Pull-Up Resistors.
+Standard short-wire I2C uses 10kΩ resistors. For a 5-meter ocean drop, the 
+capacitance approaches 400pF (the absolute limit of the I2C spec). 
+OMEGA mathematically lowers the pull-up resistance to exactly 2.2kΩ. 
+This allows more current to rapidly charge the parasitic cable capacitance, 
+snapping the square waves back into sharp, readable logic levels.</code></pre>
+        </div>
+      </section>
 
-              <p><strong>Thermodynamics:</strong> A remote sensor floating in the Pacific cannot plug into a wall outlet. The ESP32-S3 draws roughly 100mA while active, draining a standard 18650 lithium battery in two days. By forcing the hardware into the ULP (Ultra Low Power) sleep state, the draw drops to 15µA.</p>
-            </div>
-            
-            <div class="section-visual" style="max-height: 800px; overflow-y: auto;">
-              <span class="panel-kicker">Thermodynamic Sleep Cycle</span>
-              <div class="mermaid">
-                sequenceDiagram
-                    participant RTC as RTC Timer
-                    participant MCU as ESP32-S3
-                    participant GPS as u-blox GNSS
-                    participant RF as SX1262 LoRa
-                    
-                    RTC->>MCU: Wake (2s before TX)
-                    activate MCU
-                    MCU->>GPS: Power ON (MOSFET)
-                    activate GPS
-                    GPS-->>MCU: Hot Fix Acquired
-                    MCU->>RF: Power ON & Configure
-                    activate RF
-                    MCU->>RF: Send CBOR Payload
-                    RF-->>MCU: TX Complete
-                    deactivate RF
-                    MCU->>GPS: Power OFF
-                    deactivate GPS
-                    MCU->>RTC: Set Next Wake
-                    MCU->>MCU: esp_deep_sleep_start()
-                    deactivate MCU
-              </div>
-            </div>
-          </section>
+      <section class="section">
+        <div class="section-content">
+          <span class="section-kicker">Embedded C++</span>
+          <h2>T-Beam Supreme Architecture.</h2>
+          <p>Located in <code>firmware/tbeam_supreme_dual_sensor/</code>, the C++ codebase is highly optimized for the ESP32-S3 microcontroller. The firmware aggressively manages deep-sleep power states, shutting down the GNSS (GPS) module and the Semtech SX1262 LoRa radio between transmission windows.</p>
           
-          <section class="section">
-            <div class="section-content">
-              <span class="section-kicker">Active Cooling</span>
-              <h2>Thermal Management & TX-Burst Fan Control.</h2>
-              <p>For extreme-range shore nodes utilizing the <strong>T-Beam 1W</strong> or custom High Power Amplifiers (HPA) pushing +30 dBm, passive cooling is insufficient. Sustained transmissions at 1 Watt of RF power will rapidly thermally throttle or permanently damage the silicon.</p>
-              <p>OMEGA firmware implements dynamic <strong>TX-Burst Fan Control</strong>. Utilizing maximum GPIO drive strength, the ESP32-S3 physically spins up an external cooling fan seconds before a scheduled transmission burst, and spins it down immediately after the LoRa packet clears the antenna. This active thermal management guarantees silicon safety during full-power mesh operation while strictly preserving the power budget during deep sleep.</p>
+          <div class="grid-3" style="margin-top: 2rem; margin-bottom: 2rem;">
+            <div class="panel" style="padding: 1.5rem;">
+              <span class="status-label status-implemented">Core</span>
+              <h3 style="font-size: 1.2rem;">ESP32-S3</h3>
+              <p style="font-size: 0.85rem;">Dual-core XTensa LX7 @ 240MHz. Handles TLV compression and mesh logic.</p>
             </div>
-          </section>
-    
-          <section class="section">
-            <div class="section-content">
-              <span class="section-kicker">Robotic Integration</span>
-              <h2>Mapping ROV Interoperability.</h2>
-              <p>The <code>firmware/mapping_rov_mega/</code> and <code>mapping_rov_esp32/</code> profiles bridge the gap between surface telemetry and deep-water Remotely Operated Vehicles. The C++ code parses high-frequency sonar ping data via serial from the ROV's internal control unit and dynamically maps it to the standardized SenML/CBOR envelope.</p>
-              <p>This approach allows an underwater ROV to stream structural maps and internal battery status directly to the shore gateway via a surface tethered relay.</p>
+            <div class="panel" style="padding: 1.5rem;">
+              <span class="status-label status-implemented">RF Transceiver</span>
+              <h3 style="font-size: 1.2rem;">Semtech SX1262</h3>
+              <p style="font-size: 0.85rem;">LoRa CSS modulation. Capable of +22dBm output for over-the-horizon links.</p>
             </div>
-            <div class="section-visual">
-              <span class="panel-kicker">firmware/mapping_rov_esp32/src/sonar.cpp</span>
-              <pre><code class="language-cpp">void process_sonar_ping(PingData* ping) {
-    // 1. Read raw acoustic return from UART
-    float depth = calculate_tof_depth(ping->time_of_flight);
-    
-    // 2. Package into SenML Observation
-    Observation obs = {
-        .metric_id = METRIC_SONAR_DEPTH,
-        .value = depth,
-        .timestamp = current_rtc_time()
-    };
-    
-    // 3. Compress to CBOR & enqueue for RF
-    enqueue_tlv_payload(&obs);
-}</code></pre>
+            <div class="panel" style="padding: 1.5rem;">
+              <span class="status-label status-implemented">Location</span>
+              <h3 style="font-size: 1.2rem;">u-blox MAX-M10S</h3>
+              <p style="font-size: 0.85rem;">Ultra-low-power GNSS. Acquires hot-fixes in &lt;2 seconds before sleeping.</p>
             </div>
-          </section>
-    
-          <section class="section">
-            <div class="section-content">
-              <span class="section-kicker">Delay Tolerant Networking</span>
-              <h2>LoRa Relay Nodes.</h2>
-              <p>The <code>firmware/lora_relay_node/</code> profile acts purely as a transparent, "dumb" repeater in the Delay Tolerant Network. By stripping away all sensor and GNSS logic, the firmware focuses 100% of CPU time on listening for faint LoRa chirps.</p>
-              <p>These nodes execute the <code>omega_lora_protocol.h</code> collision-avoidance (CSMA-CA) algorithms to catch weak packets bouncing over the waves, buffer them in RAM, and cleanly blast them out at +22dBm, effectively extending the mesh network's range over the horizon.</p>
-            </div>
-            <div class="section-visual">
-            </div>
-          </section>
-    
-          </section>
+          </div>
 
-          <section class="section section-block" style="background: rgba(0,0,0,0.4);">
-            <span class="section-kicker">Energy Physics</span>
-            <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Solar Budgets & Insolation.</h2>
-            <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">A remote node floating in the North Atlantic during winter might only receive 2 hours of direct solar insolation per day. The node must mathematically budget its stored energy (joules) to survive a 14-hour night.</p>
-            
-            <div class="grid-3" style="margin-bottom: 2rem;">
-              <div class="panel" style="padding: 1.5rem;">
-                <span class="status-label status-implemented">Dark Current</span>
-                <h3 style="font-size: 1.2rem;">The Silent Killer</h3>
-                <p style="font-size: 0.85rem;">Even when not actively transmitting, a spinning ESP32 processor draws a "dark current" of 100mA. Overnight, this will completely drain the lithium cell, causing the physical hardware to freeze.</p>
-              </div>
-              <div class="panel" style="padding: 1.5rem;">
-                <span class="status-label status-implemented">Deep Sleep</span>
-                <h3 style="font-size: 1.2rem;">15µA Survival</h3>
-                <p style="font-size: 0.85rem;">The OMEGA firmware physically cuts the MOSFET power rail to the GPS and LoRa chips, dropping the entire board into a 15 micro-amp deep sleep state between transmissions.</p>
-              </div>
-              <div class="panel" style="padding: 1.5rem;">
-                <span class="status-label status-implemented">Dynamic Polling</span>
-                <h3 style="font-size: 1.2rem;">Battery-Aware Rates</h3>
-                <p style="font-size: 0.85rem;">If the battery voltage drops below 3.6V, the firmware automatically downscales its sample rate from every 10 minutes to every 60 minutes, mathematically guaranteeing survival until sunrise.</p>
-              </div>
-            </div>
-          </section>
-    
+          <p><strong>Thermodynamics:</strong> A remote sensor floating in the Pacific cannot plug into a wall outlet. The ESP32-S3 draws roughly 100mA while active, draining a standard 18650 lithium battery in two days. By forcing the hardware into the ULP (Ultra Low Power) sleep state, the draw drops to 15µA.</p>
+        </div>
+        
+        <div class="section-visual" style="max-height: 800px; overflow-y: auto;">
+          <span class="panel-kicker">Thermodynamic Sleep Cycle</span>
+          <div class="mermaid">
+            sequenceDiagram
+                participant RTC as RTC Timer
+                participant MCU as ESP32-S3
+                participant GPS as u-blox GNSS
+                participant RF as SX1262 LoRa
+                
+                RTC->>MCU: Wake (2s before TX)
+                activate MCU
+                MCU->>GPS: Power ON (MOSFET)
+                activate GPS
+                GPS-->>MCU: Hot Fix Acquired
+                MCU->>RF: Power ON & Configure
+                activate RF
+                MCU->>RF: Send Binary Payload
+                RF-->>MCU: TX Complete
+                deactivate RF
+                MCU->>GPS: Power OFF
+                deactivate GPS
+                MCU->>RTC: Set Next Wake
+                MCU->>MCU: esp_deep_sleep_start()
+                deactivate MCU
+          </div>
+        </div>
+      </section>
+      
     </div>
   </main>
 

@@ -133,7 +133,21 @@ def set_sqlite_pragma(dbapi_connection, connection_record):
     cursor.execute("PRAGMA cache_size=-64000") # 64MB cache
     cursor.execute("PRAGMA temp_store=MEMORY")
     cursor.execute("PRAGMA mmap_size=30000000000")
-    cursor.close()</code></pre></div>
+    cursor.close()</code></pre>            </div>
+            
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;">
+              <span class="panel-kicker">gateway/routers/telemetry.py</span>
+              <pre><code class="language-python">@router.post("/ingest", status_code=202)
+async def ingest_telemetry_batch(
+    payload: TelemetryBatch,
+    background_tasks: BackgroundTasks,
+    db: Session = Depends(get_db)
+):
+    # 1. Instantly return 202 Accepted so the Edge Node can sleep
+    # 2. Push heavy SQLite IO and decoding to an async background worker
+    background_tasks.add_task(process_telemetry_worker, payload, db)
+    return {"status": "accepted", "queued": len(payload.frames)}</code></pre>
+            </div>
           </section>
     
           <section class="section">
