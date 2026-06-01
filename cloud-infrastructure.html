@@ -141,6 +141,64 @@
         <p style="color: var(--ink-soft); font-size: 1rem; line-height: 1.6; max-width: 800px; margin-top: 1rem;">
           The Python API and React Portal are heavily containerized using Docker. Through GitHub Actions CI/CD pipelines, any push to the `main` branch automatically builds a new container image, pushes it to the Docker Hub registry, and triggers a rolling update across the Kubernetes cluster, ensuring zero downtime for the data firehose.
         </p>
+        
+        <div class="grid-2" style="margin-top: 2rem;">
+          <div class="section-visual" style="max-height: 600px; overflow-y: auto;">
+            <span class="panel-kicker">gateway/Dockerfile</span>
+            <pre><code class="language-dockerfile"># 1. Multi-stage build for strict minimal footprint
+FROM python:3.11-slim-bullseye AS builder
+WORKDIR /app
+COPY requirements.txt .
+RUN pip wheel --no-cache-dir --no-deps --wheel-dir /app/wheels -r requirements.txt
+
+FROM python:3.11-slim-bullseye
+WORKDIR /app
+# 2. Hardened security: run as non-root user
+RUN useradd -m omega
+COPY --from=builder /app/wheels /wheels
+RUN pip install --no-cache /wheels/*
+COPY . .
+RUN chown -R omega:omega /app
+USER omega
+# 3. Uvicorn ASGI server optimized for high concurrency
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "4"]</code></pre>
+          </div>
+
+          <div class="section-visual" style="max-height: 600px; overflow-y: auto;">
+            <span class="panel-kicker">k8s/gateway-deployment.yaml</span>
+            <pre><code class="language-yaml">apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: omega-gateway
+spec:
+  replicas: 3 # High Availability
+  selector:
+    matchLabels:
+      app: omega-gateway
+  template:
+    metadata:
+      labels:
+        app: omega-gateway
+    spec:
+      containers:
+      - name: gateway
+        image: aminalnam/omega-gateway:latest
+        ports:
+        - containerPort: 8000
+        # Aggressive memory limits to prevent pod starvation
+        resources:
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        # Kubernetes Liveness Probes for self-healing
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 15
+          periodSeconds: 20</code></pre>
+          </div>
+        </div>
       </section>
     </div>
   </main>

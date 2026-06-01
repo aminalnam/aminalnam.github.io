@@ -126,6 +126,24 @@
             <span class="status-label status-implemented">The Math</span>
             <h3 style="font-size: 1.2rem;">Displacement Volume</h3>
             <p style="font-size: 0.85rem;">According to Archimedes, the upward buoyant force exerted on a body is equal to the weight of the fluid it displaces. Because saltwater is denser than freshwater (1,025 kg/m³), an OMEGA hull technically floats higher in the ocean than in a test tank. We mathematically model the exact cubic centimeter volume of the 3D-printed hull against the 250-gram payload of the battery and logic board to ensure the solar panel sits exactly 3 inches above the waterline.</p>
+            <div class="section-visual" style="margin-top: 1rem; padding: 1rem; background: rgba(0,0,0,0.5);">
+              <span class="panel-kicker">Buoyancy Force Equation</span>
+              <pre><code class="language-text">Fb = ρ × V × g
+
+Where:
+  Fb = Buoyant Force (Newtons)
+  ρ = Density of Saltwater (1,025 kg/m³)
+  V = Displaced Volume of the Hull (m³)
+  g = Gravity (9.81 m/s²)
+
+To float, Fb must be strictly greater than the total mass of the 
+buoy multiplied by gravity. For OMEGA:
+Mass = 0.25 kg
+Target Displaced Volume = 0.0003 m³ (300 cm³)
+Fb = 1025 * 0.0003 * 9.81 = 3.01 Newtons of upward force.
+Gravity Force (Weight) = 0.25 * 9.81 = 2.45 Newtons.
+Result: 3.01N > 2.45N (Positive Buoyancy)</code></pre>
+            </div>
           </div>
           <div class="panel" style="padding: 1.5rem;">
             <span class="status-label status-implemented">The Center of Gravity</span>

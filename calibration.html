@@ -122,6 +122,49 @@
         <p style="color: var(--ink-soft); font-size: 1rem; line-height: 1.6; max-width: 800px;">
           Prior to deployment, every OMEGA probe undergoes a multi-point calibration. The probes are submerged in a controlled water bath alongside a $5,000 reference thermometer that is certified by the National Institute of Standards and Technology (NIST). We record the delta between the cheap probe and the NIST probe at 5°C, 15°C, and 25°C. We then apply a polynomial regression curve in the C++ firmware to perfectly correct the offset, achieving research-grade accuracy on a budget.
         </p>
+
+        <div class="grid-2" style="margin-top: 2rem;">
+          <div class="section-visual" style="max-height: 600px; overflow-y: auto;">
+            <span class="panel-kicker">Mathematical Calibration Curve</span>
+            <pre><code class="language-text">2nd-Order Polynomial Regression
+y = ax² + bx + c
+
+Where:
+  y = The True (NIST-traceable) Temperature
+  x = The Raw Sensor Reading (DS18B20)
+  a = Quadratic Coefficient (Non-linear curvature)
+  b = Linear Coefficient (Slope / Gain error)
+  c = Constant (Offset / Zero-point error)
+
+Example Calibration Constants derived from the Water Bath:
+  a = -0.00014
+  b = 1.0023
+  c = -0.15
+
+If the raw sensor reads 20.00°C:
+  y = (-0.00014 * 400) + (1.0023 * 20.00) + (-0.15)
+  y = -0.056 + 20.046 - 0.15
+  y = 19.84°C (True NIST-corrected output)</code></pre>
+          </div>
+
+          <div class="section-visual" style="max-height: 600px; overflow-y: auto;">
+            <span class="panel-kicker">firmware/sensors/calibration.cpp</span>
+            <pre><code class="language-cpp">// Struct holding EEPROM flashed calibration constants
+struct CalibrationConstants {
+    float a_quad;
+    float b_linear;
+    float c_offset;
+};
+
+float apply_nist_calibration(float raw_temp, CalibrationConstants cal) {
+    // y = ax^2 + bx + c
+    float quadratic_term = cal.a_quad * (raw_temp * raw_temp);
+    float linear_term = cal.b_linear * raw_temp;
+    
+    return quadratic_term + linear_term + cal.c_offset;
+}</code></pre>
+          </div>
+        </div>
       </section>
     </div>
   </main>

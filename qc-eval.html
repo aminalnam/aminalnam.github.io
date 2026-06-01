@@ -142,7 +142,34 @@
             <p style="font-size: 0.85rem;">Ocean water has massive thermal inertia. It takes enormous energy to heat a cubic kilometer of water. If a sensor reports 15°C at 12:00 PM, and 25°C at 12:01 PM, the temperature is technically within the Gross Range, but the <em>rate of change</em> (+10°C in 60 seconds) violates the laws of thermodynamics. The gateway flags this spike as `QARTOD=3` (Suspect).</p>
           </div>
         </div>
+        
+        <div class="section-visual" style="max-height: 800px; overflow-y: auto;">
+          <span class="panel-kicker">gateway/services/qartod.py</span>
+          <pre><code class="language-python">def evaluate_gross_range(value: float, sensor_type: str) -> int:
+    """NOAA QARTOD Test 1: Gross Range"""
+    bounds = QARTOD_THRESHOLDS.get(sensor_type)
+    if not bounds:
+        return 2 # Not Evaluated
+        
+    if value < bounds.user_min or value > bounds.user_max:
+        return 4 # Fail (Hard Limit)
+        
+    if value < bounds.sensor_min or value > bounds.sensor_max:
+        return 3 # Suspect (Soft Limit)
+        
+    return 1 # Pass
+    
+def evaluate_rate_of_change(current: float, previous: float, delta_t_seconds: int) -> int:
+    """NOAA QARTOD Test 2: Rate of Change"""
+    rate = abs(current - previous) / delta_t_seconds
+    if rate > MAX_PHYSICAL_RATE:
+        return 4 # Fail: Thermodynamically impossible
+    if rate > SUSPECT_RATE:
+        return 3 # Suspect: Highly anomalous spike
+    return 1 # Pass</code></pre>
+        </div>
       </section>
+
 
       <section class="section section-block" style="background: rgba(0,0,0,0.4); margin-top: 2rem;">
         <span class="section-kicker">Flagging Standards</span>
