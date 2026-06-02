@@ -6,7 +6,10 @@ document.addEventListener("DOMContentLoaded", () => {
   initTableOfContents();
   initSearchPalette();
   initTypewriter();
-  initOceanEcosystem();
+  initSpotlight();
+  initTextScramble();
+  initScrollProgress();
+  initDevModeSecret();
 });
 
 /* -------------------------------------
@@ -233,21 +236,38 @@ function initSearchPalette() {
   if (nav) {
     const searchBtn = document.createElement('button');
     searchBtn.className = 'nav-search-btn';
-    searchBtn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg> <span>Search...</span> <kbd>Ctrl K</kbd>`;
-    nav.appendChild(searchBtn);
-    searchBtn.addEventListener('click', openSearch);
-  }
+  const navBtn = document.querySelector('.nav-search-btn');
+
+  // New matrix easter egg tracking
+  let isMatrixActive = false;
 
   function openSearch() {
-    overlay.classList.add('is-open');
+    overlay.classList.add('active');
+    input.focus();
     input.value = '';
-    renderResults('');
-    setTimeout(() => input.focus(), 50);
   }
 
   function closeSearch() {
-    overlay.classList.remove('is-open');
+    overlay.classList.remove('active');
   }
+
+  // Handle Input Commands
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      const val = input.value.trim().toLowerCase();
+      
+      if (val === '/matrix' && !isMatrixActive) {
+        // Trigger Matrix Easter Egg
+        isMatrixActive = true;
+        closeSearch();
+        triggerMatrixRain();
+      } else if (val.startsWith('/')) {
+        console.log("Command not found:", val);
+      } else {
+        // Normal search logic could go here
+      }
+    }
+  });
 
   // Keyboard bindings
   document.addEventListener('keydown', (e) => {
@@ -324,79 +344,125 @@ document.addEventListener('keydown', (e) => {
 });
 
 /* -------------------------------------
-   5. Ocean Ecosystem Background
+   5. Futuristic Effects & Easter Eggs
 ------------------------------------- */
-function initOceanEcosystem() {
-  // Only run on pages that have the hero section (e.g. index.html) to save resources
-  if (!document.querySelector('.hero-animated')) return;
 
-  const container = document.createElement('div');
-  container.id = 'ocean-ecosystem';
-  document.body.prepend(container);
-
-  const numParticles = 15;
-
-  for (let i = 0; i < numParticles; i++) {
-    createFishParticle(container);
-  }
+function initSpotlight() {
+  const panels = document.querySelectorAll('.panel');
+  
+  panels.forEach(panel => {
+    panel.addEventListener('mousemove', (e) => {
+      const rect = panel.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      panel.style.setProperty('--mouse-x', `${x}px`);
+      panel.style.setProperty('--mouse-y', `${y}px`);
+    });
+  });
 }
 
-function createFishParticle(container) {
-  const particle = document.createElement('div');
-  particle.className = 'ocean-particle fish';
+function initTextScramble() {
+  const elements = document.querySelectorAll('.scramble-text');
+  const chars = '!<>-_\\/[]{}—=+*^?#________';
   
-  // Clean SVG Fish
-  particle.innerHTML = `
-    <svg viewBox="0 0 100 40" width="30" height="12" xmlns="http://www.w3.org/2000/svg">
-      <path d="M 0 20 Q 30 0, 80 20 Q 30 40, 0 20 Z" fill="rgba(148, 163, 184, 0.4)" />
-      <path class="fish-tail" d="M 75 20 L 100 5 L 100 35 Z" fill="rgba(148, 163, 184, 0.4)" />
-    </svg>
-  `;
-  
-  // Random starting position (mostly off-screen left or right)
-  const isMovingRight = Math.random() > 0.5;
-  const startX = isMovingRight ? -10 : 110; 
-  const startY = Math.random() * 100; // vh
-  
-  particle.style.left = startX + 'vw';
-  particle.style.top = startY + 'vh';
-  
-  if (!isMovingRight) {
-    particle.style.transform = 'scaleX(-1)'; // Face left
-  }
-  
-  // Randomize size and opacity slightly
-  const scale = 0.3 + Math.random() * 0.7; // 0.3 to 1.0 (distant)
-  particle.style.transform += ` scale(${scale})`;
-  particle.style.opacity = (0.3 + Math.random() * 0.4).toFixed(2);
-  
-  container.appendChild(particle);
-
-  animateFish(particle, isMovingRight, scale);
+  elements.forEach(el => {
+    const originalText = el.innerText;
+    el.addEventListener('mouseenter', () => {
+      let iterations = 0;
+      const interval = setInterval(() => {
+        el.innerText = originalText.split('')
+          .map((letter, index) => {
+            if(index < iterations) {
+              return originalText[index];
+            }
+            return chars[Math.floor(Math.random() * chars.length)];
+          })
+          .join('');
+        
+        if(iterations >= originalText.length){
+          clearInterval(interval);
+        }
+        iterations += 1 / 3; // speed
+      }, 30);
+    });
+  });
 }
 
-function animateFish(particle, isMovingRight, scale) {
-  const duration = 20000 + Math.random() * 40000; // 20s to 60s
-  const endX = isMovingRight ? 110 : -10;
+function initScrollProgress() {
+  const progressBar = document.createElement('div');
+  progressBar.id = 'scroll-progress';
+  document.body.prepend(progressBar);
 
-  particle.style.transition = `left ${duration}ms linear`;
+  window.addEventListener('scroll', () => {
+    const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+    const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    const scrolled = (winScroll / height) * 100;
+    progressBar.style.width = scrolled + "%";
+  });
+}
+
+function initDevModeSecret() {
+  const nameEl = document.getElementById('hero-name');
+  if (!nameEl) return;
+
+  let clicks = 0;
+  let clickTimeout;
+
+  nameEl.addEventListener('click', () => {
+    clicks++;
+    clearTimeout(clickTimeout);
+    
+    if (clicks >= 5) {
+      document.documentElement.style.setProperty('--accent', '#10b981'); // Change accent to hacker green
+      document.documentElement.style.setProperty('--accent-ocean', '#10b981'); 
+      console.log("%c[DEV MODE UNLOCKED]", "color: #10b981; font-size: 20px; font-weight: bold;");
+      console.log("%cWelcome to the underground. The system is yours.", "color: #10b981; font-size: 14px;");
+      clicks = 0;
+    } else {
+      clickTimeout = setTimeout(() => { clicks = 0; }, 500);
+    }
+  });
+}
+
+function triggerMatrixRain() {
+  const canvas = document.createElement('canvas');
+  canvas.id = 'matrix-canvas';
+  document.body.appendChild(canvas);
   
-  // Trigger layout to ensure transition applies
-  void particle.offsetWidth;
-
-  particle.style.left = endX + 'vw';
-
-  // Loop
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  
+  const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789$+-*/=%""\'#&_(),.;:?!\\|{}<>[]^~';
+  const fontSize = 16;
+  const columns = canvas.width / fontSize;
+  const drops = Array.from({length: columns}).fill(1);
+  
+  let animationId;
+  function draw() {
+    ctx.fillStyle = 'rgba(3, 7, 18, 0.1)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    ctx.fillStyle = '#10b981';
+    ctx.font = fontSize + 'px monospace';
+    
+    for (let i = 0; i < drops.length; i++) {
+      const text = letters.charAt(Math.floor(Math.random() * letters.length));
+      ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+      if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+        drops[i] = 0;
+      }
+      drops[i]++;
+    }
+    animationId = requestAnimationFrame(draw);
+  }
+  
+  draw();
+  
   setTimeout(() => {
-    particle.style.transition = 'none';
-    particle.style.top = (Math.random() * 100) + 'vh';
-    
-    // Switch direction randomly on respawn
-    const newMovingRight = Math.random() > 0.5;
-    particle.style.left = (newMovingRight ? -10 : 110) + 'vw';
-    particle.style.transform = (newMovingRight ? '' : 'scaleX(-1) ') + `scale(${scale})`;
-    
-    void particle.offsetWidth;
-    animateFish(particle, newMovingRight, scale);
-  }, duration);
+    cancelAnimationFrame(animationId);
+    canvas.style.transition = 'opacity 1s ease';
+    canvas.style.opacity = '0';
+    setTimeout(() => canvas.remove(), 1000);
+  }, 5000);
 }
