@@ -678,11 +678,11 @@ function initArcadeEasterEgg() {
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
         
         if (p.glow > 0.4) {
-          ctx.fillStyle = \`rgba(56, 189, 248, \${alpha})\`; 
+          ctx.fillStyle = `rgba(56, 189, 248, ${alpha})`; 
           ctx.shadowBlur = 10 * p.glow;
           ctx.shadowColor = '#38bdf8';
         } else {
-          ctx.fillStyle = \`rgba(16, 185, 129, \${alpha})\`; 
+          ctx.fillStyle = `rgba(16, 185, 129, ${alpha})`; 
           ctx.shadowBlur = 0;
         }
         
