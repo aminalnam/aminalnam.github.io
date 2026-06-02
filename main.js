@@ -14,7 +14,6 @@ document.addEventListener("DOMContentLoaded", () => {
   initMagneticButtons();
   initArcadeEasterEgg();
   initTelemetrySparkline();
-  initCursorTrail();
 });
 
 /* -------------------------------------
@@ -662,21 +661,32 @@ function initArcadeEasterEgg() {
     style.innerHTML = `
       #arcade-overlay {
         position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-        background: rgba(0, 0, 0, 0.95); z-index: 10000;
+        background: linear-gradient(180deg, rgba(3, 7, 18, 0.98) 0%, rgba(14, 165, 233, 0.15) 100%);
+        z-index: 10000;
         display: flex; flex-direction: column; align-items: center; justify-content: center;
-        font-family: var(--font-mono, monospace); color: #10b981;
-        backdrop-filter: blur(10px);
+        font-family: var(--font-mono, monospace); color: #38bdf8;
       }
       .arcade-menu button {
         display: block; width: 320px; padding: 1.25rem; margin: 1rem auto;
-        background: rgba(16, 185, 129, 0.1); border: 2px solid #10b981;
-        color: #10b981; font-family: inherit; font-size: 1.25rem; cursor: pointer;
+        background: rgba(56, 189, 248, 0.1); border: 2px solid #38bdf8;
+        color: #38bdf8; font-family: inherit; font-size: 1.25rem; cursor: pointer;
         transition: all 0.2s; text-transform: uppercase; letter-spacing: 0.1em;
+        border-radius: 8px;
       }
-      .arcade-menu button:hover { background: #10b981; color: #000; box-shadow: 0 0 20px #10b981; }
-      #arcade-canvas { display: none; background: #000; border: 2px solid #10b981; box-shadow: 0 0 20px rgba(16,185,129,0.3); }
-      .arcade-close { position: absolute; top: 2rem; right: 2rem; color: #fff; cursor: pointer; font-size: 3rem; line-height: 1; }
-      .arcade-instructions { font-size: 0.8rem; text-align: center; color: rgba(255,255,255,0.5); margin-top: 1rem; }
+      .arcade-menu button:hover { background: #38bdf8; color: #000; box-shadow: 0 0 20px rgba(56, 189, 248, 0.5); }
+      #arcade-canvas { display: none; background: rgba(0,0,0,0.5); border: 2px solid #38bdf8; box-shadow: 0 0 30px rgba(14, 165, 233, 0.2); border-radius: 8px; }
+      .arcade-close { position: absolute; top: 2rem; right: 2rem; color: #38bdf8; cursor: pointer; font-size: 3rem; line-height: 1; transition: transform 0.2s; }
+      .arcade-close:hover { transform: scale(1.2); }
+      .arcade-instructions { font-size: 0.8rem; text-align: center; color: rgba(56, 189, 248, 0.5); margin-top: 1rem; }
+      
+      /* Subtle rising bubbles for the overlay */
+      .arcade-bubble {
+        position: absolute; bottom: -20px; background: rgba(56, 189, 248, 0.2);
+        border-radius: 50%; pointer-events: none; animation: rise linear infinite;
+      }
+      @keyframes rise {
+        to { transform: translateY(-100vh); opacity: 0; }
+      }
     `;
     document.head.appendChild(style);
 
@@ -684,15 +694,28 @@ function initArcadeEasterEgg() {
     overlay.id = 'arcade-overlay';
     overlay.innerHTML = `
       <div class="arcade-close" id="arcade-close">&times;</div>
-      <div class="arcade-menu" id="arcade-menu">
-        <h2 style="font-size: 3rem; margin-bottom: 2rem; text-align: center; text-shadow: 0 0 10px #10b981; letter-spacing: 0.2em;">OMEGA ARCADE</h2>
+      <div class="arcade-menu" id="arcade-menu" style="position: relative; z-index: 10;">
+        <h2 style="font-size: 3rem; margin-bottom: 2rem; text-align: center; letter-spacing: 0.2em; text-shadow: 0 2px 10px rgba(56,189,248,0.3);">OMEGA ARCADE</h2>
         <button id="btn-snake">Abyssal Snake</button>
         <button id="btn-pong">Telemetry Pong</button>
       </div>
-      <canvas id="arcade-canvas" width="600" height="400"></canvas>
-      <div id="arcade-instructions" class="arcade-instructions" style="display:none;">Controls: Arrow Keys | Press ESC to exit game</div>
+      <canvas id="arcade-canvas" width="600" height="400" style="position: relative; z-index: 10;"></canvas>
+      <div id="arcade-instructions" class="arcade-instructions" style="display:none; position: relative; z-index: 10;">Controls: Arrow Keys | Press ESC to exit game</div>
     `;
     document.body.appendChild(overlay);
+
+    // Create bubbles
+    for (let i = 0; i < 15; i++) {
+      const bubble = document.createElement('div');
+      bubble.className = 'arcade-bubble';
+      const size = Math.random() * 20 + 5;
+      bubble.style.width = size + 'px';
+      bubble.style.height = size + 'px';
+      bubble.style.left = Math.random() * 100 + 'vw';
+      bubble.style.animationDuration = (Math.random() * 5 + 5) + 's';
+      bubble.style.animationDelay = (Math.random() * 5) + 's';
+      overlay.appendChild(bubble);
+    }
 
     const menu = document.getElementById('arcade-menu');
     const canvas = document.getElementById('arcade-canvas');
@@ -727,7 +750,7 @@ function initArcadeEasterEgg() {
 
     function resetCanvas() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = '#10b981';
+      ctx.fillStyle = '#38bdf8';
       ctx.font = '20px monospace';
     }
 
@@ -786,9 +809,9 @@ function initArcadeEasterEgg() {
         }
 
         resetCanvas();
-        ctx.fillStyle = '#ef4444'; // Food
+        ctx.fillStyle = '#f472b6'; // Pink Food
         ctx.fillRect(food.x * 20, food.y * 20, 18, 18);
-        ctx.fillStyle = '#10b981'; // Snake
+        ctx.fillStyle = '#38bdf8'; // Snake
         for (let segment of snake) {
           ctx.fillRect(segment.x * 20, segment.y * 20, 18, 18);
         }
@@ -842,7 +865,7 @@ function initArcadeEasterEgg() {
         ctx.fillText(pad2.score, 430, 60);
         
         // Net
-        ctx.fillStyle = 'rgba(16, 185, 129, 0.3)';
+        ctx.fillStyle = 'rgba(56, 189, 248, 0.2)';
         for(let i=0; i<400; i+=40) ctx.fillRect(298, i, 4, 20);
 
         gameLoop = requestAnimationFrame(loop);
@@ -914,54 +937,4 @@ function initTelemetrySparkline() {
   }
 
   draw();
-}
-
-/* -------------------------------------
-   11. Bioluminescent Cursor Trail
-------------------------------------- */
-function initCursorTrail() {
-  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-  if (isMobile) return;
-
-  const trailContainer = document.createElement('div');
-  trailContainer.id = 'cursor-trail-container';
-  trailContainer.style.position = 'fixed';
-  trailContainer.style.top = '0';
-  trailContainer.style.left = '0';
-  trailContainer.style.width = '100vw';
-  trailContainer.style.height = '100vh';
-  trailContainer.style.pointerEvents = 'none';
-  trailContainer.style.zIndex = '9999';
-  trailContainer.style.overflow = 'hidden';
-  document.body.appendChild(trailContainer);
-
-  document.addEventListener('mousemove', (e) => {
-    // Only spawn particles sometimes to prevent DOM overload
-    if (Math.random() > 0.5) return;
-
-    const particle = document.createElement('div');
-    particle.style.position = 'absolute';
-    particle.style.left = e.clientX + 'px';
-    particle.style.top = e.clientY + 'px';
-    particle.style.width = '6px';
-    particle.style.height = '6px';
-    particle.style.borderRadius = '50%';
-    particle.style.background = 'rgba(59, 130, 246, 0.8)'; // Brand Cyan/Blue
-    particle.style.boxShadow = '0 0 10px rgba(59, 130, 246, 0.8)';
-    particle.style.pointerEvents = 'none';
-    particle.style.transition = 'all 1s cubic-bezier(0.16, 1, 0.3, 1)';
-    
-    trailContainer.appendChild(particle);
-
-    // Trigger reflow
-    void particle.offsetWidth;
-
-    // Expand and fade out
-    particle.style.transform = `translate(-50%, -50%) scale(${Math.random() * 3 + 1})`;
-    particle.style.opacity = '0';
-
-    setTimeout(() => {
-      particle.remove();
-    }, 1000);
-  });
 }
