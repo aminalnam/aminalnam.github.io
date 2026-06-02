@@ -237,19 +237,22 @@ function initSearchPalette() {
   if (nav) {
     const searchBtn = document.createElement('button');
     searchBtn.className = 'nav-search-btn';
-  const navBtn = document.querySelector('.nav-search-btn');
+    searchBtn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg> <span>Search...</span> <kbd>Ctrl K</kbd>`;
+    nav.appendChild(searchBtn);
+    searchBtn.addEventListener('click', openSearch);
+  }
 
   // New matrix easter egg tracking
   let isMatrixActive = false;
 
   function openSearch() {
-    overlay.classList.add('active');
-    input.focus();
+    overlay.classList.add('is-open');
     input.value = '';
+    setTimeout(() => input.focus(), 50);
   }
 
   function closeSearch() {
-    overlay.classList.remove('active');
+    overlay.classList.remove('is-open');
   }
 
   // Handle Input Commands
@@ -264,8 +267,6 @@ function initSearchPalette() {
         triggerMatrixRain();
       } else if (val.startsWith('/')) {
         console.log("Command not found:", val);
-      } else {
-        // Normal search logic could go here
       }
     }
   });
