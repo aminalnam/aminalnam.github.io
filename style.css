@@ -1109,8 +1109,11 @@ main.has-toc {
 ------------------------------------- */
 
 /* Dark Abyssal Background Override for Homepage */
-body {
+html {
   background-color: #030712 !important; /* Extremely dark blue */
+}
+body {
+  background-color: transparent !important; 
 }
 
 /* Scroll Progress Bar */
@@ -1240,7 +1243,7 @@ body {
   width: 100vw;
   height: 100vh;
   pointer-events: none;
-  z-index: 0; /* Behind everything */
+  z-index: -1; /* Behind everything */
   overflow: hidden;
 }
 
