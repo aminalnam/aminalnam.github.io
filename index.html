@@ -146,39 +146,35 @@
       <!-- FEATURED PROJECTS -->
       <section class="section section-block fade-up" style="padding-top: 0; padding-bottom: 4rem;">
         <span class="section-kicker" style="color: var(--accent);">The Portfolio</span>
-        <h2 style="font-family: var(--font-serif); font-size: 2.8rem; margin: 0 0 2rem; letter-spacing: -0.02em;">Featured Projects.</h2>
+        <h2 style="font-family: var(--font-serif); font-size: 2.8rem; margin: 0 0 2rem; letter-spacing: -0.02em;">Flagship Project.</h2>
         
-        <div class="grid-2" style="gap: 2rem;">
+        <div class="bento-grid">
           
-          <!-- OMEGA Pillar -->
-          <a href="overview.html" class="panel omega-panel-hover" style="display: flex; flex-direction: column; text-decoration: none; border: 1px solid rgba(255,255,255,0.1); background: linear-gradient(180deg, rgba(15,23,36,1) 0%, rgba(10,15,29,1) 100%); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease;">
-            <div style="height: 200px; background: url('assets/images/logo.png') center center no-repeat; background-size: contain; border-bottom: 1px solid rgba(255,255,255,0.05); position: relative; overflow: hidden;">
-               <!-- Optional visual overlay -->
-               <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(10,15,29,1), transparent);"></div>
-            </div>
-            <div style="padding: 2.5rem; flex-grow: 1; display: flex; flex-direction: column;">
-              <span class="status-label status-implemented" style="align-self: flex-start; margin-bottom: 1rem;">Core Network</span>
-              <h3 style="font-size: 2rem; color: #fff; margin-bottom: 1rem;">OMEGA Platform</h3>
-              <p style="color: var(--ink-soft); font-size: 1.1rem; line-height: 1.6; margin-bottom: 2rem; flex-grow: 1;">
-                A massive, mixed-bearer environmental sensing network. Utilizing custom Delay Tolerant Networking (DTN) over Sub-GHz LoRa to democratize oceanographic data collection and replace expensive satellite uplinks.
+          <!-- OMEGA Flagship Card -->
+          <a href="overview.html" class="panel omega-panel-hover col-span-2" style="display: flex; flex-direction: row; text-decoration: none; border: 1px solid rgba(59, 130, 246, 0.3); background: linear-gradient(135deg, rgba(15,23,36,0.9) 0%, rgba(10,15,29,0.95) 100%); min-height: 400px; position: relative; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.5);">
+            
+            <div style="flex: 1; padding: 4rem; display: flex; flex-direction: column; justify-content: center; z-index: 2;">
+              <span class="status-label status-implemented" style="align-self: flex-start; margin-bottom: 1.5rem; background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3);">Core Environmental Network</span>
+              <h3 style="font-size: 3.5rem; color: #fff; margin-bottom: 1rem; line-height: 1.1; font-family: var(--font-serif); letter-spacing: -0.02em;">OMEGA Platform</h3>
+              <p style="color: var(--ink-soft); font-size: 1.25rem; line-height: 1.7; margin-bottom: 2.5rem; max-width: 600px;">
+                A globally distributed, ultra-low-power environmental sensing network. Built from scratch with custom IoT hardware, resilient mesh networking, and high-frequency edge analytics. OMEGA democratizes oceanographic telemetry.
               </p>
-              <div style="display: flex; align-items: center; color: var(--accent-ocean); font-weight: 600; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.05em;">
-          <a href="overview.html" class="panel omega-panel-hover" style="display: flex; flex-direction: column; text-decoration: none; border: 1px solid rgba(59, 130, 246, 0.3); background: linear-gradient(180deg, rgba(15,23,36,1) 0%, rgba(10,15,29,1) 100%); box-shadow: 0 0 30px rgba(59, 130, 246, 0.05); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease;">
-            <div style="height: 200px; background: #0f1724; display: flex; align-items: center; justify-content: center; border-bottom: 1px solid rgba(59, 130, 246, 0.1); position: relative; overflow: hidden;">
-              <span style="font-size: 5rem; filter: drop-shadow(0 0 10px rgba(59,130,246,0.5)); transition: transform 0.3s ease;" class="hover-scale-icon">🌊</span>
-            </div>
-            <div style="padding: 2.5rem; flex-grow: 1; display: flex; flex-direction: column;">
-              <span class="status-label status-implemented" style="align-self: flex-start; margin-bottom: 1rem;">Flagship Project</span>
-              <h3 style="font-size: 2rem; color: #fff; margin-bottom: 1rem;">OMEGA Platform</h3>
-              <p style="color: var(--ink-soft); font-size: 1.1rem; line-height: 1.6; margin-bottom: 2rem; flex-grow: 1;">
-                A globally distributed, ultra-low-power environmental sensing network. Built from scratch with custom IoT hardware, resilient mesh networking, and high-frequency edge analytics to monitor ocean health.
-              </p>
-              <div style="display: flex; align-items: center; color: var(--accent-ocean); font-weight: 600; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.05em;">
-                Read the Documentation &rarr;
+              <div style="display: flex; align-items: center; color: var(--accent-ocean); font-weight: 600; text-transform: uppercase; font-size: 0.95rem; letter-spacing: 0.1em;">
+                Explore The Architecture &rarr;
               </div>
             </div>
-          </a>
 
+            <!-- Visual Sonar Ping Side -->
+            <div class="sonar-bg-side" style="flex: 1; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; border-left: 1px solid rgba(255,255,255,0.05); background: radial-gradient(circle at center, rgba(59, 130, 246, 0.1) 0%, transparent 70%);">
+              <div class="sonar-wrapper">
+                <div class="sonar-ring sonar-1"></div>
+                <div class="sonar-ring sonar-2"></div>
+                <div class="sonar-ring sonar-3"></div>
+                <div class="sonar-core hover-scale-icon" style="font-size: 6rem; filter: drop-shadow(0 0 20px rgba(59,130,246,0.8)); position: relative; z-index: 10;">🌊</div>
+              </div>
+            </div>
+
+          </a>
         </div>
       </section>
 
@@ -278,22 +274,22 @@
         
         <div class="bento-grid">
           
-          <a href="beta-overview.html" class="panel bento-item beta-panel-hover" style="grid-column: span 12;">
+          <a href="beta-overview.html" class="panel bento-item beta-panel-hover glitch-hover" style="grid-column: span 12;">
             <div class="bento-icon">⚙️</div>
             <h3 class="bento-title">Deterministic Fuzzing</h3>
-            <p class="bento-desc">Generates thousands of synthetic payload injections—simulating multiple drifting devices, acoustic anomalies, and deliberate malformed hardware packets.</p>
+            <p class="bento-desc">A relentless evaluation engine. Continuously generates thousands of highly complex synthetic payload injections, simulating multiple drifting fleets, acoustic anomalies, and deliberate hardware packet corruption to stress-test the OMEGA core.</p>
           </a>
 
-          <a href="beta-overview.html" class="panel bento-item beta-panel-hover" style="grid-column: span 12;">
+          <a href="beta-overview.html" class="panel bento-item beta-panel-hover glitch-hover" style="grid-column: span 12;">
             <div class="bento-icon">📈</div>
-            <h3 class="bento-title">Performance Matrices</h3>
-            <p class="bento-desc">Continuously analyzes backend infrastructure by establishing a 5-minute rolling P95 latency baseline.</p>
+            <h3 class="bento-title">High-Frequency Analytics</h3>
+            <p class="bento-desc">Calculates extreme-scale telemetry metrics in real-time. Establishes dynamic 5-minute rolling P95 latency baselines and strictly enforces SLAs across the entire DTN routing pipeline.</p>
           </a>
 
-          <a href="beta-overview.html" class="panel bento-item beta-panel-hover" style="grid-column: span 12;">
+          <a href="beta-overview.html" class="panel bento-item beta-panel-hover glitch-hover" style="grid-column: span 12;">
             <div class="bento-icon">🤖</div>
             <h3 class="bento-title">AI Remediation Ticketing</h3>
-            <p class="bento-desc">Automatically generates and assigns Jira-style tickets directly back to engineering when a regression occurs.</p>
+            <p class="bento-desc">Fully automated CI/CD integration. When the fuzzer breaks the OMEGA architecture, the AI Core instantly synthesizes error logs, identifies the exact Python/C++ regression, and pushes Jira-style remediation tickets to engineering.</p>
           </a>
 
         </div>
@@ -303,16 +299,18 @@
         <span class="section-kicker">Geospatial & Data Tools</span>
         <h2 style="font-family: var(--font-serif); font-size: 2.8rem; margin: 0 0 1.5rem;">Ocean Sensors.</h2>
         <p style="color: var(--ink-soft); font-size: 1.15rem; margin-bottom: 2.5rem; max-width: 800px; line-height: 1.7;">
-          A repository and documentation hub for underwater sensing, data logging, bathymetric mapping, and geospatial visualization workflows. Features Python algorithms for contour generation and Google Earth overlays.
+          A sophisticated repository for underwater geospatial workflows. Bridging the gap between raw physical oceanography and modern web mapping interfaces.
         </p>
         
         <div class="bento-grid">
-          <a href="https://github.com/aminalnam/Ocean-Sensors" target="_blank" class="panel col-span-2">
-            <img src="MAP00_contours.png" class="bento-bg-img" style="opacity: 0.3; object-position: right;" alt="Bathymetry Contours">
-            <div class="bento-content">
-              <span class="status-label status-implemented">Open Source Python</span>
-              <h3 style="font-size: 2rem;">Bathymetric Mapping</h3>
-              <p style="font-size: 1.1rem; max-width: 450px;">Python scripts for Inverse Distance Weighting (IDW) interpolation, generating topographic depth contours from sparse acoustic soundings.</p>
+          <a href="https://github.com/aminalnam/Ocean-Sensors" target="_blank" class="panel col-span-2 omega-panel-hover">
+            <img src="MAP00_contours.png" class="bento-bg-img" style="opacity: 0.15; object-position: right; filter: grayscale(100%) contrast(1.5);" alt="Bathymetry Contours">
+            <div class="bento-content" style="z-index: 2; position: relative;">
+              <span class="status-label status-implemented" style="background: rgba(255,255,255,0.1);">Open Source Geospatial</span>
+              <h3 style="font-size: 2rem;">Acoustic Bathymetric Mapping</h3>
+              <p style="font-size: 1.1rem; max-width: 500px; line-height: 1.6;">
+                Advanced Python algorithms implementing Inverse Distance Weighting (IDW) interpolation. Converts sparse, noisy acoustic pings into stunning, highly-accurate topographic depth contours and Google Earth KML overlays.
+              </p>
             </div>
           </a>
         </div>

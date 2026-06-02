@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initTableOfContents();
   initSearchPalette();
   initTypewriter();
+  initOceanEcosystem();
 });
 
 /* -------------------------------------
@@ -321,3 +322,77 @@ document.addEventListener('keydown', (e) => {
     konamiIndex = 0;
   }
 });
+
+/* -------------------------------------
+   5. Ocean Ecosystem Background
+------------------------------------- */
+function initOceanEcosystem() {
+  // Only run on pages that have the hero section (e.g. index.html) to save resources
+  if (!document.querySelector('.hero-animated')) return;
+
+  const container = document.createElement('div');
+  container.id = 'ocean-ecosystem';
+  document.body.prepend(container);
+
+  const emojis = ['🐟', '🦈', '📡', '🤖', '⛴️'];
+  const numParticles = 15;
+
+  for (let i = 0; i < numParticles; i++) {
+    createParticle(container, emojis);
+  }
+}
+
+function createParticle(container, emojis) {
+  const particle = document.createElement('div');
+  particle.className = 'ocean-particle';
+  particle.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+  
+  // Random starting position
+  const startX = Math.random() * 100; // vw
+  const startY = Math.random() * 100; // vh
+  
+  particle.style.left = startX + 'vw';
+  particle.style.top = startY + 'vh';
+  
+  // Randomize size and opacity slightly
+  const scale = 0.5 + Math.random() * 1.5;
+  particle.style.transform = `scale(${scale})`;
+  particle.style.opacity = (0.02 + Math.random() * 0.05).toFixed(2);
+  
+  container.appendChild(particle);
+
+  // Animation logic
+  animateParticle(particle);
+}
+
+function animateParticle(particle) {
+  // Random drift vector
+  const moveX = (Math.random() - 0.5) * 20; // -10 to 10 vw
+  const moveY = (Math.random() - 0.5) * 10; // -5 to 5 vh
+  const duration = 20000 + Math.random() * 30000; // 20s to 50s
+
+  const startLeft = parseFloat(particle.style.left);
+  const startTop = parseFloat(particle.style.top);
+
+  particle.style.transition = `left ${duration}ms linear, top ${duration}ms linear`;
+  
+  // Trigger layout to ensure transition applies
+  void particle.offsetWidth;
+
+  particle.style.left = (startLeft + moveX) + 'vw';
+  particle.style.top = (startTop + moveY) + 'vh';
+
+  // Loop
+  setTimeout(() => {
+    // Reset if it went too far off screen
+    const currentLeft = parseFloat(particle.style.left);
+    const currentTop = parseFloat(particle.style.top);
+    if (currentLeft < -10 || currentLeft > 110 || currentTop < -10 || currentTop > 110) {
+      particle.style.transition = 'none';
+      particle.style.left = (Math.random() * 100) + 'vw';
+      particle.style.top = (Math.random() * 100) + 'vh';
+      void particle.offsetWidth;
+    }
+    animateParticle(particle);
+  }, duration);
+}
