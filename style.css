@@ -1278,3 +1278,72 @@ body {
   100% { transform: rotate(15deg); }
 }
 
+/* -------------------------------------
+   12. SITE-WIDE UPGRADES (MERMAID & PROGRESS BAR)
+------------------------------------- */
+
+/* Reading Progress Bar */
+#reading-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: #38bdf8;
+  z-index: 9999;
+  width: 0%;
+  transition: width 0.1s ease;
+  box-shadow: 0 0 10px #38bdf8;
+  pointer-events: none;
+}
+
+/* Ambient Inner-Page Canvas */
+#ambient-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0.15;
+}
+
+/* Mermaid Diagram Overrides */
+.mermaid {
+  background: rgba(3, 7, 18, 0.4);
+  border: 1px solid rgba(56, 189, 248, 0.2);
+  border-radius: 12px;
+  padding: 2rem;
+  margin: 2rem 0;
+  box-shadow: inset 0 0 30px rgba(0,0,0,0.5);
+}
+.mermaid svg {
+  max-width: 100%;
+  height: auto;
+}
+/* Force neon text/lines on mermaid elements */
+.mermaid .node rect, .mermaid .node circle, .mermaid .node ellipse, .mermaid .node polygon, .mermaid .node path {
+  fill: rgba(3, 7, 18, 0.8) !important;
+  stroke: #38bdf8 !important;
+  stroke-width: 2px !important;
+  transition: all 0.3s ease;
+}
+.mermaid .node:hover rect, .mermaid .node:hover circle, .mermaid .node:hover ellipse, .mermaid .node:hover polygon, .mermaid .node:hover path {
+  fill: rgba(56, 189, 248, 0.2) !important;
+  stroke: #fff !important;
+  box-shadow: 0 0 15px #38bdf8 !important;
+}
+.mermaid .edgePath .path {
+  stroke: rgba(56, 189, 248, 0.6) !important;
+  stroke-width: 2px !important;
+}
+.mermaid .edgeLabel {
+  background-color: rgba(3, 7, 18, 0.9) !important;
+  color: #60a5fa !important;
+  font-family: var(--font-mono) !important;
+  font-size: 0.8rem !important;
+}
+.mermaid .cluster rect {
+  fill: rgba(255,255,255,0.02) !important;
+  stroke: rgba(255,255,255,0.1) !important;
+}

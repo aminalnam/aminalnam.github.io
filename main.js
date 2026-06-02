@@ -13,6 +13,8 @@ document.addEventListener("DOMContentLoaded", () => {
   initMagneticButtons();
   initArcadeEasterEgg();
   initGlobalMap();
+  initReadingProgress();
+  initAmbientBackground();
 });
 
 /* -------------------------------------
@@ -939,5 +941,78 @@ function initGlobalMap() {
     requestAnimationFrame(draw);
   }
 
+  draw();
+}
+
+/* -------------------------------------
+   10. Site-Wide Progress Bar
+------------------------------------- */
+function initReadingProgress() {
+  const bar = document.createElement('div');
+  bar.id = 'reading-progress';
+  document.body.appendChild(bar);
+
+  window.addEventListener('scroll', () => {
+    const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+    const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    if (height <= 0) return;
+    const scrolled = (winScroll / height) * 100;
+    bar.style.width = scrolled + '%';
+  });
+}
+
+/* -------------------------------------
+   11. Ambient Inner-Page Background
+------------------------------------- */
+function initAmbientBackground() {
+  // Only inject if this is NOT the homepage (which has ocean-ecosystem or a large hero)
+  if (document.getElementById('ocean-ecosystem')) return;
+  if (window.location.pathname.endsWith('index.html') || window.location.pathname === '/') return;
+
+  const canvas = document.createElement('canvas');
+  canvas.id = 'ambient-canvas';
+  document.body.appendChild(canvas);
+  const ctx = canvas.getContext('2d');
+
+  let width, height;
+  function resize() {
+    width = window.innerWidth;
+    height = window.innerHeight;
+    canvas.width = width;
+    canvas.height = height;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  let offset = 0;
+  function draw() {
+    ctx.clearRect(0, 0, width, height);
+    
+    ctx.strokeStyle = 'rgba(56, 189, 248, 0.1)';
+    ctx.lineWidth = 1;
+    
+    // Draw slowly moving grid
+    offset = (offset + 0.5) % 50;
+    
+    for (let x = offset; x < width; x += 50) {
+      ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, height); ctx.stroke();
+    }
+    for (let y = offset; y < height; y += 50) {
+      ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(width, y); ctx.stroke();
+    }
+    
+    // Random data blips
+    if (Math.random() > 0.95) {
+      ctx.fillStyle = 'rgba(56, 189, 248, 0.5)';
+      ctx.fillRect(
+        Math.floor(Math.random() * (width / 50)) * 50 + offset, 
+        Math.floor(Math.random() * (height / 50)) * 50 + offset, 
+        50, 50
+      );
+    }
+    
+    requestAnimationFrame(draw);
+  }
+  
   draw();
 }
