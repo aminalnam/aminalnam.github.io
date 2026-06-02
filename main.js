@@ -139,8 +139,8 @@ function initCopyToClipboard() {
 ------------------------------------- */
 function initTableOfContents() {
   const headers = Array.from(document.querySelectorAll('main.main-shell h2'));
-  // Only build ToC if there are at least 2 headers to justify it
-  if (headers.length < 2) return;
+  // Only build ToC if there are at least 1 headers to justify it
+  if (headers.length < 1) return;
 
   const mainShell = document.querySelector('main.main-shell');
   if (!mainShell) return;
@@ -231,14 +231,14 @@ function initSyntaxHighlighting() {
     let tokenMap = [];
     rules.forEach((rule) => {
       html = html.replace(rule.regex, (match) => {
-        tokenMap.push(\`<span class="tok-\${rule.type}">\${match}</span>\`);
-        return \`___TOKEN\${tokenMap.length - 1}___\`;
+        tokenMap.push(`<span class="tok-${rule.type}">${match}</span>`);
+        return `___TOKEN${tokenMap.length - 1}___`;
       });
     });
     
     // Restore tokens
     tokenMap.forEach((token, index) => {
-      html = html.replace(\`___TOKEN\${index}___\`, token);
+      html = html.replace(`___TOKEN${index}___`, token);
     });
     
     block.innerHTML = html;
