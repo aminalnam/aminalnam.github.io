@@ -334,65 +334,69 @@ function initOceanEcosystem() {
   container.id = 'ocean-ecosystem';
   document.body.prepend(container);
 
-  const emojis = ['🐟', '🦈', '📡', '🤖', '⛴️'];
   const numParticles = 15;
 
   for (let i = 0; i < numParticles; i++) {
-    createParticle(container, emojis);
+    createFishParticle(container);
   }
 }
 
-function createParticle(container, emojis) {
+function createFishParticle(container) {
   const particle = document.createElement('div');
-  particle.className = 'ocean-particle';
-  particle.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+  particle.className = 'ocean-particle fish';
   
-  // Random starting position
-  const startX = Math.random() * 100; // vw
+  // Clean SVG Fish
+  particle.innerHTML = `
+    <svg viewBox="0 0 100 40" width="30" height="12" xmlns="http://www.w3.org/2000/svg">
+      <path d="M 0 20 Q 30 0, 80 20 Q 30 40, 0 20 Z" fill="rgba(148, 163, 184, 0.4)" />
+      <path class="fish-tail" d="M 75 20 L 100 5 L 100 35 Z" fill="rgba(148, 163, 184, 0.4)" />
+    </svg>
+  `;
+  
+  // Random starting position (mostly off-screen left or right)
+  const isMovingRight = Math.random() > 0.5;
+  const startX = isMovingRight ? -10 : 110; 
   const startY = Math.random() * 100; // vh
   
   particle.style.left = startX + 'vw';
   particle.style.top = startY + 'vh';
   
+  if (!isMovingRight) {
+    particle.style.transform = 'scaleX(-1)'; // Face left
+  }
+  
   // Randomize size and opacity slightly
-  const scale = 0.5 + Math.random() * 1.5;
-  particle.style.transform = `scale(${scale})`;
-  particle.style.opacity = (0.02 + Math.random() * 0.05).toFixed(2);
+  const scale = 0.3 + Math.random() * 0.7; // 0.3 to 1.0 (distant)
+  particle.style.transform += ` scale(${scale})`;
+  particle.style.opacity = (0.3 + Math.random() * 0.4).toFixed(2);
   
   container.appendChild(particle);
 
-  // Animation logic
-  animateParticle(particle);
+  animateFish(particle, isMovingRight, scale);
 }
 
-function animateParticle(particle) {
-  // Random drift vector
-  const moveX = (Math.random() - 0.5) * 20; // -10 to 10 vw
-  const moveY = (Math.random() - 0.5) * 10; // -5 to 5 vh
-  const duration = 20000 + Math.random() * 30000; // 20s to 50s
+function animateFish(particle, isMovingRight, scale) {
+  const duration = 20000 + Math.random() * 40000; // 20s to 60s
+  const endX = isMovingRight ? 110 : -10;
 
-  const startLeft = parseFloat(particle.style.left);
-  const startTop = parseFloat(particle.style.top);
-
-  particle.style.transition = `left ${duration}ms linear, top ${duration}ms linear`;
+  particle.style.transition = `left ${duration}ms linear`;
   
   // Trigger layout to ensure transition applies
   void particle.offsetWidth;
 
-  particle.style.left = (startLeft + moveX) + 'vw';
-  particle.style.top = (startTop + moveY) + 'vh';
+  particle.style.left = endX + 'vw';
 
   // Loop
   setTimeout(() => {
-    // Reset if it went too far off screen
-    const currentLeft = parseFloat(particle.style.left);
-    const currentTop = parseFloat(particle.style.top);
-    if (currentLeft < -10 || currentLeft > 110 || currentTop < -10 || currentTop > 110) {
-      particle.style.transition = 'none';
-      particle.style.left = (Math.random() * 100) + 'vw';
-      particle.style.top = (Math.random() * 100) + 'vh';
-      void particle.offsetWidth;
-    }
-    animateParticle(particle);
+    particle.style.transition = 'none';
+    particle.style.top = (Math.random() * 100) + 'vh';
+    
+    // Switch direction randomly on respawn
+    const newMovingRight = Math.random() > 0.5;
+    particle.style.left = (newMovingRight ? -10 : 110) + 'vw';
+    particle.style.transform = (newMovingRight ? '' : 'scaleX(-1) ') + `scale(${scale})`;
+    
+    void particle.offsetWidth;
+    animateFish(particle, newMovingRight, scale);
   }, duration);
 }
