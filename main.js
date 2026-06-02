@@ -563,7 +563,7 @@ function initEmbeddedArcade() {
       bubble.style.width = size + 'px';
       bubble.style.height = size + 'px';
       bubble.style.left = Math.random() * 100 + '%';
-      bubble.style.animation = \`rise \${Math.random() * 5 + 5}s linear infinite\`;
+      bubble.style.animation = `rise ${Math.random() * 5 + 5}s linear infinite`;
       bubble.style.animationDelay = (Math.random() * 5) + 's';
       bg.appendChild(bubble);
     }
@@ -573,10 +573,10 @@ function initEmbeddedArcade() {
   if (!document.getElementById('bubble-style')) {
     const style = document.createElement('style');
     style.id = 'bubble-style';
-    style.innerHTML = \`
+    style.innerHTML = `
       @keyframes rise { to { transform: translateY(-300px); opacity: 0; } }
       .btn-arcade:hover { background: #38bdf8 !important; color: #000 !important; box-shadow: 0 0 20px rgba(56,189,248,0.5); }
-    \`;
+    `;
     document.head.appendChild(style);
   }
 
@@ -895,7 +895,7 @@ function initGlobalMap() {
       if (node.pingAlpha > 0) {
         ctx.beginPath();
         ctx.arc(node.x, node.y, node.size + (1 - node.pingAlpha) * 15, 0, Math.PI * 2);
-        ctx.strokeStyle = \`rgba(56, 189, 248, \${node.pingAlpha})\`;
+        ctx.strokeStyle = `rgba(56, 189, 248, ${node.pingAlpha})`;
         ctx.lineWidth = 2;
         ctx.stroke();
         node.pingAlpha -= 0.05; // Fade out
