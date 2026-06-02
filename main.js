@@ -556,7 +556,7 @@ function initArcadeEasterEgg() {
     if (e.key === konamiCode[konamiIndex]) {
       konamiIndex++;
       if (konamiIndex === konamiCode.length) {
-        triggerArcade();
+        triggerBioluminescence();
         konamiIndex = 0;
       }
     } else {
@@ -564,44 +564,143 @@ function initArcadeEasterEgg() {
     }
   });
 
-  function triggerArcade() {
-    if (document.getElementById('arcade-overlay')) return;
+  function triggerBioluminescence() {
+    if (document.getElementById('bio-overlay')) return;
 
     const style = document.createElement('style');
     style.innerHTML = `
-      #arcade-overlay {
+      #bio-overlay {
         position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-        background: rgba(3, 7, 18, 0.95);
+        background: #010409;
         z-index: 10000;
-        display: flex; flex-direction: column;
+        cursor: crosshair;
+        opacity: 0;
+        transition: opacity 2s ease;
       }
-      .arcade-close { 
-        position: absolute; top: 1rem; right: 1.5rem; 
-        color: #38bdf8; cursor: pointer; font-size: 3rem; 
-        line-height: 1; transition: transform 0.2s; z-index: 10001; 
+      .bio-close { 
+        position: absolute; top: 2rem; right: 2rem; 
+        color: rgba(56,189,248,0.5); cursor: pointer; font-size: 2.5rem; 
+        line-height: 1; transition: all 0.3s; z-index: 10001; 
         font-family: var(--font-mono, monospace);
-        text-shadow: 0 0 10px rgba(56,189,248,0.5);
       }
-      .arcade-close:hover { transform: scale(1.2); color: #fff; }
-      #bbs-frame {
-        width: 100%;
-        height: 100%;
-        border: none;
-        background: transparent;
+      .bio-close:hover { color: #fff; transform: scale(1.2); text-shadow: 0 0 15px #38bdf8; }
+      #bio-canvas { width: 100%; height: 100%; display: block; }
+      .bio-msg {
+        position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+        color: rgba(56, 189, 248, 0.2); font-family: var(--font-mono, monospace);
+        font-size: 1.5rem; letter-spacing: 0.2em; pointer-events: none;
+        transition: opacity 1s; text-align: center;
       }
     `;
     document.head.appendChild(style);
 
     const overlay = document.createElement('div');
-    overlay.id = 'arcade-overlay';
+    overlay.id = 'bio-overlay';
     overlay.innerHTML = `
-      <div class="arcade-close" id="arcade-close">&times;</div>
-      <iframe id="bbs-frame" src="bbs.html"></iframe>
+      <div class="bio-close" id="bio-close">&times;</div>
+      <div class="bio-msg" id="bio-msg">SYSTEM: BIOLUMINESCENCE DETECTED<br><span style="font-size: 0.8rem; opacity: 0.5;">AGITATE THE WATER</span></div>
+      <canvas id="bio-canvas"></canvas>
     `;
     document.body.appendChild(overlay);
 
-    document.getElementById('arcade-close').addEventListener('click', () => {
-      overlay.remove();
+    requestAnimationFrame(() => {
+      overlay.style.opacity = '1';
+    });
+
+    const canvas = document.getElementById('bio-canvas');
+    const ctx = canvas.getContext('2d', { alpha: false });
+    
+    let w, h;
+    function resize() {
+      w = canvas.width = window.innerWidth;
+      h = canvas.height = window.innerHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    const particles = [];
+    const count = Math.min(window.innerWidth * window.innerHeight / 2000, 1500);
+
+    for (let i = 0; i < count; i++) {
+      particles.push({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        vx: (Math.random() - 0.5) * 0.4,
+        vy: (Math.random() - 0.5) * 0.4,
+        size: Math.random() * 1.5 + 0.5,
+        glow: 0
+      });
+    }
+
+    let mouseX = -1000;
+    let mouseY = -1000;
+    let isMoving = false;
+    let moveTimeout;
+
+    const mouseHandler = (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      isMoving = true;
+      document.getElementById('bio-msg').style.opacity = '0';
+      clearTimeout(moveTimeout);
+      moveTimeout = setTimeout(() => { isMoving = false; }, 100);
+    };
+    window.addEventListener('mousemove', mouseHandler);
+
+    let loopId;
+    function render() {
+      ctx.fillStyle = 'rgba(1, 4, 9, 0.15)'; 
+      ctx.fillRect(0, 0, w, h);
+
+      for (let p of particles) {
+        p.x += p.vx;
+        p.y += p.vy;
+
+        if (p.x < 0) p.x = w;
+        if (p.x > w) p.x = 0;
+        if (p.y < 0) p.y = h;
+        if (p.y > h) p.y = 0;
+
+        let dx = p.x - mouseX;
+        let dy = p.y - mouseY;
+        let dist = Math.sqrt(dx*dx + dy*dy);
+
+        if (dist < 120 && isMoving) {
+          p.x += dx * 0.03;
+          p.y += dy * 0.03;
+          p.glow = 1.0;
+        }
+
+        p.glow = Math.max(0, p.glow - 0.012);
+
+        let alpha = 0.1 + p.glow * 0.9;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        
+        if (p.glow > 0.4) {
+          ctx.fillStyle = \`rgba(56, 189, 248, \${alpha})\`; 
+          ctx.shadowBlur = 10 * p.glow;
+          ctx.shadowColor = '#38bdf8';
+        } else {
+          ctx.fillStyle = \`rgba(16, 185, 129, \${alpha})\`; 
+          ctx.shadowBlur = 0;
+        }
+        
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      }
+      
+      loopId = requestAnimationFrame(render);
+    }
+    
+    render();
+
+    document.getElementById('bio-close').addEventListener('click', () => {
+      cancelAnimationFrame(loopId);
+      window.removeEventListener('mousemove', mouseHandler);
+      window.removeEventListener('resize', resize);
+      overlay.style.opacity = '0';
+      setTimeout(() => overlay.remove(), 2000);
     });
   }
 }
