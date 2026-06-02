@@ -134,8 +134,23 @@
         A technical portfolio showcasing massive-scale systems engineering, embedded hardware design, and deterministic evaluation frameworks. Explore my active projects below.
       </p>
       <div class="hero-actions fade-up" style="animation-delay: 0.3s;">
-        <a class="btn btn-primary panel" href="overview.html">Read The Architecture Overview</a>
-        <a class="btn btn-secondary panel" href="https://github.com/aminalnam/OMEGA" target="_blank">View GitHub Repository</a>
+        <a class="btn btn-primary panel magnetic-btn" href="overview.html">Read The Architecture Overview</a>
+        <a class="btn btn-secondary panel magnetic-btn" href="https://github.com/aminalnam/OMEGA" target="_blank">View GitHub Repository</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- LIVE TELEMETRY TERMINAL -->
+  <section class="section terminal-section wrap fade-up" style="padding-top: 0; padding-bottom: 2rem;">
+    <div class="terminal-window panel omega-panel-hover" style="background: rgba(5, 8, 15, 0.9); border-color: rgba(59, 130, 246, 0.4); padding: 0;">
+      <div class="terminal-header" style="background: rgba(255, 255, 255, 0.05); padding: 0.75rem 1rem; border-bottom: 1px solid var(--line); display: flex; align-items: center; gap: 0.5rem;">
+        <div style="width: 12px; height: 12px; border-radius: 50%; background: #ef4444;"></div>
+        <div style="width: 12px; height: 12px; border-radius: 50%; background: #f59e0b;"></div>
+        <div style="width: 12px; height: 12px; border-radius: 50%; background: #10b981;"></div>
+        <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--ink-soft); letter-spacing: 0.1em; margin-left: 1rem;">/BIN/OMEGA/UPLINK.SH</span>
+      </div>
+      <div class="terminal-body" id="live-terminal-feed" style="padding: 1.5rem; font-family: var(--font-mono); font-size: 0.9rem; color: #10b981; height: 250px; overflow-y: hidden; display: flex; flex-direction: column; justify-content: flex-end; mask-image: linear-gradient(to bottom, transparent 0%, black 20%); -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 20%); text-shadow: 0 0 5px rgba(16, 185, 129, 0.5);">
+        <!-- Lines injected by JS -->
       </div>
     </div>
   </section>

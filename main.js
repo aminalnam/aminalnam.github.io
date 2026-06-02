@@ -10,6 +10,9 @@ document.addEventListener("DOMContentLoaded", () => {
   initTextScramble();
   initScrollProgress();
   initOceanEcosystem();
+  initLiveTerminalFeed();
+  initMagneticButtons();
+  initSubmarineAlert();
 });
 
 /* -------------------------------------
@@ -554,4 +557,127 @@ function animateFish(particle, isMovingRight, scale, dirScale) {
     void particle.offsetWidth;
     animateFish(particle, newMovingRight, scale, newDirScale);
   }, duration);
+}
+
+/* -------------------------------------
+   7. Live Telemetry Terminal
+------------------------------------- */
+function initLiveTerminalFeed() {
+  const terminal = document.getElementById('live-terminal-feed');
+  if (!terminal) return;
+
+  const messages = [
+    "[SYS] Initializing OMEGA uplink protocol...",
+    "[DTN] Establishing bundle protocol to Node-07 (Mid-Atlantic)...",
+    "[DTN] Connection established. Latency: 42ms.",
+    "[DATA] Ingesting telemetry payload (Size: 45kb, Format: CBOR)",
+    "[OK] Payload signature verified. Decrypting AES-GCM.",
+    "[DB] Writing to SQLite WAL...",
+    "[WARN] Acoustic anomaly detected in Sector 4 (Frequency: 14.5kHz)",
+    "[AI] Triggering Honu anomaly classification...",
+    "[AI] Classification: Biological (Cetacean signature matched)",
+    "[SYS] Entering low-power sleep state for 300s...",
+    "[DTN] Polling Node-12 (Pacific Array)...",
+    "[ERR] Packet timeout. Retrying with spreading factor 10.",
+    "[OK] Handshake successful. SNR: -12dB."
+  ];
+
+  let msgIndex = 0;
+
+  function addTerminalLine() {
+    const p = document.createElement('p');
+    p.style.margin = '0.2rem 0';
+    p.innerText = '> ' + messages[msgIndex];
+    terminal.appendChild(p);
+
+    // Keep only last 10 lines
+    if (terminal.children.length > 10) {
+      terminal.removeChild(terminal.firstChild);
+    }
+
+    msgIndex = (msgIndex + 1) % messages.length;
+
+    // Random typing delay
+    setTimeout(addTerminalLine, 1000 + Math.random() * 2500);
+  }
+
+  // Start feed
+  setTimeout(addTerminalLine, 1500);
+}
+
+/* -------------------------------------
+   8. Magnetic Buttons
+------------------------------------- */
+function initMagneticButtons() {
+  const magnets = document.querySelectorAll('.magnetic-btn');
+
+  magnets.forEach(btn => {
+    btn.addEventListener('mousemove', (e) => {
+      const rect = btn.getBoundingClientRect();
+      const h = rect.width / 2;
+      const v = rect.height / 2;
+      const x = e.clientX - rect.left - h;
+      const y = e.clientY - rect.top - v;
+
+      // Pull button towards cursor
+      btn.style.transform = \`translate(\${x * 0.3}px, \${y * 0.3}px)\`;
+    });
+
+    btn.addEventListener('mouseleave', () => {
+      // Snap back to center
+      btn.style.transform = \`translate(0px, 0px)\`;
+    });
+  });
+}
+
+/* -------------------------------------
+   9. Submarine Red Alert (Konami Code)
+------------------------------------- */
+function initSubmarineAlert() {
+  const konamiCode = [
+    'ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown',
+    'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight',
+    'b', 'a'
+  ];
+  let konamiIndex = 0;
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === konamiCode[konamiIndex]) {
+      konamiIndex++;
+      if (konamiIndex === konamiCode.length) {
+        triggerRedAlert();
+        konamiIndex = 0;
+      }
+    } else {
+      konamiIndex = 0;
+    }
+  });
+
+  function triggerRedAlert() {
+    // Inject emergency CSS
+    const style = document.createElement('style');
+    style.innerHTML = \`
+      html { background-color: #2a0808 !important; }
+      body { background-color: transparent !important; }
+      .red-alert-overlay {
+        position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+        background: radial-gradient(circle at center, transparent 0%, rgba(255, 0, 0, 0.4) 100%);
+        pointer-events: none; z-index: 9998;
+        animation: pulse-red 2s infinite alternate;
+      }
+      @keyframes pulse-red {
+        0% { opacity: 0.3; }
+        100% { opacity: 1; }
+      }
+      * { color: #ff5555 !important; border-color: rgba(255,0,0,0.3) !important; }
+      .panel { background: rgba(40, 0, 0, 0.5) !important; }
+    \`;
+    document.head.appendChild(style);
+
+    const overlay = document.createElement('div');
+    overlay.className = 'red-alert-overlay';
+    document.body.appendChild(overlay);
+
+    console.log("RED ALERT: EMERGENCY PROTOCOL INITIATED.");
+  }
 }
