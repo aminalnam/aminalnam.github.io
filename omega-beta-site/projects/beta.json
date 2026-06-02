@@ -1,51 +1,30 @@
 {
   "ai": null,
   "analysis_scope": {
-    "kind": "workspace",
+    "assigned_run_count": 0,
+    "discovered_run_count": 0,
+    "kind": "project",
+    "project_key": "beta",
+    "project_name": "BETA",
+    "project_type": "software",
+    "quarantined_run_count": 0,
     "workspace_project_count": 2
   },
-  "backlog": [
-    {
-      "effort": "medium",
-      "impact": "high",
-      "item_key": "real-data:collect-real-proof-report",
-      "metric": "real_report_available",
-      "priority": "P0",
-      "rationale": "Accepted real reports: 0; quarantined demo/synthetic reports: 6.",
-      "run_id": null,
-      "status": "open",
-      "title": "Collect a real proof report"
-    }
-  ],
+  "backlog": [],
   "claim_coverage": [],
   "claims": [],
   "comparisons": [],
   "data_authenticity": {
     "accepted_count": 0,
     "accepted_report_paths": [],
-    "classification_counts": {
-      "synthetic": 6
-    },
-    "excluded_count": 6,
+    "classification_counts": {},
+    "excluded_count": 0,
     "policy": "Only accepted real reports are used for metrics, graphs, claims, progress, and AI analysis. Synthetic/demo/local proof reports are quarantined.",
-    "quarantined_report_paths": [
-      "<OMEGA-PROOF-ENV>\\OMEGA-wave\\artifacts\\omega-proof\\local-proof-smoke\\report.json",
-      "<OMEGA-PROOF-ENV>\\OMEGA-wave\\artifacts\\omega-proof\\local-proof-charts\\report.json",
-      "<OMEGA-PROOF-ENV>\\OMEGA-wave\\artifacts\\omega-proof\\local-proof-ai\\report.json",
-      "<OMEGA-PROOF-ENV>\\OMEGA-wave\\artifacts\\omega-proof\\local-proof-ai2\\report.json",
-      "<OMEGA-PROOF-ENV>\\OMEGA-wave\\artifacts\\omega-proof\\local-proof-ai-llama\\report.json",
-      "<OMEGA-PROOF-ENV>\\OMEGA-wave\\artifacts\\omega-proof\\local-proof-ai-final\\report.json"
-    ],
+    "quarantined_report_paths": [],
     "real_count": 0,
-    "reason_counts": {
-      "metadata.database_path contains 'local-proof'": 6,
-      "run_id contains 'local-proof'": 6,
-      "scenario_id contains 'coastal-demo'": 6,
-      "scenario_key contains 'coastal-demo'": 6,
-      "source_path contains 'local-proof'": 6
-    },
-    "synthetic_count": 6,
-    "total_discovered_count": 6
+    "reason_counts": {},
+    "synthetic_count": 0,
+    "total_discovered_count": 0
   },
   "data_lineage": {
     "all_report_paths": [],
@@ -57,53 +36,35 @@
     "project_sources": [
       {
         "ai_available": false,
-        "ai_plan_path": "<OMEGA-PROOF-ENV>\\omega-proof-lab\\.prooflab\\projects\\beta\\ai-plan.json",
+        "ai_plan_path": "C:\\Users\\jdcap\\OneDrive\\Documents\\OMEGA Proof\\omega-proof-lab\\.prooflab\\projects\\beta\\ai-plan.json",
         "input_count": 5,
-        "plan_path": "<OMEGA-PROOF-ENV>\\omega-proof-lab\\.prooflab\\projects\\beta\\plan.json",
-        "profile_path": "<OMEGA-PROOF-ENV>\\omega-proof-lab\\.prooflab\\projects\\beta\\profile.json",
-        "project_config_path": "<OMEGA-PROOF-ENV>\\omega-proof-lab\\.prooflab\\projects\\beta\\project.json",
+        "plan_path": "C:\\Users\\jdcap\\OneDrive\\Documents\\OMEGA Proof\\omega-proof-lab\\.prooflab\\projects\\beta\\plan.json",
+        "profile_path": "C:\\Users\\jdcap\\OneDrive\\Documents\\OMEGA Proof\\omega-proof-lab\\.prooflab\\projects\\beta\\profile.json",
+        "project_config_path": "C:\\Users\\jdcap\\OneDrive\\Documents\\OMEGA Proof\\omega-proof-lab\\.prooflab\\projects\\beta\\project.json",
         "project_key": "beta",
         "project_name": "BETA",
-        "project_path": "<OMEGA-PROOF-ENV>\\omega-proof-lab\\.prooflab\\projects\\beta"
-      },
-      {
-        "ai_available": true,
-        "ai_plan_path": "<OMEGA-PROOF-ENV>\\omega-proof-lab\\.prooflab\\projects\\omega\\ai-plan.json",
-        "input_count": 3,
-        "plan_path": "<OMEGA-PROOF-ENV>\\omega-proof-lab\\.prooflab\\projects\\omega\\plan.json",
-        "profile_path": "<OMEGA-PROOF-ENV>\\omega-proof-lab\\.prooflab\\projects\\omega\\profile.json",
-        "project_config_path": "<OMEGA-PROOF-ENV>\\omega-proof-lab\\.prooflab\\projects\\omega\\project.json",
-        "project_key": "omega",
-        "project_name": "OMEGA",
-        "project_path": "<OMEGA-PROOF-ENV>\\omega-proof-lab\\.prooflab\\projects\\omega"
+        "project_path": "C:\\Users\\jdcap\\OneDrive\\Documents\\OMEGA Proof\\omega-proof-lab\\.prooflab\\projects\\beta"
       }
     ],
-    "quarantined_report_paths": [
-      "<OMEGA-PROOF-ENV>\\OMEGA-wave\\artifacts\\omega-proof\\local-proof-smoke\\report.json",
-      "<OMEGA-PROOF-ENV>\\OMEGA-wave\\artifacts\\omega-proof\\local-proof-charts\\report.json",
-      "<OMEGA-PROOF-ENV>\\OMEGA-wave\\artifacts\\omega-proof\\local-proof-ai\\report.json",
-      "<OMEGA-PROOF-ENV>\\OMEGA-wave\\artifacts\\omega-proof\\local-proof-ai2\\report.json",
-      "<OMEGA-PROOF-ENV>\\OMEGA-wave\\artifacts\\omega-proof\\local-proof-ai-llama\\report.json",
-      "<OMEGA-PROOF-ENV>\\OMEGA-wave\\artifacts\\omega-proof\\local-proof-ai-final\\report.json"
-    ],
-    "quarantined_run_count": 6,
+    "quarantined_report_paths": [],
+    "quarantined_run_count": 0,
     "real_report_paths": [],
     "real_run_count": 0,
     "run_count": 0,
-    "total_discovered_count": 6,
-    "workspace": "<OMEGA-PROOF-ENV>\\omega-proof-lab\\.prooflab"
+    "total_discovered_count": 0,
+    "workspace": "C:\\Users\\jdcap\\OneDrive\\Documents\\OMEGA Proof\\omega-proof-lab\\.prooflab"
   },
   "data_quality": {
     "checks": [
       {
-        "detail": "Accepted real reports: 0; quarantined demo/synthetic reports: 6.",
+        "detail": "Accepted real reports: 0; quarantined demo/synthetic reports: 0.",
         "id": "real_report_available",
         "label": "Real proof report is available",
         "passed": false,
         "weight": 15
       },
       {
-        "detail": "6 report(s) were excluded from metrics before scoring.",
+        "detail": "0 report(s) were excluded from metrics before scoring.",
         "id": "synthetic_quarantine",
         "label": "Synthetic/demo reports are quarantined",
         "passed": true,
@@ -133,8 +94,8 @@
       "label": "Quarantined Demo Reports",
       "meaning": "Synthetic, demo, smoke, fixture, and local proof reports stay visible for audit but are excluded from metrics.",
       "next_step": "Replace quarantined reports with real evidence or mark real reports explicitly with metadata.data_authenticity=real.",
-      "status": "quarantined",
-      "value": 6
+      "status": "clear",
+      "value": 0
     },
     {
       "category": "evidence",
@@ -188,7 +149,7 @@
       "meaning": "Project profiles connect source, docs, tests, firmware, evidence, and planned metrics.",
       "next_step": "Run plan-ai after major repo or hardware-documentation changes.",
       "status": "connected",
-      "value": 2
+      "value": 1
     },
     {
       "category": "field",
@@ -214,14 +175,14 @@
       "label": "AI Work Sessions",
       "meaning": "AI session summaries show what an AI helped change, suggested, tested, or left uncertain.",
       "next_step": "Import Codex/ChatGPT/session summaries as source_type=ai-session after meaningful project work.",
-      "status": "connected",
-      "value": 3
+      "status": "missing",
+      "value": "not imported"
     }
   ],
   "effort_focus": {},
   "evidence_brief": {
     "active_measurements": 0,
-    "connected_sources": 2,
+    "connected_sources": 1,
     "data_quality_label": "needs-real-data",
     "data_quality_score": 0.0,
     "focus_metrics": [],
@@ -254,7 +215,7 @@
         "status": "missing"
       }
     ],
-    "missing_sources": 5,
+    "missing_sources": 6,
     "next_moves": [
       {
         "done_when": "Throughput holds or improves across repeated matching runs with no failed required gates.",
@@ -276,286 +237,14 @@
         "owner_role": "Data/storage",
         "priority": "P1",
         "title": "Storage Growth Curve"
-      },
-      {
-        "done_when": "Firmware boots repeatedly and reports expected I/O without unsafe failures.",
-        "metric": "firmware_boot_success_rate",
-        "owner_role": "Firmware",
-        "priority": "P1",
-        "title": "Firmware Boot And I/O Trace"
       }
     ],
     "partial_sources": 3,
-    "planned_measurements": 12,
+    "planned_measurements": 11,
     "posture": "real-data-needed",
-    "reason": "6 discovered report(s) are quarantined as demo/synthetic/local proof data. Charts and claims will stay empty until real evidence is imported."
+    "reason": "0 discovered report(s) are quarantined as demo/synthetic/local proof data. Charts and claims will stay empty until real evidence is imported."
   },
-  "excluded_runs": [
-    {
-      "acoustic_messages": 4,
-      "advisory_passed": 1,
-      "ai_available": null,
-      "ai_enabled": 0,
-      "ai_model": null,
-      "bathymetry_grid_cells": 64,
-      "bathymetry_points": 15,
-      "binary_frame_bytes": 84,
-      "data_authenticity": {
-        "classification": "synthetic",
-        "confidence": "high",
-        "policy": "quarantined: synthetic/demo/local proof reports cannot drive metrics, graphs, claims, or AI analysis",
-        "reasons": [
-          "run_id contains 'local-proof'",
-          "scenario_id contains 'coastal-demo'",
-          "scenario_key contains 'coastal-demo'",
-          "source_path contains 'local-proof'",
-          "metadata.database_path contains 'local-proof'"
-        ],
-        "usable_for_metrics": false
-      },
-      "db_bytes_per_observation": 0.0,
-      "generated_at": "2026-06-01T07:35:43Z",
-      "hours": 4,
-      "imported_at": "2026-06-02T00:58:57Z",
-      "json_equivalent_bytes": 400,
-      "mesh_routes": 4,
-      "observation_throughput_per_s": 67.12,
-      "observations_accepted": 35,
-      "observations_expected": 35,
-      "portal_html_bytes": 306297,
-      "query_p95_ms": 9.186,
-      "repo_head": "5852114ac3d5ba8c97fe3458abacc99a3e4eddfa",
-      "required_passed": 1,
-      "run_id": "local-proof-smoke",
-      "scenario_id": "coastal-demo",
-      "scenario_key": "coastal-demo:4h:60m",
-      "source_path": "<OMEGA-PROOF-ENV>\\OMEGA-wave\\artifacts\\omega-proof\\local-proof-smoke\\report.json",
-      "station_features": 7,
-      "step_minutes": 60,
-      "wire_savings_percent": 79.0,
-      "write_p95_ms": 30.872
-    },
-    {
-      "acoustic_messages": 4,
-      "advisory_passed": 1,
-      "ai_available": null,
-      "ai_enabled": 0,
-      "ai_model": null,
-      "bathymetry_grid_cells": 64,
-      "bathymetry_points": 15,
-      "binary_frame_bytes": 84,
-      "data_authenticity": {
-        "classification": "synthetic",
-        "confidence": "high",
-        "policy": "quarantined: synthetic/demo/local proof reports cannot drive metrics, graphs, claims, or AI analysis",
-        "reasons": [
-          "run_id contains 'local-proof'",
-          "scenario_id contains 'coastal-demo'",
-          "scenario_key contains 'coastal-demo'",
-          "source_path contains 'local-proof'",
-          "metadata.database_path contains 'local-proof'"
-        ],
-        "usable_for_metrics": false
-      },
-      "db_bytes_per_observation": 76419.66,
-      "generated_at": "2026-06-01T07:43:55Z",
-      "hours": 4,
-      "imported_at": "2026-06-02T00:58:57Z",
-      "json_equivalent_bytes": 400,
-      "mesh_routes": 4,
-      "observation_throughput_per_s": 51.84,
-      "observations_accepted": 35,
-      "observations_expected": 35,
-      "portal_html_bytes": 306297,
-      "query_p95_ms": 9.619,
-      "repo_head": "5852114ac3d5ba8c97fe3458abacc99a3e4eddfa",
-      "required_passed": 1,
-      "run_id": "local-proof-charts",
-      "scenario_id": "coastal-demo",
-      "scenario_key": "coastal-demo:4h:60m",
-      "source_path": "<OMEGA-PROOF-ENV>\\OMEGA-wave\\artifacts\\omega-proof\\local-proof-charts\\report.json",
-      "station_features": 7,
-      "step_minutes": 60,
-      "wire_savings_percent": 79.0,
-      "write_p95_ms": 32.503
-    },
-    {
-      "acoustic_messages": 4,
-      "advisory_passed": 1,
-      "ai_available": 1,
-      "ai_enabled": 1,
-      "ai_model": "qwen2.5:latest",
-      "bathymetry_grid_cells": 64,
-      "bathymetry_points": 15,
-      "binary_frame_bytes": 84,
-      "data_authenticity": {
-        "classification": "synthetic",
-        "confidence": "high",
-        "policy": "quarantined: synthetic/demo/local proof reports cannot drive metrics, graphs, claims, or AI analysis",
-        "reasons": [
-          "run_id contains 'local-proof'",
-          "scenario_id contains 'coastal-demo'",
-          "scenario_key contains 'coastal-demo'",
-          "source_path contains 'local-proof'",
-          "metadata.database_path contains 'local-proof'"
-        ],
-        "usable_for_metrics": false
-      },
-      "db_bytes_per_observation": 76419.66,
-      "generated_at": "2026-06-01T07:47:56Z",
-      "hours": 4,
-      "imported_at": "2026-06-02T00:58:56Z",
-      "json_equivalent_bytes": 400,
-      "mesh_routes": 4,
-      "observation_throughput_per_s": 71.03,
-      "observations_accepted": 35,
-      "observations_expected": 35,
-      "portal_html_bytes": 306297,
-      "query_p95_ms": 8.825,
-      "repo_head": "5852114ac3d5ba8c97fe3458abacc99a3e4eddfa",
-      "required_passed": 1,
-      "run_id": "local-proof-ai",
-      "scenario_id": "coastal-demo",
-      "scenario_key": "coastal-demo:4h:60m",
-      "source_path": "<OMEGA-PROOF-ENV>\\OMEGA-wave\\artifacts\\omega-proof\\local-proof-ai\\report.json",
-      "station_features": 7,
-      "step_minutes": 60,
-      "wire_savings_percent": 79.0,
-      "write_p95_ms": 27.299
-    },
-    {
-      "acoustic_messages": 4,
-      "advisory_passed": 1,
-      "ai_available": 0,
-      "ai_enabled": 1,
-      "ai_model": "qwen2.5:latest",
-      "bathymetry_grid_cells": 64,
-      "bathymetry_points": 15,
-      "binary_frame_bytes": 84,
-      "data_authenticity": {
-        "classification": "synthetic",
-        "confidence": "high",
-        "policy": "quarantined: synthetic/demo/local proof reports cannot drive metrics, graphs, claims, or AI analysis",
-        "reasons": [
-          "run_id contains 'local-proof'",
-          "scenario_id contains 'coastal-demo'",
-          "scenario_key contains 'coastal-demo'",
-          "source_path contains 'local-proof'",
-          "metadata.database_path contains 'local-proof'"
-        ],
-        "usable_for_metrics": false
-      },
-      "db_bytes_per_observation": 76419.66,
-      "generated_at": "2026-06-01T07:51:58Z",
-      "hours": 4,
-      "imported_at": "2026-06-02T00:58:57Z",
-      "json_equivalent_bytes": 400,
-      "mesh_routes": 4,
-      "observation_throughput_per_s": 74.78,
-      "observations_accepted": 35,
-      "observations_expected": 35,
-      "portal_html_bytes": 306297,
-      "query_p95_ms": 8.135,
-      "repo_head": "5852114ac3d5ba8c97fe3458abacc99a3e4eddfa",
-      "required_passed": 1,
-      "run_id": "local-proof-ai2",
-      "scenario_id": "coastal-demo",
-      "scenario_key": "coastal-demo:4h:60m",
-      "source_path": "<OMEGA-PROOF-ENV>\\OMEGA-wave\\artifacts\\omega-proof\\local-proof-ai2\\report.json",
-      "station_features": 7,
-      "step_minutes": 60,
-      "wire_savings_percent": 79.0,
-      "write_p95_ms": 36.889
-    },
-    {
-      "acoustic_messages": 4,
-      "advisory_passed": 1,
-      "ai_available": 1,
-      "ai_enabled": 1,
-      "ai_model": "llama3.2:latest",
-      "bathymetry_grid_cells": 64,
-      "bathymetry_points": 9,
-      "binary_frame_bytes": 84,
-      "data_authenticity": {
-        "classification": "synthetic",
-        "confidence": "high",
-        "policy": "quarantined: synthetic/demo/local proof reports cannot drive metrics, graphs, claims, or AI analysis",
-        "reasons": [
-          "run_id contains 'local-proof'",
-          "scenario_id contains 'coastal-demo'",
-          "scenario_key contains 'coastal-demo'",
-          "source_path contains 'local-proof'",
-          "metadata.database_path contains 'local-proof'"
-        ],
-        "usable_for_metrics": false
-      },
-      "db_bytes_per_observation": 124050.29,
-      "generated_at": "2026-06-01T07:53:00Z",
-      "hours": 2,
-      "imported_at": "2026-06-02T00:58:56Z",
-      "json_equivalent_bytes": 400,
-      "mesh_routes": 4,
-      "observation_throughput_per_s": 68.8,
-      "observations_accepted": 21,
-      "observations_expected": 21,
-      "portal_html_bytes": 306297,
-      "query_p95_ms": 14.888,
-      "repo_head": "5852114ac3d5ba8c97fe3458abacc99a3e4eddfa",
-      "required_passed": 1,
-      "run_id": "local-proof-ai-llama",
-      "scenario_id": "coastal-demo",
-      "scenario_key": "coastal-demo:2h:60m",
-      "source_path": "<OMEGA-PROOF-ENV>\\OMEGA-wave\\artifacts\\omega-proof\\local-proof-ai-llama\\report.json",
-      "station_features": 7,
-      "step_minutes": 60,
-      "wire_savings_percent": 79.0,
-      "write_p95_ms": 43.189
-    },
-    {
-      "acoustic_messages": 4,
-      "advisory_passed": 1,
-      "ai_available": 1,
-      "ai_enabled": 1,
-      "ai_model": "llama3.2:latest",
-      "bathymetry_grid_cells": 64,
-      "bathymetry_points": 9,
-      "binary_frame_bytes": 84,
-      "data_authenticity": {
-        "classification": "synthetic",
-        "confidence": "high",
-        "policy": "quarantined: synthetic/demo/local proof reports cannot drive metrics, graphs, claims, or AI analysis",
-        "reasons": [
-          "run_id contains 'local-proof'",
-          "scenario_id contains 'coastal-demo'",
-          "scenario_key contains 'coastal-demo'",
-          "source_path contains 'local-proof'",
-          "metadata.database_path contains 'local-proof'"
-        ],
-        "usable_for_metrics": false
-      },
-      "db_bytes_per_observation": 124050.29,
-      "generated_at": "2026-06-01T07:55:35Z",
-      "hours": 2,
-      "imported_at": "2026-06-02T00:58:56Z",
-      "json_equivalent_bytes": 400,
-      "mesh_routes": 4,
-      "observation_throughput_per_s": 62.42,
-      "observations_accepted": 21,
-      "observations_expected": 21,
-      "portal_html_bytes": 306297,
-      "query_p95_ms": 15.634,
-      "repo_head": "5852114ac3d5ba8c97fe3458abacc99a3e4eddfa",
-      "required_passed": 1,
-      "run_id": "local-proof-ai-final",
-      "scenario_id": "coastal-demo",
-      "scenario_key": "coastal-demo:2h:60m",
-      "source_path": "<OMEGA-PROOF-ENV>\\OMEGA-wave\\artifacts\\omega-proof\\local-proof-ai-final\\report.json",
-      "station_features": 7,
-      "step_minutes": 60,
-      "wire_savings_percent": 79.0,
-      "write_p95_ms": 43.197
-    }
-  ],
+  "excluded_runs": [],
   "findings": [],
   "generated_at": "2026-06-02T00:58:57Z",
   "health": {
@@ -653,18 +342,6 @@
     },
     {
       "current": null,
-      "how_to_collect": "Collect serial boot logs, sensor traces, flash/build result, and fault-injection notes.",
-      "id": "firmware_boot_io",
-      "metric": "firmware_boot_success_rate",
-      "owner_role": "Firmware",
-      "priority": "P1",
-      "status": "planned",
-      "success_evidence": "Firmware boots repeatedly and reports expected I/O without unsafe failures.",
-      "title": "Firmware Boot And I/O Trace",
-      "why": "Firmware evidence is needed for devices that must start reliably and read sensors safely."
-    },
-    {
-      "current": null,
       "how_to_collect": "Add the metric to future project reports or an external evidence import.",
       "id": "project_test_pass_rate",
       "metric": "test_pass_rate",
@@ -726,16 +403,7 @@
   ],
   "metric_definitions": [],
   "metric_intelligence": [],
-  "next_actions": [
-    {
-      "detail": "Quarantined reports are visible for audit, but only real reports can drive charts and claims.",
-      "metric": "real_report_available",
-      "priority": "P0",
-      "source": "data authenticity gate",
-      "success_metric": "accepted real report count",
-      "title": "Import real project evidence"
-    }
-  ],
+  "next_actions": [],
   "operating_plan": {
     "decision_rules": [
       "If a critical metric regresses, stabilize it before adding new features.",
@@ -743,28 +411,7 @@
       "If a metric improves, add a regression guard before moving on.",
       "If effort looks wasted, verify with issue, CI, or time-log data before changing priorities."
     ],
-    "later": [
-      {
-        "confidence": "thin",
-        "effort": "medium",
-        "evidence_to_collect": "A fresh matching proof report plus before/after metric comparison.",
-        "impact": "high",
-        "metric": "firmware_boot_success_rate",
-        "objective": "Firmware Boot And I/O Trace",
-        "owner_role": "Engineering",
-        "priority": "P1",
-        "source": "measurement plan",
-        "steps": [
-          "Run the same scenario used by the comparable baseline.",
-          "Capture report.json and import it into BETA.",
-          "Check whether the target metric improved, stabilized, or regressed again.",
-          "If it regresses again, profile the owning code path before adding new features."
-        ],
-        "stop_condition": "Do not move this to done until the metric is stable or improving across repeated comparable runs.",
-        "success_metric": "Firmware boots repeatedly and reports expected I/O without unsafe failures.",
-        "why_now": "Firmware evidence is needed for devices that must start reliably and read sensors safely."
-      }
-    ],
+    "later": [],
     "north_star": "Every important claim should have a metric, a baseline, a trend, and a next experiment.",
     "review_questions": [
       "What is the single highest leverage test to run next?",
@@ -876,13 +523,13 @@
   "progress_diagnostics": {},
   "project_intelligence": {
     "domain_counts": {
-      "documentation": 47,
-      "evidence": 101,
-      "firmware": 42,
+      "documentation": 5,
+      "evidence": 0,
+      "firmware": 0,
       "hardware": 0,
-      "software": 181
+      "software": 16
     },
-    "project_count": 2,
+    "project_count": 1,
     "projects": [
       {
         "detected_project_type": {
@@ -913,69 +560,37 @@
           "cpu",
           "current"
         ]
-      },
-      {
-        "detected_project_type": {
-          "evidence_history": true,
-          "firmware": true,
-          "hardware": false,
-          "software": true
-        },
-        "doc_files": 42,
-        "evidence_files": 101,
-        "evidence_gap_count": 0,
-        "files_scanned": 374,
-        "input_count": 3,
-        "input_source_counts": {
-          "ai-session": 3
-        },
-        "next_step": "Keep project plans current as code, tests, and evidence evolve.",
-        "project_key": "omega",
-        "project_name": "OMEGA",
-        "source_files": 144,
-        "test_files": 50,
-        "test_to_source_percent": 34.7,
-        "top_metric_terms": [
-          "battery",
-          "coverage",
-          "current",
-          "latency",
-          "load",
-          "p95"
-        ]
       }
     ],
     "role_counts": {
-      "config": 14,
-      "doc": 47,
-      "evidence": 101,
-      "firmware": 42,
-      "other": 28,
-      "source": 116,
-      "test": 51
+      "config": 1,
+      "doc": 5,
+      "other": 4,
+      "source": 14,
+      "test": 1
     },
-    "summary": "Project scan is connected across 2 project(s), with strongest signals in software, evidence, documentation.",
+    "summary": "Project scan is connected across 1 project(s), with strongest signals in software, documentation.",
     "top_metric_terms": {
       "accuracy": 4,
-      "coverage": 15,
-      "current": 31,
-      "latency": 20,
-      "load": 38,
-      "p95": 30,
-      "power": 10,
-      "storage": 15,
-      "temperature": 7,
-      "throughput": 30
+      "calibration": 4,
+      "coverage": 8,
+      "current": 9,
+      "latency": 7,
+      "load": 12,
+      "p95": 8,
+      "power": 7,
+      "storage": 7,
+      "throughput": 8
     }
   },
   "project_links": [
     {
-      "href": "projects/beta.html",
+      "href": "beta.html",
       "project_key": "beta",
       "project_name": "BETA"
     },
     {
-      "href": "projects/omega.html",
+      "href": "omega.html",
       "project_key": "omega",
       "project_name": "OMEGA"
     }
@@ -986,20 +601,18 @@
     "backlog_health_percent": 0.0,
     "baseline_run_id": null,
     "compared_metric_count": 0,
-    "connected_source_count": 2,
+    "connected_source_count": 1,
     "evidence_coverage_percent": 0.0,
     "finding_counts": {},
     "first_run_at": null,
     "improved_metric_count": 0,
     "latest_run_at": null,
-    "missing_source_count": 5,
-    "open_backlog_items": 1,
+    "missing_source_count": 6,
+    "open_backlog_items": 0,
     "operating_action_count": 4,
-    "planned_measurement_count": 12,
-    "planned_project_count": 2,
-    "priority_counts": {
-      "P0": 1
-    },
+    "planned_measurement_count": 11,
+    "planned_project_count": 1,
+    "priority_counts": {},
     "progress_direction": "Needs real data",
     "regressed_metric_count": 0,
     "report_count": 0,
@@ -1019,7 +632,7 @@
         "Promote repeated AI recommendations into metrics, tests, or risks."
       ],
       "status": "planned",
-      "tracked_ai_session_inputs": 3
+      "tracked_ai_session_inputs": 0
     },
     "current_priorities": [
       {
@@ -1155,7 +768,6 @@
     ],
     "generated_at": "2026-06-02T00:58:57Z",
     "input_source_counts": {
-      "ai-session": 3,
       "docs": 5
     },
     "manager_posture": "build",
@@ -1203,18 +815,18 @@
         "title": "Human Acceptance Signoff"
       },
       {
-        "metric": "firmware_boot_success_rate",
-        "owner_role": "Firmware",
-        "priority": "P1",
-        "success_evidence": "Firmware boots repeatedly and reports expected I/O without unsafe failures.",
-        "title": "Firmware Boot And I/O Trace"
-      },
-      {
         "metric": "test_pass_rate",
         "owner_role": "Project plan",
         "priority": "P2",
         "success_evidence": "Metric appears in the dashboard with a baseline and trend.",
         "title": "Test Pass Rate"
+      },
+      {
+        "metric": "critical_workflow_success_rate",
+        "owner_role": "Project plan",
+        "priority": "P2",
+        "success_evidence": "Metric appears in the dashboard with a baseline and trend.",
+        "title": "Critical Workflow Success Rate"
       }
     ],
     "next_checkpoints": [
@@ -1226,63 +838,62 @@
     "operating_metrics": [
       {
         "metric": "Project profiles",
-        "value": 2,
+        "value": 1,
         "why": "Each tracked build needs a setup profile, goals, source paths, and project type."
       },
       {
         "metric": "Connected data sources",
-        "value": "2 / 11",
+        "value": "1 / 11",
         "why": "Connected sources make the manager brief factual instead of guessy."
       },
       {
         "metric": "Project inputs",
-        "value": 8,
+        "value": 5,
         "why": "Issues, CI, AI sessions, docs, bench logs, and field logs explain why metrics moved."
       },
       {
         "metric": "Planned measurements",
-        "value": 12,
+        "value": 11,
         "why": "Planned measurements convert claims into tests and acceptance evidence."
       },
       {
         "metric": "Open manager risks",
-        "value": 3,
+        "value": 4,
         "why": "Risks mark the places most likely to waste time or weaken proof."
       }
     ],
     "project_controls": [
       {
         "control": "Project intake",
-        "evidence": "2 project profile(s)",
+        "evidence": "1 project profile(s)",
         "next_step": "Keep project goals, paths, type, and claim list current.",
         "status": "active"
       },
       {
         "control": "Evidence intake",
-        "evidence": "8 ingested project input(s)",
+        "evidence": "5 ingested project input(s)",
         "next_step": "Import the source that explains the latest work or blocker.",
         "status": "active"
       },
       {
         "control": "Measurement backlog",
-        "evidence": "12 planned measurement(s)",
+        "evidence": "11 planned measurement(s)",
         "next_step": "Attach every major claim to a repeatable metric and test method.",
         "status": "active"
       },
       {
         "control": "AI collaboration",
-        "evidence": "3 AI session input(s)",
+        "evidence": "0 AI session input(s)",
         "next_step": "Capture AI decisions, discarded ideas, and tested recommendations.",
-        "status": "active"
+        "status": "planned"
       }
     ],
     "project_type_mix": {
-      "mixed": 1,
       "software": 1
     },
-    "project_understanding": "Project scan is connected across 2 project(s), with strongest signals in software, evidence, documentation.",
+    "project_understanding": "Project scan is connected across 1 project(s), with strongest signals in software, documentation.",
     "readiness_label": "needs setup",
-    "readiness_score": 19.5,
+    "readiness_score": 12.3,
     "review_agenda": [
       "What metric changed since the last comparable run, and what caused it?",
       "Which current priority has the clearest success metric and evidence source?",
@@ -1308,10 +919,18 @@
         "owner_role": "Project manager",
         "risk": "Missing Issue And CI History",
         "why": "Project-management evidence needs defects, milestones, build pass rate, coverage, and flaky-test history."
+      },
+      {
+        "mitigation": "Import Codex/ChatGPT/session summaries as source_type=ai-session after meaningful project work.",
+        "owner_role": "Project manager",
+        "risk": "Missing AI Work Sessions",
+        "why": "AI session summaries show what an AI helped change, suggested, tested, or left uncertain."
       }
     ],
-    "setup_next_steps": [],
-    "source_coverage_score": 18.2,
+    "setup_next_steps": [
+      "Save useful AI work summaries with source_type=ai-session so BETA can connect suggestions to evidence."
+    ],
+    "source_coverage_score": 9.1,
     "summary": "Use the current proof data to choose the next narrow improvement loop.",
     "workflow_levers": [
       "Increase repeat depth to at least three matching runs per important scenario.",
@@ -1331,7 +950,7 @@
         "risk_register": [],
         "summary": null
       },
-      "ai_plan_path": "<OMEGA-PROOF-ENV>\\omega-proof-lab\\.prooflab\\projects\\beta\\ai-plan.json",
+      "ai_plan_path": "C:\\Users\\jdcap\\OneDrive\\Documents\\OMEGA Proof\\omega-proof-lab\\.prooflab\\projects\\beta\\ai-plan.json",
       "blueprint": {
         "ai_collaboration_contract": [
           "Save important AI sessions or summaries as project inputs.",
@@ -1423,7 +1042,7 @@
           "deployment_frequency"
         ],
         "paths": [
-          "<OMEGA-PROOF-ENV>\\omega-proof-lab"
+          "C:\\Users\\jdcap\\OneDrive\\Documents\\OMEGA Proof\\omega-proof-lab"
         ],
         "project_key": "beta",
         "project_name": "BETA",
@@ -1491,8 +1110,8 @@
             "line_count": 41,
             "name": "README.md",
             "note": "Updated separated project page documentation",
-            "path": "<OMEGA-PROOF-ENV>\\omega-proof-lab\\README.md",
-            "sample_text": "# BETA\n\nBETA means Build Environment for Testing & Analytics. It is a standalone evidence,\nproject-management, and improvement tracker for OMEGA and future software,\nfirmware, hardware, AI, data, and research projects. It reads proof `report.json`\nfiles, project scans, issue/CI/bench/doc/AI-session inputs, keeps its own SQLite\nhistory, analyzes progress, generates a local app, and can use Ollama as a local\nAI analyst and project manager.\n\n## Quick Start\n\nThe easiest way to work on the project is the local PowerShell helper:\n\n```powershell\ncd \"<OMEGA-PROOF-ENV>\\omega-proof-lab\"\npowershell -ExecutionPolicy Bypass -File .\\dev.ps1\npowershell -ExecutionPolicy Bypass -File .\\dev.ps1 serve\n```\n\n`dev.ps1` runs from the project root and supports:\n\n```powershell\npowershell -ExecutionPolicy Bypass -File .\\dev.ps1 doctor\npowershell -ExecutionPolicy Bypass -File .\\dev.ps1 test\npowershell -ExecutionPolicy Bypass -File .\\dev.ps1 refresh\npowershell -ExecutionPolicy Bypass -File .\\dev.ps1 ai -Model llama3.2:latest\npowershell -ExecutionPolicy Bypass -File .\\dev.ps1 ask -Model gemma4:latest -Question \"Why are we behind and what should we test next?\"\npowershell -ExecutionPolicy Bypass -File .\\dev.ps1 report\npowershell -ExecutionPolicy Bypass -File .\\dev.ps1 open\npowershell -ExecutionPolicy Bypass -File .\\dev.ps1 serve\npowershell -ExecutionPolicy Bypass -File .\\dev.ps1 status\npowershell -ExecutionPolicy Bypass -File .\\dev.ps1 stop\npowershell -ExecutionPolicy Bypass -File .\\dev.ps1 restart\npowershell -ExecutionPolicy Bypass -File .\\dev.ps1 init-project -ProjectName OMEGA -ProjectType mixed\npowershell -ExecutionPolicy Bypass -File .\\dev.ps1 ingest-info -ProjectKey omega -InfoPath C:\\path\\to\\notes.md -SourceType ai-session\npowershell -ExecutionPolicy Bypass -File .\\dev.ps1 manage-ai -Model gemma4:latest\npowershell -ExecutionPolicy Bypass -File .\\dev.ps1 plan\npowershell -ExecutionPolicy Bypass -File .\\dev.ps1 plan-ai -Model llama3.2:latest\n```\n\nIf `serve` says th",
+            "path": "C:\\Users\\jdcap\\OneDrive\\Documents\\OMEGA Proof\\omega-proof-lab\\README.md",
+            "sample_text": "# BETA\n\nBETA means Build Environment for Testing & Analytics. It is a standalone evidence,\nproject-management, and improvement tracker for OMEGA and future software,\nfirmware, hardware, AI, data, and research projects. It reads proof `report.json`\nfiles, project scans, issue/CI/bench/doc/AI-session inputs, keeps its own SQLite\nhistory, analyzes progress, generates a local app, and can use Ollama as a local\nAI analyst and project manager.\n\n## Quick Start\n\nThe easiest way to work on the project is the local PowerShell helper:\n\n```powershell\ncd \"C:\\Users\\jdcap\\OneDrive\\Documents\\OMEGA Proof\\omega-proof-lab\"\npowershell -ExecutionPolicy Bypass -File .\\dev.ps1\npowershell -ExecutionPolicy Bypass -File .\\dev.ps1 serve\n```\n\n`dev.ps1` runs from the project root and supports:\n\n```powershell\npowershell -ExecutionPolicy Bypass -File .\\dev.ps1 doctor\npowershell -ExecutionPolicy Bypass -File .\\dev.ps1 test\npowershell -ExecutionPolicy Bypass -File .\\dev.ps1 refresh\npowershell -ExecutionPolicy Bypass -File .\\dev.ps1 ai -Model llama3.2:latest\npowershell -ExecutionPolicy Bypass -File .\\dev.ps1 ask -Model gemma4:latest -Question \"Why are we behind and what should we test next?\"\npowershell -ExecutionPolicy Bypass -File .\\dev.ps1 report\npowershell -ExecutionPolicy Bypass -File .\\dev.ps1 open\npowershell -ExecutionPolicy Bypass -File .\\dev.ps1 serve\npowershell -ExecutionPolicy Bypass -File .\\dev.ps1 status\npowershell -ExecutionPolicy Bypass -File .\\dev.ps1 stop\npowershell -ExecutionPolicy Bypass -File .\\dev.ps1 restart\npowershell -ExecutionPolicy Bypass -File .\\dev.ps1 init-project -ProjectName OMEGA -ProjectType mixed\npowershell -ExecutionPolicy Bypass -File .\\dev.ps1 ingest-info -ProjectKey omega -InfoPath C:\\path\\to\\notes.md -SourceType ai-session\npowershell -ExecutionPolicy Bypass -File .\\dev.ps1 manage-ai -Model gemma4:latest\npowershell -ExecutionPolicy Bypass -File .\\dev.ps1 plan\npowershell -ExecutionPolicy Bypass -File .\\dev.ps1 plan-ai -Model llama3.2:latest\n```\n\nIf `serve` says th",
             "source_type": "docs"
           },
           {
@@ -1502,7 +1121,7 @@
             "line_count": 41,
             "name": "ai-analyst.md",
             "note": "Updated separated project page documentation",
-            "path": "<OMEGA-PROOF-ENV>\\omega-proof-lab\\docs\\ai-analyst.md",
+            "path": "C:\\Users\\jdcap\\OneDrive\\Documents\\OMEGA Proof\\omega-proof-lab\\docs\\ai-analyst.md",
             "sample_text": "# AI Analyst Design\n\nBETA uses AI as an engineering analyst and project-manager assistant layered on top of deterministic data.\nThe AI is not allowed to decide whether a metric improved or regressed. It receives\nthat comparison as an authoritative input and turns it into useful next steps.\n\n## Local Model Strategy\n\n- `--model auto-strong` asks Ollama for installed models and picks the largest one.\n- A pinned model such as `qwen3.6:latest` can be used for consistent reports.\n- Faster models can be used during iteration when speed matters more than depth.\n- BETA sends `think: false` for structured JSON calls so thinking-capable\n  models return the final answer in the response field instead of a separate\n  reasoning trace.\n- Malformed structured output is not accepted as an AI review. If a model returns\n  a thought-only object, invalid schema, or times out, the dashboard keeps the\n  deterministic analysis as the source of truth and marks the AI review unavailable.\n- For large evidence payloads, pinning a practical local model such as\n  `gemma4:latest` can be more useful than waiting on the largest installed model.\n- For project-manager work, `manage --ai` asks the local model to review the\n  operating plan, workflow health, project inputs, risks, and metric intelligence.\n\n## Prompt Contract\n\nThe AI prompt includes:\n\n- Summary metrics.\n- Latest run metrics.\n- Baseline run id.\n- Metric-by-metric comparison facts.\n- Claim evidence reasoning and caveats.\n- Data lineage for latest and baseline proof reports.\n- Deterministic findings.\n- Deterministic improvement backlog.\n- Connected and missing data sources.\n- The current measurement plan.\n- Deterministic work guidance for focus, avoid, and process-improvement advice.\n- Deterministic operating plan with ranked actions, owner roles, success metrics,\n  evidence requirements, and stop conditions.\n- Metric intelligence with risk, confidence, volatility, streaks, and gap from best.\n- Workflow health and project intelligence from ",
             "source_type": "docs"
           },
@@ -1513,7 +1132,7 @@
             "line_count": 65,
             "name": "evaluation-plan.md",
             "note": "Updated separated project page documentation",
-            "path": "<OMEGA-PROOF-ENV>\\omega-proof-lab\\docs\\evaluation-plan.md",
+            "path": "C:\\Users\\jdcap\\OneDrive\\Documents\\OMEGA Proof\\omega-proof-lab\\docs\\evaluation-plan.md",
             "sample_text": "# OMEGA BETA Evaluation Plan\n\nThis suite is meant to prove OMEGA with repeatable evidence, not vibes. It keeps a\nhistory of proof runs, compares each run with the closest previous run for the same\nscenario, highlights regressions, and turns findings into improvement work.\n\n## What To Measure\n\n### Correctness gates\n\n- Required proof checks pass or fail.\n- Advisory proof checks pass or fail.\n- Generated reports include repo head, scenario id, run id, and timestamp.\n\n### Effectiveness signals\n\n- Observations expected vs accepted.\n- Station features represented in the API and portal.\n- Bathymetry points and grid cells available.\n- Mesh routes available.\n- Acoustic messages available.\n\n### Efficiency signals\n\n- Observation ingest throughput.\n- Write p95 latency.\n- Query p95 latency.\n- Database bytes per observation.\n- Served portal payload size.\n- Binary wire-frame size vs JSON equivalent size.\n- Percent wire savings from the binary protocol.\n\n### Field-readiness signals\n\n- Public or tunnel-served portal load time.\n- Dashboard and API response time on a slower network path.\n- Stability across repeated runs.\n- Data quality under larger scenarios.\n\n## Evidence Loop\n\n1. Run OMEGA's proof generator.\n2. Import the resulting `report.json` files into BETA.\n3. Rebuild deterministic analysis and charts.\n4. Run AI analysis when Ollama is available.\n5. Review the operating plan, metric intelligence, workflow health, and backlog.\n6. Choose the next experiment from the ranked plan.\n7. Make the OMEGA change.\n8. Rerun the same scenario and compare against the previous matching baseline.\n\nRecommended command:\n\n```powershell\npython -m prooflab run ..\\OMEGA-wave\\artifacts\\omega-proof --ai --model auto-strong\npython -m prooflab serve --open-browser\n```\n\n## Good Results\n\nUseful proof should show all of these over time:\n\n- Required gates stay green.\n- Coverage metrics hold steady or increase.\n- Throughput improves or stays stable as scenario size grows.\n- p95 write and query latency stay bel",
             "source_type": "docs"
           },
@@ -1524,7 +1143,7 @@
             "line_count": 46,
             "name": "general-project-planning.md",
             "note": "Updated separated project page documentation",
-            "path": "<OMEGA-PROOF-ENV>\\omega-proof-lab\\docs\\general-project-planning.md",
+            "path": "C:\\Users\\jdcap\\OneDrive\\Documents\\OMEGA Proof\\omega-proof-lab\\docs\\general-project-planning.md",
             "sample_text": "# General Project Planning\n\nBETA can be used beyond OMEGA. It supports software, firmware, hardware, data,\nAI, research, and mixed builds. A project can start from an intake blueprint,\na repository scan, imported management/evidence inputs, and an optional local\nOllama project-manager review.\n\n## Command\n\n```powershell\npython -m prooflab init-project --project-name \"Bench Prototype\" --project-type hardware --scan C:\\path\\to\\project\npython -m prooflab ingest-info bench-prototype C:\\path\\to\\bench.csv --source-type bench\npython -m prooflab ingest-info bench-prototype C:\\path\\to\\codex-summary.md --source-type ai-session\npython -m prooflab manage --ai --model gemma4:latest\npython -m prooflab plan C:\\path\\to\\project --project-name \"Bench Prototype\" --ai --model auto-strong\n```\n\nWithout `--ai`, BETA still creates deterministic project and manager plans from\nthe project inventory and imported inputs.\n\n## What Gets Ingested\n\nThe project scanner creates a bounded project profile:\n\n- File inventory and extension counts.\n- Role classification: docs, source, tests, config, evidence, firmware, hardware.\n- Short excerpts from readable project files.\n- Detected metric terms such as latency, throughput, power, calibration, thermal,\n  accuracy, reliability, and storage.\n- Signals for whether the build looks like software, hardware, firmware, or a mix.\n\nLarge dependency folders and generated build folders are skipped.\n\nThe `ingest-info` command also attaches non-code project context:\n\n- `issues`: GitHub/Jira/manual backlog exports.\n- `ci`: build results, coverage, test output, flake reports.\n- `ai-session`: AI chat summaries, Codex session notes, agent work logs.\n- `bench` or `field`: hardware measurements, acceptance sheets, field notes.\n- `docs`, `notes`, `metrics`, or `other`: requirements, decisions, manual metrics.\n\n## What The Plan Produces\n\n- Claims to verify.\n- Metric catalog with units and rationale.\n- Test matrix for core workflows, regressions, stress/scale, and bench valid",
             "source_type": "docs"
           },
@@ -1535,7 +1154,7 @@
             "line_count": 63,
             "name": "project-manager.md",
             "note": "Updated separated project page documentation",
-            "path": "<OMEGA-PROOF-ENV>\\omega-proof-lab\\docs\\project-manager.md",
+            "path": "C:\\Users\\jdcap\\OneDrive\\Documents\\OMEGA Proof\\omega-proof-lab\\docs\\project-manager.md",
             "sample_text": "# BETA Project Manager\n\nBETA is meant to become a reusable project operating layer. The core loop is:\n\n1. Initialize the project.\n2. Scan the project files.\n3. Import evidence and management inputs.\n4. Generate the operating plan.\n5. Ask the project-manager AI for advisory review.\n6. Run tests or project work.\n7. Import the new evidence and repeat.\n\n## Project Setup\n\n```powershell\npython -m prooflab init-project --project-name OMEGA --project-type mixed --scan ..\\OMEGA-wave\n```\n\nSupported project types:\n\n- `software`\n- `hardware`\n- `firmware`\n- `data`\n- `ai`\n- `research`\n- `mixed`\n\nThe setup writes `project.json` with project goals, metric families, evidence\nsources, management cadence, setup checklist, and AI collaboration rules.\n\n## Information Ingestion\n\n```powershell\npython -m prooflab ingest-info omega C:\\path\\to\\issues.csv --source-type issues\npython -m prooflab ingest-info omega C:\\path\\to\\ci-results.json --source-type ci\npython -m prooflab ingest-info omega C:\\path\\to\\codex-summary.md --source-type ai-session\npython -m prooflab ingest-info omega C:\\path\\to\\bench-log.csv --source-type bench\n```\n\n`ingest-info` does not need every source to use the same schema yet. It creates a\nmanifest with file metadata, row counts, JSON keys, and short text samples. The\nmanager plan uses those manifests to know which evidence sources are connected.\n\n## Project Manager Brief\n\n```powershell\npython -m prooflab manage\npython -m prooflab manage --ai --model gemma4:latest\n```\n\nThe deterministic manager brief includes:\n\n- Readiness score and source-coverage score.\n- Operating metrics for project profiles, connected sources, inputs, planned\n  measurements, and open risks.\n- Project controls for intake, evidence, measurement backlog, and AI collaboration.\n- Current priorities from the operating plan.\n- Risks from critical metrics and missing sources.\n- Review agenda for the next project check-in.\n- Setup gaps that would make the next report more useful.\n- Next checkpoints.\n- Data sou",
             "source_type": "docs"
           }
@@ -1604,12 +1223,12 @@
         "voltage": 1,
         "yield": 2
       },
-      "plan_path": "<OMEGA-PROOF-ENV>\\omega-proof-lab\\.prooflab\\projects\\beta\\plan.json",
-      "profile_path": "<OMEGA-PROOF-ENV>\\omega-proof-lab\\.prooflab\\projects\\beta\\profile.json",
-      "project_config_path": "<OMEGA-PROOF-ENV>\\omega-proof-lab\\.prooflab\\projects\\beta\\project.json",
+      "plan_path": "C:\\Users\\jdcap\\OneDrive\\Documents\\OMEGA Proof\\omega-proof-lab\\.prooflab\\projects\\beta\\plan.json",
+      "profile_path": "C:\\Users\\jdcap\\OneDrive\\Documents\\OMEGA Proof\\omega-proof-lab\\.prooflab\\projects\\beta\\profile.json",
+      "project_config_path": "C:\\Users\\jdcap\\OneDrive\\Documents\\OMEGA Proof\\omega-proof-lab\\.prooflab\\projects\\beta\\project.json",
       "project_key": "beta",
       "project_name": "BETA",
-      "project_path": "<OMEGA-PROOF-ENV>\\omega-proof-lab\\.prooflab\\projects\\beta",
+      "project_path": "C:\\Users\\jdcap\\OneDrive\\Documents\\OMEGA Proof\\omega-proof-lab\\.prooflab\\projects\\beta",
       "project_type": "software",
       "recommended_next_artifacts": [
         "claims.md: claims, acceptance thresholds, and evidence source for each claim",
@@ -1650,328 +1269,6 @@
           "test": "Increase load, duration, dataset size, or duty cycle until a limit is observed."
         }
       ]
-    },
-    {
-      "ai": {
-        "available": true,
-        "milestones": [
-          {
-            "exit_criteria": [
-              "All claims verified",
-              "All test cases completed"
-            ],
-            "name": "Complete deterministic plan"
-          }
-        ],
-        "model": "llama3.2:latest",
-        "next_steps": [
-          "Implement robust testing and validation procedures for firmware development."
-        ],
-        "risk_register": [
-          {
-            "impact": "High",
-            "mitigation": "Implement robust testing and validation procedures for firmware development.",
-            "risk": "Unstable firmware"
-          }
-        ],
-        "summary": "OMEGA Proof"
-      },
-      "ai_plan_path": "<OMEGA-PROOF-ENV>\\omega-proof-lab\\.prooflab\\projects\\omega\\ai-plan.json",
-      "blueprint": {
-        "ai_collaboration_contract": [
-          "Save important AI sessions or summaries as project inputs.",
-          "Link AI suggestions to metrics, tests, or evidence gaps.",
-          "Do not count AI claims as proof unless a test or source supports them.",
-          "Track which AI recommendations were tried and whether later metrics improved."
-        ],
-        "data_ingestion_targets": [
-          {
-            "examples": [
-              "GitHub issues export",
-              "Jira CSV",
-              "manual backlog CSV"
-            ],
-            "source_type": "issues"
-          },
-          {
-            "examples": [
-              "test results JSON",
-              "coverage XML/JSON",
-              "build logs"
-            ],
-            "source_type": "ci"
-          },
-          {
-            "examples": [
-              "AI chat transcript",
-              "Codex summary",
-              "agent work log"
-            ],
-            "source_type": "ai-session"
-          },
-          {
-            "examples": [
-              "bench CSV",
-              "field log",
-              "calibration sheet"
-            ],
-            "source_type": "bench"
-          },
-          {
-            "examples": [
-              "requirements",
-              "design notes",
-              "acceptance criteria"
-            ],
-            "source_type": "docs"
-          }
-        ],
-        "description": "OMEGA system verification and project tracking",
-        "evidence_sources": [
-          "repo scan",
-          "proof reports",
-          "issue tracker",
-          "CI history",
-          "bench/field logs",
-          "AI work logs"
-        ],
-        "generated_at": "2026-06-01T23:18:05Z",
-        "goals": [
-          "Prove OMEGA works with repeatable evidence",
-          "Track software, firmware, hardware, AI, and field-readiness progress"
-        ],
-        "management_cadence": {
-          "daily": [
-            "Review current blocker",
-            "Run or schedule the smallest useful evidence check"
-          ],
-          "milestone": [
-            "Re-scan project",
-            "Refresh claims/metrics",
-            "Run AI manager review",
-            "Archive decision log"
-          ],
-          "weekly": [
-            "Review operating plan",
-            "Close stale risks",
-            "Pick next measurements",
-            "Export report"
-          ]
-        },
-        "manager_ai_role": "Project manager AI that turns evidence into priorities, risks, checkpoints, and better workflow.",
-        "metric_families": [
-          "claim_coverage",
-          "test_pass_rate",
-          "failure_rate",
-          "cost_or_resource_use",
-          "human_acceptance_rate"
-        ],
-        "paths": [
-          "<OMEGA-PROOF-ENV>\\OMEGA-wave"
-        ],
-        "project_key": "omega",
-        "project_name": "OMEGA",
-        "project_type": "mixed",
-        "setup_checklist": [
-          "Define the project claims and acceptance criteria.",
-          "Choose the first repeatable scenario or workflow to test.",
-          "Add machine-readable reports for every meaningful run.",
-          "Connect source, test, issue, CI, AI-work, and bench/field evidence where available.",
-          "Review the operating plan weekly and after every major run."
-        ],
-        "test_tools": [
-          "claims-to-metrics review",
-          "regression suite",
-          "field/bench matrix",
-          "acceptance checklist"
-        ]
-      },
-      "claims_to_verify": [
-        {
-          "claim": "The build performs its core user or operator workflow correctly.",
-          "evidence": "End-to-end workflow tests, recorded run logs, and pass/fail criteria."
-        },
-        {
-          "claim": "The build improves or preserves key performance metrics over time.",
-          "evidence": "Comparable run history with latency, throughput, resource, and reliability trends."
-        },
-        {
-          "claim": "The build is stable enough for repeated use.",
-          "evidence": "Repeated runs, failure-rate tracking, soak tests, and regression thresholds."
-        },
-        {
-          "claim": "Firmware starts reliably and handles device I/O safely.",
-          "evidence": "Boot logs, hardware-in-the-loop tests, sensor/actuator traces, and fault injection."
-        }
-      ],
-      "description": "OMEGA system verification and project tracking",
-      "detected_project_type": {
-        "evidence_history": true,
-        "firmware": true,
-        "hardware": false,
-        "software": true
-      },
-      "domain_signals": {
-        "documentation": 42,
-        "evidence": 101,
-        "firmware": 42,
-        "hardware": 0,
-        "software": 165
-      },
-      "evidence_gaps": [],
-      "files_scanned": 374,
-      "files_seen": 374,
-      "generated_at": "2026-06-01T23:18:05Z",
-      "goals": [
-        "Prove OMEGA works with repeatable evidence",
-        "Track software, firmware, hardware, AI, and field-readiness progress"
-      ],
-      "inputs": {
-        "entries": [
-          {
-            "bytes": 10854,
-            "extension": ".md",
-            "imported_at": "2026-06-01T23:18:15Z",
-            "line_count": 41,
-            "name": "README.md",
-            "note": "Current BETA project-manager and AI analysis design notes",
-            "path": "<OMEGA-PROOF-ENV>\\omega-proof-lab\\README.md",
-            "sample_text": "# BETA\n\nBETA means Build Environment for Testing & Analytics. It is a standalone evidence,\nproject-management, and improvement tracker for OMEGA and future software,\nfirmware, hardware, AI, data, and research projects. It reads proof `report.json`\nfiles, project scans, issue/CI/bench/doc/AI-session inputs, keeps its own SQLite\nhistory, analyzes progress, generates a local app, and can use Ollama as a local\nAI analyst and project manager.\n\n## Quick Start\n\nThe easiest way to work on the project is the local PowerShell helper:\n\n```powershell\ncd \"<OMEGA-PROOF-ENV>\\omega-proof-lab\"\npowershell -ExecutionPolicy Bypass -File .\\dev.ps1\npowershell -ExecutionPolicy Bypass -File .\\dev.ps1 serve\n```\n\n`dev.ps1` runs from the project root and supports:\n\n```powershell\npowershell -ExecutionPolicy Bypass -File .\\dev.ps1 doctor\npowershell -ExecutionPolicy Bypass -File .\\dev.ps1 test\npowershell -ExecutionPolicy Bypass -File .\\dev.ps1 refresh\npowershell -ExecutionPolicy Bypass -File .\\dev.ps1 ai -Model llama3.2:latest\npowershell -ExecutionPolicy Bypass -File .\\dev.ps1 ask -Model gemma4:latest -Question \"Why are we behind and what should we test next?\"\npowershell -ExecutionPolicy Bypass -File .\\dev.ps1 report\npowershell -ExecutionPolicy Bypass -File .\\dev.ps1 open\npowershell -ExecutionPolicy Bypass -File .\\dev.ps1 serve\npowershell -ExecutionPolicy Bypass -File .\\dev.ps1 status\npowershell -ExecutionPolicy Bypass -File .\\dev.ps1 stop\npowershell -ExecutionPolicy Bypass -File .\\dev.ps1 restart\npowershell -ExecutionPolicy Bypass -File .\\dev.ps1 init-project -ProjectName OMEGA -ProjectType mixed\npowershell -ExecutionPolicy Bypass -File .\\dev.ps1 ingest-info -ProjectKey omega -InfoPath C:\\path\\to\\notes.md -SourceType ai-session\npowershell -ExecutionPolicy Bypass -File .\\dev.ps1 manage-ai -Model gemma4:latest\npowershell -ExecutionPolicy Bypass -File .\\dev.ps1 plan\npowershell -ExecutionPolicy Bypass -File .\\dev.ps1 plan-ai -Model llama3.2:latest\n```\n\nIf `serve` says th",
-            "source_type": "ai-session"
-          },
-          {
-            "bytes": 4555,
-            "extension": ".md",
-            "imported_at": "2026-06-01T23:18:15Z",
-            "line_count": 41,
-            "name": "ai-analyst.md",
-            "note": "Current BETA project-manager and AI analysis design notes",
-            "path": "<OMEGA-PROOF-ENV>\\omega-proof-lab\\docs\\ai-analyst.md",
-            "sample_text": "# AI Analyst Design\n\nBETA uses AI as an engineering analyst and project-manager assistant layered on top of deterministic data.\nThe AI is not allowed to decide whether a metric improved or regressed. It receives\nthat comparison as an authoritative input and turns it into useful next steps.\n\n## Local Model Strategy\n\n- `--model auto-strong` asks Ollama for installed models and picks the largest one.\n- A pinned model such as `qwen3.6:latest` can be used for consistent reports.\n- Faster models can be used during iteration when speed matters more than depth.\n- BETA sends `think: false` for structured JSON calls so thinking-capable\n  models return the final answer in the response field instead of a separate\n  reasoning trace.\n- Malformed structured output is not accepted as an AI review. If a model returns\n  a thought-only object, invalid schema, or times out, the dashboard keeps the\n  deterministic analysis as the source of truth and marks the AI review unavailable.\n- For large evidence payloads, pinning a practical local model such as\n  `gemma4:latest` can be more useful than waiting on the largest installed model.\n- For project-manager work, `manage --ai` asks the local model to review the\n  operating plan, workflow health, project inputs, risks, and metric intelligence.\n\n## Prompt Contract\n\nThe AI prompt includes:\n\n- Summary metrics.\n- Latest run metrics.\n- Baseline run id.\n- Metric-by-metric comparison facts.\n- Claim evidence reasoning and caveats.\n- Data lineage for latest and baseline proof reports.\n- Deterministic findings.\n- Deterministic improvement backlog.\n- Connected and missing data sources.\n- The current measurement plan.\n- Deterministic work guidance for focus, avoid, and process-improvement advice.\n- Deterministic operating plan with ranked actions, owner roles, success metrics,\n  evidence requirements, and stop conditions.\n- Metric intelligence with risk, confidence, volatility, streaks, and gap from best.\n- Workflow health and project intelligence from ",
-            "source_type": "ai-session"
-          },
-          {
-            "bytes": 2358,
-            "extension": ".md",
-            "imported_at": "2026-06-01T23:18:15Z",
-            "line_count": 67,
-            "name": "project-manager.md",
-            "note": "Current BETA project-manager and AI analysis design notes",
-            "path": "<OMEGA-PROOF-ENV>\\omega-proof-lab\\docs\\project-manager.md",
-            "sample_text": "# BETA Project Manager\n\nBETA is meant to become a reusable project operating layer. The core loop is:\n\n1. Initialize the project.\n2. Scan the project files.\n3. Import evidence and management inputs.\n4. Generate the operating plan.\n5. Ask the project-manager AI for advisory review.\n6. Run tests or project work.\n7. Import the new evidence and repeat.\n\n## Project Setup\n\n```powershell\npython -m prooflab init-project --project-name OMEGA --project-type mixed --scan ..\\OMEGA-wave\n```\n\nSupported project types:\n\n- `software`\n- `hardware`\n- `firmware`\n- `data`\n- `ai`\n- `research`\n- `mixed`\n\nThe setup writes `project.json` with project goals, metric families, evidence\nsources, management cadence, setup checklist, and AI collaboration rules.\n\n## Information Ingestion\n\n```powershell\npython -m prooflab ingest-info omega C:\\path\\to\\issues.csv --source-type issues\npython -m prooflab ingest-info omega C:\\path\\to\\ci-results.json --source-type ci\npython -m prooflab ingest-info omega C:\\path\\to\\codex-summary.md --source-type ai-session\npython -m prooflab ingest-info omega C:\\path\\to\\bench-log.csv --source-type bench\n```\n\n`ingest-info` does not need every source to use the same schema yet. It creates a\nmanifest with file metadata, row counts, JSON keys, and short text samples. The\nmanager plan uses those manifests to know which evidence sources are connected.\n\n## Project Manager Brief\n\n```powershell\npython -m prooflab manage\npython -m prooflab manage --ai --model gemma4:latest\n```\n\nThe deterministic manager brief includes:\n\n- Current priorities from the operating plan.\n- Risks from critical metrics and missing sources.\n- Next checkpoints.\n- Data sources to connect.\n- Planned metrics that should become active.\n- Workflow levers.\n- AI collaboration guidance.\n\nThe AI manager review is advisory. It should improve the work plan, but the\nevidence still comes from metrics, reports, project scans, and imported inputs.\n\n## AI Collaboration Data\n\nWhen an AI helps with project work, save a short ",
-            "source_type": "ai-session"
-          }
-        ],
-        "entry_count": 3,
-        "last_import": {
-          "error_count": 0,
-          "imported_count": 3,
-          "note": "Current BETA project-manager and AI analysis design notes",
-          "source_type": "ai-session"
-        },
-        "source_counts": {
-          "ai-session": 3
-        }
-      },
-      "metric_catalog": [
-        {
-          "metric": "test_pass_rate",
-          "reason": "Baseline correctness and regression signal.",
-          "unit": "%"
-        },
-        {
-          "metric": "critical_workflow_success_rate",
-          "reason": "Measures whether the product does what it claims.",
-          "unit": "%"
-        },
-        {
-          "metric": "p95_latency",
-          "reason": "Tracks user-facing or control-loop responsiveness.",
-          "unit": "ms"
-        },
-        {
-          "metric": "throughput",
-          "reason": "Tracks capacity and efficiency.",
-          "unit": "units/s"
-        },
-        {
-          "metric": "resource_cost",
-          "reason": "Tracks efficiency across software and hardware.",
-          "unit": "bytes/cpu/watts"
-        },
-        {
-          "metric": "failure_rate",
-          "reason": "Tracks stability and reliability.",
-          "unit": "failures/run"
-        }
-      ],
-      "metric_terms": {
-        "battery": 2,
-        "coverage": 7,
-        "current": 22,
-        "latency": 13,
-        "load": 26,
-        "p95": 22,
-        "power": 3,
-        "storage": 8,
-        "temperature": 4,
-        "throughput": 22,
-        "voltage": 2
-      },
-      "plan_path": "<OMEGA-PROOF-ENV>\\omega-proof-lab\\.prooflab\\projects\\omega\\plan.json",
-      "profile_path": "<OMEGA-PROOF-ENV>\\omega-proof-lab\\.prooflab\\projects\\omega\\profile.json",
-      "project_config_path": "<OMEGA-PROOF-ENV>\\omega-proof-lab\\.prooflab\\projects\\omega\\project.json",
-      "project_key": "omega",
-      "project_name": "OMEGA",
-      "project_path": "<OMEGA-PROOF-ENV>\\omega-proof-lab\\.prooflab\\projects\\omega",
-      "project_type": "mixed",
-      "recommended_next_artifacts": [
-        "claims.md: claims, acceptance thresholds, and evidence source for each claim",
-        "metrics.json: stable metric ids, units, higher/lower-is-better, and thresholds",
-        "scenarios/*.json: repeatable software, firmware, or bench scenarios",
-        "reports/<run-id>/report.json: machine-readable results for every run"
-      ],
-      "role_counts": {
-        "config": 13,
-        "doc": 42,
-        "evidence": 101,
-        "firmware": 42,
-        "other": 24,
-        "source": 102,
-        "test": 50
-      },
-      "test_matrix": [
-        {
-          "area": "requirements and claims",
-          "automation": "plan check plus AI review",
-          "evidence": "claims-to-metrics table",
-          "test": "Map each public/internal claim to one measurable metric and one acceptance threshold."
-        },
-        {
-          "area": "core workflow",
-          "automation": "CLI, integration test, or hardware-in-loop script",
-          "evidence": "report.json, logs, screenshots, or bench sheet",
-          "test": "Run the smallest end-to-end scenario that proves the build can complete its main job."
-        },
-        {
-          "area": "regression tracking",
-          "automation": "BETA run history",
-          "evidence": "trend charts and comparison table",
-          "test": "Repeat the same scenario after every meaningful change and compare to the previous matching run."
-        },
-        {
-          "area": "stress and scale",
-          "automation": "load test or extended bench run",
-          "evidence": "capacity curve and failure threshold",
-          "test": "Increase load, duration, dataset size, or duty cycle until a limit is observed."
-        },
-        {
-          "area": "hardware validation",
-          "automation": "instrumented bench script where possible",
-          "evidence": "photos, measurements, serial logs, and pass/fail sheet",
-          "test": "Run a bench checklist for power, thermal, mechanical fit, firmware boot, and I/O behavior."
-        }
-      ]
     }
   ],
   "qa_matrix": [],
@@ -1979,20 +1276,20 @@
   "series": [],
   "summary": {
     "active_measurement_count": 0,
-    "connected_source_count": 2,
+    "connected_source_count": 1,
     "data_quality_label": "needs-real-data",
     "data_quality_score": 0.0,
     "evidence_coverage_percent": 0.0,
     "health_label": "Needs data",
-    "missing_source_count": 5,
+    "missing_source_count": 6,
     "overall_health": 0.0,
-    "planned_measurement_count": 12,
-    "planned_project_count": 2,
+    "planned_measurement_count": 11,
+    "planned_project_count": 1,
     "progress_direction": "Needs real data",
-    "quarantined_report_count": 6,
+    "quarantined_report_count": 0,
     "real_report_count": 0,
     "run_count": 0,
-    "total_discovered_report_count": 6
+    "total_discovered_report_count": 0
   },
   "work_guidance": {
     "avoid": [
@@ -2055,15 +1352,6 @@
         "source": "measurement plan",
         "success_metric": "DB bytes per observation stays flat or drops as sample size grows.",
         "title": "Storage Growth Curve"
-      },
-      {
-        "metric": "firmware_boot_success_rate",
-        "next_step": "Collect serial boot logs, sensor traces, flash/build result, and fault-injection notes.",
-        "priority": "P1",
-        "reason": "Firmware evidence is needed for devices that must start reliably and read sensors safely.",
-        "source": "measurement plan",
-        "success_metric": "Firmware boots repeatedly and reports expected I/O without unsafe failures.",
-        "title": "Firmware Boot And I/O Trace"
       }
     ],
     "missing_direct_management_data": [],
@@ -2094,14 +1382,14 @@
       {
         "habit": "Start with: Real proof report is available.",
         "title": "Close data-quality gaps before polishing",
-        "why": "Accepted real reports: 0; quarantined demo/synthetic reports: 6."
+        "why": "Accepted real reports: 0; quarantined demo/synthetic reports: 0."
       }
     ]
   },
   "workflow_health": {
     "active_measurement_percent": 0.0,
     "ai_available": false,
-    "connected_source_percent": 18.2,
+    "connected_source_percent": 9.1,
     "improvement_levers": [
       "Increase repeat depth to at least three matching runs per important scenario.",
       "Connect issue/CI, bench, field, or work-log sources so project-management claims stop being inferred.",
@@ -2116,7 +1404,7 @@
     ],
     "repeat_depth": 0,
     "runs_per_week": 0.0,
-    "score": 3.6
+    "score": 1.8
   },
-  "workspace_href": "dashboard.html"
+  "workspace_href": "../dashboard.html"
 }
