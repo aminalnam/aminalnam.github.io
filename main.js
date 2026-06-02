@@ -13,6 +13,8 @@ document.addEventListener("DOMContentLoaded", () => {
   initLiveTerminalFeed();
   initMagneticButtons();
   initSubmarineAlert();
+  initTelemetrySparkline();
+  initCursorTrail();
 });
 
 /* -------------------------------------
@@ -620,12 +622,12 @@ function initMagneticButtons() {
       const y = e.clientY - rect.top - v;
 
       // Pull button towards cursor
-      btn.style.transform = \`translate(\${x * 0.3}px, \${y * 0.3}px)\`;
+      btn.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
     });
 
     btn.addEventListener('mouseleave', () => {
       // Snap back to center
-      btn.style.transform = \`translate(0px, 0px)\`;
+      btn.style.transform = `translate(0px, 0px)`;
     });
   });
 }
@@ -653,10 +655,10 @@ function initSubmarineAlert() {
     }
   });
 
-  function triggerRedAlert() {
+    function triggerRedAlert() {
     // Inject emergency CSS
     const style = document.createElement('style');
-    style.innerHTML = \`
+    style.innerHTML = `
       html { background-color: #2a0808 !important; }
       body { background-color: transparent !important; }
       .red-alert-overlay {
@@ -671,7 +673,7 @@ function initSubmarineAlert() {
       }
       * { color: #ff5555 !important; border-color: rgba(255,0,0,0.3) !important; }
       .panel { background: rgba(40, 0, 0, 0.5) !important; }
-    \`;
+    `;
     document.head.appendChild(style);
 
     const overlay = document.createElement('div');
@@ -680,4 +682,118 @@ function initSubmarineAlert() {
 
     console.log("RED ALERT: EMERGENCY PROTOCOL INITIATED.");
   }
+}
+
+/* -------------------------------------
+   10. Telemetry Sparkline
+------------------------------------- */
+function initTelemetrySparkline() {
+  const canvas = document.getElementById('telemetry-sparkline');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  
+  // Set internal canvas resolution
+  canvas.width = canvas.offsetWidth;
+  canvas.height = canvas.offsetHeight;
+
+  const valueDisplay = document.getElementById('sparkline-value');
+  let dataPoints = new Array(50).fill(40);
+  let targetVal = 40;
+
+  function draw() {
+    // Resize handling if window changes
+    if(canvas.width !== canvas.offsetWidth) canvas.width = canvas.offsetWidth;
+    
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    // Add new data point (random walk towards target)
+    if (Math.random() > 0.9) targetVal = 20 + Math.random() * 80;
+    
+    let lastVal = dataPoints[dataPoints.length - 1];
+    let newVal = lastVal + (targetVal - lastVal) * 0.1 + (Math.random() - 0.5) * 5;
+    
+    dataPoints.push(newVal);
+    dataPoints.shift();
+
+    if (valueDisplay && Math.random() > 0.5) {
+      valueDisplay.innerText = Math.round(newVal) + 'ms';
+      valueDisplay.style.color = newVal > 80 ? '#ef4444' : (newVal > 60 ? '#f59e0b' : '#10b981');
+    }
+
+    // Draw line
+    ctx.beginPath();
+    const step = canvas.width / (dataPoints.length - 1);
+    
+    ctx.moveTo(0, canvas.height - (dataPoints[0] / 150) * canvas.height);
+    
+    for (let i = 1; i < dataPoints.length; i++) {
+      const x = i * step;
+      const y = canvas.height - (dataPoints[i] / 150) * canvas.height;
+      ctx.lineTo(x, y);
+    }
+    
+    ctx.strokeStyle = 'rgba(16, 185, 129, 0.8)';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    // Fill under line
+    ctx.lineTo(canvas.width, canvas.height);
+    ctx.lineTo(0, canvas.height);
+    ctx.fillStyle = 'rgba(16, 185, 129, 0.1)';
+    ctx.fill();
+
+    requestAnimationFrame(draw);
+  }
+
+  draw();
+}
+
+/* -------------------------------------
+   11. Bioluminescent Cursor Trail
+------------------------------------- */
+function initCursorTrail() {
+  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  if (isMobile) return;
+
+  const trailContainer = document.createElement('div');
+  trailContainer.id = 'cursor-trail-container';
+  trailContainer.style.position = 'fixed';
+  trailContainer.style.top = '0';
+  trailContainer.style.left = '0';
+  trailContainer.style.width = '100vw';
+  trailContainer.style.height = '100vh';
+  trailContainer.style.pointerEvents = 'none';
+  trailContainer.style.zIndex = '9999';
+  trailContainer.style.overflow = 'hidden';
+  document.body.appendChild(trailContainer);
+
+  document.addEventListener('mousemove', (e) => {
+    // Only spawn particles sometimes to prevent DOM overload
+    if (Math.random() > 0.5) return;
+
+    const particle = document.createElement('div');
+    particle.style.position = 'absolute';
+    particle.style.left = e.clientX + 'px';
+    particle.style.top = e.clientY + 'px';
+    particle.style.width = '6px';
+    particle.style.height = '6px';
+    particle.style.borderRadius = '50%';
+    particle.style.background = 'rgba(59, 130, 246, 0.8)'; // Brand Cyan/Blue
+    particle.style.boxShadow = '0 0 10px rgba(59, 130, 246, 0.8)';
+    particle.style.pointerEvents = 'none';
+    particle.style.transition = 'all 1s cubic-bezier(0.16, 1, 0.3, 1)';
+    
+    trailContainer.appendChild(particle);
+
+    // Trigger reflow
+    void particle.offsetWidth;
+
+    // Expand and fade out
+    particle.style.transform = `translate(-50%, -50%) scale(${Math.random() * 3 + 1})`;
+    particle.style.opacity = '0';
+
+    setTimeout(() => {
+      particle.remove();
+    }, 1000);
+  });
 }
