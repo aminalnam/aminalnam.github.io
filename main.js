@@ -17,6 +17,8 @@ document.addEventListener("DOMContentLoaded", () => {
   initAmbientBackground();
   initSyntaxHighlighting();
   initPageTransitions();
+  initContentEnhancer();
+  initLightbox();
 });
 
 /* -------------------------------------
@@ -271,6 +273,66 @@ function initPageTransitions() {
         }, 300);
       });
     }
+  });
+}
+
+/* -------------------------------------
+   3.7. Content Enhancer (Links & Text Cascade)
+------------------------------------- */
+function initContentEnhancer() {
+  // Add external link indicators
+  document.querySelectorAll('a[target="_blank"]').forEach(link => {
+    // Don't add to buttons or images
+    if (!link.classList.contains('btn') && link.children.length === 0) {
+      link.innerHTML += '<span style="font-family: var(--font-sans); margin-left: 0.25rem; opacity: 0.6; font-size: 0.8em;">↗</span>';
+      link.style.borderBottom = '1px dashed rgba(56, 189, 248, 0.4)';
+      link.style.paddingBottom = '2px';
+    }
+  });
+
+  // Staggered Cascade Animation for Paragraphs
+  const pObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        pObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: "0px 0px -20px 0px" });
+
+  document.querySelectorAll('.section-block p, .section-block li').forEach((p, index) => {
+    p.classList.add('cascade-text');
+    // Stagger delay based on node index relative to parent
+    const delay = (index % 5) * 100;
+    p.style.transitionDelay = `${delay}ms`;
+    pObserver.observe(p);
+  });
+}
+
+/* -------------------------------------
+   3.8. Global Image Lightbox
+------------------------------------- */
+function initLightbox() {
+  const overlay = document.createElement('div');
+  overlay.id = 'lightbox-overlay';
+  overlay.innerHTML = '<img id="lightbox-img" src="" alt="Zoomed Image">';
+  document.body.appendChild(overlay);
+
+  const images = document.querySelectorAll('main img');
+  images.forEach(img => {
+    if (img.closest('.btn') || img.classList.contains('no-zoom')) return;
+    
+    img.style.cursor = 'zoom-in';
+    img.classList.add('zoomable-img');
+    
+    img.addEventListener('click', () => {
+      document.getElementById('lightbox-img').src = img.src;
+      overlay.classList.add('active');
+    });
+  });
+
+  overlay.addEventListener('click', () => {
+    overlay.classList.remove('active');
   });
 }
 
