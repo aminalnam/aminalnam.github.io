@@ -16,6 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initReadingProgress();
   initAmbientBackground();
   initSyntaxHighlighting();
+  initPageTransitions();
 });
 
 /* -------------------------------------
@@ -242,6 +243,34 @@ function initSyntaxHighlighting() {
     });
     
     block.innerHTML = html;
+  });
+}
+
+/* -------------------------------------
+   3.6. Page Transitions
+------------------------------------- */
+function initPageTransitions() {
+  document.querySelectorAll('a').forEach(anchor => {
+    // Only target internal links that are not anchor links (#)
+    if (anchor.hostname === window.location.hostname && 
+        anchor.getAttribute('href') && 
+        !anchor.getAttribute('href').startsWith('#') &&
+        anchor.target !== '_blank') {
+          
+      anchor.addEventListener('click', function(e) {
+        // Allow ctrl+click to open in new tab normally
+        if (e.ctrlKey || e.metaKey || e.shiftKey) return;
+        
+        e.preventDefault();
+        const destination = this.href;
+        
+        document.body.classList.add('page-exit');
+        
+        setTimeout(() => {
+          window.location.href = destination;
+        }, 300);
+      });
+    }
   });
 }
 

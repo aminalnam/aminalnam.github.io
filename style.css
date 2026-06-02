@@ -32,6 +32,22 @@
 * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
 html { scroll-behavior: smooth; }
 
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(56, 189, 248, 0.3);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(56, 189, 248, 0.6);
+}
+
 body { 
   margin: 0; 
   color: var(--ink); 
@@ -39,6 +55,11 @@ body {
   font-family: var(--font-sans); 
   line-height: 1.7; 
   overflow-x: hidden;
+  transition: opacity 0.3s ease;
+}
+
+body.page-exit {
+  opacity: 0 !important;
 }
 
 /* Dynamic Animated Background */
