@@ -5,13 +5,14 @@ document.addEventListener("DOMContentLoaded", () => {
   initCopyToClipboard();
   initTableOfContents();
   initSearchPalette();
+  initTypewriter();
 });
 
 /* -------------------------------------
    1. Scroll Animations (IntersectionObserver)
 ------------------------------------- */
 function initAnimations() {
-  const sections = document.querySelectorAll('.section');
+  const elements = document.querySelectorAll('.section, .fade-up');
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
@@ -22,9 +23,55 @@ function initAnimations() {
     });
   }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
 
-  sections.forEach(section => {
-    observer.observe(section);
+  elements.forEach(el => {
+    observer.observe(el);
   });
+}
+
+/* -------------------------------------
+   1.5. Typewriter Effect
+------------------------------------- */
+function initTypewriter() {
+  const typer = document.getElementById('hero-typer');
+  if (!typer) return;
+
+  const words = [
+    "Systems Architecture & Engineering",
+    "Embedded Hardware Design",
+    "Data Infrastructure & AI",
+    "Deterministic Evaluation Frameworks"
+  ];
+  let wordIndex = 0;
+  let charIndex = 0;
+  let isDeleting = false;
+  
+  function type() {
+    const currentWord = words[wordIndex];
+    if (isDeleting) {
+      typer.textContent = currentWord.substring(0, charIndex - 1);
+      charIndex--;
+    } else {
+      typer.textContent = currentWord.substring(0, charIndex + 1);
+      charIndex++;
+    }
+
+    let typeSpeed = 80;
+    if (isDeleting) typeSpeed /= 2;
+
+    if (!isDeleting && charIndex === currentWord.length) {
+      typeSpeed = 2500;
+      isDeleting = true;
+    } else if (isDeleting && charIndex === 0) {
+      isDeleting = false;
+      wordIndex = (wordIndex + 1) % words.length;
+      typeSpeed = 500;
+    }
+
+    setTimeout(type, typeSpeed);
+  }
+
+  // Start typing
+  setTimeout(type, 500);
 }
 
 /* -------------------------------------
