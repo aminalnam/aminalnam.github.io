@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initOceanEcosystem();
   initLiveTerminalFeed();
   initMagneticButtons();
-  initSubmarineAlert();
+  initArcadeEasterEgg();
   initTelemetrySparkline();
   initCursorTrail();
 });
@@ -633,9 +633,9 @@ function initMagneticButtons() {
 }
 
 /* -------------------------------------
-   9. Submarine Red Alert (Konami Code)
+   9. Hidden Arcade (Konami Code)
 ------------------------------------- */
-function initSubmarineAlert() {
+function initArcadeEasterEgg() {
   const konamiCode = [
     'ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown',
     'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight',
@@ -647,7 +647,7 @@ function initSubmarineAlert() {
     if (e.key === konamiCode[konamiIndex]) {
       konamiIndex++;
       if (konamiIndex === konamiCode.length) {
-        triggerRedAlert();
+        triggerArcade();
         konamiIndex = 0;
       }
     } else {
@@ -655,32 +655,200 @@ function initSubmarineAlert() {
     }
   });
 
-    function triggerRedAlert() {
-    // Inject emergency CSS
+  function triggerArcade() {
+    if (document.getElementById('arcade-overlay')) return;
+
     const style = document.createElement('style');
     style.innerHTML = `
-      html { background-color: #2a0808 !important; }
-      body { background-color: transparent !important; }
-      .red-alert-overlay {
+      #arcade-overlay {
         position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-        background: radial-gradient(circle at center, transparent 0%, rgba(255, 0, 0, 0.4) 100%);
-        pointer-events: none; z-index: 9998;
-        animation: pulse-red 2s infinite alternate;
+        background: rgba(0, 0, 0, 0.95); z-index: 10000;
+        display: flex; flex-direction: column; align-items: center; justify-content: center;
+        font-family: var(--font-mono, monospace); color: #10b981;
+        backdrop-filter: blur(10px);
       }
-      @keyframes pulse-red {
-        0% { opacity: 0.3; }
-        100% { opacity: 1; }
+      .arcade-menu button {
+        display: block; width: 320px; padding: 1.25rem; margin: 1rem auto;
+        background: rgba(16, 185, 129, 0.1); border: 2px solid #10b981;
+        color: #10b981; font-family: inherit; font-size: 1.25rem; cursor: pointer;
+        transition: all 0.2s; text-transform: uppercase; letter-spacing: 0.1em;
       }
-      * { color: #ff5555 !important; border-color: rgba(255,0,0,0.3) !important; }
-      .panel { background: rgba(40, 0, 0, 0.5) !important; }
+      .arcade-menu button:hover { background: #10b981; color: #000; box-shadow: 0 0 20px #10b981; }
+      #arcade-canvas { display: none; background: #000; border: 2px solid #10b981; box-shadow: 0 0 20px rgba(16,185,129,0.3); }
+      .arcade-close { position: absolute; top: 2rem; right: 2rem; color: #fff; cursor: pointer; font-size: 3rem; line-height: 1; }
+      .arcade-instructions { font-size: 0.8rem; text-align: center; color: rgba(255,255,255,0.5); margin-top: 1rem; }
     `;
     document.head.appendChild(style);
 
     const overlay = document.createElement('div');
-    overlay.className = 'red-alert-overlay';
+    overlay.id = 'arcade-overlay';
+    overlay.innerHTML = `
+      <div class="arcade-close" id="arcade-close">&times;</div>
+      <div class="arcade-menu" id="arcade-menu">
+        <h2 style="font-size: 3rem; margin-bottom: 2rem; text-align: center; text-shadow: 0 0 10px #10b981; letter-spacing: 0.2em;">OMEGA ARCADE</h2>
+        <button id="btn-snake">Abyssal Snake</button>
+        <button id="btn-pong">Telemetry Pong</button>
+      </div>
+      <canvas id="arcade-canvas" width="600" height="400"></canvas>
+      <div id="arcade-instructions" class="arcade-instructions" style="display:none;">Controls: Arrow Keys | Press ESC to exit game</div>
+    `;
     document.body.appendChild(overlay);
 
-    console.log("RED ALERT: EMERGENCY PROTOCOL INITIATED.");
+    const menu = document.getElementById('arcade-menu');
+    const canvas = document.getElementById('arcade-canvas');
+    const instructions = document.getElementById('arcade-instructions');
+    const ctx = canvas.getContext('2d');
+    let gameLoop;
+
+    document.getElementById('arcade-close').addEventListener('click', () => {
+      cancelAnimationFrame(gameLoop);
+      overlay.remove();
+    });
+
+    document.getElementById('btn-snake').addEventListener('click', () => {
+      menu.style.display = 'none';
+      canvas.style.display = 'block';
+      instructions.style.display = 'block';
+      startSnake();
+    });
+
+    document.getElementById('btn-pong').addEventListener('click', () => {
+      menu.style.display = 'none';
+      canvas.style.display = 'block';
+      instructions.style.display = 'block';
+      startPong();
+    });
+
+    let keys = {};
+    const keydownHandler = (e) => { keys[e.key] = true; };
+    const keyupHandler = (e) => { keys[e.key] = false; };
+    document.addEventListener('keydown', keydownHandler);
+    document.addEventListener('keyup', keyupHandler);
+
+    function resetCanvas() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#10b981';
+      ctx.font = '20px monospace';
+    }
+
+    function exitGame() {
+      cancelAnimationFrame(gameLoop);
+      menu.style.display = 'block'; 
+      canvas.style.display = 'none';
+      instructions.style.display = 'none';
+    }
+
+    function startSnake() {
+      let snake = [{x: 15, y: 15}];
+      let food = {x: 5, y: 5};
+      let dx = 0; let dy = 0;
+      let score = 0;
+      let lastTime = 0;
+      
+      function loop(timestamp) {
+        if (!document.getElementById('arcade-overlay')) return;
+        if (keys['Escape']) { exitGame(); return; }
+
+        if (timestamp - lastTime < 80) { // Game speed
+          gameLoop = requestAnimationFrame(loop);
+          return;
+        }
+        lastTime = timestamp;
+
+        if (keys['ArrowUp'] && dy !== 1) { dx = 0; dy = -1; }
+        if (keys['ArrowDown'] && dy !== -1) { dx = 0; dy = 1; }
+        if (keys['ArrowLeft'] && dx !== 1) { dx = -1; dy = 0; }
+        if (keys['ArrowRight'] && dx !== -1) { dx = 1; dy = 0; }
+
+        let head = { x: snake[0].x + dx, y: snake[0].y + dy };
+
+        // Start only when moving
+        if (dx === 0 && dy === 0) {
+           resetCanvas();
+           ctx.fillText("Press Arrow Keys to Start", 150, 200);
+           gameLoop = requestAnimationFrame(loop);
+           return;
+        }
+
+        if (head.x < 0 || head.x >= 30 || head.y < 0 || head.y >= 20) { exitGame(); return; }
+        
+        for (let segment of snake) {
+          if (head.x === segment.x && head.y === segment.y && snake.length > 1) { exitGame(); return; }
+        }
+
+        snake.unshift(head);
+
+        if (head.x === food.x && head.y === food.y) {
+          score += 10;
+          food = { x: Math.floor(Math.random() * 30), y: Math.floor(Math.random() * 20) };
+        } else {
+          snake.pop();
+        }
+
+        resetCanvas();
+        ctx.fillStyle = '#ef4444'; // Food
+        ctx.fillRect(food.x * 20, food.y * 20, 18, 18);
+        ctx.fillStyle = '#10b981'; // Snake
+        for (let segment of snake) {
+          ctx.fillRect(segment.x * 20, segment.y * 20, 18, 18);
+        }
+        ctx.fillStyle = 'rgba(255,255,255,0.5)';
+        ctx.fillText("DATA FRAGMENTS: " + score, 10, 25);
+
+        gameLoop = requestAnimationFrame(loop);
+      }
+      gameLoop = requestAnimationFrame(loop);
+    }
+
+    function startPong() {
+      let pad1 = { y: 150, score: 0 };
+      let pad2 = { y: 150, score: 0 };
+      let ball = { x: 300, y: 200, dx: 5, dy: 5 };
+
+      function loop() {
+        if (!document.getElementById('arcade-overlay')) return;
+        if (keys['Escape']) { exitGame(); return; }
+        resetCanvas();
+
+        if (keys['ArrowUp'] && pad1.y > 0) pad1.y -= 7;
+        if (keys['ArrowDown'] && pad1.y < 300) pad1.y += 7;
+
+        // Simple AI
+        if (ball.y < pad2.y + 50) pad2.y -= 4;
+        if (ball.y > pad2.y + 50) pad2.y += 4;
+
+        ball.x += ball.dx;
+        ball.y += ball.dy;
+
+        if (ball.y <= 0 || ball.y >= 390) ball.dy *= -1;
+
+        // Paddles
+        ctx.fillRect(20, pad1.y, 10, 100);
+        ctx.fillRect(570, pad2.y, 10, 100);
+
+        // Ball
+        ctx.fillRect(ball.x, ball.y, 10, 10);
+
+        // Collision
+        if (ball.x <= 30 && ball.y > pad1.y && ball.y < pad1.y + 100) { ball.dx = Math.abs(ball.dx) + 0.5; ball.x = 30; }
+        if (ball.x >= 560 && ball.y > pad2.y && ball.y < pad2.y + 100) { ball.dx = -Math.abs(ball.dx) - 0.5; ball.x = 560; }
+
+        if (ball.x < 0) { pad2.score++; ball = { x: 300, y: 200, dx: -5, dy: 5 }; }
+        if (ball.x > 600) { pad1.score++; ball = { x: 300, y: 200, dx: 5, dy: -5 }; }
+
+        ctx.font = '40px monospace';
+        ctx.fillStyle = 'rgba(255,255,255,0.2)';
+        ctx.fillText(pad1.score, 150, 60);
+        ctx.fillText(pad2.score, 430, 60);
+        
+        // Net
+        ctx.fillStyle = 'rgba(16, 185, 129, 0.3)';
+        for(let i=0; i<400; i+=40) ctx.fillRect(298, i, 4, 20);
+
+        gameLoop = requestAnimationFrame(loop);
+      }
+      gameLoop = requestAnimationFrame(loop);
+    }
   }
 }
 
