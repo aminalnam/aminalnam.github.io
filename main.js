@@ -10,10 +10,9 @@ document.addEventListener("DOMContentLoaded", () => {
   initTextScramble();
   initScrollProgress();
   initOceanEcosystem();
-  initLiveTerminalFeed();
   initMagneticButtons();
-  initArcadeEasterEgg();
-  initTelemetrySparkline();
+  initEmbeddedArcade();
+  initGlobalMap();
 });
 
 /* -------------------------------------
@@ -326,27 +325,7 @@ function initSearchPalette() {
   }
 }
 
-// ==========================================
-// Easter Egg: Konami Code -> Terminal
-// ==========================================
-const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
-let konamiIndex = 0;
-
-document.addEventListener('keydown', (e) => {
-  if (e.key === konamiCode[konamiIndex]) {
-    konamiIndex++;
-    if (konamiIndex === konamiCode.length) {
-      // Trigger glitch
-      document.body.classList.add('terminal-glitch');
-      setTimeout(() => {
-        window.location.href = 'terminal.html';
-      }, 1500);
-      konamiIndex = 0;
-    }
-  } else {
-    konamiIndex = 0;
-  }
-});
+// Removed conflicting Konami Code listener
 
 /* -------------------------------------
    5. Futuristic Effects & Easter Eggs
@@ -561,49 +540,191 @@ function animateFish(particle, isMovingRight, scale, dirScale) {
 }
 
 /* -------------------------------------
-   7. Live Telemetry Terminal
+   7. Embedded Arcade
 ------------------------------------- */
-function initLiveTerminalFeed() {
-  const terminal = document.getElementById('live-terminal-feed');
-  if (!terminal) return;
-
-  const messages = [
-    "[SYS] Initializing OMEGA uplink protocol...",
-    "[DTN] Establishing bundle protocol to Node-07 (Mid-Atlantic)...",
-    "[DTN] Connection established. Latency: 42ms.",
-    "[DATA] Ingesting telemetry payload (Size: 45kb, Format: CBOR)",
-    "[OK] Payload signature verified. Decrypting AES-GCM.",
-    "[DB] Writing to SQLite WAL...",
-    "[WARN] Acoustic anomaly detected in Sector 4 (Frequency: 14.5kHz)",
-    "[AI] Triggering Honu anomaly classification...",
-    "[AI] Classification: Biological (Cetacean signature matched)",
-    "[SYS] Entering low-power sleep state for 300s...",
-    "[DTN] Polling Node-12 (Pacific Array)...",
-    "[ERR] Packet timeout. Retrying with spreading factor 10.",
-    "[OK] Handshake successful. SNR: -12dB."
-  ];
-
-  let msgIndex = 0;
-
-  function addTerminalLine() {
-    const p = document.createElement('p');
-    p.style.margin = '0.2rem 0';
-    p.innerText = '> ' + messages[msgIndex];
-    terminal.appendChild(p);
-
-    // Keep only last 10 lines
-    if (terminal.children.length > 10) {
-      terminal.removeChild(terminal.firstChild);
+function initEmbeddedArcade() {
+  const menu = document.getElementById('embedded-arcade-menu');
+  const container = document.getElementById('embedded-arcade-container');
+  const canvas = document.getElementById('embedded-arcade-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let gameLoop;
+  
+  // Background Bubbles
+  const bg = document.getElementById('embedded-arcade-bg');
+  if (bg) {
+    for (let i = 0; i < 15; i++) {
+      const bubble = document.createElement('div');
+      bubble.style.position = 'absolute';
+      bubble.style.bottom = '-20px';
+      bubble.style.background = 'rgba(56, 189, 248, 0.2)';
+      bubble.style.borderRadius = '50%';
+      const size = Math.random() * 20 + 5;
+      bubble.style.width = size + 'px';
+      bubble.style.height = size + 'px';
+      bubble.style.left = Math.random() * 100 + '%';
+      bubble.style.animation = \`rise \${Math.random() * 5 + 5}s linear infinite\`;
+      bubble.style.animationDelay = (Math.random() * 5) + 's';
+      bg.appendChild(bubble);
     }
-
-    msgIndex = (msgIndex + 1) % messages.length;
-
-    // Random typing delay
-    setTimeout(addTerminalLine, 1000 + Math.random() * 2500);
   }
 
-  // Start feed
-  setTimeout(addTerminalLine, 1500);
+  // Inject animation keyframes if not exists
+  if (!document.getElementById('bubble-style')) {
+    const style = document.createElement('style');
+    style.id = 'bubble-style';
+    style.innerHTML = \`
+      @keyframes rise { to { transform: translateY(-300px); opacity: 0; } }
+      .btn-arcade:hover { background: #38bdf8 !important; color: #000 !important; box-shadow: 0 0 20px rgba(56,189,248,0.5); }
+    \`;
+    document.head.appendChild(style);
+  }
+
+  document.getElementById('btn-snake').classList.add('btn-arcade');
+  document.getElementById('btn-pong').classList.add('btn-arcade');
+
+  document.getElementById('btn-exit-game').addEventListener('click', () => {
+    exitGame();
+  });
+
+  document.getElementById('btn-snake').addEventListener('click', () => {
+    menu.style.display = 'none';
+    container.style.display = 'block';
+    startSnake();
+  });
+
+  document.getElementById('btn-pong').addEventListener('click', () => {
+    menu.style.display = 'none';
+    container.style.display = 'block';
+    startPong();
+  });
+
+  let keys = {};
+  const keydownHandler = (e) => { keys[e.key] = true; };
+  const keyupHandler = (e) => { keys[e.key] = false; };
+  document.addEventListener('keydown', keydownHandler);
+  document.addEventListener('keyup', keyupHandler);
+
+  function resetCanvas() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = '#38bdf8';
+    ctx.font = '20px monospace';
+  }
+
+  function exitGame() {
+    cancelAnimationFrame(gameLoop);
+    menu.style.display = 'flex'; 
+    container.style.display = 'none';
+  }
+
+  function startSnake() {
+    let snake = [{x: 15, y: 15}];
+    let food = {x: 5, y: 5};
+    let dx = 0; let dy = 0;
+    let score = 0;
+    let lastTime = 0;
+    
+    function loop(timestamp) {
+      if (container.style.display === 'none') return;
+
+      if (timestamp - lastTime < 80) {
+        gameLoop = requestAnimationFrame(loop);
+        return;
+      }
+      lastTime = timestamp;
+
+      if (keys['ArrowUp'] && dy !== 1) { dx = 0; dy = -1; }
+      if (keys['ArrowDown'] && dy !== -1) { dx = 0; dy = 1; }
+      if (keys['ArrowLeft'] && dx !== 1) { dx = -1; dy = 0; }
+      if (keys['ArrowRight'] && dx !== -1) { dx = 1; dy = 0; }
+
+      let head = { x: snake[0].x + dx, y: snake[0].y + dy };
+
+      if (dx === 0 && dy === 0) {
+         resetCanvas();
+         ctx.fillText("Press Arrow Keys to Start", 150, 200);
+         gameLoop = requestAnimationFrame(loop);
+         return;
+      }
+
+      if (head.x < 0 || head.x >= 30 || head.y < 0 || head.y >= 20) { exitGame(); return; }
+      
+      for (let segment of snake) {
+        if (head.x === segment.x && head.y === segment.y && snake.length > 1) { exitGame(); return; }
+      }
+
+      snake.unshift(head);
+
+      if (head.x === food.x && head.y === food.y) {
+        score += 10;
+        food = { x: Math.floor(Math.random() * 30), y: Math.floor(Math.random() * 20) };
+      } else {
+        snake.pop();
+      }
+
+      resetCanvas();
+      ctx.fillStyle = '#f472b6'; // Food
+      ctx.fillRect(food.x * 20, food.y * 20, 18, 18);
+      ctx.fillStyle = '#38bdf8'; // Snake
+      for (let segment of snake) {
+        ctx.fillRect(segment.x * 20, segment.y * 20, 18, 18);
+      }
+      ctx.fillStyle = 'rgba(255,255,255,0.5)';
+      ctx.fillText("DATA FRAGMENTS: " + score, 10, 25);
+
+      gameLoop = requestAnimationFrame(loop);
+    }
+    gameLoop = requestAnimationFrame(loop);
+  }
+
+  function startPong() {
+    let pad1 = { y: 150, score: 0 };
+    let pad2 = { y: 150, score: 0 };
+    let ball = { x: 300, y: 200, dx: 5, dy: 5 };
+
+    function loop() {
+      if (container.style.display === 'none') return;
+      resetCanvas();
+
+      if (keys['ArrowUp'] && pad1.y > 0) pad1.y -= 7;
+      if (keys['ArrowDown'] && pad1.y < 300) pad1.y += 7;
+
+      // Simple AI
+      if (ball.y < pad2.y + 50) pad2.y -= 4;
+      if (ball.y > pad2.y + 50) pad2.y += 4;
+
+      ball.x += ball.dx;
+      ball.y += ball.dy;
+
+      if (ball.y <= 0 || ball.y >= 390) ball.dy *= -1;
+
+      // Paddles
+      ctx.fillRect(20, pad1.y, 10, 100);
+      ctx.fillRect(570, pad2.y, 10, 100);
+
+      // Ball
+      ctx.fillRect(ball.x, ball.y, 10, 10);
+
+      // Collision
+      if (ball.x <= 30 && ball.y > pad1.y && ball.y < pad1.y + 100) { ball.dx = Math.abs(ball.dx) + 0.5; ball.x = 30; }
+      if (ball.x >= 560 && ball.y > pad2.y && ball.y < pad2.y + 100) { ball.dx = -Math.abs(ball.dx) - 0.5; ball.x = 560; }
+
+      if (ball.x < 0) { pad2.score++; ball = { x: 300, y: 200, dx: -5, dy: 5 }; }
+      if (ball.x > 600) { pad1.score++; ball = { x: 300, y: 200, dx: 5, dy: -5 }; }
+
+      ctx.font = '40px monospace';
+      ctx.fillStyle = 'rgba(255,255,255,0.2)';
+      ctx.fillText(pad1.score, 150, 60);
+      ctx.fillText(pad2.score, 430, 60);
+      
+      // Net
+      ctx.fillStyle = 'rgba(56, 189, 248, 0.2)';
+      for(let i=0; i<400; i+=40) ctx.fillRect(298, i, 4, 20);
+
+      gameLoop = requestAnimationFrame(loop);
+    }
+    gameLoop = requestAnimationFrame(loop);
+  }
 }
 
 /* -------------------------------------
@@ -632,306 +753,154 @@ function initMagneticButtons() {
 }
 
 /* -------------------------------------
-   9. Hidden Arcade (Konami Code)
+   9. Global Node Map
 ------------------------------------- */
-function initArcadeEasterEgg() {
-  const konamiCode = [
-    'ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown',
-    'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight',
-    'b', 'a'
-  ];
-  let konamiIndex = 0;
+function initGlobalMap() {
+  const canvas = document.getElementById('global-node-map');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
 
-  document.addEventListener('keydown', (e) => {
-    if (e.key === konamiCode[konamiIndex]) {
-      konamiIndex++;
-      if (konamiIndex === konamiCode.length) {
-        triggerArcade();
-        konamiIndex = 0;
+  let width, height;
+  const nodes = [];
+  const packets = [];
+
+  function resize() {
+    width = canvas.parentElement.offsetWidth;
+    height = canvas.parentElement.offsetHeight;
+    canvas.width = width;
+    canvas.height = height;
+  }
+  
+  window.addEventListener('resize', resize);
+  resize();
+
+  // Generate Nodes (distributed to look like global ocean coverage)
+  const numNodes = 120;
+  for (let i = 0; i < numNodes; i++) {
+    nodes.push({
+      id: i,
+      x: Math.random() * width,
+      y: Math.random() * height,
+      size: Math.random() * 2 + 1,
+      connections: [],
+      pingAlpha: 0
+    });
+  }
+
+  // Connect nearest neighbors to form a mesh
+  nodes.forEach(node => {
+    // Sort all other nodes by distance
+    const others = nodes.filter(n => n.id !== node.id).map(n => {
+      const dx = n.x - node.x;
+      const dy = n.y - node.y;
+      return { node: n, dist: Math.sqrt(dx*dx + dy*dy) };
+    });
+    others.sort((a, b) => a.dist - b.dist);
+    
+    // Connect to 2-4 closest
+    const numConnections = Math.floor(Math.random() * 3) + 2;
+    for (let i = 0; i < numConnections; i++) {
+      if (others[i].dist < 200) { // Max connection distance
+        if (!node.connections.includes(others[i].node)) {
+          node.connections.push(others[i].node);
+        }
       }
-    } else {
-      konamiIndex = 0;
     }
   });
 
-  function triggerArcade() {
-    if (document.getElementById('arcade-overlay')) return;
+  function spawnPacket() {
+    // Pick random starting node with connections
+    const validNodes = nodes.filter(n => n.connections.length > 0);
+    if (validNodes.length === 0) return;
+    
+    const startNode = validNodes[Math.floor(Math.random() * validNodes.length)];
+    const targetNode = startNode.connections[Math.floor(Math.random() * startNode.connections.length)];
+    
+    startNode.pingAlpha = 1; // Flash the sending node
 
-    const style = document.createElement('style');
-    style.innerHTML = `
-      #arcade-overlay {
-        position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-        background: linear-gradient(180deg, rgba(3, 7, 18, 0.98) 0%, rgba(14, 165, 233, 0.15) 100%);
-        z-index: 10000;
-        display: flex; flex-direction: column; align-items: center; justify-content: center;
-        font-family: var(--font-mono, monospace); color: #38bdf8;
-      }
-      .arcade-menu button {
-        display: block; width: 320px; padding: 1.25rem; margin: 1rem auto;
-        background: rgba(56, 189, 248, 0.1); border: 2px solid #38bdf8;
-        color: #38bdf8; font-family: inherit; font-size: 1.25rem; cursor: pointer;
-        transition: all 0.2s; text-transform: uppercase; letter-spacing: 0.1em;
-        border-radius: 8px;
-      }
-      .arcade-menu button:hover { background: #38bdf8; color: #000; box-shadow: 0 0 20px rgba(56, 189, 248, 0.5); }
-      #arcade-canvas { display: none; background: rgba(0,0,0,0.5); border: 2px solid #38bdf8; box-shadow: 0 0 30px rgba(14, 165, 233, 0.2); border-radius: 8px; }
-      .arcade-close { position: absolute; top: 2rem; right: 2rem; color: #38bdf8; cursor: pointer; font-size: 3rem; line-height: 1; transition: transform 0.2s; }
-      .arcade-close:hover { transform: scale(1.2); }
-      .arcade-instructions { font-size: 0.8rem; text-align: center; color: rgba(56, 189, 248, 0.5); margin-top: 1rem; }
-      
-      /* Subtle rising bubbles for the overlay */
-      .arcade-bubble {
-        position: absolute; bottom: -20px; background: rgba(56, 189, 248, 0.2);
-        border-radius: 50%; pointer-events: none; animation: rise linear infinite;
-      }
-      @keyframes rise {
-        to { transform: translateY(-100vh); opacity: 0; }
-      }
-    `;
-    document.head.appendChild(style);
-
-    const overlay = document.createElement('div');
-    overlay.id = 'arcade-overlay';
-    overlay.innerHTML = `
-      <div class="arcade-close" id="arcade-close">&times;</div>
-      <div class="arcade-menu" id="arcade-menu" style="position: relative; z-index: 10;">
-        <h2 style="font-size: 3rem; margin-bottom: 2rem; text-align: center; letter-spacing: 0.2em; text-shadow: 0 2px 10px rgba(56,189,248,0.3);">OMEGA ARCADE</h2>
-        <button id="btn-snake">Abyssal Snake</button>
-        <button id="btn-pong">Telemetry Pong</button>
-      </div>
-      <canvas id="arcade-canvas" width="600" height="400" style="position: relative; z-index: 10;"></canvas>
-      <div id="arcade-instructions" class="arcade-instructions" style="display:none; position: relative; z-index: 10;">Controls: Arrow Keys | Press ESC to exit game</div>
-    `;
-    document.body.appendChild(overlay);
-
-    // Create bubbles
-    for (let i = 0; i < 15; i++) {
-      const bubble = document.createElement('div');
-      bubble.className = 'arcade-bubble';
-      const size = Math.random() * 20 + 5;
-      bubble.style.width = size + 'px';
-      bubble.style.height = size + 'px';
-      bubble.style.left = Math.random() * 100 + 'vw';
-      bubble.style.animationDuration = (Math.random() * 5 + 5) + 's';
-      bubble.style.animationDelay = (Math.random() * 5) + 's';
-      overlay.appendChild(bubble);
-    }
-
-    const menu = document.getElementById('arcade-menu');
-    const canvas = document.getElementById('arcade-canvas');
-    const instructions = document.getElementById('arcade-instructions');
-    const ctx = canvas.getContext('2d');
-    let gameLoop;
-
-    document.getElementById('arcade-close').addEventListener('click', () => {
-      cancelAnimationFrame(gameLoop);
-      overlay.remove();
+    packets.push({
+      x: startNode.x,
+      y: startNode.y,
+      target: targetNode,
+      progress: 0,
+      speed: Math.random() * 0.01 + 0.01
     });
 
-    document.getElementById('btn-snake').addEventListener('click', () => {
-      menu.style.display = 'none';
-      canvas.style.display = 'block';
-      instructions.style.display = 'block';
-      startSnake();
-    });
-
-    document.getElementById('btn-pong').addEventListener('click', () => {
-      menu.style.display = 'none';
-      canvas.style.display = 'block';
-      instructions.style.display = 'block';
-      startPong();
-    });
-
-    let keys = {};
-    const keydownHandler = (e) => { keys[e.key] = true; };
-    const keyupHandler = (e) => { keys[e.key] = false; };
-    document.addEventListener('keydown', keydownHandler);
-    document.addEventListener('keyup', keyupHandler);
-
-    function resetCanvas() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = '#38bdf8';
-      ctx.font = '20px monospace';
-    }
-
-    function exitGame() {
-      cancelAnimationFrame(gameLoop);
-      menu.style.display = 'block'; 
-      canvas.style.display = 'none';
-      instructions.style.display = 'none';
-    }
-
-    function startSnake() {
-      let snake = [{x: 15, y: 15}];
-      let food = {x: 5, y: 5};
-      let dx = 0; let dy = 0;
-      let score = 0;
-      let lastTime = 0;
-      
-      function loop(timestamp) {
-        if (!document.getElementById('arcade-overlay')) return;
-        if (keys['Escape']) { exitGame(); return; }
-
-        if (timestamp - lastTime < 80) { // Game speed
-          gameLoop = requestAnimationFrame(loop);
-          return;
-        }
-        lastTime = timestamp;
-
-        if (keys['ArrowUp'] && dy !== 1) { dx = 0; dy = -1; }
-        if (keys['ArrowDown'] && dy !== -1) { dx = 0; dy = 1; }
-        if (keys['ArrowLeft'] && dx !== 1) { dx = -1; dy = 0; }
-        if (keys['ArrowRight'] && dx !== -1) { dx = 1; dy = 0; }
-
-        let head = { x: snake[0].x + dx, y: snake[0].y + dy };
-
-        // Start only when moving
-        if (dx === 0 && dy === 0) {
-           resetCanvas();
-           ctx.fillText("Press Arrow Keys to Start", 150, 200);
-           gameLoop = requestAnimationFrame(loop);
-           return;
-        }
-
-        if (head.x < 0 || head.x >= 30 || head.y < 0 || head.y >= 20) { exitGame(); return; }
-        
-        for (let segment of snake) {
-          if (head.x === segment.x && head.y === segment.y && snake.length > 1) { exitGame(); return; }
-        }
-
-        snake.unshift(head);
-
-        if (head.x === food.x && head.y === food.y) {
-          score += 10;
-          food = { x: Math.floor(Math.random() * 30), y: Math.floor(Math.random() * 20) };
-        } else {
-          snake.pop();
-        }
-
-        resetCanvas();
-        ctx.fillStyle = '#f472b6'; // Pink Food
-        ctx.fillRect(food.x * 20, food.y * 20, 18, 18);
-        ctx.fillStyle = '#38bdf8'; // Snake
-        for (let segment of snake) {
-          ctx.fillRect(segment.x * 20, segment.y * 20, 18, 18);
-        }
-        ctx.fillStyle = 'rgba(255,255,255,0.5)';
-        ctx.fillText("DATA FRAGMENTS: " + score, 10, 25);
-
-        gameLoop = requestAnimationFrame(loop);
-      }
-      gameLoop = requestAnimationFrame(loop);
-    }
-
-    function startPong() {
-      let pad1 = { y: 150, score: 0 };
-      let pad2 = { y: 150, score: 0 };
-      let ball = { x: 300, y: 200, dx: 5, dy: 5 };
-
-      function loop() {
-        if (!document.getElementById('arcade-overlay')) return;
-        if (keys['Escape']) { exitGame(); return; }
-        resetCanvas();
-
-        if (keys['ArrowUp'] && pad1.y > 0) pad1.y -= 7;
-        if (keys['ArrowDown'] && pad1.y < 300) pad1.y += 7;
-
-        // Simple AI
-        if (ball.y < pad2.y + 50) pad2.y -= 4;
-        if (ball.y > pad2.y + 50) pad2.y += 4;
-
-        ball.x += ball.dx;
-        ball.y += ball.dy;
-
-        if (ball.y <= 0 || ball.y >= 390) ball.dy *= -1;
-
-        // Paddles
-        ctx.fillRect(20, pad1.y, 10, 100);
-        ctx.fillRect(570, pad2.y, 10, 100);
-
-        // Ball
-        ctx.fillRect(ball.x, ball.y, 10, 10);
-
-        // Collision
-        if (ball.x <= 30 && ball.y > pad1.y && ball.y < pad1.y + 100) { ball.dx = Math.abs(ball.dx) + 0.5; ball.x = 30; }
-        if (ball.x >= 560 && ball.y > pad2.y && ball.y < pad2.y + 100) { ball.dx = -Math.abs(ball.dx) - 0.5; ball.x = 560; }
-
-        if (ball.x < 0) { pad2.score++; ball = { x: 300, y: 200, dx: -5, dy: 5 }; }
-        if (ball.x > 600) { pad1.score++; ball = { x: 300, y: 200, dx: 5, dy: -5 }; }
-
-        ctx.font = '40px monospace';
-        ctx.fillStyle = 'rgba(255,255,255,0.2)';
-        ctx.fillText(pad1.score, 150, 60);
-        ctx.fillText(pad2.score, 430, 60);
-        
-        // Net
-        ctx.fillStyle = 'rgba(56, 189, 248, 0.2)';
-        for(let i=0; i<400; i+=40) ctx.fillRect(298, i, 4, 20);
-
-        gameLoop = requestAnimationFrame(loop);
-      }
-      gameLoop = requestAnimationFrame(loop);
-    }
+    // Schedule next packet
+    setTimeout(spawnPacket, Math.random() * 500 + 100);
   }
-}
 
-/* -------------------------------------
-   10. Telemetry Sparkline
-------------------------------------- */
-function initTelemetrySparkline() {
-  const canvas = document.getElementById('telemetry-sparkline');
-  if (!canvas) return;
-  const ctx = canvas.getContext('2d');
-  
-  // Set internal canvas resolution
-  canvas.width = canvas.offsetWidth;
-  canvas.height = canvas.offsetHeight;
-
-  const valueDisplay = document.getElementById('sparkline-value');
-  let dataPoints = new Array(50).fill(40);
-  let targetVal = 40;
+  // Start spawning
+  setTimeout(spawnPacket, 1000);
+  setTimeout(spawnPacket, 1500);
+  setTimeout(spawnPacket, 2000);
 
   function draw() {
-    // Resize handling if window changes
-    if(canvas.width !== canvas.offsetWidth) canvas.width = canvas.offsetWidth;
-    
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    
-    // Add new data point (random walk towards target)
-    if (Math.random() > 0.9) targetVal = 20 + Math.random() * 80;
-    
-    let lastVal = dataPoints[dataPoints.length - 1];
-    let newVal = lastVal + (targetVal - lastVal) * 0.1 + (Math.random() - 0.5) * 5;
-    
-    dataPoints.push(newVal);
-    dataPoints.shift();
+    ctx.clearRect(0, 0, width, height);
 
-    if (valueDisplay && Math.random() > 0.5) {
-      valueDisplay.innerText = Math.round(newVal) + 'ms';
-      valueDisplay.style.color = newVal > 80 ? '#ef4444' : (newVal > 60 ? '#f59e0b' : '#10b981');
+    // Draw grid background (subtle)
+    ctx.strokeStyle = 'rgba(56, 189, 248, 0.05)';
+    ctx.lineWidth = 1;
+    for (let x = 0; x < width; x += 50) {
+      ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, height); ctx.stroke();
+    }
+    for (let y = 0; y < height; y += 50) {
+      ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(width, y); ctx.stroke();
     }
 
-    // Draw line
-    ctx.beginPath();
-    const step = canvas.width / (dataPoints.length - 1);
-    
-    ctx.moveTo(0, canvas.height - (dataPoints[0] / 150) * canvas.height);
-    
-    for (let i = 1; i < dataPoints.length; i++) {
-      const x = i * step;
-      const y = canvas.height - (dataPoints[i] / 150) * canvas.height;
-      ctx.lineTo(x, y);
-    }
-    
-    ctx.strokeStyle = 'rgba(16, 185, 129, 0.8)';
-    ctx.lineWidth = 2;
-    ctx.stroke();
+    // Draw Links
+    ctx.lineWidth = 0.5;
+    nodes.forEach(node => {
+      node.connections.forEach(target => {
+        ctx.beginPath();
+        ctx.moveTo(node.x, node.y);
+        ctx.lineTo(target.x, target.y);
+        ctx.strokeStyle = 'rgba(56, 189, 248, 0.15)';
+        ctx.stroke();
+      });
+    });
 
-    // Fill under line
-    ctx.lineTo(canvas.width, canvas.height);
-    ctx.lineTo(0, canvas.height);
-    ctx.fillStyle = 'rgba(16, 185, 129, 0.1)';
-    ctx.fill();
+    // Draw Packets
+    for (let i = packets.length - 1; i >= 0; i--) {
+      const p = packets[i];
+      p.progress += p.speed;
+      
+      if (p.progress >= 1) {
+        p.target.pingAlpha = 1; // Flash target node on receive
+        packets.splice(i, 1);
+        continue;
+      }
+
+      // Current position along the line
+      const currentX = p.x + (p.target.x - p.x) * p.progress;
+      const currentY = p.y + (p.target.y - p.y) * p.progress;
+
+      ctx.beginPath();
+      ctx.arc(currentX, currentY, 2, 0, Math.PI * 2);
+      ctx.fillStyle = '#fff';
+      ctx.shadowBlur = 10;
+      ctx.shadowColor = '#38bdf8';
+      ctx.fill();
+      ctx.shadowBlur = 0; // reset
+    }
+
+    // Draw Nodes
+    nodes.forEach(node => {
+      ctx.beginPath();
+      ctx.arc(node.x, node.y, node.size, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(56, 189, 248, 0.5)';
+      ctx.fill();
+
+      // Draw Ping Aura
+      if (node.pingAlpha > 0) {
+        ctx.beginPath();
+        ctx.arc(node.x, node.y, node.size + (1 - node.pingAlpha) * 15, 0, Math.PI * 2);
+        ctx.strokeStyle = \`rgba(56, 189, 248, \${node.pingAlpha})\`;
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        node.pingAlpha -= 0.05; // Fade out
+      }
+    });
 
     requestAnimationFrame(draw);
   }
