@@ -15,6 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initGlobalMap();
   initReadingProgress();
   initAmbientBackground();
+  initSyntaxHighlighting();
 });
 
 /* -------------------------------------
@@ -137,9 +138,9 @@ function initCopyToClipboard() {
    3. Table of Contents
 ------------------------------------- */
 function initTableOfContents() {
-  const sections = Array.from(document.querySelectorAll('main.main-shell .section'));
-  // Only build ToC if there are at least 3 sections to justify it
-  if (sections.length < 3) return;
+  const headers = Array.from(document.querySelectorAll('main.main-shell h2'));
+  // Only build ToC if there are at least 2 headers to justify it
+  if (headers.length < 2) return;
 
   const mainShell = document.querySelector('main.main-shell');
   if (!mainShell) return;
@@ -160,24 +161,21 @@ function initTableOfContents() {
   
   const links = [];
 
-  sections.forEach((sec, idx) => {
-    const h2 = sec.querySelector('h2');
-    if (!h2) return;
-    
-    // Give section an ID if it doesn't have one
-    if (!sec.id) {
-      sec.id = 'section-' + idx;
+  headers.forEach((h2, idx) => {
+    // Give header an ID if it doesn't have one
+    if (!h2.id) {
+      h2.id = 'heading-' + idx;
     }
 
     const li = document.createElement('li');
     const a = document.createElement('a');
-    a.href = '#' + sec.id;
+    a.href = '#' + h2.id;
     // Extract text, remove any trailing periods if present
     a.textContent = h2.textContent.replace(/\.$/, '');
     
     li.appendChild(a);
     tocList.appendChild(li);
-    links.push({ el: sec, link: a });
+    links.push({ el: h2, link: a });
   });
 
   tocWrapper.appendChild(tocList);
@@ -196,7 +194,55 @@ function initTableOfContents() {
     });
   }, { rootMargin: "-20% 0px -70% 0px" });
 
-  sections.forEach(sec => observer.observe(sec));
+  headers.forEach(h2 => observer.observe(h2));
+}
+
+/* -------------------------------------
+   3.5. Syntax Highlighting
+------------------------------------- */
+function initSyntaxHighlighting() {
+  const codeBlocks = document.querySelectorAll('pre code');
+  
+  const rules = [
+    // Comments (# or //)
+    { regex: /((?:#|\/\/)[^\n]*)/g, type: 'comment' },
+    // Strings ("" or '')
+    { regex: /((?:"[^"]*")|(?:'[^']*'))/g, type: 'string' },
+    // Keywords
+    { regex: /\b(FROM|RUN|WORKDIR|COPY|USER|CMD|apiVersion|kind|metadata|spec|replicas|selector|matchLabels|template|containers|image|ports|containerPort|resources|limits|memory|cpu|livenessProbe|httpGet|path|port|initialDelaySeconds|periodSeconds|def|class|return|import|from|as|if|else|elif|try|except|with|await|async|const|let|var|function|=>)\b/g, type: 'keyword' },
+    // Numbers
+    { regex: /\b(\d+(?:\.\d+)?)\b/g, type: 'number' },
+    // Functions
+    { regex: /\b([a-zA-Z_]\w*)(?=\()/g, type: 'function' }
+  ];
+
+  codeBlocks.forEach(block => {
+    if (block.classList.contains('highlighted')) return;
+    block.classList.add('highlighted');
+    
+    let html = block.innerHTML;
+    
+    // Simple non-overlapping replacement
+    // Protect HTML tags
+    html = html.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    
+    // Apply rules (this is a simple lexer, not perfect but works for simple blocks)
+    // We replace tokens with a special marker first to avoid nested replacements
+    let tokenMap = [];
+    rules.forEach((rule) => {
+      html = html.replace(rule.regex, (match) => {
+        tokenMap.push(\`<span class="tok-\${rule.type}">\${match}</span>\`);
+        return \`___TOKEN\${tokenMap.length - 1}___\`;
+      });
+    });
+    
+    // Restore tokens
+    tokenMap.forEach((token, index) => {
+      html = html.replace(\`___TOKEN\${index}___\`, token);
+    });
+    
+    block.innerHTML = html;
+  });
 }
 
 /* -------------------------------------
