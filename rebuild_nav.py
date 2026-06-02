@@ -37,7 +37,6 @@ NAV_TEMPLATE = """      <nav class="nav" aria-label="Main Navigation">
           <button class="dropbtn">Data & AI &#9662;</button>
           <div class="dropdown-content">
             <a href="analytics.html">Analytics Pipeline</a>
-            <a href="omega-beta.html">OMEGA BETA Analytics</a>
             <a href="copilot.html">Honu AI Copilot</a>
             <a href="machine-learning.html">Machine Learning</a>
             <a href="qc-eval.html">Data Quality (QARTOD)</a>
@@ -77,7 +76,9 @@ NAV_TEMPLATE = """      <nav class="nav" aria-label="Main Navigation">
 
         <!-- BETA Project Group -->
         <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 1rem; border-left: 1px solid rgba(255,255,255,0.15); padding-left: 1.5rem; margin-left: 0.5rem;">
-          <a href="beta-overview.html" style="color: #60a5fa; font-weight: 700; letter-spacing: 0.1em;">BETA Framework</a>
+          <span style="color: #60a5fa; font-weight: 700; letter-spacing: 0.1em; padding-right: 0.5rem;">BETA</span>
+          <a href="beta-overview.html">Documentation</a>
+          <a href="omega-beta.html">Live Dashboard</a>
         </div>
       </nav>"""
 
