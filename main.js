@@ -9,7 +9,6 @@ document.addEventListener("DOMContentLoaded", () => {
   initSpotlight();
   initTextScramble();
   initScrollProgress();
-  initDevModeSecret();
   initOceanEcosystem();
 });
 
