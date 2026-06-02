@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initScrollProgress();
   initOceanEcosystem();
   initMagneticButtons();
-  initEmbeddedArcade();
+  initArcadeEasterEgg();
   initGlobalMap();
 });
 
@@ -540,190 +540,224 @@ function animateFish(particle, isMovingRight, scale, dirScale) {
 }
 
 /* -------------------------------------
-   7. Embedded Arcade
+   7. Hidden Arcade (Konami Code)
 ------------------------------------- */
-function initEmbeddedArcade() {
-  const menu = document.getElementById('embedded-arcade-menu');
-  const container = document.getElementById('embedded-arcade-container');
-  const canvas = document.getElementById('embedded-arcade-canvas');
-  if (!canvas) return;
-  const ctx = canvas.getContext('2d');
-  let gameLoop;
-  
-  // Background Bubbles
-  const bg = document.getElementById('embedded-arcade-bg');
-  if (bg) {
-    for (let i = 0; i < 15; i++) {
-      const bubble = document.createElement('div');
-      bubble.style.position = 'absolute';
-      bubble.style.bottom = '-20px';
-      bubble.style.background = 'rgba(56, 189, 248, 0.2)';
-      bubble.style.borderRadius = '50%';
-      const size = Math.random() * 20 + 5;
-      bubble.style.width = size + 'px';
-      bubble.style.height = size + 'px';
-      bubble.style.left = Math.random() * 100 + '%';
-      bubble.style.animation = `rise ${Math.random() * 5 + 5}s linear infinite`;
-      bubble.style.animationDelay = (Math.random() * 5) + 's';
-      bg.appendChild(bubble);
-    }
-  }
+function initArcadeEasterEgg() {
+  const konamiCode = [
+    'ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown',
+    'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight',
+    'b', 'a'
+  ];
+  let konamiIndex = 0;
 
-  // Inject animation keyframes if not exists
-  if (!document.getElementById('bubble-style')) {
+  document.addEventListener('keydown', (e) => {
+    if (e.key === konamiCode[konamiIndex]) {
+      konamiIndex++;
+      if (konamiIndex === konamiCode.length) {
+        triggerArcade();
+        konamiIndex = 0;
+      }
+    } else {
+      konamiIndex = 0;
+    }
+  });
+
+  function triggerArcade() {
+    if (document.getElementById('arcade-overlay')) return;
+
     const style = document.createElement('style');
-    style.id = 'bubble-style';
     style.innerHTML = `
-      @keyframes rise { to { transform: translateY(-300px); opacity: 0; } }
-      .btn-arcade:hover { background: #38bdf8 !important; color: #000 !important; box-shadow: 0 0 20px rgba(56,189,248,0.5); }
+      #arcade-overlay {
+        position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+        background: rgba(3, 7, 18, 0.95);
+        z-index: 10000;
+        display: flex; flex-direction: column; align-items: center; justify-content: center;
+        font-family: var(--font-mono, monospace); color: #38bdf8;
+      }
+      .arcade-menu button {
+        display: block; width: 320px; padding: 1.25rem; margin: 1rem auto;
+        background: rgba(56, 189, 248, 0.1); border: 2px solid #38bdf8;
+        color: #38bdf8; font-family: inherit; font-size: 1.25rem; cursor: pointer;
+        transition: all 0.2s; text-transform: uppercase; letter-spacing: 0.1em;
+        border-radius: 8px;
+      }
+      .arcade-menu button:hover { background: #38bdf8; color: #000; box-shadow: 0 0 20px rgba(56, 189, 248, 0.5); }
+      #arcade-canvas { display: none; background: rgba(0,0,0,0.5); border: 2px solid #38bdf8; box-shadow: 0 0 30px rgba(14, 165, 233, 0.2); border-radius: 8px; }
+      .arcade-close { position: absolute; top: 2rem; right: 2rem; color: #38bdf8; cursor: pointer; font-size: 3rem; line-height: 1; transition: transform 0.2s; }
+      .arcade-close:hover { transform: scale(1.2); }
+      .arcade-instructions { font-size: 0.8rem; text-align: center; color: rgba(56, 189, 248, 0.5); margin-top: 1rem; }
     `;
     document.head.appendChild(style);
-  }
 
-  document.getElementById('btn-snake').classList.add('btn-arcade');
-  document.getElementById('btn-pong').classList.add('btn-arcade');
+    const overlay = document.createElement('div');
+    overlay.id = 'arcade-overlay';
+    overlay.innerHTML = `
+      <div class="arcade-close" id="arcade-close">&times;</div>
+      <div class="arcade-menu" id="arcade-menu" style="position: relative; z-index: 10;">
+        <h2 style="font-size: 3rem; margin-bottom: 2rem; text-align: center; letter-spacing: 0.2em; text-shadow: 0 2px 10px rgba(56,189,248,0.3);">OMEGA ARCADE</h2>
+        <button id="btn-snake">Abyssal Snake</button>
+        <button id="btn-pong">Telemetry Pong</button>
+      </div>
+      <canvas id="arcade-canvas" width="600" height="400" style="position: relative; z-index: 10;"></canvas>
+      <div id="arcade-instructions" class="arcade-instructions" style="display:none; position: relative; z-index: 10;">Controls: Arrow Keys | Press ESC to exit game</div>
+    `;
+    document.body.appendChild(overlay);
 
-  document.getElementById('btn-exit-game').addEventListener('click', () => {
-    exitGame();
-  });
+    const menu = document.getElementById('arcade-menu');
+    const canvas = document.getElementById('arcade-canvas');
+    const instructions = document.getElementById('arcade-instructions');
+    const ctx = canvas.getContext('2d');
+    let gameLoop;
 
-  document.getElementById('btn-snake').addEventListener('click', () => {
-    menu.style.display = 'none';
-    container.style.display = 'block';
-    startSnake();
-  });
+    document.getElementById('arcade-close').addEventListener('click', () => {
+      cancelAnimationFrame(gameLoop);
+      overlay.remove();
+    });
 
-  document.getElementById('btn-pong').addEventListener('click', () => {
-    menu.style.display = 'none';
-    container.style.display = 'block';
-    startPong();
-  });
+    document.getElementById('btn-snake').addEventListener('click', () => {
+      menu.style.display = 'none';
+      canvas.style.display = 'block';
+      instructions.style.display = 'block';
+      startSnake();
+    });
 
-  let keys = {};
-  const keydownHandler = (e) => { keys[e.key] = true; };
-  const keyupHandler = (e) => { keys[e.key] = false; };
-  document.addEventListener('keydown', keydownHandler);
-  document.addEventListener('keyup', keyupHandler);
+    document.getElementById('btn-pong').addEventListener('click', () => {
+      menu.style.display = 'none';
+      canvas.style.display = 'block';
+      instructions.style.display = 'block';
+      startPong();
+    });
 
-  function resetCanvas() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = '#38bdf8';
-    ctx.font = '20px monospace';
-  }
+    let keys = {};
+    const keydownHandler = (e) => { keys[e.key] = true; };
+    const keyupHandler = (e) => { keys[e.key] = false; };
+    document.addEventListener('keydown', keydownHandler);
+    document.addEventListener('keyup', keyupHandler);
 
-  function exitGame() {
-    cancelAnimationFrame(gameLoop);
-    menu.style.display = 'flex'; 
-    container.style.display = 'none';
-  }
+    function resetCanvas() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#38bdf8';
+      ctx.font = '20px monospace';
+    }
 
-  function startSnake() {
-    let snake = [{x: 15, y: 15}];
-    let food = {x: 5, y: 5};
-    let dx = 0; let dy = 0;
-    let score = 0;
-    let lastTime = 0;
-    
-    function loop(timestamp) {
-      if (container.style.display === 'none') return;
+    function exitGame() {
+      cancelAnimationFrame(gameLoop);
+      menu.style.display = 'block'; 
+      canvas.style.display = 'none';
+      instructions.style.display = 'none';
+    }
 
-      if (timestamp - lastTime < 80) {
+    function startSnake() {
+      let snake = [{x: 15, y: 15}];
+      let food = {x: 5, y: 5};
+      let dx = 0; let dy = 0;
+      let score = 0;
+      let lastTime = 0;
+      
+      function loop(timestamp) {
+        if (!document.getElementById('arcade-overlay')) return;
+        if (keys['Escape']) { exitGame(); return; }
+
+        if (timestamp - lastTime < 80) { // Game speed
+          gameLoop = requestAnimationFrame(loop);
+          return;
+        }
+        lastTime = timestamp;
+
+        if (keys['ArrowUp'] && dy !== 1) { dx = 0; dy = -1; }
+        if (keys['ArrowDown'] && dy !== -1) { dx = 0; dy = 1; }
+        if (keys['ArrowLeft'] && dx !== 1) { dx = -1; dy = 0; }
+        if (keys['ArrowRight'] && dx !== -1) { dx = 1; dy = 0; }
+
+        let head = { x: snake[0].x + dx, y: snake[0].y + dy };
+
+        // Start only when moving
+        if (dx === 0 && dy === 0) {
+           resetCanvas();
+           ctx.fillText("Press Arrow Keys to Start", 150, 200);
+           gameLoop = requestAnimationFrame(loop);
+           return;
+        }
+
+        if (head.x < 0 || head.x >= 30 || head.y < 0 || head.y >= 20) { exitGame(); return; }
+        
+        for (let segment of snake) {
+          if (head.x === segment.x && head.y === segment.y && snake.length > 1) { exitGame(); return; }
+        }
+
+        snake.unshift(head);
+
+        if (head.x === food.x && head.y === food.y) {
+          score += 10;
+          food = { x: Math.floor(Math.random() * 30), y: Math.floor(Math.random() * 20) };
+        } else {
+          snake.pop();
+        }
+
+        resetCanvas();
+        ctx.fillStyle = '#f472b6'; // Pink Food
+        ctx.fillRect(food.x * 20, food.y * 20, 18, 18);
+        ctx.fillStyle = '#38bdf8'; // Snake
+        for (let segment of snake) {
+          ctx.fillRect(segment.x * 20, segment.y * 20, 18, 18);
+        }
+        ctx.fillStyle = 'rgba(255,255,255,0.5)';
+        ctx.fillText("DATA FRAGMENTS: " + score, 10, 25);
+
         gameLoop = requestAnimationFrame(loop);
-        return;
       }
-      lastTime = timestamp;
-
-      if (keys['ArrowUp'] && dy !== 1) { dx = 0; dy = -1; }
-      if (keys['ArrowDown'] && dy !== -1) { dx = 0; dy = 1; }
-      if (keys['ArrowLeft'] && dx !== 1) { dx = -1; dy = 0; }
-      if (keys['ArrowRight'] && dx !== -1) { dx = 1; dy = 0; }
-
-      let head = { x: snake[0].x + dx, y: snake[0].y + dy };
-
-      if (dx === 0 && dy === 0) {
-         resetCanvas();
-         ctx.fillText("Press Arrow Keys to Start", 150, 200);
-         gameLoop = requestAnimationFrame(loop);
-         return;
-      }
-
-      if (head.x < 0 || head.x >= 30 || head.y < 0 || head.y >= 20) { exitGame(); return; }
-      
-      for (let segment of snake) {
-        if (head.x === segment.x && head.y === segment.y && snake.length > 1) { exitGame(); return; }
-      }
-
-      snake.unshift(head);
-
-      if (head.x === food.x && head.y === food.y) {
-        score += 10;
-        food = { x: Math.floor(Math.random() * 30), y: Math.floor(Math.random() * 20) };
-      } else {
-        snake.pop();
-      }
-
-      resetCanvas();
-      ctx.fillStyle = '#f472b6'; // Food
-      ctx.fillRect(food.x * 20, food.y * 20, 18, 18);
-      ctx.fillStyle = '#38bdf8'; // Snake
-      for (let segment of snake) {
-        ctx.fillRect(segment.x * 20, segment.y * 20, 18, 18);
-      }
-      ctx.fillStyle = 'rgba(255,255,255,0.5)';
-      ctx.fillText("DATA FRAGMENTS: " + score, 10, 25);
-
       gameLoop = requestAnimationFrame(loop);
     }
-    gameLoop = requestAnimationFrame(loop);
-  }
 
-  function startPong() {
-    let pad1 = { y: 150, score: 0 };
-    let pad2 = { y: 150, score: 0 };
-    let ball = { x: 300, y: 200, dx: 5, dy: 5 };
+    function startPong() {
+      let pad1 = { y: 150, score: 0 };
+      let pad2 = { y: 150, score: 0 };
+      let ball = { x: 300, y: 200, dx: 5, dy: 5 };
 
-    function loop() {
-      if (container.style.display === 'none') return;
-      resetCanvas();
+      function loop() {
+        if (!document.getElementById('arcade-overlay')) return;
+        if (keys['Escape']) { exitGame(); return; }
+        resetCanvas();
 
-      if (keys['ArrowUp'] && pad1.y > 0) pad1.y -= 7;
-      if (keys['ArrowDown'] && pad1.y < 300) pad1.y += 7;
+        if (keys['ArrowUp'] && pad1.y > 0) pad1.y -= 7;
+        if (keys['ArrowDown'] && pad1.y < 300) pad1.y += 7;
 
-      // Simple AI
-      if (ball.y < pad2.y + 50) pad2.y -= 4;
-      if (ball.y > pad2.y + 50) pad2.y += 4;
+        // Simple AI
+        if (ball.y < pad2.y + 50) pad2.y -= 4;
+        if (ball.y > pad2.y + 50) pad2.y += 4;
 
-      ball.x += ball.dx;
-      ball.y += ball.dy;
+        ball.x += ball.dx;
+        ball.y += ball.dy;
 
-      if (ball.y <= 0 || ball.y >= 390) ball.dy *= -1;
+        if (ball.y <= 0 || ball.y >= 390) ball.dy *= -1;
 
-      // Paddles
-      ctx.fillRect(20, pad1.y, 10, 100);
-      ctx.fillRect(570, pad2.y, 10, 100);
+        // Paddles
+        ctx.fillRect(20, pad1.y, 10, 100);
+        ctx.fillRect(570, pad2.y, 10, 100);
 
-      // Ball
-      ctx.fillRect(ball.x, ball.y, 10, 10);
+        // Ball
+        ctx.fillRect(ball.x, ball.y, 10, 10);
 
-      // Collision
-      if (ball.x <= 30 && ball.y > pad1.y && ball.y < pad1.y + 100) { ball.dx = Math.abs(ball.dx) + 0.5; ball.x = 30; }
-      if (ball.x >= 560 && ball.y > pad2.y && ball.y < pad2.y + 100) { ball.dx = -Math.abs(ball.dx) - 0.5; ball.x = 560; }
+        // Collision
+        if (ball.x <= 30 && ball.y > pad1.y && ball.y < pad1.y + 100) { ball.dx = Math.abs(ball.dx) + 0.5; ball.x = 30; }
+        if (ball.x >= 560 && ball.y > pad2.y && ball.y < pad2.y + 100) { ball.dx = -Math.abs(ball.dx) - 0.5; ball.x = 560; }
 
-      if (ball.x < 0) { pad2.score++; ball = { x: 300, y: 200, dx: -5, dy: 5 }; }
-      if (ball.x > 600) { pad1.score++; ball = { x: 300, y: 200, dx: 5, dy: -5 }; }
+        if (ball.x < 0) { pad2.score++; ball = { x: 300, y: 200, dx: -5, dy: 5 }; }
+        if (ball.x > 600) { pad1.score++; ball = { x: 300, y: 200, dx: 5, dy: -5 }; }
 
-      ctx.font = '40px monospace';
-      ctx.fillStyle = 'rgba(255,255,255,0.2)';
-      ctx.fillText(pad1.score, 150, 60);
-      ctx.fillText(pad2.score, 430, 60);
-      
-      // Net
-      ctx.fillStyle = 'rgba(56, 189, 248, 0.2)';
-      for(let i=0; i<400; i+=40) ctx.fillRect(298, i, 4, 20);
+        ctx.font = '40px monospace';
+        ctx.fillStyle = 'rgba(255,255,255,0.2)';
+        ctx.fillText(pad1.score, 150, 60);
+        ctx.fillText(pad2.score, 430, 60);
+        
+        // Net
+        ctx.fillStyle = 'rgba(56, 189, 248, 0.2)';
+        for(let i=0; i<400; i+=40) ctx.fillRect(298, i, 4, 20);
 
+        gameLoop = requestAnimationFrame(loop);
+      }
       gameLoop = requestAnimationFrame(loop);
     }
-    gameLoop = requestAnimationFrame(loop);
   }
 }
 
