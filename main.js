@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initTextScramble();
   initScrollProgress();
   initDevModeSecret();
+  initOceanEcosystem();
 });
 
 /* -------------------------------------
@@ -465,4 +466,92 @@ function triggerMatrixRain() {
     canvas.style.opacity = '0';
     setTimeout(() => canvas.remove(), 1000);
   }, 5000);
+}
+
+/* -------------------------------------
+   6. Realistic Ocean Ecosystem Background
+------------------------------------- */
+function initOceanEcosystem() {
+  if (!document.querySelector('.hero-animated')) return;
+
+  const container = document.createElement('div');
+  container.id = 'ocean-ecosystem';
+  document.body.prepend(container);
+
+  const numParticles = 20; // More fish, but very distant
+
+  for (let i = 0; i < numParticles; i++) {
+    createFishParticle(container);
+  }
+}
+
+function createFishParticle(container) {
+  const particle = document.createElement('div');
+  particle.className = 'ocean-particle fish';
+  
+  // Clean SVG Fish - naturally faces left (head at X=0, tail at X=100)
+  particle.innerHTML = `
+    <svg viewBox="0 0 100 40" width="40" height="16" xmlns="http://www.w3.org/2000/svg">
+      <path d="M 0 20 Q 30 5, 80 20 Q 30 35, 0 20 Z" fill="rgba(148, 163, 184, 0.4)" />
+      <path class="fish-tail" d="M 75 20 L 100 8 L 100 32 Z" fill="rgba(148, 163, 184, 0.4)" />
+    </svg>
+  `;
+  
+  // Random starting position (mostly off-screen left or right)
+  const isMovingRight = Math.random() > 0.5;
+  const startX = isMovingRight ? -10 : 110; 
+  const startY = Math.random() * 100; // vh
+  
+  particle.style.left = startX + 'vw';
+  particle.style.top = startY + 'vh';
+  
+  // Z-Depth / Scale logic
+  const scale = 0.1 + Math.random() * 0.4; // Extremely small/distant (0.1) to mid-distance (0.5)
+  
+  // Orientation: if moving left, scaleX(1). if moving right, scaleX(-1)
+  const dirScale = isMovingRight ? -1 : 1;
+  particle.style.transform = `scaleX(${dirScale}) scale(${scale})`;
+  
+  // Blur and Opacity based on distance (scale). Smaller = blurrier and more transparent.
+  const baseOpacity = scale * 0.15; // 0.1 scale = 0.015 opacity. 0.5 scale = 0.075 opacity.
+  particle.style.opacity = baseOpacity.toFixed(3);
+  
+  const blurAmt = (0.6 - scale) * 3; // 0.1 scale = 1.5px blur. 0.5 scale = 0.3px blur.
+  particle.style.filter = `blur(${blurAmt.toFixed(1)}px)`;
+  
+  container.appendChild(particle);
+
+  animateFish(particle, isMovingRight, scale, dirScale);
+}
+
+function animateFish(particle, isMovingRight, scale, dirScale) {
+  // Slower for distant fish (smaller scale). 
+  // Base duration 30s to 60s, divided by scale so distant fish take up to 200s.
+  const baseDuration = 30000 + Math.random() * 30000; 
+  const duration = baseDuration / (scale * 2); 
+  
+  const endX = isMovingRight ? 110 : -10;
+
+  particle.style.transition = `left ${duration}ms linear`;
+  
+  // Trigger layout to ensure transition applies
+  void particle.offsetWidth;
+
+  particle.style.left = endX + 'vw';
+
+  // Loop
+  setTimeout(() => {
+    particle.style.transition = 'none';
+    particle.style.top = (Math.random() * 100) + 'vh';
+    
+    // Switch direction randomly on respawn
+    const newMovingRight = Math.random() > 0.5;
+    particle.style.left = (newMovingRight ? -10 : 110) + 'vw';
+    
+    const newDirScale = newMovingRight ? -1 : 1;
+    particle.style.transform = `scaleX(${newDirScale}) scale(${scale})`;
+    
+    void particle.offsetWidth;
+    animateFish(particle, newMovingRight, scale, newDirScale);
+  }, duration);
 }

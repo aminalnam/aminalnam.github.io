@@ -1231,3 +1231,41 @@ body {
   100% { transform: translateY(-2px); }
 }
 
+
+/* Ocean Ecosystem Particle System */
+#ocean-ecosystem {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 0; /* Behind everything */
+  overflow: hidden;
+}
+
+.ocean-particle {
+  position: absolute;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.fish {
+  animation: swimUpDown 6s ease-in-out infinite alternate;
+}
+
+.fish .fish-tail {
+  transform-origin: 75px 20px;
+  animation: tailWiggle 0.4s linear infinite alternate;
+}
+
+@keyframes swimUpDown {
+  0% { margin-top: -10px; }
+  100% { margin-top: 10px; }
+}
+
+@keyframes tailWiggle {
+  0% { transform: rotate(-15deg); }
+  100% { transform: rotate(15deg); }
+}
+
