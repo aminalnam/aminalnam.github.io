@@ -135,41 +135,24 @@
     <div class="main-inner">
 
       <section class="section section-block" style="background: rgba(0,0,0,0.4);">
-      <section class="section section-block" style="background: rgba(0,0,0,0.4);">
-        <span class="section-kicker">Educational Deep Dive: PCB Design</span>
-        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">RF Trace Impedance</h2>
-        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">When designing the Printed Circuit Board (PCB) for an OMEGA node, routing the signal from the Semtech SX1262 pin to the SMA antenna connector is not as simple as drawing a copper line. At 915 MHz, electricity behaves as an electromagnetic wave, not a direct current.</p>
+        <span class="section-kicker">Educational Deep Dive: Hardware Strategy</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">COTS vs Custom Silicon</h2>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">A critical decision in systems engineering is determining when to design custom printed circuit boards (PCBs) versus when to leverage Commercial Off-The-Shelf (COTS) hardware. For the OMEGA edge nodes, we explicitly chose to build upon existing COTS platforms rather than manufacturing custom silicon.</p>
         
         <div class="grid-2" style="margin-bottom: 2rem;">
           <div class="panel" style="padding: 1.5rem;">
-            <span class="status-label status-implemented">The Core Concept</span>
-            <h3 style="font-size: 1.2rem;">Transmission Lines</h3>
-            <p style="font-size: 0.85rem;">To prevent the RF wave from bouncing off the antenna and reflecting back into the chip (causing catastrophic power loss), the copper trace must act as a <strong>transmission line</strong> with exactly a 50-ohm characteristic impedance ($Z_0$).</p>
+            <span class="status-label status-implemented">The Engineering Tradeoff</span>
+            <h3 style="font-size: 1.2rem;">Time to Deployment</h3>
+            <p style="font-size: 0.85rem;">Designing custom RF hardware for the 915 MHz band requires rigorous impedance matching, Vector Network Analyzer (VNA) tuning, and FCC certification testing. By utilizing pre-certified COTS boards like the LILYGO T-Beam Supreme, we bypass months of hardware iteration and immediately focus on the core value: the firmware and mesh protocol.</p>
           </div>
           <div class="panel" style="padding: 1.5rem;">
-            <span class="status-label status-implemented">Implementation Guide</span>
-            <h3 style="font-size: 1.2rem;">Calculating Trace Width</h3>
-            <p style="font-size: 0.85rem;">You cannot guess the trace width. You must calculate a <strong>Coplanar Waveguide with Ground (CPWG)</strong> based on your PCB manufacturer's specific stack-up (e.g., JLCPCB JLC04161H-3313).</p>
-          </div>
-        </div>
-
-        <div style="background: var(--bg); border: 1px solid var(--line); border-radius: 8px; margin: 2rem 0; overflow: hidden;">
-          <div style="display: flex; align-items: center; background: rgba(255,255,255,0.03); padding: 0.5rem 1rem; border-bottom: 1px solid var(--line);">
-            <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-ocean);">Step-by-Step Implementation: Designing the 50Ω Trace</span>
-          </div>
-          <div style="padding: 1.5rem; color: var(--ink-soft); font-size: 0.95rem; line-height: 1.6;">
-            <ol style="margin: 0; padding-left: 1.2rem;">
-              <li style="margin-bottom: 0.75rem;"><strong>Determine Dielectric Constant ($\epsilon_r$):</strong> Check your PCB manufacturer's specs for the FR4 prepreg layer. Typically, $\epsilon_r \approx 4.2$ at 1GHz.</li>
-              <li style="margin-bottom: 0.75rem;"><strong>Determine Dielectric Height ($h$):</strong> Find the exact thickness of the prepreg layer between your top copper trace and the inner ground plane (e.g., $h = 0.1mm$).</li>
-              <li style="margin-bottom: 0.75rem;"><strong>Use a CPWG Calculator:</strong> Input your $\epsilon_r$, $h$, and copper thickness ($T = 1.4mil$) into a tool like KiCad's PCB Calculator or Saturn PCB Toolkit.</li>
-              <li style="margin-bottom: 0.75rem;"><strong>Solve for Width ($W$) and Gap ($G$):</strong> The calculator will spit out the required trace width and clearance gap to achieve $Z_0 = 50\Omega$. (e.g., $W = 0.35mm$, $G = 0.2mm$).</li>
-              <li><strong>Route in KiCad:</strong> Set your trace width to exactly 0.35mm. Surround the trace with a copper pour (ground) leaving exactly a 0.2mm clearance gap. Stitch the surrounding ground pour to the inner ground layer with vias every few millimeters to contain the electromagnetic field.</li>
-            </ol>
+            <span class="status-label status-implemented">Platform Selection</span>
+            <h3 style="font-size: 1.2rem;">The T-Beam Supreme</h3>
+            <p style="font-size: 0.85rem;">The T-Beam Supreme was selected because it perfectly integrates our required triad into a single tested package: an ESP32-S3 microcontroller, a Semtech SX1262 LoRa transceiver, and a u-blox MAX-M10S GNSS module, all backed by an AXP2101 power management unit.</p>
           </div>
         </div>
       </section>
 
-      <section class="section section-block" style="background: rgba(0,0,0,0.4); margin-top: 2rem;">
       <section class="section section-block" style="background: rgba(0,0,0,0.4); margin-top: 2rem;">
         <span class="section-kicker">Educational Deep Dive: Sensor Wiring</span>
         <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">I2C Bus Capacitance</h2>
