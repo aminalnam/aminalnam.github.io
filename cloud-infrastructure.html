@@ -132,62 +132,90 @@
   <main class="main-shell wrap" role="main">
     <div class="main-inner">
       <section class="section section-block" style="background: rgba(0,0,0,0.4);">
-        <span class="section-kicker">The Cloud Architecture</span>
-        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Docker & Kubernetes</h2>
-        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">While the primary Gateway runs physically on the shore, the Mission Portal and the aggregate database must be accessible to scientists globally. We orchestrate the cloud infrastructure using modern DevOps principles.</p>
+        <span class="section-kicker">Educational Deep Dive: Security</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Containerization & Least Privilege</h2>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">When deploying the OMEGA backend to the cloud, packaging the application into a Docker container is not just about portability—it is a critical security boundary. A poorly written Dockerfile exposes the host machine to privilege escalation attacks.</p>
         
-        <div class="section-visual" style="padding: 1.5rem;">
-            <div class="mermaid">
-            graph LR
-                subgraph Physical Edge
-                    R[Raspberry Pi 4] -->|Ngrok / Cloudflared| I[Internet]
-                end
-                
-                subgraph Cloud Environment (AWS/GCP)
-                    I --> K[Kubernetes Ingress]
-                    K --> F[FastAPI Aggregator Pod]
-                    K --> P[React Portal Pod]
-                    F <--> DB[(Managed PostgreSQL)]
-                end
-                
-                classDef logic fill:#101529,stroke:#3b82f6,stroke-width:2px,color:#fff;
-                class F,P logic;
-            </div>
+        <div class="grid-2" style="margin-bottom: 2rem;">
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">The Core Concept</span>
+            <h3 style="font-size: 1.2rem;">Multi-Stage Builds</h3>
+            <p style="font-size: 0.85rem;">Compiling Python packages often requires C-compilers (like <code>gcc</code>) and operating system headers. If you leave these tools inside your production container, an attacker who breaches the application can use them to compile malware. Multi-stage builds solve this by using an initial "builder" container to compile the code into wheels, and then copying <em>only</em> the compiled binaries into a fresh, clean, minimal production image.</p>
+          </div>
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">The Security Flaw</span>
+            <h3 style="font-size: 1.2rem;">The Root User Problem</h3>
+            <p style="font-size: 0.85rem;">By default, Docker runs all processes as the <code>root</code> user. If your Python API is breached via a remote code execution (RCE) vulnerability, the attacker gains root access inside the container. We must explicitly create a low-privilege user and switch to it before launching the server.</p>
+          </div>
         </div>
-        <p style="color: var(--ink-soft); font-size: 1rem; line-height: 1.6; max-width: 800px; margin-top: 1rem;">
-          The Python API and React Portal are heavily containerized using Docker. Through GitHub Actions CI/CD pipelines, any push to the `main` branch automatically builds a new container image, pushes it to the Docker Hub registry, and triggers a rolling update across the Kubernetes cluster, ensuring zero downtime for the data firehose.
-        </p>
         
-        <div class="grid-2" style="margin-top: 2rem;">
-          <div class="section-visual" style="max-height: 600px; overflow-y: auto;">
-            <span class="panel-kicker">gateway/Dockerfile</span>
-            <pre><code class="language-dockerfile"># 1. Multi-stage build for strict minimal footprint
+        <div style="background: var(--bg); border: 1px solid var(--line); border-radius: 8px; margin: 2rem 0; overflow: hidden;">
+          <div style="display: flex; align-items: center; background: rgba(255,255,255,0.03); padding: 0.5rem 1rem; border-bottom: 1px solid var(--line);">
+            <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-ocean);">Step-by-Step Implementation: The Hardened Dockerfile</span>
+          </div>
+          <div style="padding: 1.5rem; color: var(--ink-soft); font-size: 0.95rem; line-height: 1.6;">
+            <ol style="margin: 0 0 1rem; padding-left: 1.2rem;">
+              <li style="margin-bottom: 0.5rem;"><strong>Stage 1 (Builder):</strong> We start from a base image and install all required build dependencies. We use <code>pip wheel</code> to compile the Python packages into <code>.whl</code> files without installing them.</li>
+              <li style="margin-bottom: 0.5rem;"><strong>Stage 2 (Production):</strong> We start a completely new, clean image. We explicitly run <code>useradd -m omega</code> to create a non-root user.</li>
+              <li><strong>Isolation:</strong> We copy the wheels from Stage 1, install them, change ownership of the files to our new user, and explicitly declare <code>USER omega</code> before running the Uvicorn ASGI server.</li>
+            </ol>
+            <pre style="margin: 0; border: 1px solid var(--line); border-radius: 8px;"><code class="language-dockerfile"># STAGE 1: Compile dependencies
 FROM python:3.11-slim-bullseye AS builder
 WORKDIR /app
 COPY requirements.txt .
 RUN pip wheel --no-cache-dir --no-deps --wheel-dir /app/wheels -r requirements.txt
 
+# STAGE 2: Minimal production runtime
 FROM python:3.11-slim-bullseye
 WORKDIR /app
-# 2. Hardened security: run as non-root user
+
+# Create a non-root user for security
 RUN useradd -m omega
+
+# Copy only the compiled artifacts
 COPY --from=builder /app/wheels /wheels
 RUN pip install --no-cache /wheels/*
 COPY . .
+
+# Restrict permissions and drop root privileges
 RUN chown -R omega:omega /app
 USER omega
-# 3. Uvicorn ASGI server optimized for high concurrency
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "4"]</code></pre>
-          </div>
 
-          <div class="section-visual" style="max-height: 600px; overflow-y: auto;">
-            <span class="panel-kicker">k8s/gateway-deployment.yaml</span>
-            <pre><code class="language-yaml">apiVersion: apps/v1
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-block" style="background: rgba(0,0,0,0.4); margin-top: 2rem;">
+        <span class="section-kicker">Educational Deep Dive: High Availability</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Kubernetes & Zero-Downtime</h2>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">If the backend goes offline during a code deployment, incoming LoRa payloads from the edge nodes will be permanently lost. Kubernetes solves this using the concept of a <strong>Desired State</strong> and Rolling Updates.</p>
+        
+        <div class="grid-2" style="margin-bottom: 2rem;">
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">The Core Concept</span>
+            <h3 style="font-size: 1.2rem;">ReplicaSets & Desired State</h3>
+            <p style="font-size: 0.85rem;">You do not tell Kubernetes <em>how</em> to run a container. You declare the <em>Desired State</em> (e.g., "I want exactly 3 copies of the API running at all times"). A background control loop constantly monitors the cluster. If a physical node burns down and takes a pod with it, the loop detects that Current State (2) ≠ Desired State (3) and immediately spins up a replacement.</p>
+          </div>
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">Implementation Guide</span>
+            <h3 style="font-size: 1.2rem;">Liveness vs Readiness Probes</h3>
+            <p style="font-size: 0.85rem;">How does Kubernetes know a pod is actually working? <strong>Liveness Probes</strong> check if the app has crashed (if it fails, K8s restarts the pod). <strong>Readiness Probes</strong> check if the app has finished booting and is ready to receive traffic (if it fails, K8s removes it from the load balancer). You <em>must</em> configure these to achieve zero-downtime deployments.</p>
+          </div>
+        </div>
+
+        <div style="background: var(--bg); border: 1px solid var(--line); border-radius: 8px; margin: 2rem 0; overflow: hidden;">
+          <div style="display: flex; align-items: center; background: rgba(255,255,255,0.03); padding: 0.5rem 1rem; border-bottom: 1px solid var(--line);">
+            <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-ocean);">Step-by-Step Implementation: The Deployment Definition</span>
+          </div>
+          <div style="padding: 1.5rem; color: var(--ink-soft); font-size: 0.95rem; line-height: 1.6;">
+            <p style="margin-top: 0;"><strong>The Rolling Update:</strong> When you deploy a new version of the code, Kubernetes spins up a new pod. The load balancer will <em>not</em> send traffic to the new pod until its <code>readinessProbe</code> returns an HTTP 200 OK. Once ready, Kubernetes gracefully shuts down one old pod, ensuring the API is never offline.</p>
+            <pre style="margin: 0; border: 1px solid var(--line); border-radius: 8px;"><code class="language-yaml">apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: omega-gateway
 spec:
-  replicas: 3 # High Availability
+  replicas: 3 # The Desired State
   selector:
     matchLabels:
       app: omega-gateway
@@ -201,12 +229,16 @@ spec:
         image: aminalnam/omega-gateway:latest
         ports:
         - containerPort: 8000
-        # Aggressive memory limits to prevent pod starvation
-        resources:
-          limits:
-            memory: "512Mi"
-            cpu: "500m"
-        # Kubernetes Liveness Probes for self-healing
+        
+        # Readiness: Is the app booted and ready for traffic?
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          
+        # Liveness: Is the app deadlocked and in need of a reboot?
         livenessProbe:
           httpGet:
             path: /health
