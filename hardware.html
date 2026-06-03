@@ -225,6 +225,36 @@ snapping the square waves back into sharp, readable logic levels.</code></pre>
                 deactivate MCU
           </div>
         </div>
+        <div class="section-visual" style="max-height: 800px; overflow-y: auto; margin-top: 2rem;">
+          <span class="panel-kicker">Edge UI & Telemetry</span>
+          <h3 style="font-family: var(--font-serif); font-size: 1.8rem; margin: 0.5rem 1.5rem 1rem; color: var(--white);">OLED Display & PMU Diagnostics</h3>
+          <p style="padding: 0 1.5rem 1rem; margin: 0; color: var(--ink-soft); font-size: 0.95rem; line-height: 1.6;">
+            Deploying a headless edge node into the ocean is dangerous if field technicians cannot visually confirm its operational state before launch. The latest firmware introduces a robust local UI using an onboard SH1106 OLED screen and direct I2C communication with the AXP2101 Power Management Unit (PMU).
+          </p>
+          <div style="padding: 0 1.5rem 1.5rem;">
+            <ul style="margin: 0; padding-left: 1.2rem; color: var(--ink-soft); font-size: 0.85rem; line-height: 1.8;">
+              <li><strong>Dynamic Field Observability:</strong> The OLED dynamically renders the assigned <code>operator_label</code>, <code>mesh-id</code>, and physical MAC address directly on the screen.</li>
+              <li><strong>Live Hardware Diagnostics:</strong> By querying the internal ESP32-S3 die temperature and the AXP2101 PMU, the screen reports real-time battery voltage, charging status, and thermal metrics.</li>
+              <li><strong>GPS Rendering:</strong> Latitude and longitude coordinates are painted to the display the moment the u-blox GNSS module acquires a hot fix.</li>
+            </ul>
+          </div>
+          <pre style="margin: 0; border-top: 1px solid var(--line); border-radius: 0 0 8px 8px;"><code class="language-cpp">void update_oled_display() {
+    display.clear();
+    // 1. Render Identity
+    display.drawString(0, 0, "OP: " + String(operator_label));
+    display.drawString(0, 10, "ID: " + String(mesh_id));
+    
+    // 2. Render Hardware Health
+    float batt_v = pmu.getBatteryVoltage();
+    float core_temp = temperatureRead();
+    display.drawString(0, 20, "BAT: " + String(batt_v) + "V  TMP: " + String(core_temp) + "C");
+    
+    // 3. Render Position
+    display.drawString(0, 30, "GPS: " + String(gps.location.lat(), 4) + ", " + String(gps.location.lng(), 4));
+    
+    display.display();
+}</code></pre>
+        </div>
       </section>
       
     </div>

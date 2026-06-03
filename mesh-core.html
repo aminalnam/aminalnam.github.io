@@ -384,6 +384,39 @@ build_flags =
             </div>
           </section>
     
+          <section class="section section-block" style="background: rgba(0,0,0,0.4);">
+            <span class="section-kicker">Mesh Phases 3 & 4</span>
+            <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Machine Learning over LoRa.</h2>
+            <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">Moving beyond basic scalar telemetry, OMEGA's advanced Delay Tolerant Network (DTN) now supports the transmission of complex mathematical features and entire Machine Learning architectures across ultra-low bandwidth links.</p>
+            
+            <div class="grid-2" style="margin-bottom: 2rem;">
+              <div class="panel" style="padding: 1.5rem;">
+                <span class="status-label status-implemented">Phase 3: FFT Bin Codec</span>
+                <h3 style="font-size: 1.2rem;">Spectral Feature Bags</h3>
+                <p style="font-size: 0.85rem;">Instead of attempting to stream raw acoustic audio or high-frequency vibration data over a 250bps LoRa link (which is impossible), the edge nodes perform local Fast Fourier Transforms (FFT). The mesh protocol compresses these frequency bins into a highly optimized <code>DERIVED-namespace</code> binary payload, transmitting only the critical spectral peaks to the shore gateway.</p>
+              </div>
+              <div class="panel" style="padding: 1.5rem;">
+                <span class="status-label status-implemented">Phase 4: OTA ML Protocol</span>
+                <h3 style="font-size: 1.2rem;">Over-The-Air Edge AI</h3>
+                <p style="font-size: 0.85rem;">When the shore gateway needs to update an edge node's classification model (e.g., detecting a new acoustic signature), it fragments a quantized TensorFlow Lite Micro model into small TLV chunks. The mesh automatically reconstructs the model on the remote node without requiring physical retrieval of the buoy.</p>
+              </div>
+            </div>
+            
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;">
+              <span class="panel-kicker">gateway/mesh_binary_codec.py (Phase 4 Model Loading)</span>
+              <pre><code class="language-python">def build_ota_model_chunk(model_id: str, chunk_index: int, payload_bytes: bytes) -> bytes:
+    """Encodes a single chunk of an ML model for OTA LoRa transmission."""
+    # 1. Header with Model ID and Chunk Offset
+    header = struct.pack("&lt;8sH", model_id.encode('utf-8')[:8], chunk_index)
+    
+    # 2. Append compressed model weights
+    chunk_data = zlib.compress(payload_bytes, level=9)
+    
+    # 3. Wrap in Mesh Phase 4 TLV Envelope
+    return tlv_encode(TAG_OTA_MODEL_CHUNK, header + chunk_data)</code></pre>
+            </div>
+          </section>
+    
     </div>
   </main>
 
