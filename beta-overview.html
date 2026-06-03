@@ -189,16 +189,34 @@
       </section>
 
       <section class="section section-block" style="background: rgba(0,0,0,0.4);">
-        <span class="section-kicker">Core Component</span>
-        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">The Synthetic Injector.</h2>
-        <p>At the heart of the BETA framework is the Synthetic Injector. Written in asynchronous Python, it precisely mimics the behavior of dozens of physical edge nodes deployed in the field. It generates cryptographically signed, CBOR-encoded telemetry payloads and fires them at the Gateway's ingress endpoints.</p>
-        <p>This allows us to simulate massive telemetry floods (e.g., a sudden sensor surge after an underwater acoustic event) and ensure the SQLite WAL layer and event bus can handle the throughput without locking.</p>
+        <span class="section-kicker">Educational Deep Dive: QA Testing</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Deterministic Fuzzing & Race Conditions</h2>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">A gateway might process a single incoming buoy payload perfectly. But what happens when an underwater acoustic anomaly triggers 50 edge nodes to transmit data at the exact same millisecond? Without rigorous testing, "race conditions" can lock up the database and drop critical scientific data.</p>
+        
+        <div class="grid-2" style="margin-bottom: 2rem;">
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">The Core Concept</span>
+            <h3 style="font-size: 1.2rem;">Deterministic Fuzzing</h3>
+            <p style="font-size: 0.85rem;">To guarantee system stability before physical deployment, we must subject the backend to extreme stress. "Fuzzing" involves automatically injecting thousands of synthetic, highly-concurrent, and occasionally malformed telemetry packets to see if the server crashes. Because the payloads are deterministically generated, any bugs discovered are completely reproducible.</p>
+          </div>
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">The Security Flaw</span>
+            <h3 style="font-size: 1.2rem;">SQLite WAL Locking</h3>
+            <p style="font-size: 0.85rem;">When 50 parallel requests try to write to a SQLite database simultaneously, you will hit a <code>database is locked</code> exception. This deep dive demonstrates how to use Python's <code>asyncio</code> to simulate this exact failure mode, proving the necessity of Write-Ahead Logging (WAL) and asynchronous background tasks.</p>
+          </div>
+        </div>
         
         <div style="background: var(--bg); border: 1px solid var(--line); border-radius: 8px; margin: 2rem 0; overflow: hidden;">
-          <div style="display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.03); padding: 0.5rem 1rem; border-bottom: 1px solid var(--line);">
-            <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent);">synth_injector.py</span>
+          <div style="display: flex; align-items: center; background: rgba(255,255,255,0.03); padding: 0.5rem 1rem; border-bottom: 1px solid var(--line);">
+            <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-ocean);">Step-by-Step Implementation: The Asynchronous Injector</span>
           </div>
-          <pre style="margin: 0; padding: 1.5rem; background: transparent; overflow-x: auto;"><code>import asyncio
+          <div style="padding: 1.5rem; color: var(--ink-soft); font-size: 0.95rem; line-height: 1.6;">
+            <ol style="margin: 0 0 1rem; padding-left: 1.2rem;">
+              <li style="margin-bottom: 0.5rem;"><strong>The Generator:</strong> The `CborPayloadGenerator` creates mathematically valid but completely randomized buoy sensor data.</li>
+              <li style="margin-bottom: 0.5rem;"><strong>The Flood Loop:</strong> We use an asynchronous `while` loop bound by a specific duration to continuously generate payloads.</li>
+              <li><strong>Fire and Forget:</strong> By using `asyncio.create_task()`, we launch the HTTP POST request into the background without waiting for a response, allowing us to hit the gateway with hundreds of concurrent connections per second.</li>
+            </ol>
+            <pre style="margin: 0; border: 1px solid var(--line); border-radius: 8px;"><code class="language-python">import asyncio
 from core.fuzzer import CborPayloadGenerator
 from network.client import AsyncGatewayClient
 
@@ -212,12 +230,14 @@ async def run_synthetic_flood(target_url: str, duration_sec: int, tps: int):
     end_time = asyncio.get_event_loop().time() + duration_sec
     while asyncio.get_event_loop().time() < end_time:
         payload = generator.create_drift_telemetry()
-        # Fire-and-forget payload injection
+        
+        # Fire-and-forget payload injection (simulating parallel buoys)
         asyncio.create_task(client.post_telemetry(payload))
         await asyncio.sleep(1.0 / tps)
         
     await client.close()
     return client.get_latency_metrics()</code></pre>
+          </div>
         </div>
       </section>
 
@@ -248,14 +268,26 @@ async def run_synthetic_flood(target_url: str, duration_sec: int, tps: int):
       </section>
 
       <section class="section section-block" style="background: rgba(0,0,0,0.4);">
-        <span class="section-kicker">Automated Remediation</span>
-        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Honu AI Integration.</h2>
-        <p>When the Synthetic Injector flags a performance regression, it doesn't just stop at a red build light. The failure matrices (including CPU profiles, database wait times, and traceback logs) are packaged and forwarded to the <strong>Honu AI Copilot</strong>.</p>
-        <p>The Copilot acts as a senior systems engineer. It correlates the current performance drop with the recent git commit diff, hypothesizes the root cause, and automatically drafts a Jira-style remediation ticket outlining the "Next Moves."</p>
+        <span class="section-kicker">Educational Deep Dive: SLIs</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Performance Metrics (P95) & Remediation</h2>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">When a synthetic flood finishes, how do we grade the system? Tracking the "average" response time is mathematically flawed because outliers are hidden. Instead, Site Reliability Engineering (SRE) relies on percentiles.</p>
+        
+        <div class="grid-2" style="margin-bottom: 2rem;">
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">The Core Concept</span>
+            <h3 style="font-size: 1.2rem;">P95 Latency</h3>
+            <p style="font-size: 0.85rem;">P95 latency means "95% of all requests completed faster than this time." If your average latency is 10ms, but your P95 is 500ms, it means 5% of your buoys are experiencing massive delays (likely due to a queue bottleneck). The BETA framework automatically fails any code commit that degrades the P95 ingestion metric beyond acceptable limits.</p>
+          </div>
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">Implementation Guide</span>
+            <h3 style="font-size: 1.2rem;">AI-Driven Triage</h3>
+            <p style="font-size: 0.85rem;">When the P95 latency spikes, debugging the backend is tedious. The BETA framework feeds the performance deltas, CPU profiles, and the recent Git commit diff directly into the <strong>Honu AI Copilot</strong>. The AI analyzes the bottleneck and generates a ready-to-work Jira ticket for the engineering team.</p>
+          </div>
+        </div>
 
         <div style="background: var(--bg); border: 1px solid var(--line); border-radius: 8px; margin: 2rem 0; overflow: hidden; font-family: var(--font-mono); font-size: 0.85rem;">
           <div style="display: flex; align-items: center; background: rgba(255,255,255,0.03); padding: 0.5rem 1rem; border-bottom: 1px solid var(--line);">
-            <span style="color: var(--accent-yellow);">⚠️ AI Auto-Triage Ticket Generated</span>
+            <span style="color: var(--accent-yellow);">⚠️ Example Output: AI Auto-Triage Ticket</span>
           </div>
           <div style="padding: 1.5rem; color: var(--ink-soft); line-height: 1.6;">
             <div style="color: var(--white); margin-bottom: 1rem;"><strong>Title:</strong> [REGRESSION] P95 Latency spike to 120ms during concurrent SQLite writes</div>
