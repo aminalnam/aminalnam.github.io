@@ -21,6 +21,8 @@
     import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
     mermaid.initialize({ startOnLoad: true, theme: 'dark', themeVariables: { fontFamily: 'Inter' } });
   </script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
   <header class="topbar">
@@ -173,31 +175,60 @@ def encode_serial_frame(payload: dict[str, Any] | bytes, *, flags: int = 0) -> b
           </section>
 
           <section class="section section-block" style="background: rgba(0,0,0,0.4);">
-            <span class="section-kicker">Signal Processing</span>
+            <span class="section-kicker">Educational Deep Dive: Signal Processing</span>
             <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Lossless Predictive Coding.</h2>
-            <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">To achieve high-frequency sampling (e.g., 3-second cadence) over ultra-low bandwidth, OMEGA utilizes <strong>Multi-Sample Batching</strong> backed by a first-order predictive encoder.</p>
+            <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">To achieve high-frequency sampling over ultra-low bandwidth, OMEGA utilizes <strong>Multi-Sample Batching</strong> backed by a first-order predictive encoder. If you send 30 floats over LoRa, the payload is 120 bytes. Using this algorithm, you can compress that to roughly 20 bytes.</p>
             
             <div class="grid-2" style="margin-bottom: 2rem;">
               <div class="panel" style="padding: 1.5rem;">
-                <span class="status-label status-implemented">Delta Encoding</span>
+                <span class="status-label status-implemented">The Core Concept</span>
                 <h3 style="font-size: 1.2rem;">First-Order Predictor</h3>
-                <p style="font-size: 0.85rem;">Instead of sending raw floats, the encoder calculates the residual deltas between readings: <code>actual[i+1] = actual[i] + residual[i]</code>. It dynamically packs these residuals into ultra-dense 4-bit or 8-bit widths based on the variance.</p>
+                <p style="font-size: 0.85rem;">Instead of sending raw values, the encoder calculates the residual delta between the <em>current</em> reading and the <em>previous</em> reading: $R[i] = V[i] - V[i-1]$. In the ocean, temperatures change slowly. Therefore, the residuals ($R$) are very small numbers (like +0.1 or -0.2) which can be bit-packed into 4-bit nibbles.</p>
               </div>
               <div class="panel" style="padding: 1.5rem;">
                 <span class="status-label status-implemented">Data Purity</span>
-                <h3 style="font-size: 1.2rem;">Strictly Lossless</h3>
-                <p style="font-size: 0.85rem;">Scientific data integrity is paramount. If a sudden anomaly causes a delta spike that exceeds 8 bits, the encoder mathematically <em>refuses</em> to quantize it and gracefully falls back to sending verbatim scalar TLVs. The data purity is perfectly preserved.</p>
+                <h3 style="font-size: 1.2rem;">Strictly Lossless Fallback</h3>
+                <p style="font-size: 0.85rem;">Scientific data integrity is paramount. If a sudden anomaly causes a delta spike that exceeds the maximum packed integer size, the encoder mathematically <em>refuses</em> to truncate it. It dynamically falls back to sending verbatim scalar values.</p>
               </div>
             </div>
             
-            <div class="section-visual" style="max-height: 800px; overflow-y: auto;">
-              <span class="panel-kicker">Performance Metrics</span>
-              <pre><code class="language-text">Batch Frame Yields:
-  - 30 readings (10 per 3 signals) + full GPS + full health = 104 B per frame
-  - Compared to prior scalar frame (3 readings total) = 84 B
-
-Result: 10× the sensor data for only ~24% more packet size.
-Leaves 146 B of free headroom remaining in the 250 B LoRa legal packet limit!</code></pre>
+            <div style="background: var(--bg); border: 1px solid var(--line); border-radius: 8px; margin: 2rem 0; overflow: hidden;">
+              <div style="display: flex; align-items: center; background: rgba(255,255,255,0.03); padding: 0.5rem 1rem; border-bottom: 1px solid var(--line);">
+                <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-ocean);">Step-by-Step Implementation: Building a Python Encoder</span>
+              </div>
+              <div style="padding: 1.5rem; color: var(--ink-soft); font-size: 0.95rem; line-height: 1.6;">
+                <ol style="margin: 0 0 1rem; padding-left: 1.2rem;">
+                  <li style="margin-bottom: 0.5rem;"><strong>Scaling:</strong> Floating point math is slow and hard to pack. First, scale the floats into integers (e.g., $24.5^\circ\text{C} \times 10 = 245$).</li>
+                  <li style="margin-bottom: 0.5rem;"><strong>Calculate Deltas:</strong> Iterate through the batch. Store the absolute first value, then calculate the residuals.</li>
+                  <li><strong>Determine Bit Width:</strong> Find the maximum absolute residual. If $max(|R|) < 8$, you can pack the deltas into 4-bit signed nibbles. If $< 128$, use 8-bit bytes.</li>
+                </ol>
+                <pre style="margin: 0; border: 1px solid var(--line); border-radius: 8px;"><code class="language-python">def encode_batch(values: list[float], scale: int = 10) -> bytes:
+    if not values: return b""
+    
+    # 1. Scale to integers
+    int_vals = [int(round(v * scale)) for v in values]
+    
+    # 2. Calculate residual deltas
+    deltas = []
+    for i in range(1, len(int_vals)):
+        deltas.append(int_vals[i] - int_vals[i-1])
+        
+    # 3. Check variance bounds for 8-bit packing
+    max_delta = max((abs(d) for d in deltas), default=0)
+    
+    if max_delta <= 127:
+        # Pack: [Header Byte] [Initial Value (2B)] [Deltas...]
+        payload = bytearray()
+        payload.append(0x01) # Header indicating 8-bit deltas
+        payload.extend(struct.pack("&gt;h", int_vals[0]))
+        for d in deltas:
+            payload.append(d & 0xFF) # Pack as 8-bit signed
+        return bytes(payload)
+        
+    else:
+        # Fallback to uncompressed array if variance is too high
+        raise ValueError("Variance exceeded bounds for lossless packing.")</code></pre>
+              </div>
             </div>
           </section>
     

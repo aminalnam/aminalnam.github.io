@@ -21,6 +21,8 @@
     import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
     mermaid.initialize({ startOnLoad: true, theme: 'dark', themeVariables: { fontFamily: 'Inter' } });
   </script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
   <header class="topbar">
@@ -133,42 +135,78 @@
     <div class="main-inner">
 
       <section class="section section-block" style="background: rgba(0,0,0,0.4);">
-        <span class="section-kicker">PCB Design</span>
+      <section class="section section-block" style="background: rgba(0,0,0,0.4);">
+        <span class="section-kicker">Educational Deep Dive: PCB Design</span>
         <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">RF Trace Impedance</h2>
-        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">When designing the Printed Circuit Board (PCB) for an OMEGA node, routing the signal from the Semtech SX1262 pin to the SMA antenna connector is not as simple as drawing a copper line. At 915 MHz, electricity behaves as a wave, not a direct current.</p>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">When designing the Printed Circuit Board (PCB) for an OMEGA node, routing the signal from the Semtech SX1262 pin to the SMA antenna connector is not as simple as drawing a copper line. At 915 MHz, electricity behaves as an electromagnetic wave, not a direct current.</p>
         
         <div class="grid-2" style="margin-bottom: 2rem;">
           <div class="panel" style="padding: 1.5rem;">
-            <span class="status-label status-implemented">50-Ohm Matching</span>
+            <span class="status-label status-implemented">The Core Concept</span>
             <h3 style="font-size: 1.2rem;">Transmission Lines</h3>
-            <p style="font-size: 0.85rem;">To prevent the RF wave from bouncing off the antenna and reflecting back into the chip (VSWR), the copper trace must have exactly a 50-ohm characteristic impedance. We calculate the trace width (e.g., 0.3mm) and the dielectric spacing to the ground plane beneath it using coplanar waveguide equations.</p>
+            <p style="font-size: 0.85rem;">To prevent the RF wave from bouncing off the antenna and reflecting back into the chip (causing catastrophic power loss), the copper trace must act as a <strong>transmission line</strong> with exactly a 50-ohm characteristic impedance ($Z_0$).</p>
           </div>
           <div class="panel" style="padding: 1.5rem;">
-            <span class="status-label status-implemented">Pi-Matching Network</span>
-            <h3 style="font-size: 1.2rem;">Inductors & Capacitors</h3>
-            <p style="font-size: 0.85rem;">Even with perfect trace width, parasitic capacitance exists. We place a Pi-Network (two capacitors and one inductor) immediately before the SMA connector. Using a Vector Network Analyzer (VNA), we physically tune these components to ensure maximum power transfer to the antenna.</p>
+            <span class="status-label status-implemented">Implementation Guide</span>
+            <h3 style="font-size: 1.2rem;">Calculating Trace Width</h3>
+            <p style="font-size: 0.85rem;">You cannot guess the trace width. You must calculate a <strong>Coplanar Waveguide with Ground (CPWG)</strong> based on your PCB manufacturer's specific stack-up (e.g., JLCPCB JLC04161H-3313).</p>
+          </div>
+        </div>
+
+        <div style="background: var(--bg); border: 1px solid var(--line); border-radius: 8px; margin: 2rem 0; overflow: hidden;">
+          <div style="display: flex; align-items: center; background: rgba(255,255,255,0.03); padding: 0.5rem 1rem; border-bottom: 1px solid var(--line);">
+            <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-ocean);">Step-by-Step Implementation: Designing the 50Ω Trace</span>
+          </div>
+          <div style="padding: 1.5rem; color: var(--ink-soft); font-size: 0.95rem; line-height: 1.6;">
+            <ol style="margin: 0; padding-left: 1.2rem;">
+              <li style="margin-bottom: 0.75rem;"><strong>Determine Dielectric Constant ($\epsilon_r$):</strong> Check your PCB manufacturer's specs for the FR4 prepreg layer. Typically, $\epsilon_r \approx 4.2$ at 1GHz.</li>
+              <li style="margin-bottom: 0.75rem;"><strong>Determine Dielectric Height ($h$):</strong> Find the exact thickness of the prepreg layer between your top copper trace and the inner ground plane (e.g., $h = 0.1mm$).</li>
+              <li style="margin-bottom: 0.75rem;"><strong>Use a CPWG Calculator:</strong> Input your $\epsilon_r$, $h$, and copper thickness ($T = 1.4mil$) into a tool like KiCad's PCB Calculator or Saturn PCB Toolkit.</li>
+              <li style="margin-bottom: 0.75rem;"><strong>Solve for Width ($W$) and Gap ($G$):</strong> The calculator will spit out the required trace width and clearance gap to achieve $Z_0 = 50\Omega$. (e.g., $W = 0.35mm$, $G = 0.2mm$).</li>
+              <li><strong>Route in KiCad:</strong> Set your trace width to exactly 0.35mm. Surround the trace with a copper pour (ground) leaving exactly a 0.2mm clearance gap. Stitch the surrounding ground pour to the inner ground layer with vias every few millimeters to contain the electromagnetic field.</li>
+            </ol>
           </div>
         </div>
       </section>
 
       <section class="section section-block" style="background: rgba(0,0,0,0.4); margin-top: 2rem;">
-        <span class="section-kicker">Sensor Wiring</span>
+      <section class="section section-block" style="background: rgba(0,0,0,0.4); margin-top: 2rem;">
+        <span class="section-kicker">Educational Deep Dive: Sensor Wiring</span>
         <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">I2C Bus Capacitance</h2>
-        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">The I2C protocol was designed for communication between chips on the <em>same</em> circuit board (Inter-Integrated Circuit). OMEGA physically abuses this protocol by running I2C cables 5 meters down into the ocean to reach benthic sensors.</p>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">The I2C protocol was designed for communication between chips on the <em>same</em> circuit board. In marine engineering, we often abuse this protocol by running I2C cables 5 meters down into the ocean. If you use standard 10kΩ pull-up resistors, your sensors will silently fail.</p>
         
-        <div class="section-visual" style="max-height: 800px; overflow-y: auto;">
-          <span class="panel-kicker">The Mathematics of Pull-Up Resistors</span>
-          <pre><code class="language-text">As the sensor cable gets longer, the physical copper wire acts as a capacitor. 
-When the ESP32 tries to send a digital HIGH (3.3V) or LOW (0V) square wave, the 
-capacitance smooths the wave into a slow curve. If the curve is too slow, the 
-sensor fails to read the bit.
+        <div class="grid-2" style="margin-bottom: 2rem;">
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">The Core Concept</span>
+            <h3 style="font-size: 1.2rem;">Parasitic Capacitance ($C_p$)</h3>
+            <p style="font-size: 0.85rem;">As a copper wire gets longer, it acts like a capacitor. When the microcontroller tries to release the I2C data line to let it float HIGH (3.3V), the wire's capacitance slowly "charges up" instead of instantly snapping to 3.3V. This rounds off the square wave, causing read errors.</p>
+          </div>
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">The Physics</span>
+            <h3 style="font-size: 1.2rem;">The RC Time Constant</h3>
+            <p style="font-size: 0.85rem;">The time ($T$) it takes for the voltage to rise is determined by the equation: <strong>$T = R \times C_p$</strong>. Since we cannot easily lower the capacitance ($C_p$) of a physical 5-meter underwater cable, our only option is to drastically lower the pull-up resistance ($R$).</p>
+          </div>
+        </div>
 
-The Solution: Stronger Pull-Up Resistors.
-Standard short-wire I2C uses 10kΩ resistors. For a 5-meter ocean drop, the 
-capacitance approaches 400pF (the absolute limit of the I2C spec). 
-OMEGA mathematically lowers the pull-up resistance to exactly 2.2kΩ. 
-This allows more current to rapidly charge the parasitic cable capacitance, 
-snapping the square waves back into sharp, readable logic levels.</code></pre>
+        <div style="background: var(--bg); border: 1px solid var(--line); border-radius: 8px; margin: 2rem 0; overflow: hidden;">
+          <div style="display: flex; align-items: center; background: rgba(255,255,255,0.03); padding: 0.5rem 1rem; border-bottom: 1px solid var(--line);">
+            <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-ocean);">Step-by-Step Implementation: Calculating Pull-Up Resistors</span>
+          </div>
+          <div style="padding: 1.5rem; color: var(--ink-soft); font-size: 0.95rem; line-height: 1.6;">
+            <p style="margin-top: 0;"><strong>Problem:</strong> You want to run a BME280 sensor on a 5-meter tether using 100kHz standard mode I2C. The maximum allowed rise time ($t_r$) for 100kHz I2C is $1000\text{ns}$.</p>
+            <ol style="margin: 0; padding-left: 1.2rem;">
+              <li style="margin-bottom: 0.75rem;"><strong>Estimate Cable Capacitance:</strong> A typical shielded twisted pair cable has a capacitance of ~50pF per meter.
+                $$C_p = 5\text{m} \times 50\text{pF/m} = 250\text{pF}$$
+              </li>
+              <li style="margin-bottom: 0.75rem;"><strong>Calculate Maximum Resistance ($R_{max}$):</strong> Using the standard I2C formula $R_{max} = \frac{t_r}{0.8473 \times C_p}$:
+                $$R_{max} = \frac{1000 \times 10^{-9}}{0.8473 \times 250 \times 10^{-12}} \approx 4721 \Omega$$
+              </li>
+              <li style="margin-bottom: 0.75rem;"><strong>Calculate Minimum Resistance ($R_{min}$):</strong> The resistor must not allow more than 3mA of sink current ($I_{OL}$) when the chip pulls the line low. Assuming a 3.3V ($V_{cc}$) system with a max $0.4V$ low-level voltage ($V_{OL}$):
+                $$R_{min} = \frac{V_{cc} - V_{OL}}{I_{OL}} = \frac{3.3V - 0.4V}{3\text{mA}} = 966 \Omega$$
+              </li>
+              <li><strong>Select the Resistor:</strong> Your pull-up resistor must be between $966\Omega$ and $4.7\text{k}\Omega$. To ensure crisp square waves against underwater noise, select a strong pull-up near the minimum, such as <strong>$2.2\text{k}\Omega$</strong>. Do NOT use the default $10\text{k}\Omega$ built into most breakout boards!</li>
+            </ol>
+          </div>
         </div>
       </section>
 
