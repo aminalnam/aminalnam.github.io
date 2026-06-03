@@ -174,6 +174,77 @@ snap immediately. OMEGA mandates the Anchor Hitch, seized with
 stainless steel wire, to guarantee the 420 kg SWL.</code></pre>
         </div>
       </section>
+
+      <section class="section section-block" style="background: rgba(0,0,0,0.4);">
+        <span class="section-kicker">Educational Deep Dive: Pre-Deployment</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">The Custom Firmware Builder.</h2>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">A day before a major oceanic deployment, the last thing an engineer wants to do is manually hand-edit <code>platformio.ini</code> files, accidentally break a C++ pointer, and brick a sensor node. OMEGA eliminates this risk entirely through automated code generation.</p>
+        
+        <div class="grid-2" style="margin-bottom: 2rem;">
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">The Core Concept</span>
+            <h3 style="font-size: 1.2rem;">Automated Code Generation</h3>
+            <p style="font-size: 0.85rem;">The OMEGA Mission Portal features a built-in Custom Firmware Builder. Operators simply select their base hardware (e.g., ESP32-S3) and check off which sensors are physically wired to the board (e.g., BME280, u-blox GNSS). The Python Gateway dynamically templates the required C++ libraries, populates the <code>setup()</code> routines, and compiles the <code>main.cpp</code> firmware on the fly.</p>
+          </div>
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">Implementation Guide</span>
+            <h3 style="font-size: 1.2rem;">PlatformIO Integration</h3>
+            <p style="font-size: 0.85rem;">Once the operator approves the auto-generated code via the UI, the Gateway secretly shells out to the <code>platformio</code> CLI. It builds the binary payload in a secure temporary directory and flashes it directly to the tethered USB device—all without the operator writing a single line of C++.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-block" style="background: rgba(0,0,0,0.4);">
+        <span class="section-kicker">Educational Deep Dive: Field Execution</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">The Desktop Mission Hub.</h2>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">Cloud dashboards are useless 50 miles offshore without Starlink. For true operational independence, researchers rely on the Desktop Mission Hub—an offline-first, native desktop application.</p>
+        
+        <div class="grid-2" style="margin-bottom: 2rem;">
+          <div class="panel" style="padding: 1.5rem; border-left: 4px solid var(--accent-ocean);">
+            <span class="status-label status-implemented">The Core Concept</span>
+            <h3 style="font-size: 1.2rem;">Offline-First Architectures</h3>
+            <p style="font-size: 0.85rem;">The Desktop Hub is built using the <strong>Tauri</strong> framework (Rust + React). Before the ship leaves the dock, the application preemptively downloads high-resolution Mapbox Vector Tiles and NOAA bathymetry charts for the deployment zone. It stores them in a local SQLite cache. When the ship loses internet, the React UI seamlessly swaps to the offline SQLite cache, ensuring the map never goes dark.</p>
+          </div>
+          <div class="panel" style="padding: 1.5rem; border-left: 4px solid var(--accent-ocean);">
+            <span class="status-label status-implemented">Implementation Guide</span>
+            <h3 style="font-size: 1.2rem;">Native Hardware Access</h3>
+            <p style="font-size: 0.85rem;">Unlike a standard browser tab (which is sandboxed for security), the Tauri desktop wrapper has raw access to the host machine's filesystem and USB ports. This allows the offline portal to directly interface with tethered LoRa radios (via the Serial Port API) to pull live telemetry out of thin air, completely bypassing the cloud.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-block" style="background: rgba(0,0,0,0.4);">
+        <span class="section-kicker">Educational Deep Dive: Remote Control</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Mesh Command CLI & OTA Flashing.</h2>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">Once a buoy is deployed, retrieving it to update its software is incredibly expensive. OMEGA solves this via a powerful Python CLI that beams administrative commands over 900MHz LoRa radio.</p>
+        
+        <div class="grid-2" style="margin-bottom: 2rem;">
+          <div class="panel" style="padding: 1.5rem; border-left: 4px solid #f59e0b;">
+            <span class="status-label status-implemented">The Core Concept</span>
+            <h3 style="font-size: 1.2rem;">RPC Over LoRa</h3>
+            <p style="font-size: 0.85rem;">The <code>gateway.mesh_command</code> CLI acts as a Remote Procedure Call (RPC) bridge. When an operator types a command to alter a buoy's transmission interval, the Python script encodes the instruction into a highly dense Binary TLV frame. It pushes the binary frame down a USB serial cable to a tethered "Relay Node", which broadcasts it into the LoRa mesh. The target buoy decodes the TLV frame and executes the command autonomously.</p>
+          </div>
+          <div class="panel" style="padding: 1.5rem; border-left: 4px solid #f59e0b;">
+            <span class="status-label status-implemented">Implementation Guide</span>
+            <h3 style="font-size: 1.2rem;">OTA Machine Learning</h3>
+            <p style="font-size: 0.85rem;">The most powerful CLI command is <code>load-model</code>. It reads a TensorFlow Lite Micro <code>.tflite</code> file from the host computer, shards the binary into 234-byte chunks, and sequentially beams them over LoRa. The edge node reassembles the chunks in flash memory, verifies the CRC32 checksum, and reboots—effectively learning a new Machine Learning capability while drifting in the ocean.</p>
+          </div>
+        </div>
+
+        <div style="background: var(--bg); border: 1px solid var(--line); border-radius: 8px; margin: 2rem 0; overflow: hidden;">
+          <div style="display: flex; align-items: center; background: rgba(255,255,255,0.03); padding: 0.5rem 1rem; border-bottom: 1px solid var(--line);">
+            <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent);">powershell</span>
+          </div>
+          <div style="padding: 1.5rem; color: var(--ink-soft); font-family: var(--font-mono); font-size: 0.9rem; line-height: 1.6; overflow-x: auto;">
+            <div style="color: var(--white); margin-bottom: 1rem;">> python -m gateway.mesh_command --serial-port COM10 --target supreme-mesh-01 load-model ./models/sea_state.tflite</div>
+            <div style="color: #10b981;">[OK] Model loaded: sea_state.tflite (12,450 bytes)</div>
+            <div style="color: #94a3b8;">[..] Sharding into 54 chunks...</div>
+            <div style="color: #94a3b8;">[..] Transmitting chunk 1/54 via LoRa (RSSI: -92 dBm)... ACK received.</div>
+            <div style="color: #94a3b8;">[..] Transmitting chunk 2/54 via LoRa (RSSI: -91 dBm)... ACK received.</div>
+            <div style="color: #10b981;">[OK] Transmission complete. CRC32 Verified. Executing kCmdActivateModel.</div>
+          </div>
+        </div>
+      </section>
     </div>
   </main>
 
