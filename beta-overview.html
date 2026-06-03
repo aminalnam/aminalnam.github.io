@@ -187,6 +187,89 @@
         </div>
       </section>
 
+      <section class="section section-block" style="background: rgba(0,0,0,0.4);">
+        <span class="section-kicker">Core Component</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">The Synthetic Injector.</h2>
+        <p>At the heart of the BETA framework is the Synthetic Injector. Written in asynchronous Python, it precisely mimics the behavior of dozens of physical edge nodes deployed in the field. It generates cryptographically signed, CBOR-encoded telemetry payloads and fires them at the Gateway's ingress endpoints.</p>
+        <p>This allows us to simulate massive telemetry floods (e.g., a sudden sensor surge after an underwater acoustic event) and ensure the SQLite WAL layer and event bus can handle the throughput without locking.</p>
+        
+        <div style="background: var(--bg); border: 1px solid var(--line); border-radius: 8px; margin: 2rem 0; overflow: hidden;">
+          <div style="display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.03); padding: 0.5rem 1rem; border-bottom: 1px solid var(--line);">
+            <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent);">synth_injector.py</span>
+          </div>
+          <pre style="margin: 0; padding: 1.5rem; background: transparent; overflow-x: auto;"><code>import asyncio
+from core.fuzzer import CborPayloadGenerator
+from network.client import AsyncGatewayClient
+
+async def run_synthetic_flood(target_url: str, duration_sec: int, tps: int):
+    """Fires a sustained flood of synthetic marine telemetry."""
+    client = AsyncGatewayClient(target_url)
+    generator = CborPayloadGenerator(node_count=50)
+    
+    print(f"🌊 Initiating flood: {tps} TPS for {duration_sec}s")
+    
+    end_time = asyncio.get_event_loop().time() + duration_sec
+    while asyncio.get_event_loop().time() < end_time:
+        payload = generator.create_drift_telemetry()
+        # Fire-and-forget payload injection
+        asyncio.create_task(client.post_telemetry(payload))
+        await asyncio.sleep(1.0 / tps)
+        
+    await client.close()
+    return client.get_latency_metrics()</code></pre>
+        </div>
+      </section>
+
+      <section class="section section-block" style="padding-top: 2rem;">
+        <span class="section-kicker">Performance Thresholds</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Analytics & SLIs.</h2>
+        <p>BETA does not just check if a request returns a 200 OK. It measures the deeply embedded Service Level Indicators (SLIs) of the architecture. If a new software build causes a statistical regression in ingestion latency, the build fails.</p>
+
+        <div class="grid-3" style="margin-top: 2.5rem;">
+          <div style="background: rgba(16, 185, 129, 0.05); border: 1px solid rgba(16, 185, 129, 0.2); border-radius: 8px; padding: 1.5rem; text-align: center;">
+            <div style="font-family: var(--font-mono); color: #10b981; font-size: 2.5rem; margin-bottom: 0.5rem;">&lt; 50ms</div>
+            <div style="font-size: 0.9rem; color: var(--white); font-weight: 600;">P95 Ingestion Latency</div>
+            <div style="font-size: 0.8rem; color: var(--ink-soft); margin-top: 0.5rem;">Maximum acceptable wait time for payload acknowledgment.</div>
+          </div>
+          
+          <div style="background: rgba(59, 130, 246, 0.05); border: 1px solid rgba(59, 130, 246, 0.2); border-radius: 8px; padding: 1.5rem; text-align: center;">
+            <div style="font-family: var(--font-mono); color: #3b82f6; font-size: 2.5rem; margin-bottom: 0.5rem;">0.00%</div>
+            <div style="font-size: 0.9rem; color: var(--white); font-weight: 600;">WAL Contention Drops</div>
+            <div style="font-size: 0.8rem; color: var(--ink-soft); margin-top: 0.5rem;">Zero tolerance for dropped packets due to database locking.</div>
+          </div>
+          
+          <div style="background: rgba(239, 68, 68, 0.05); border: 1px solid rgba(239, 68, 68, 0.2); border-radius: 8px; padding: 1.5rem; text-align: center;">
+            <div style="font-family: var(--font-mono); color: #ef4444; font-size: 2.5rem; margin-bottom: 0.5rem;">> 250</div>
+            <div style="font-size: 0.9rem; color: var(--white); font-weight: 600;">Transactions Per Second</div>
+            <div style="font-size: 0.8rem; color: var(--ink-soft); margin-top: 0.5rem;">Minimum sustained throughput on a low-power Edge Gateway.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-block" style="background: rgba(0,0,0,0.4);">
+        <span class="section-kicker">Automated Remediation</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Honu AI Integration.</h2>
+        <p>When the Synthetic Injector flags a performance regression, it doesn't just stop at a red build light. The failure matrices (including CPU profiles, database wait times, and traceback logs) are packaged and forwarded to the <strong>Honu AI Copilot</strong>.</p>
+        <p>The Copilot acts as a senior systems engineer. It correlates the current performance drop with the recent git commit diff, hypothesizes the root cause, and automatically drafts a Jira-style remediation ticket outlining the "Next Moves."</p>
+
+        <div style="background: var(--bg); border: 1px solid var(--line); border-radius: 8px; margin: 2rem 0; overflow: hidden; font-family: var(--font-mono); font-size: 0.85rem;">
+          <div style="display: flex; align-items: center; background: rgba(255,255,255,0.03); padding: 0.5rem 1rem; border-bottom: 1px solid var(--line);">
+            <span style="color: var(--accent-yellow);">⚠️ AI Auto-Triage Ticket Generated</span>
+          </div>
+          <div style="padding: 1.5rem; color: var(--ink-soft); line-height: 1.6;">
+            <div style="color: var(--white); margin-bottom: 1rem;"><strong>Title:</strong> [REGRESSION] P95 Latency spike to 120ms during concurrent SQLite writes</div>
+            <div><strong>Hypothesis:</strong></div>
+            <div>The recent commit (fc92b4) introduced an asynchronous index update on the `telemetry_data` table. Because the database is in WAL mode, the prolonged index rebuild is starving the synchronous writer pool, leading to connection timeouts from the Synthetic Injector.</div>
+            <br>
+            <div><strong>Recommended Remediation:</strong></div>
+            <div>1. Move the index update to a background worker queue (e.g., Celery) rather than blocking the main FastAPI thread.</div>
+            <div>2. Ensure `PRAGMA synchronous = NORMAL` is strictly enforced during high-throughput ingestion windows.</div>
+            <br>
+            <div style="color: #3b82f6;"><strong>Assigned to:</strong> Platform Engineering Team</div>
+          </div>
+        </div>
+      </section>
+
     </div>
   </main>
 
