@@ -21,6 +21,12 @@
     import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
     mermaid.initialize({ startOnLoad: true, theme: 'dark', themeVariables: { fontFamily: 'Inter' } });
   </script>
+  <style>
+    /* Failsafe for aggressive browser caching */
+    #ocean-ecosystem, #scroll-progress, #ambient-canvas {
+      position: fixed !important;
+    }
+  </style>
 </head>
 <body>
   <header class="topbar">
@@ -350,7 +356,7 @@
   </main>
 
       <!-- TECH STACK -->
-      <section class="section section-block" style="border-top: 1px solid var(--line); padding-top: 4rem; padding-bottom: 2rem; margin-top: 2rem;">
+      <section class="section section-block wrap" style="border-top: 1px solid var(--line); padding-top: 4rem; padding-bottom: 2rem; margin-top: 2rem;">
         <span class="section-kicker">Built With</span>
         <h3 style="font-family: var(--font-mono); font-size: 1.2rem; margin: 0 0 1.5rem; text-transform: uppercase; letter-spacing: 0.15em;">Raw Technologies</h3>
         <div style="display: flex; flex-wrap: wrap; gap: 1rem;">
