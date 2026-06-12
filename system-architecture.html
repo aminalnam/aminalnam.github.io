@@ -43,8 +43,6 @@
           <button class="dropbtn">Hardware & Physics &#9662;</button>
           <div class="dropdown-content">
             <a href="hardware.html">Hardware & Firmware</a>
-            <a href="power-systems.html">Power & Thermodynamics</a>
-            <a href="mechanical-engineering.html">Mechanical & Buoyancy</a>
             <a href="rf-physics.html">RF Physics & Propagation</a>
             <a href="biofouling.html">Marine Biology (Fouling)</a>
             <a href="edge-nodes.html">Edge Nodes</a>
@@ -68,11 +66,8 @@
           <div class="dropdown-content">
             <a href="analytics.html">Analytics Pipeline</a>
             <a href="copilot.html">Honu AI Copilot</a>
-            <a href="machine-learning.html">Machine Learning</a>
-            <a href="qc-eval.html">Data Quality (QARTOD)</a>
             <a href="bathymetry.html">Bathymetry</a>
             <a href="calibration.html">Sensor Calibration</a>
-            <a href="economic-model.html">Economic Model</a>
           </div>
         </div>
         
@@ -85,7 +80,6 @@
             <a href="data-providers.html">Data Providers</a>
             <a href="external-data.html">External Integrations</a>
             <a href="examples.html">Data Examples</a>
-            <a href="cloud-infrastructure.html">Cloud Infrastructure</a>
             <a href="api-reference.html">API Reference</a>
           </div>
         </div>
@@ -95,11 +89,6 @@
           <div class="dropdown-content">
             <a href="getting-started.html">Getting Started</a>
             <a href="build-guide.html">Build Guide</a>
-            <a href="deployment-scenarios.html">Deployment Scenarios</a>
-            <a href="marine-operations.html">Marine Ops</a>
-            <a href="compliance.html">Compliance</a>
-            <a href="research-citations.html">Research & Literature</a>
-            <a href="teaching-documentation.html">Teaching Docs</a>
             <a href="roadmap.html">Roadmap</a>
           </div>
         </div>
@@ -125,7 +114,7 @@
     <h1>System Architecture.</h1>
     <p>A masterclass in 4-layer edge-to-cloud environmental routing.</p>
     <div class="hero-actions">
-      <a class="btn btn-primary" href="https://github.com/aminalnam/OMEGA" target="_blank">View OMEGA on GitHub</a>
+      <a class="btn btn-primary" href="https://github.com/aminalnam/OMEGA-wave" target="_blank">View OMEGA-wave on GitHub</a>
       <a class="btn btn-secondary" href="https://jonathancapone.art" target="_blank">Art Portfolio</a>
     </div>
   </section>
@@ -149,12 +138,12 @@
                 subgraph L2 [Layer 2: Mesh Transport]
                     DTN{DTN: Binary TLV + Batching}
                 end
-                subgraph L3 [Layer 3: Gateway]
+                subgraph L3 [Layer 3: Gateway & Broker]
                     USB(USB-CDC Serial Bridge)
-                    ASGI[FastAPI / SQLite WAL]
+                    ASGI[FastAPI / Federated Broker]
                 end
-                subgraph L4 [Layer 4: Presentation]
-                    UI((React WebGL Portal))
+                subgraph L4 [Layer 4: Spatial Twin]
+                    UI((3D WebGL Glass Bridge))
                 end
 
                 E1 <-->|LoRa 900MHz| L2
@@ -182,13 +171,13 @@
           </div>
           <div class="panel" style="padding: 1.5rem;">
             <span class="status-label status-implemented">Layer 3</span>
-            <h3 style="font-size: 1.2rem;">Gateway / Edge Server</h3>
-            <p style="font-size: 0.85rem;">Python FastAPI ASGI Router running on embedded Linux. Tethered via USB-CDC to the RF mesh, writing asynchronously to a SQLite database in pure WAL mode.</p>
+            <h3 style="font-size: 1.2rem;">Federated Data Broker</h3>
+            <p style="font-size: 0.85rem;">Python FastAPI ASGI Router running on embedded Linux. High-performance data brokerage layer caching macro-APIs as Cloud-Optimized GeoTIFFs (COG) and Zarr chunks while persisting ground-truth via SQLite WAL.</p>
           </div>
           <div class="panel" style="padding: 1.5rem;">
             <span class="status-label status-implemented">Layer 4</span>
-            <h3 style="font-size: 1.2rem;">Presentation / Client</h3>
-            <p style="font-size: 0.85rem;">React WebGL Mission Portal. A state-driven Digital Twin pulling Live Tiles via 5-second long-polling, rendering massive geospatial data.</p>
+            <h3 style="font-size: 1.2rem;">Spatial Digital Twin</h3>
+            <p style="font-size: 0.85rem;">High-performance 3D WebGL environment operating on a 4D temporal and Z-axis engine, presenting a decoupled Glass Bridge UI.</p>
           </div>
         </div>
       </section>
@@ -214,9 +203,10 @@
       <section class="section">
         <div class="section-content">
           <span class="section-kicker">Layer 3: Gateway</span>
-          <h2>Concurrent Edge Routing.</h2>
-          <p>The OMEGA Gateway acts as the translation boundary between the physical RF mesh and the digital cloud. Built in Python using FastAPI, the routing layer strictly adheres to Clean Architecture—separating API Mechanics, Business Logic (Services), and Database operations (Repositories).</p>
-          <p><strong>High-Throughput IO:</strong> To prevent <code>database is locked</code> exceptions when 50 nodes are spamming telemetry, the backend physically rewrites the SQLite PRAGMA at boot to enforce <strong>WAL (Write-Ahead Logging)</strong>. This decouples the read/write locks, allowing the UI to query massive historical arrays concurrently while the RF bridge constantly inserts live data.</p>
+          <h2>The Federated Data Broker.</h2>
+          <p>The OMEGA Gateway has evolved into a high-performance <strong>Federated Data Broker</strong>. It acts as the translation boundary between the physical RF mesh and the 3D Digital Twin. Built in Python using FastAPI, the routing layer strictly adheres to Clean Architecture.</p>
+          <p><strong>Ingest Pipeline & Caching:</strong> To support a 3D WebGL globe without lag, macro-environmental models (Copernicus, GEBCO bathymetry) cannot be queried on-the-fly. The broker ingests macro-APIs and caches them aggressively as <strong>Cloud-Optimized GeoTIFFs (COG)</strong> or <strong>Zarr chunks</strong> to feed the spatial engine at scale.</p>
+          <p><strong>High-Throughput IO:</strong> To prevent <code>database is locked</code> exceptions when the edge nodes are spamming telemetry, the backend enforces <strong>WAL (Write-Ahead Logging)</strong> on its SQLite edge storage. This decouples read/write locks, allowing the UI to query historical arrays concurrently while the RF bridge constantly inserts live data.</p>
         </div>
       </section>
 

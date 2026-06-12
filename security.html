@@ -43,8 +43,6 @@
           <button class="dropbtn">Hardware & Physics &#9662;</button>
           <div class="dropdown-content">
             <a href="hardware.html">Hardware & Firmware</a>
-            <a href="power-systems.html">Power & Thermodynamics</a>
-            <a href="mechanical-engineering.html">Mechanical & Buoyancy</a>
             <a href="rf-physics.html">RF Physics & Propagation</a>
             <a href="biofouling.html">Marine Biology (Fouling)</a>
             <a href="edge-nodes.html">Edge Nodes</a>
@@ -68,11 +66,8 @@
           <div class="dropdown-content">
             <a href="analytics.html">Analytics Pipeline</a>
             <a href="copilot.html">Honu AI Copilot</a>
-            <a href="machine-learning.html">Machine Learning</a>
-            <a href="qc-eval.html">Data Quality (QARTOD)</a>
             <a href="bathymetry.html">Bathymetry</a>
             <a href="calibration.html">Sensor Calibration</a>
-            <a href="economic-model.html">Economic Model</a>
           </div>
         </div>
         
@@ -85,7 +80,6 @@
             <a href="data-providers.html">Data Providers</a>
             <a href="external-data.html">External Integrations</a>
             <a href="examples.html">Data Examples</a>
-            <a href="cloud-infrastructure.html">Cloud Infrastructure</a>
             <a href="api-reference.html">API Reference</a>
           </div>
         </div>
@@ -95,11 +89,6 @@
           <div class="dropdown-content">
             <a href="getting-started.html">Getting Started</a>
             <a href="build-guide.html">Build Guide</a>
-            <a href="deployment-scenarios.html">Deployment Scenarios</a>
-            <a href="marine-operations.html">Marine Ops</a>
-            <a href="compliance.html">Compliance</a>
-            <a href="research-citations.html">Research & Literature</a>
-            <a href="teaching-documentation.html">Teaching Docs</a>
             <a href="roadmap.html">Roadmap</a>
           </div>
         </div>
@@ -125,7 +114,7 @@
     <h1>Zero Trust.</h1>
     <p>Immutable audit trails, dynamic rate limiting, and Role-Based Access Control.</p>
     <div class="hero-actions">
-      <a class="btn btn-primary" href="https://github.com/aminalnam/OMEGA" target="_blank">View OMEGA on GitHub</a>
+      <a class="btn btn-primary" href="https://github.com/aminalnam/OMEGA-wave" target="_blank">View OMEGA-wave on GitHub</a>
       <a class="btn btn-secondary" href="https://jonathancapone.art" target="_blank">Art Portfolio</a>
     </div>
   </section>
@@ -286,6 +275,15 @@
               <h2>Physical Anti-Tamper Protocols.</h2>
               <p>Because the edge nodes operate unattended in international waters, they are physically vulnerable to theft or unauthorized inspection. If the cryptographic private keys are compromised, the entire mesh network is at risk.</p>
               <p><strong>Execution:</strong> OMEGA buoys are outfitted with physical intrusion sensors (e.g., microswitches on the watertight enclosure and ambient light sensors inside the dark hull). If a buoy is opened without a prior "Maintenance Mode" API command, the ESP32 RTOS instantly triggers a <code>TAMPER_BREACH</code> interrupt. In milliseconds, the microcontroller permanently zeroizes its cryptographic NVRAM, wiping the secp256k1 private keys and bricking the unit's ability to communicate with the OMEGA network. It then blasts a final SOS packet before self-terminating.</p>
+            </div>
+          </section>
+
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">Hardware Identity</span>
+              <h2>Immutable Cryptographic Identity.</h2>
+              <p>To prevent malicious impersonation or the "wrong firmware on wrong board" cascade, the mesh protocol does not rely solely on the self-reported <code>node_id</code>.</p>
+              <p><strong>Execution:</strong> Every JSON telemetry and command frame now carries an immutable <code>physical_mac</code> (the chip's factory eFuse-burned MAC address) and a <code>physical_board_tag</code> (e.g., <code>tbeam-supreme-physical</code>) baked in at flash time. The gateway bridge actively cross-checks these tags against the expected hardware profile for the assigned node. If an edge node claims to be a relay but its physical tags identify it as a Supreme sensor board, the bridge loudly flags the mismatch and isolates the node.</p>
             </div>
           </section>
     

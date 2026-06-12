@@ -13,8 +13,6 @@ NAV_TEMPLATE = """      <nav class="nav" aria-label="Main Navigation">
           <button class="dropbtn">Hardware & Physics &#9662;</button>
           <div class="dropdown-content">
             <a href="hardware.html">Hardware & Firmware</a>
-            <a href="power-systems.html">Power & Thermodynamics</a>
-            <a href="mechanical-engineering.html">Mechanical & Buoyancy</a>
             <a href="rf-physics.html">RF Physics & Propagation</a>
             <a href="biofouling.html">Marine Biology (Fouling)</a>
             <a href="edge-nodes.html">Edge Nodes</a>
@@ -38,11 +36,8 @@ NAV_TEMPLATE = """      <nav class="nav" aria-label="Main Navigation">
           <div class="dropdown-content">
             <a href="analytics.html">Analytics Pipeline</a>
             <a href="copilot.html">Honu AI Copilot</a>
-            <a href="machine-learning.html">Machine Learning</a>
-            <a href="qc-eval.html">Data Quality (QARTOD)</a>
             <a href="bathymetry.html">Bathymetry</a>
             <a href="calibration.html">Sensor Calibration</a>
-            <a href="economic-model.html">Economic Model</a>
           </div>
         </div>
         
@@ -55,7 +50,6 @@ NAV_TEMPLATE = """      <nav class="nav" aria-label="Main Navigation">
             <a href="data-providers.html">Data Providers</a>
             <a href="external-data.html">External Integrations</a>
             <a href="examples.html">Data Examples</a>
-            <a href="cloud-infrastructure.html">Cloud Infrastructure</a>
             <a href="api-reference.html">API Reference</a>
           </div>
         </div>
@@ -65,10 +59,6 @@ NAV_TEMPLATE = """      <nav class="nav" aria-label="Main Navigation">
           <div class="dropdown-content">
             <a href="getting-started.html">Getting Started</a>
             <a href="build-guide.html">Build Guide</a>
-            <a href="deployment-scenarios.html">Deployment Scenarios</a>
-            <a href="marine-operations.html">Marine Ops</a>
-            <a href="compliance.html">Compliance</a>
-            <a href="teaching-documentation.html">Teaching Docs</a>
             <a href="roadmap.html">Roadmap</a>
           </div>
         </div>
@@ -96,8 +86,6 @@ def generate_nav(current_file):
     # 2. Add current state to active file
     if current_file == 'index.html':
         nav_html = nav_html.replace('href="index.html"', 'href="index.html" class="is-current"')
-    elif current_file == 'manifesto.html':
-        nav_html = nav_html.replace('href="manifesto.html"', 'href="manifesto.html" class="is-current"')
     elif current_file == 'overview.html':
         nav_html = nav_html.replace('href="overview.html"', 'href="overview.html" class="is-current"')
     elif current_file == 'beta-overview.html':

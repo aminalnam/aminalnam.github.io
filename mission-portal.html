@@ -1,38 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="utf-8"/>
-  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
   <title>Jonathan Capone — Mission Portal</title>
-  
-  <meta name="description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
+
+  <meta name="description"
+    content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
   <meta property="og:title" content="Jonathan Capone — Mission Portal" />
-  <meta property="og:description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
+  <meta property="og:description"
+    content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://jonathancapone.com/mission-portal.html" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Jonathan Capone — Mission Portal" />
-  <meta name="twitter:description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
-  
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌊</text></svg>">
-  
+  <meta name="twitter:description"
+    content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
+
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌊</text></svg>">
+
   <link rel="stylesheet" href="style.css">
-  
+
   <script src='https://api.mapbox.com/mapbox-gl-js/v3.0.1/mapbox-gl.js'></script>
   <link href='https://api.mapbox.com/mapbox-gl-js/v3.0.1/mapbox-gl.css' rel='stylesheet' />
-  
+
   <script type="module">
     import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
     mermaid.initialize({ startOnLoad: true, theme: 'dark', themeVariables: { fontFamily: 'Inter' } });
   </script>
 </head>
+
 <body>
   <header class="topbar">
     <div class="wrap topbar-inner">
-      <a class="brand" href="index.html" style="display: flex; align-items: center; gap: 0.75rem; text-decoration: none;">
+      <a class="brand" href="index.html"
+        style="display: flex; align-items: center; gap: 0.75rem; text-decoration: none;">
         <div>
-          <span class="brand-title" style="letter-spacing: 0.1em; color: var(--white); display: block; font-family: var(--font-serif); font-size: 1.5rem;">JONATHAN CAPONE</span>
-          <span class="brand-sub" style="display: block; font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent); font-family: var(--font-mono); opacity: 0.9;">Systems Architecture Portfolio</span>
+          <span class="brand-title"
+            style="letter-spacing: 0.1em; color: var(--white); display: block; font-family: var(--font-serif); font-size: 1.5rem;">JONATHAN
+            CAPONE</span>
+          <span class="brand-sub"
+            style="display: block; font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent); font-family: var(--font-mono); opacity: 0.9;">Systems
+            Architecture Portfolio</span>
         </div>
       </a>
       <nav class="nav" aria-label="Main Navigation">
@@ -47,8 +58,6 @@
           <button class="dropbtn">Hardware & Physics &#9662;</button>
           <div class="dropdown-content">
             <a href="hardware.html">Hardware & Firmware</a>
-            <a href="power-systems.html">Power & Thermodynamics</a>
-            <a href="mechanical-engineering.html">Mechanical & Buoyancy</a>
             <a href="rf-physics.html">RF Physics & Propagation</a>
             <a href="biofouling.html">Marine Biology (Fouling)</a>
             <a href="edge-nodes.html">Edge Nodes</a>
@@ -72,11 +81,8 @@
           <div class="dropdown-content">
             <a href="analytics.html">Analytics Pipeline</a>
             <a href="copilot.html">Honu AI Copilot</a>
-            <a href="machine-learning.html">Machine Learning</a>
-            <a href="qc-eval.html">Data Quality (QARTOD)</a>
             <a href="bathymetry.html">Bathymetry</a>
             <a href="calibration.html">Sensor Calibration</a>
-            <a href="economic-model.html">Economic Model</a>
           </div>
         </div>
         
@@ -89,7 +95,6 @@
             <a href="data-providers.html">Data Providers</a>
             <a href="external-data.html">External Integrations</a>
             <a href="examples.html">Data Examples</a>
-            <a href="cloud-infrastructure.html">Cloud Infrastructure</a>
             <a href="api-reference.html">API Reference</a>
           </div>
         </div>
@@ -99,11 +104,6 @@
           <div class="dropdown-content">
             <a href="getting-started.html">Getting Started</a>
             <a href="build-guide.html">Build Guide</a>
-            <a href="deployment-scenarios.html">Deployment Scenarios</a>
-            <a href="marine-operations.html">Marine Ops</a>
-            <a href="compliance.html">Compliance</a>
-            <a href="research-citations.html">Research & Literature</a>
-            <a href="teaching-documentation.html">Teaching Docs</a>
             <a href="roadmap.html">Roadmap</a>
           </div>
         </div>
@@ -129,159 +129,178 @@
     <h1>Mission Portal</h1>
     <p>The WebGL mapping dashboard and control interface.</p>
     <div class="hero-actions">
-      <a class="btn btn-primary" href="https://github.com/aminalnam/OMEGA" target="_blank">View OMEGA on GitHub</a>
+      <a class="btn btn-primary" href="https://github.com/aminalnam/OMEGA-wave" target="_blank">View OMEGA-wave on GitHub</a>
       <a class="btn btn-secondary" href="https://jonathancapone.art" target="_blank">Art Portfolio</a>
     </div>
 
     <!-- Live Interactive Mapbox Canvas -->
-    <div id='map' style='width: 100%; height: 500px; border-radius: 8px; margin: 3rem 0 0 0; border: 1px solid var(--line);'></div>
+    <div id='map'
+      style='width: 100%; height: 500px; border-radius: 8px; margin: 3rem 0 0 0; border: 1px solid var(--line);'></div>
     <script>
       // Public Read-Only Token for map rendering (Split to bypass false-positive secret scanning)
       const tokenPart1 = 'pk.eyJ1Ijoiam9uYXRoYW5jYXBvbmUiLCJhIjoiY2x0Zm';
       const tokenPart2 = '5xNG0wMDdzYjJxbnoxNno4c3BjeiJ9.nZqj05y9Q2b4K8B-uT1rAQ';
       mapboxgl.accessToken = tokenPart1 + tokenPart2;
       const map = new mapboxgl.Map({
-          container: 'map',
-          style: 'mapbox://styles/mapbox/dark-v11',
-          center: [-122.4194, 37.6],
-          zoom: 9,
-          pitch: 60,
-          bearing: -20
+        container: 'map',
+        style: 'mapbox://styles/mapbox/dark-v11',
+        center: [-122.4194, 37.6],
+        zoom: 9,
+        pitch: 60,
+        bearing: -20
       });
-      
+
       map.addControl(new mapboxgl.NavigationControl());
 
       map.on('load', () => {
-          // Add 3D terrain
-          map.addSource('mapbox-dem', {
-              'type': 'raster-dem',
-              'url': 'mapbox://mapbox.mapbox-terrain-dem-v1',
-              'tileSize': 512,
-              'maxzoom': 14
-          });
-          map.setTerrain({ 'source': 'mapbox-dem', 'exaggeration': 1.5 });
+        // Add 3D terrain
+        map.addSource('mapbox-dem', {
+          'type': 'raster-dem',
+          'url': 'mapbox://mapbox.mapbox-terrain-dem-v1',
+          'tileSize': 512,
+          'maxzoom': 14
+        });
+        map.setTerrain({ 'source': 'mapbox-dem', 'exaggeration': 1.5 });
 
-          // Add synthetic fleet telemetry
-          map.addSource('fleet', {
-              type: 'geojson',
-              data: {
-                  "type": "FeatureCollection",
-                  "features": [
-                      {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-122.5, 37.7]}, "properties": {"id": "buoy-alpha"}},
-                      {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-122.65, 37.6]}, "properties": {"id": "buoy-beta"}},
-                      {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-122.55, 37.5]}, "properties": {"id": "rov-x1"}}
-                  ]
-              }
-          });
+        // Add synthetic fleet telemetry
+        map.addSource('fleet', {
+          type: 'geojson',
+          data: {
+            "type": "FeatureCollection",
+            "features": [
+              { "type": "Feature", "geometry": { "type": "Point", "coordinates": [-122.5, 37.7] }, "properties": { "id": "buoy-alpha" } },
+              { "type": "Feature", "geometry": { "type": "Point", "coordinates": [-122.65, 37.6] }, "properties": { "id": "buoy-beta" } },
+              { "type": "Feature", "geometry": { "type": "Point", "coordinates": [-122.55, 37.5] }, "properties": { "id": "rov-x1" } }
+            ]
+          }
+        });
 
-          // Add glowing pulse effect
-          map.addLayer({
-              'id': 'fleet-glow',
-              'type': 'circle',
-              'source': 'fleet',
-              'paint': {
-                  'circle-radius': 15,
-                  'circle-color': '#10b981',
-                  'circle-opacity': 0.3,
-                  'circle-blur': 1
-              }
-          });
+        // Add glowing pulse effect
+        map.addLayer({
+          'id': 'fleet-glow',
+          'type': 'circle',
+          'source': 'fleet',
+          'paint': {
+            'circle-radius': 15,
+            'circle-color': '#10b981',
+            'circle-opacity': 0.3,
+            'circle-blur': 1
+          }
+        });
 
-          // Add solid core
-          map.addLayer({
-              'id': 'fleet-core',
-              'type': 'circle',
-              'source': 'fleet',
-              'paint': {
-                  'circle-radius': 5,
-                  'circle-color': '#10b981',
-                  'circle-stroke-width': 2,
-                  'circle-stroke-color': '#fff'
-              }
-          });
+        // Add solid core
+        map.addLayer({
+          'id': 'fleet-core',
+          'type': 'circle',
+          'source': 'fleet',
+          'paint': {
+            'circle-radius': 5,
+            'circle-color': '#10b981',
+            'circle-stroke-width': 2,
+            'circle-stroke-color': '#fff'
+          }
+        });
       });
     </script>
   </section>
 
   <main class="main-shell wrap">
     <div class="main-inner">
-    
 
-          <section class="section">
-            <div class="section-content">
-              <span class="section-kicker">WebGL Rendering & Spatial Indexing</span>
-              <h2>Mapbox GL JS Performance.</h2>
-              <p>Rendering thousands of live nodes, historical telemetry paths, and dynamic vector polygons simultaneously requires a hardware-accelerated pipeline. Standard DOM manipulation (like traditional Leaflet maps) completely freezes the browser when node counts exceed a few thousand.</p>
-<p>The Mission Portal utilizes <strong>Mapbox GL JS</strong>, pushing the heavy spatial rendering algorithms directly to the client's GPU via WebGL. To handle extreme density deployments, the system clusters grouped nodes using rapid Supercluster algorithms. Rather than manipulating thousands of `<div>` tags, millions of points are mathematically projected and drawn directly to a single WebGL canvas context.</p>
-<p><strong>Offline Capabilities:</strong> To save highly constrained bandwidth when an operator is accessing the portal from a ship in the middle of the ocean, the frontend aggressively caches Mapbox Vector Tiles (MVT) in the browser's IndexedDB. This ensures the map loads instantly from local storage, without requiring external API calls over the satellite link.</p>
-              <div class="callout"><strong>Vector Tile Caching</strong><p>To save bandwidth on disconnected operations, the frontend aggressively caches Mapbox Vector Tiles (MVT) in the browser's IndexedDB.</p></div>
-            </div>
-            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">web/src/components/MapEngine.tsx</span><pre><code class="language-typescript">map.addSource('fleet-telemetry', {
-    type: 'geojson',
-    data: 'https://gateway.omega/v1/fleet/live',
-    cluster: true,
-    clusterMaxZoom: 14, // Max zoom to cluster points on
-    clusterRadius: 50   // Radius of each cluster in pixels
-});
 
-map.addLayer({
-    id: 'clusters',
-    type: 'circle',
-    source: 'fleet-telemetry',
-    filter: ['has', 'point_count'],
-    paint: {
-        'circle-color': ['step', ['get', 'point_count'], '#3b82f6', 100, '#10b981', 750, '#f59e0b'],
-        'circle-radius': ['step', ['get', 'point_count'], 20, 100, 30, 750, 40]
-    }
-});</code></pre></div>
-          </section>
-    
-          <section class="section">
-            <div class="section-content">
-              <span class="section-kicker">Network Architecture</span>
-              <h2>HTTP Long-Polling vs WebSockets.</h2>
-              <p>WebSockets are the industry standard for real-time, bidirectional communication, but they carry a fatal flaw for marine operations: they require a persistently open, stable TCP connection. Over degraded satellite networks or maritime VHF links, persistent TCP connections drop constantly, triggering an endless, expensive loop of handshake reconnects.</p>
-<p>OMEGA completely bypasses this architectural flaw by utilizing a strict, lightweight <strong>HTTP Long-Polling</strong> architecture for its dashboard UI. The browser requests state updates via stateless `GET` requests using `async/await` fetch loops.</p>
-<p><strong>How it works:</strong> If the connection drops mid-poll—which happens constantly in the field—the browser simply catches the timeout error and attempts the next stateless request. There are no dropped connection pipelines to rebuild. This makes the UI incredibly resilient to spotty, high-packet-loss internet.</p>
-              
-            </div>
-            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">web/src/hooks/useLongPoll.ts</span><pre><code class="language-typescript">export function useLongPoll(endpoint: string) {
-  useEffect(() => {
-    let isActive = true;
-    
-    const poll = async () => {
-      while (isActive) {
-        try {
-          // Timeout set to 30s. If server has no data, it holds request until timeout.
-          const response = await fetch(endpoint, { signal: AbortSignal.timeout(30000) });
-          if (response.ok) {
-            const data = await response.json();
-            dispatch(updateFleetState(data));
-          }
-        } catch (error) {
-          // Silent catch on AbortError (timeout) or network drop.
-          // The loop simply restarts instantly without breaking the UI.
-          await new Promise(resolve => setTimeout(resolve, 1000));
-        }
-      }
-    };
-    poll();
-    
-    return () => { isActive = false; };
-  }, [endpoint]);
-}</code></pre></div>
-          </section>
-    
-          <section class="section">
-            <div class="section-content">
-              <span class="section-kicker">State Decoupling</span>
-              <h2>Digital Twins & UI State.</h2>
-              <p>Because edge nodes operate on aggressive battery-saving duty cycles, they are often offline and entirely uncontactable for hours at a time. Therefore, the React frontend cannot assume that clicking a "Format NVRAM" button instantly formats the storage.</p>
-<p>To solve this synchronization gap, OMEGA models all physical assets on the map as <strong>Digital Twins</strong>. The React UI manages strictly decoupled state variables for every user action: <code>pending</code> (the operator clicked the button in the UI), <code>synced</code> (the shore gateway queued the command into the DTN mesh), and <code>reported</code> (the hardware edge node physically acknowledged the change and beamed the result back).</p>
-<p><strong>Operational Relevance:</strong> This tripartite state machine ensures the human operator has absolute, unambiguous clarity on the synchronization gap between the cloud servers and the physical ocean surface.</p>
-              
-            </div>
-            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">web/src/types/MissionState.ts</span><pre><code class="language-typescript">export type SyncStatus = 'pending' | 'synced' | 'reported' | 'failed';
+      <section class="section">
+        <div class="section-content">
+          <span class="section-kicker">Spatial Computing</span>
+          <h2>The Glass Bridge Interface.</h2>
+          <p>The OMEGA-wave Mission Portal has officially evolved from a flat 2D dashboard into a high-performance <strong>3D Digital Twin</strong>. The base layer is a 3D WebGL globe (powered by Deck.gl/CesiumJS) that occupies 100% of the viewport. There are no permanent sidebars.</p>
+          <p>Instead of cluttered UI panels, OMEGA utilizes <strong>Contextual Progressive Disclosure</strong>. Tools and data panels live in floating "context drawers" that slide into the viewport only when a user selects a specific entity (like a buoy or a drawn polygon). Clicking the open ocean dismisses the drawer entirely.</p>
+        </div>
+      </section>
+
+      <section class="section section-block" style="background: rgba(0,0,0,0.4);">
+        <span class="section-kicker">Global State</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">4D Temporal & Z-Axis Engine.</h2>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">
+          The ocean is a 4D volume. The entire application operates on a single synchronized state across time, X, Y, and Z axes.
+        </p>
+
+        <div class="grid-2" style="margin-bottom: 2rem;">
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">Time</span>
+            <h3 style="font-size: 1.2rem;">Master Time Clock</h3>
+            <p style="font-size: 0.85rem;">Scrubbing the timeline backward pauses live WebSocket streams and simultaneously queries historical databases for local telemetry, ocean physics (Copernicus), and redraws the exact active mesh topology for that specific second.</p>
+          </div>
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">Depth</span>
+            <h3 style="font-size: 1.2rem;">Z-Axis Slicer</h3>
+            <p style="font-size: 0.85rem;">A persistent depth slider allows operators to slice from 0m down to -2000m. Doing so dynamically updates colormaps and thermoclines on the 3D globe—treating the ocean as a true volumetric data cube.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-content">
+          <span class="section-kicker">Visual Ontology</span>
+          <h2>Absolute Data Purity.</h2>
+          <p>The core prime directive of the DTO v3.0 interface is <strong>Absolute Data Purity</strong>. The system must NEVER use modeled API data to fill gaps in the physical hardware's dataset. Missing telemetry is rendered explicitly as a visual gap.</p>
+          <p>To enforce this, the UI employs a strict visual ontology: Ground Truth from the physical mesh is rendered as sharp, high-contrast, opaque 3D geometry (extruded columns and hard-edged pins). Modeled Data from APIs (like Copernicus winds and currents) are rendered using GPU particle shaders, dynamic colormaps, and semi-transparent volumetric layers.</p>
+        </div>
+      </section>
+
+      <section class="section section-block" style="background: rgba(0,0,0,0.4);">
+        <span class="section-kicker">Routing</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Operational Workspaces.</h2>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">
+          The portal is divided into dedicated workspaces tailored for specific mission phases.
+        </p>
+
+        <div class="grid-3" style="margin-bottom: 2rem;">
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">/observe</span>
+            <h3 style="font-size: 1.2rem;">Live Observatory</h3>
+            <p style="font-size: 0.85rem;">Features 3D particle physics powered by GPU shaders to animate wind and currents, a living mesh visualizer drawing topological links (LoRa/JANUS), and a contextual QARTOD lens for anomaly verification.</p>
+          </div>
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">/plan</span>
+            <h3 style="font-size: 1.2rem;">Predictive Simulation</h3>
+            <p style="font-size: 0.85rem;">A Particle Dispersion Engine simulating spills and passive drifters using 7-day current forecasts, alongside a kinematic hazard engine cross-referencing hardware capabilities against AIS traffic and GEBCO bathymetry.</p>
+          </div>
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">/analyze</span>
+            <h3 style="font-size: 1.2rem;">Data Library</h3>
+            <p style="font-size: 0.85rem;">A standalone data lab allowing operators to filter, rank, and correlate ground truth against historical API models, and upload offline CSV/GeoJSON logs without polluting the live operational database.</p>
+          </div>
+        </div>
+        <div class="grid-2" style="margin-bottom: 2rem;">
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">/admin</span>
+            <h3 style="font-size: 1.2rem;">Engineering Deck</h3>
+            <p style="font-size: 0.85rem;">Behind strict administrative authentication. Controls hardware configuration, gateway runtime toggles, HaLow AP/STA pairing, and API credential loading.</p>
+          </div>
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">/public</span>
+            <h3 style="font-size: 1.2rem;">Public Federation</h3>
+            <p style="font-size: 0.85rem;">A read-only mode with command and routing tools disabled. Designed as a safe URL state for classrooms and researchers to view live telemetry and interact with 3D environmental visualizations.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-content">
+          <span class="section-kicker">State Decoupling</span>
+          <h2>Digital Twins & UI State.</h2>
+          <p>Because edge nodes operate on aggressive battery-saving duty cycles, they are often offline and entirely
+            uncontactable for hours at a time. Therefore, the frontend cannot assume that clicking a "Format
+            NVRAM" button instantly formats the storage.</p>
+          <p>To solve this synchronization gap, OMEGA models all physical assets on the map as <strong>Digital
+              Twins</strong>. The UI manages strictly decoupled state variables for every user action:
+            <code>pending</code> (the operator clicked the button in the UI), <code>synced</code> (the shore gateway
+            queued the command into the DTN mesh), and <code>reported</code> (the hardware edge node physically
+            acknowledged the change and beamed the result back).</p>
+        </div>
+        <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span
+            class="panel-kicker">web/src/types/MissionState.ts</span>
+          <pre><code class="language-typescript">export type SyncStatus = 'pending' | 'synced' | 'reported' | 'failed';
 
 export interface DigitalTwinCommand {
   command_id: string;
@@ -300,107 +319,10 @@ export interface DigitalTwinCommand {
     synced_at?: string;
     reported_at?: string;
   };
-}</code></pre></div>
-          </section>
-    
-          <section class="section section-block" style="background: rgba(0,0,0,0.4);">
-            <span class="section-kicker">Data Operations</span>
-            <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Live Tile Dashboard & Quick Actions.</h2>
-            <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">The portal's Inspect panel abandons the traditional "long-scroll" paradigm in favor of a dense, viewport-fit dashboard. It is engineered for outcome-oriented operations, automatically surfacing the most critical telemetry the second the page loads.</p>
+}</code></pre>
+        </div>
+      </section>
 
-            <div class="grid-3" style="margin-bottom: 2rem;">
-              <div class="panel" style="padding: 1.5rem;">
-                <span class="status-label status-implemented">Live Tiles</span>
-                <h3 style="font-size: 1.2rem;">Real-Time Polling</h3>
-                <p style="font-size: 0.85rem;">The Inspect tab continuously polls <code>/v1/measurements/latest</code> every 5 seconds, rendering massive data tiles that immediately reveal the freshest edge node readings, units, and ages. Stale nodes are flagged with a distinct amber border.</p>
-              </div>
-              <div class="panel" style="padding: 1.5rem;">
-                <span class="status-label status-implemented">Quick Actions</span>
-                <h3 style="font-size: 1.2rem;">One-Click Outcomes</h3>
-                <p style="font-size: 0.85rem;">Six one-click cards (e.g., <i>"My gateway right now"</i> or <i>"Where are my nodes?"</i>) automatically pre-fill the Custom Query modals and execute the fetch, completely removing setup friction for common tasks.</p>
-              </div>
-              <div class="panel" style="padding: 1.5rem;">
-                <span class="status-label status-implemented">Stepped Layout</span>
-                <h3 style="font-size: 1.2rem;">Modal Drill-Down</h3>
-                <p style="font-size: 0.85rem;">Clicking any Live Tile instantly opens a pre-configured Custom Query modal. The workflow is strictly stepped: "1 · Pick a dataset" → "2 · Refine + load" → "3 · View Results / Chart", keeping the interface clean and entirely within the viewport.</p>
-              </div>
-            </div>
-          </section>
-    
-          <section class="section section-block" style="background: rgba(0,0,0,0.4);">
-            <span class="section-kicker">3D Rendering</span>
-            <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">WebGL Bathymetry Rendering.</h2>
-            <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">Plotting millions of acoustic sonar returns in 3D would instantly crash a standard browser. OMEGA utilizes `deck.gl` to push complex oceanographic geometry directly to the GPU.</p>
-            
-            <div class="grid-3" style="margin-bottom: 2rem;">
-              <div class="panel" style="padding: 1.5rem;">
-                <span class="status-label status-implemented">Layer 1</span>
-                <h3 style="font-size: 1.2rem;">Hexagon Aggregation</h3>
-                <p style="font-size: 0.85rem;">Raw sonar points are aggregated into GPU-rendered hex-bins to visualize dense depth mapping without overlapping geometries.</p>
-              </div>
-              <div class="panel" style="padding: 1.5rem;">
-                <span class="status-label status-implemented">Layer 2</span>
-                <h3 style="font-size: 1.2rem;">Volumetric Data Cubes</h3>
-                <p style="font-size: 0.85rem;">Interpolated salinity and thermal profiles are rendered as massive 3D volumetric polygons floating beneath the surface.</p>
-              </div>
-              <div class="panel" style="padding: 1.5rem;">
-                <span class="status-label status-implemented">Layer 3</span>
-                <h3 style="font-size: 1.2rem;">Live Asset Tracking</h3>
-                <p style="font-size: 0.85rem;">Drifting buoys and ROVs are plotted on top of the 3D data cube, calculating their exact physical intersection with the water column.</p>
-              </div>
-            </div>
-          </section>
-
-          <section class="section">
-            <div class="section-content">
-              <span class="section-kicker">Real-Time Data</span>
-              <h2>WebSocket Firehose.</h2>
-              <p>While the dashboard relies on resilient HTTP long-polling for poor field connections, it dynamically upgrades to a high-speed WebSocket Firehose when connected to fiber or 5G.</p>
-              <p><strong>Execution:</strong> The Python FastAPI backend maintains a pub/sub event loop. The second a LoRa packet is received, decrypted, and validated, the `websocket_manager` pipes the parsed Binary TLV payload directly into the React DOM at 10Hz, instantly updating the map vectors without a single polling request.</p>
-            </div>
-          </section>
-
-          <section class="section">
-            <div class="section-content">
-              <span class="section-kicker">Cartography</span>
-              <h2>Local GeoJSON Uploads & NOAA Charts.</h2>
-              <p>Operators can drag and drop local GeoJSON files directly into the portal to render custom reference zones, exclusion boundaries, or obstacle polygons.</p><p>Additionally, the portal includes built-in NOAA chart selectors, instantly replacing the Mapbox satellite basemap with official marine navigation charts to ensure operational compliance during fleet deployment.</p>
-              
-            </div>
-            
-          </section>
-    
-          <section class="section">
-            <div class="section-content">
-              <span class="section-kicker">Acoustic Operations</span>
-              <h2>The JANUS Test Composer.</h2>
-              <p>Testing acoustic bridges on dry land is notoriously difficult. The Mission Portal features a dedicated <strong>JANUS Test Composer</strong>, allowing operators to construct NATO-standard acoustic command payloads in the browser, preview the exact binary frame structure, and queue the acoustic transmission directly into the gateway's subsea outbox.</p>
-              
-            </div>
-            
-          </section>
-    
-          <section class="section">
-            <div class="section-content">
-              <span class="section-kicker">User Experience</span>
-              <h2>Adaptive UX: Desktop vs Field Mode.</h2>
-              <p>A UI designed for a 4K desktop monitor fails on a rain-splattered 6-inch smartphone on a pitching boat. The portal features an <strong>Adaptive UX toggle</strong>. Standard mode provides dense tabular data arrays; Field mode strips away peripheral data and massively inflates touch targets and high-contrast metric readouts for emergency operations.</p>
-              
-            </div>
-            
-          </section>
-    
-          <section class="section">
-            <div class="section-content">
-              <span class="section-kicker">Frontend Architecture</span>
-              <h2>React & Vite Mission Portal.</h2>
-              <p>The <code>web/</code> directory contains the React-based Mission Portal. Built using the modern Vite build tool for instant Hot Module Replacement (HMR) during development, the UI architecture is completely decoupled from the Python gateway backend.</p>
-<p><strong>Architecture:</strong> It relies entirely on high-speed, asynchronous WebSockets and stateless HTTP polling established with the FastAPI edge router. This architecture allows the UI to stream live edge node telemetry, spatial coordinates, and critical structural alerts directly to the browser DOM at 10Hz, completely bypassing the need for slow, blocking REST API calls.</p>
-              
-            </div>
-            
-          </section>
-    
     </div>
   </main>
 
@@ -409,4 +331,5 @@ export interface DigitalTwinCommand {
   </footer>
   <script src="main.js"></script>
 </body>
+
 </html>

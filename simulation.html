@@ -43,8 +43,6 @@
           <button class="dropbtn">Hardware & Physics &#9662;</button>
           <div class="dropdown-content">
             <a href="hardware.html">Hardware & Firmware</a>
-            <a href="power-systems.html">Power & Thermodynamics</a>
-            <a href="mechanical-engineering.html">Mechanical & Buoyancy</a>
             <a href="rf-physics.html">RF Physics & Propagation</a>
             <a href="biofouling.html">Marine Biology (Fouling)</a>
             <a href="edge-nodes.html">Edge Nodes</a>
@@ -68,11 +66,8 @@
           <div class="dropdown-content">
             <a href="analytics.html">Analytics Pipeline</a>
             <a href="copilot.html">Honu AI Copilot</a>
-            <a href="machine-learning.html">Machine Learning</a>
-            <a href="qc-eval.html">Data Quality (QARTOD)</a>
             <a href="bathymetry.html">Bathymetry</a>
             <a href="calibration.html">Sensor Calibration</a>
-            <a href="economic-model.html">Economic Model</a>
           </div>
         </div>
         
@@ -85,7 +80,6 @@
             <a href="data-providers.html">Data Providers</a>
             <a href="external-data.html">External Integrations</a>
             <a href="examples.html">Data Examples</a>
-            <a href="cloud-infrastructure.html">Cloud Infrastructure</a>
             <a href="api-reference.html">API Reference</a>
           </div>
         </div>
@@ -95,11 +89,6 @@
           <div class="dropdown-content">
             <a href="getting-started.html">Getting Started</a>
             <a href="build-guide.html">Build Guide</a>
-            <a href="deployment-scenarios.html">Deployment Scenarios</a>
-            <a href="marine-operations.html">Marine Ops</a>
-            <a href="compliance.html">Compliance</a>
-            <a href="research-citations.html">Research & Literature</a>
-            <a href="teaching-documentation.html">Teaching Docs</a>
             <a href="roadmap.html">Roadmap</a>
           </div>
         </div>
@@ -125,7 +114,7 @@
     <h1>Simulation</h1>
     <p>Synthetic data generation and Digital Twins.</p>
     <div class="hero-actions">
-      <a class="btn btn-primary" href="https://github.com/aminalnam/OMEGA" target="_blank">View OMEGA on GitHub</a>
+      <a class="btn btn-primary" href="https://github.com/aminalnam/OMEGA-wave" target="_blank">View OMEGA-wave on GitHub</a>
       <a class="btn btn-secondary" href="https://jonathancapone.art" target="_blank">Art Portfolio</a>
     </div>
   </section>
@@ -139,7 +128,7 @@
               <span class="section-kicker">Synthetic Generation</span>
               <h2>Procedural Time-Step Environments.</h2>
               <p>Deploying a massive mesh network without testing is catastrophic. The <code>simulator.py</code> module spawns thousands of virtual "Digital Twins" that run the exact same networking logic as the physical edge nodes.</p>
-<p><strong>Procedural Generation:</strong> The Python engine dynamically generates synthetic nodes that mathematically drift according to fluid dynamics models. Each tick of the event loop evaluates the Haversine distance and RSSI dropoff between all virtual nodes. If Node A drifts out of range of Node B, the simulator physically severs the virtual connection, forcing the Mesh Core to dynamically recalculate its Delay Tolerant routing tables. This allows developers to stress-test the FastAPI event loop with 10,000 concurrent Custom Binary TLV packets before touching actual hardware.</p>
+<p><strong>Procedural Generation:</strong> The Python engine dynamically seeds the portal with realistic mixed-source data including stationary water-quality stations, shore weather endpoints, moving drifters, ROV-style tracks, and bathymetry survey soundings. It actively simulates mesh network interfaces, neighbor presence, and queued packets. Preset scenarios such as <code>coastal-demo</code> and <code>underwater-ops</code> allow developers to inject JANUS acoustic activity and full fleet topologies to test the FastAPI gateway without requiring physical hardware in the loop.</p>
               
             </div>
             <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">gateway/simulator.py</span><pre><code class="language-python">async def tick_digital_twins(twins: list[DigitalTwin], mesh_router: MeshRouter):

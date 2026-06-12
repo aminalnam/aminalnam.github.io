@@ -1,34 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="utf-8"/>
-  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
   <title>Jonathan Capone — JANUS Acoustics</title>
-  
+
   <meta name="description" content="OMEGA-wave documentation: Snell's Law & Refraction." />
   <meta property="og:title" content="Jonathan Capone — JANUS Acoustics" />
-  <meta property="og:description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
+  <meta property="og:description"
+    content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://jonathancapone.com/janus-acoustic.html" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Jonathan Capone — JANUS Acoustics" />
-  <meta name="twitter:description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
-  
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌊</text></svg>">
-  
+  <meta name="twitter:description"
+    content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
+
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌊</text></svg>">
+
   <link rel="stylesheet" href="style.css">
   <script type="module">
     import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
     mermaid.initialize({ startOnLoad: true, theme: 'dark', themeVariables: { fontFamily: 'Inter' } });
   </script>
 </head>
+
 <body>
   <header class="topbar">
     <div class="wrap topbar-inner">
-      <a class="brand" href="index.html" style="display: flex; align-items: center; gap: 0.75rem; text-decoration: none;">
+      <a class="brand" href="index.html"
+        style="display: flex; align-items: center; gap: 0.75rem; text-decoration: none;">
         <div>
-          <span class="brand-title" style="letter-spacing: 0.1em; color: var(--white); display: block; font-family: var(--font-serif); font-size: 1.5rem;">JONATHAN CAPONE</span>
-          <span class="brand-sub" style="display: block; font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent); font-family: var(--font-mono); opacity: 0.9;">Systems Architecture Portfolio</span>
+          <span class="brand-title"
+            style="letter-spacing: 0.1em; color: var(--white); display: block; font-family: var(--font-serif); font-size: 1.5rem;">JONATHAN
+            CAPONE</span>
+          <span class="brand-sub"
+            style="display: block; font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent); font-family: var(--font-mono); opacity: 0.9;">Systems
+            Architecture Portfolio</span>
         </div>
       </a>
       <nav class="nav" aria-label="Main Navigation">
@@ -43,8 +53,6 @@
           <button class="dropbtn">Hardware & Physics &#9662;</button>
           <div class="dropdown-content">
             <a href="hardware.html">Hardware & Firmware</a>
-            <a href="power-systems.html">Power & Thermodynamics</a>
-            <a href="mechanical-engineering.html">Mechanical & Buoyancy</a>
             <a href="rf-physics.html">RF Physics & Propagation</a>
             <a href="biofouling.html">Marine Biology (Fouling)</a>
             <a href="edge-nodes.html">Edge Nodes</a>
@@ -68,11 +76,8 @@
           <div class="dropdown-content">
             <a href="analytics.html">Analytics Pipeline</a>
             <a href="copilot.html">Honu AI Copilot</a>
-            <a href="machine-learning.html">Machine Learning</a>
-            <a href="qc-eval.html">Data Quality (QARTOD)</a>
             <a href="bathymetry.html">Bathymetry</a>
             <a href="calibration.html">Sensor Calibration</a>
-            <a href="economic-model.html">Economic Model</a>
           </div>
         </div>
         
@@ -85,7 +90,6 @@
             <a href="data-providers.html">Data Providers</a>
             <a href="external-data.html">External Integrations</a>
             <a href="examples.html">Data Examples</a>
-            <a href="cloud-infrastructure.html">Cloud Infrastructure</a>
             <a href="api-reference.html">API Reference</a>
           </div>
         </div>
@@ -95,11 +99,6 @@
           <div class="dropdown-content">
             <a href="getting-started.html">Getting Started</a>
             <a href="build-guide.html">Build Guide</a>
-            <a href="deployment-scenarios.html">Deployment Scenarios</a>
-            <a href="marine-operations.html">Marine Ops</a>
-            <a href="compliance.html">Compliance</a>
-            <a href="research-citations.html">Research & Literature</a>
-            <a href="teaching-documentation.html">Teaching Docs</a>
             <a href="roadmap.html">Roadmap</a>
           </div>
         </div>
@@ -125,24 +124,32 @@
     <h1>JANUS Acoustics</h1>
     <p>NATO-standard acoustic modulation.</p>
     <div class="hero-actions">
-      <a class="btn btn-primary" href="https://github.com/aminalnam/OMEGA" target="_blank">View OMEGA on GitHub</a>
+      <a class="btn btn-primary" href="https://github.com/aminalnam/OMEGA-wave" target="_blank">View OMEGA-wave on GitHub</a>
       <a class="btn btn-secondary" href="https://jonathancapone.art" target="_blank">Art Portfolio</a>
     </div>
   </section>
 
   <main class="main-shell wrap" role="main">
     <div class="main-inner">
-    
 
-          <section class="section">
-            <div class="section-content">
-              <span class="section-kicker">Acoustic Physics</span>
-              <h2>Snell's Law & Refraction.</h2>
-              <p>Standard radio frequencies cannot penetrate water. To communicate with Remotely Operated Vehicles (ROVs) and benthic sensors, the surface fleet utilizes acoustic modems broadcasting the NATO-standard JANUS protocol (STANAG 4748).</p>
-<p><strong>Acoustic Modulation:</strong> Sound waves travel at ~1,500 m/s underwater, subject to massive multi-path reflections and thermocline refraction. The JANUS standard uses robust Frequency-Shift Keying (FSK) to encode binary data into audio chirps. The Python <code>janus_bridge.py</code> module listens for the distinct 86-bit JANUS wakeup tone, synchronizes the Phase-Locked Loop (PLL), and decodes the subsequent data blocks into standard JSON envelopes that can be bridged onto the LoRa mesh.</p>
-              
-            </div>
-            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">gateway/janus_bridge.py</span><pre><code class="language-python">async def handle_acoustic_fsk_stream(audio_buffer: bytes):
+
+      <section class="section">
+        <div class="section-content">
+          <span class="section-kicker">Acoustic Physics</span>
+          <h2>Snell's Law & Refraction.</h2>
+          <p>Standard radio frequencies cannot penetrate water. To communicate with Remotely Operated Vehicles (ROVs)
+            and benthic sensors, the surface fleet utilizes acoustic modems broadcasting the NATO-standard JANUS
+            protocol (STANAG 4748).</p>
+          <p><strong>Acoustic Modulation:</strong> Sound waves travel at ~1,500 m/s underwater, subject to massive
+            multi-path reflections and thermocline refraction. The JANUS standard uses robust Frequency-Shift Keying
+            (FSK) to encode binary data into audio chirps. The Python <code>janus_bridge.py</code> module listens for
+            the distinct 86-bit JANUS wakeup tone, synchronizes the Phase-Locked Loop (PLL), and decodes the subsequent
+            data blocks into standard JSON envelopes that can be bridged onto the LoRa mesh.</p>
+
+        </div>
+        <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span
+            class="panel-kicker">gateway/janus_bridge.py</span>
+          <pre><code class="language-python">async def handle_acoustic_fsk_stream(audio_buffer: bytes):
     # Detect and decode STANAG 4748 JANUS acoustic frames.
     # 1. Execute Fast Fourier Transform (FFT) to detect wakeup tone
     power_spectrum = np.abs(np.fft.rfft(audio_buffer))
@@ -155,35 +162,42 @@
         binary_stream = _demodulate_fsk(audio_buffer)
         
         # 3. Bridge the acoustic data to the shore API
-        await inject_telemetry_to_mesh(binary_stream)</code></pre></div>
-          </section>
-    
-          <section class="section section-block" style="background: rgba(0,0,0,0.4);">
-            <span class="section-kicker">NATO Protocols</span>
-            <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">NATO-Standard Binary Framing.</h2>
-            <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">To combat severe multipath fading, OMEGA implements the NATO-standard <strong>JANUS</strong> acoustic protocol (STANAG 4748). The gateway strips JSON into highly compressed binary frames, packing telemetry into a dense 50-baud acoustic chirp stream.</p>
-            
-            <div class="grid-3" style="margin-bottom: 2rem;">
-              <div class="panel" style="padding: 1.5rem;">
-                <span class="status-label status-implemented">Step 1</span>
-                <h3 style="font-size: 1.2rem;">Binary TLV Crushing</h3>
-                <p style="font-size: 0.85rem;">Standard 400-byte JSON telemetry is crushed into a dense 45-byte Custom Binary TLV envelope.</p>
-              </div>
-              <div class="panel" style="padding: 1.5rem;">
-                <span class="status-label status-implemented">Step 2</span>
-                <h3 style="font-size: 1.2rem;">JANUS Interleaving</h3>
-                <p style="font-size: 0.85rem;">The binary payload is fed through convolutional encoding and interleaving to mathematically recover data lost to sudden wave noise.</p>
-              </div>
-              <div class="panel" style="padding: 1.5rem;">
-                <span class="status-label status-implemented">Step 3</span>
-                <h3 style="font-size: 1.2rem;">FSK Modulation</h3>
-                <p style="font-size: 0.85rem;">The encoded bits are fired out of the hydrophone as Frequency-Shift Keyed audio chirps at exactly 11.5 kHz.</p>
-              </div>
-            </div>
+        await inject_telemetry_to_mesh(binary_stream)</code></pre>
+        </div>
+      </section>
 
-            <div class="section-visual" style="max-height: 800px; overflow-y: auto;">
-              <span class="panel-kicker">Frequency-Shift Keying (FSK) Math</span>
-              <pre><code class="language-python">def modulate_fsk(binary_string: str, f_space=11000, f_mark=12000, baud=50, fs=44100):
+      <section class="section section-block" style="background: rgba(0,0,0,0.4);">
+        <span class="section-kicker">NATO Protocols</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">NATO-Standard Binary Framing.
+        </h2>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">
+          To combat severe multipath fading, OMEGA implements the NATO-standard <strong>JANUS</strong> acoustic protocol
+          (STANAG 4748). The gateway strips JSON into highly compressed binary frames, packing telemetry into a dense
+          50-baud acoustic chirp stream.</p>
+
+        <div class="grid-3" style="margin-bottom: 2rem;">
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">Step 1</span>
+            <h3 style="font-size: 1.2rem;">SenML CBOR Packing</h3>
+            <p style="font-size: 0.85rem;">Standard 400-byte JSON telemetry is converted into the Envelope Protocol v1.0 constrained form (SenML CBOR), reducing overhead for the 50-baud acoustic channel.</p>
+          </div>
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">Step 2</span>
+            <h3 style="font-size: 1.2rem;">JANUS Interleaving</h3>
+            <p style="font-size: 0.85rem;">The binary payload is fed through convolutional encoding and interleaving to
+              mathematically recover data lost to sudden wave noise.</p>
+          </div>
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">Step 3</span>
+            <h3 style="font-size: 1.2rem;">FSK Modulation</h3>
+            <p style="font-size: 0.85rem;">The encoded bits are fired out of the hydrophone as Frequency-Shift Keyed
+              audio chirps at exactly 11.5 kHz.</p>
+          </div>
+        </div>
+
+        <div class="section-visual" style="max-height: 800px; overflow-y: auto;">
+          <span class="panel-kicker">Frequency-Shift Keying (FSK) Math</span>
+          <pre><code class="language-python">def modulate_fsk(binary_string: str, f_space=11000, f_mark=12000, baud=50, fs=44100):
     # Mathematically construct the analog audio wave
     t = np.arange(0, 1/baud, 1/fs)
     audio_wave = np.array([])
@@ -199,37 +213,56 @@
         audio_wave = np.concatenate((audio_wave, chirp))
         
     return audio_wave</code></pre>
-            </div>
-          </section>
+        </div>
+      </section>
 
-          <section class="section section-block" style="background: rgba(0,0,0,0.4);">
-            <span class="section-kicker">Acoustic Refraction Physics</span>
-            <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Snell's Law & The Sonar Equation.</h2>
-            <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">Transmitting data underwater is exponentially harder than RF. We must physically fight the ocean's thermodynamics and the physics of wave attenuation.</p>
-            
-            <div class="grid-2" style="margin-bottom: 2rem;">
-              <div class="panel" style="padding: 1.5rem;">
-                <span class="status-label status-implemented">The Sonar Equation</span>
-                <h3 style="font-size: 1.2rem;">TL = 20 log(r) + αr</h3>
-                <p style="font-size: 0.85rem;">Transmission Loss (TL) dictates that sound energy decays via spherical spreading <code>20 log(r)</code> and chemical absorption <code>αr</code>. Because higher frequencies (like 100kHz) have a massive absorption coefficient <code>α</code>, high-bandwidth data physically cannot travel more than a few hundred meters. This mathematically forces OMEGA to use low-frequency 11.5kHz chirps to achieve kilometers of range, crushing our data rate to a mere 80 bps.</p>
-              </div>
-              <div class="panel" style="padding: 1.5rem;">
-                <span class="status-label status-implemented">Thermocline Refraction</span>
-                <h3 style="font-size: 1.2rem;">Snell's Law: sin(θ₁)/c₁ = sin(θ₂)/c₂</h3>
-                <p style="font-size: 0.85rem;">Ocean water is not uniform. Sound travels faster in warm surface water and slower in the freezing depths. As the JANUS wave passes through the thermocline layer, Snell's Law mathematically proves the wave will refract (bend) downwards towards the slower water. This creates massive "Shadow Zones" near the surface where receiving buoys are physically blocked from hearing the signal, regardless of transmit power.</p>
-              </div>
-            </div>
-          </section>
-    
-          <section class="section">
-            <div class="section-content">
-              <span class="section-kicker">Acoustic Subsea Frames</span>
-              <h2>JANUS Initialization.</h2>
-              <p>Because underwater acoustic physics are incredibly hostile, bandwidth is severely limited—often maxing out at a mere 80 bits per second (bps). Therefore, OMEGA cannot stream complex JSON over a hydrophone.</p>
-<p><strong>How it works:</strong> The JSON structure below represents the <em>source representation</em> of the simulated NATO-standard JANUS initialization frame before it undergoes Binary TLV compression. The payload explicitly defines the <code>center_frequency_hz</code> and the <code>rx_level_db</code>. The Gateway crushes this into a binary string and uses it to align the hydrophone's physical oscillator. Once aligned, the actual data transferred via the acoustic bridge is strictly limited to heavily compressed initialization vectors and critical emergency stop commands, preserving the fragile acoustic channel.</p>
-              
-            </div>
-            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">janus-announce.example.json</span><pre><code class="language-json">{
+      <section class="section section-block" style="background: rgba(0,0,0,0.4);">
+        <span class="section-kicker">Acoustic Refraction Physics</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Snell's Law & The Sonar
+          Equation.</h2>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">
+          Transmitting data underwater is exponentially harder than RF. We must physically fight the ocean's
+          thermodynamics and the physics of wave attenuation.</p>
+
+        <div class="grid-2" style="margin-bottom: 2rem;">
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">The Sonar Equation</span>
+            <h3 style="font-size: 1.2rem;">TL = 20 log(r) + αr</h3>
+            <p style="font-size: 0.85rem;">Transmission Loss (TL) dictates that sound energy decays via spherical
+              spreading <code>20 log(r)</code> and chemical absorption <code>αr</code>. Because higher frequencies (like
+              100kHz) have a massive absorption coefficient <code>α</code>, high-bandwidth data physically cannot travel
+              more than a few hundred meters. This mathematically forces OMEGA to use low-frequency 11.5kHz chirps to
+              achieve kilometers of range, crushing our data rate to a mere 80 bps.</p>
+          </div>
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">Thermocline Refraction</span>
+            <h3 style="font-size: 1.2rem;">Snell's Law: sin(θ₁)/c₁ = sin(θ₂)/c₂</h3>
+            <p style="font-size: 0.85rem;">Ocean water is not uniform. Sound travels faster in warm surface water and
+              slower in the freezing depths. As the JANUS wave passes through the thermocline layer, Snell's Law
+              mathematically proves the wave will refract (bend) downwards towards the slower water. This creates
+              massive "Shadow Zones" near the surface where receiving buoys are physically blocked from hearing the
+              signal, regardless of transmit power.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-content">
+          <span class="section-kicker">Acoustic Subsea Frames</span>
+          <h2>JANUS Initialization.</h2>
+          <p>Because underwater acoustic physics are incredibly hostile, bandwidth is severely limited—often maxing out
+            at a mere 80 bits per second (bps). Therefore, OMEGA cannot stream complex JSON over a hydrophone.</p>
+          <p><strong>How it works:</strong> The JSON structure below represents the <em>source representation</em> of
+            the simulated NATO-standard JANUS initialization frame before it undergoes SenML CBOR serialization per the Envelope Protocol v1.0 specifications. The
+            payload explicitly defines the <code>center_frequency_hz</code> and the <code>rx_level_db</code>. The
+            Gateway crushes this into a binary string and uses it to align the hydrophone's physical oscillator. Once
+            aligned, the actual data transferred via the acoustic bridge is strictly limited to heavily compressed
+            initialization vectors and critical emergency stop commands, preserving the fragile acoustic channel.</p>
+
+        </div>
+        <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span
+            class="panel-kicker">janus-announce.example.json</span>
+          <pre><code class="language-json">{
   "message_id": "janus-msg-0001",
   "observed_at": "2026-04-18T19:20:00Z",
   "link_id": "buoy-02-acoustic",
@@ -265,9 +298,10 @@
     "snr_db": 11.4,
     "rx_level_db": -78.0
   }
-}</code></pre></div>
-          </section>
-    
+}</code></pre>
+        </div>
+      </section>
+
     </div>
   </main>
 
@@ -276,4 +310,5 @@
   </footer>
   <script src="main.js"></script>
 </body>
+
 </html>

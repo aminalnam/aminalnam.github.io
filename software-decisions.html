@@ -43,8 +43,6 @@
           <button class="dropbtn">Hardware & Physics &#9662;</button>
           <div class="dropdown-content">
             <a href="hardware.html">Hardware & Firmware</a>
-            <a href="power-systems.html">Power & Thermodynamics</a>
-            <a href="mechanical-engineering.html">Mechanical & Buoyancy</a>
             <a href="rf-physics.html">RF Physics & Propagation</a>
             <a href="biofouling.html">Marine Biology (Fouling)</a>
             <a href="edge-nodes.html">Edge Nodes</a>
@@ -68,11 +66,8 @@
           <div class="dropdown-content">
             <a href="analytics.html">Analytics Pipeline</a>
             <a href="copilot.html">Honu AI Copilot</a>
-            <a href="machine-learning.html">Machine Learning</a>
-            <a href="qc-eval.html">Data Quality (QARTOD)</a>
             <a href="bathymetry.html">Bathymetry</a>
             <a href="calibration.html">Sensor Calibration</a>
-            <a href="economic-model.html">Economic Model</a>
           </div>
         </div>
         
@@ -85,7 +80,6 @@
             <a href="data-providers.html">Data Providers</a>
             <a href="external-data.html">External Integrations</a>
             <a href="examples.html">Data Examples</a>
-            <a href="cloud-infrastructure.html">Cloud Infrastructure</a>
             <a href="api-reference.html">API Reference</a>
           </div>
         </div>
@@ -95,11 +89,6 @@
           <div class="dropdown-content">
             <a href="getting-started.html">Getting Started</a>
             <a href="build-guide.html">Build Guide</a>
-            <a href="deployment-scenarios.html">Deployment Scenarios</a>
-            <a href="marine-operations.html">Marine Ops</a>
-            <a href="compliance.html">Compliance</a>
-            <a href="research-citations.html">Research & Literature</a>
-            <a href="teaching-documentation.html">Teaching Docs</a>
             <a href="roadmap.html">Roadmap</a>
           </div>
         </div>
@@ -125,7 +114,7 @@
     <h1>Software Decisions.</h1>
     <p>Understanding why OMEGA is built with Python, SQLite, and React, and the hard constraints that forced these choices.</p>
     <div class="hero-actions">
-      <a class="btn btn-primary" href="https://github.com/aminalnam/OMEGA" target="_blank">View OMEGA on GitHub</a>
+      <a class="btn btn-primary" href="https://github.com/aminalnam/OMEGA-wave" target="_blank">View OMEGA-wave on GitHub</a>
       <a class="btn btn-secondary" href="https://jonathancapone.art" target="_blank">Art Portfolio</a>
     </div>
   </section>
@@ -157,7 +146,7 @@
         <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Why SQLite over PostgreSQL?</h2>
         <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">A monolithic SQLite file is generally considered an anti-pattern in modern microservice architecture. Why didn't we use a containerized PostgreSQL instance?</p>
         <p style="color: var(--ink-soft); font-size: 1rem; line-height: 1.6; max-width: 800px;">
-          <strong>The Constraint:</strong> The physical OMEGA gateway is often a Raspberry Pi 4 operating on a constantly pitching vessel in a highly corrosive marine environment. Power is frequently lost without warning when waves crash over solar panels. SD cards in Raspberry Pis are notorious for catastrophic sector corruption under heavy write loads or sudden power loss.
+          <strong>The Constraint:</strong> The central Federated Data Broker is often deployed on an embedded Linux SBC (e.g., Raspberry Pi 5) operating on a constantly pitching vessel in a highly corrosive marine environment. Power is frequently lost without warning when waves crash over solar panels. SD cards in these environments are notorious for catastrophic sector corruption under heavy write loads or sudden power loss.
           <br><br>
           <strong>The Decision:</strong> Running a heavy Docker daemon with a PostgreSQL volume is a massive operational risk on a fragile SD card. SQLite compiles directly into the Python process, eliminating the daemon dependency. A SQLite database is a single, physical <code>.db</code> file on the filesystem. This means field operators can literally unplug a USB stick, copy <code>omega.db</code>, and instantly have a 100% complete, air-gapped backup of their entire deployment. By enabling Write-Ahead Logging (<code>PRAGMA journal_mode=WAL</code>), we bypass SQLite's concurrent locking limitations, achieving the safety of a flat file with the speed of a networked database.
         </p>
@@ -165,7 +154,7 @@
 
       <section class="section section-block" style="background: rgba(0,0,0,0.4); margin-top: 2rem;">
         <span class="section-kicker">Frontend Choice</span>
-        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Why React & deck.gl over basic HTML Maps?</h2>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Why a 3D WebGL Digital Twin?</h2>
         <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">Standard mapping libraries like Leaflet.js manipulate the browser's Document Object Model (DOM). When OMEGA begins plotting 50,000 historical temperature readings or a 2-million-point bathymetry cloud, the DOM crashes.</p>
         
         <div class="section-visual" style="padding: 1.5rem;">
@@ -190,7 +179,7 @@
         </div>
         
         <p style="color: var(--ink-soft); font-size: 1rem; line-height: 1.6; max-width: 800px;">
-          <strong>The Decision:</strong> The Mission Portal is built with React explicitly to manage the complex, high-frequency state updates pumping through the WebSocket firehose. For geospatial rendering, we abandoned DOM-based SVGs entirely and adopted Uber's <strong>deck.gl</strong>. This framework bypasses the browser's DOM entirely, passing massive TypedArrays of coordinates directly into the computer's Graphics Processing Unit (GPU) via WebGL. This allows a standard operator laptop to render the entire Pacific Ocean at 60 Frames-Per-Second without breaking a sweat.
+          <strong>The Decision:</strong> The 3D Glass Bridge is built explicitly to manage the complex, high-frequency state updates pumping through the WebSocket firehose. For geospatial rendering, we abandoned DOM-based SVGs entirely and adopted a robust Spatial Engine (CesiumJS / Deck.gl). This framework bypasses the browser's DOM entirely, passing massive TypedArrays of coordinates directly into the computer's Graphics Processing Unit (GPU) via WebGL. This allows a standard operator laptop to render the entire Pacific Ocean and 4D Temporal structures at 60 Frames-Per-Second without breaking a sweat.
         </p>
 
         <div class="section-visual" style="max-height: 800px; overflow-y: auto;">

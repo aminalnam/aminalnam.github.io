@@ -43,8 +43,6 @@
           <button class="dropbtn">Hardware & Physics &#9662;</button>
           <div class="dropdown-content">
             <a href="hardware.html">Hardware & Firmware</a>
-            <a href="power-systems.html">Power & Thermodynamics</a>
-            <a href="mechanical-engineering.html">Mechanical & Buoyancy</a>
             <a href="rf-physics.html">RF Physics & Propagation</a>
             <a href="biofouling.html">Marine Biology (Fouling)</a>
             <a href="edge-nodes.html" class="is-current">Edge Nodes</a>
@@ -68,11 +66,8 @@
           <div class="dropdown-content">
             <a href="analytics.html">Analytics Pipeline</a>
             <a href="copilot.html">Honu AI Copilot</a>
-            <a href="machine-learning.html">Machine Learning</a>
-            <a href="qc-eval.html">Data Quality (QARTOD)</a>
             <a href="bathymetry.html">Bathymetry</a>
             <a href="calibration.html">Sensor Calibration</a>
-            <a href="economic-model.html">Economic Model</a>
           </div>
         </div>
         
@@ -85,7 +80,6 @@
             <a href="data-providers.html">Data Providers</a>
             <a href="external-data.html">External Integrations</a>
             <a href="examples.html">Data Examples</a>
-            <a href="cloud-infrastructure.html">Cloud Infrastructure</a>
             <a href="api-reference.html">API Reference</a>
           </div>
         </div>
@@ -95,11 +89,6 @@
           <div class="dropdown-content">
             <a href="getting-started.html">Getting Started</a>
             <a href="build-guide.html">Build Guide</a>
-            <a href="deployment-scenarios.html">Deployment Scenarios</a>
-            <a href="marine-operations.html">Marine Ops</a>
-            <a href="compliance.html">Compliance</a>
-            <a href="research-citations.html">Research & Literature</a>
-            <a href="teaching-documentation.html">Teaching Docs</a>
             <a href="roadmap.html">Roadmap</a>
           </div>
         </div>
@@ -122,10 +111,10 @@
 
   <section class="hero wrap">
     <span class="eyebrow">Component</span>
-    <h1>Sensor Nodes.</h1>
+    <h1>Sensor Nodes: Supreme, 1W, & LR1121.</h1>
     <p>Hardware provisioning, lithium battery science, MPPT solar controllers, and environmental thermodynamics.</p>
     <div class="hero-actions">
-      <a class="btn btn-primary" href="https://github.com/aminalnam/OMEGA" target="_blank">View OMEGA on GitHub</a>
+      <a class="btn btn-primary" href="https://github.com/aminalnam/OMEGA-wave" target="_blank">View OMEGA-wave on GitHub</a>
     </div>
   </section>
 
@@ -174,6 +163,15 @@
                 <h3 style="font-size: 1.2rem;">Battery-Aware Rates</h3>
                 <p style="font-size: 0.85rem;">If the battery voltage drops below 3.6V, the firmware automatically downscales its sample rate from every 10 minutes to every 60 minutes, mathematically guaranteeing survival until sunrise.</p>
               </div>
+            </div>
+          </section>
+
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">Network Resilience</span>
+              <h2>Offline Survival & Store-and-Forward.</h2>
+              <p>Oceanographic buoys frequently drift into RF dead zones or experience severe atmospheric interference. If an edge node cannot reach the gateway, it must not drop its critical telemetry.</p>
+<p><strong>Execution:</strong> To solve this, the DTO v3.0 firmware implements an autonomous <strong>Store & Forward</strong> architecture. When a node detects that a transmission has failed (via missing LoRaWAN ACKs or CSMA-CA channel jamming), it seamlessly reroutes the compressed telemetry payload into its non-volatile SPIFFS memory. The node can survive offline for weeks, quietly accumulating data. When connection to the mesh is re-established, the node automatically flushes its queue, seamlessly reconstructing the timeline in the central database.</p>
             </div>
           </section>
 

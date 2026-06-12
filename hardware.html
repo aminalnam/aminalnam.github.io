@@ -1,36 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="utf-8"/>
-  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
   <title>Jonathan Capone — Hardware & Firmware</title>
-  
+
   <meta name="description" content="OMEGA-wave documentation: T-Beam Supreme Architecture." />
   <meta property="og:title" content="Jonathan Capone — Firmware & Embedded" />
-  <meta property="og:description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
+  <meta property="og:description"
+    content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://jonathancapone.com/hardware.html" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Jonathan Capone — Firmware & Embedded" />
-  <meta name="twitter:description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
-  
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌊</text></svg>">
-  
+  <meta name="twitter:description"
+    content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
+
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌊</text></svg>">
+
   <link rel="stylesheet" href="style.css">
   <script type="module">
     import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
     mermaid.initialize({ startOnLoad: true, theme: 'dark', themeVariables: { fontFamily: 'Inter' } });
   </script>
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
+
 <body>
   <header class="topbar">
     <div class="wrap topbar-inner">
-      <a class="brand" href="index.html" style="display: flex; align-items: center; gap: 0.75rem; text-decoration: none;">
+      <a class="brand" href="index.html"
+        style="display: flex; align-items: center; gap: 0.75rem; text-decoration: none;">
         <div>
-          <span class="brand-title" style="letter-spacing: 0.1em; color: var(--white); display: block; font-family: var(--font-serif); font-size: 1.5rem;">JONATHAN CAPONE</span>
-          <span class="brand-sub" style="display: block; font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent); font-family: var(--font-mono); opacity: 0.9;">Systems Architecture Portfolio</span>
+          <span class="brand-title"
+            style="letter-spacing: 0.1em; color: var(--white); display: block; font-family: var(--font-serif); font-size: 1.5rem;">JONATHAN
+            CAPONE</span>
+          <span class="brand-sub"
+            style="display: block; font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent); font-family: var(--font-mono); opacity: 0.9;">Systems
+            Architecture Portfolio</span>
         </div>
       </a>
       <nav class="nav" aria-label="Main Navigation">
@@ -45,8 +54,6 @@
           <button class="dropbtn">Hardware & Physics &#9662;</button>
           <div class="dropdown-content">
             <a href="hardware.html" class="is-current">Hardware & Firmware</a>
-            <a href="power-systems.html">Power & Thermodynamics</a>
-            <a href="mechanical-engineering.html">Mechanical & Buoyancy</a>
             <a href="rf-physics.html">RF Physics & Propagation</a>
             <a href="biofouling.html">Marine Biology (Fouling)</a>
             <a href="edge-nodes.html">Edge Nodes</a>
@@ -70,11 +77,8 @@
           <div class="dropdown-content">
             <a href="analytics.html">Analytics Pipeline</a>
             <a href="copilot.html">Honu AI Copilot</a>
-            <a href="machine-learning.html">Machine Learning</a>
-            <a href="qc-eval.html">Data Quality (QARTOD)</a>
             <a href="bathymetry.html">Bathymetry</a>
             <a href="calibration.html">Sensor Calibration</a>
-            <a href="economic-model.html">Economic Model</a>
           </div>
         </div>
         
@@ -87,7 +91,6 @@
             <a href="data-providers.html">Data Providers</a>
             <a href="external-data.html">External Integrations</a>
             <a href="examples.html">Data Examples</a>
-            <a href="cloud-infrastructure.html">Cloud Infrastructure</a>
             <a href="api-reference.html">API Reference</a>
           </div>
         </div>
@@ -97,11 +100,6 @@
           <div class="dropdown-content">
             <a href="getting-started.html">Getting Started</a>
             <a href="build-guide.html">Build Guide</a>
-            <a href="deployment-scenarios.html">Deployment Scenarios</a>
-            <a href="marine-operations.html">Marine Ops</a>
-            <a href="compliance.html">Compliance</a>
-            <a href="research-citations.html">Research & Literature</a>
-            <a href="teaching-documentation.html">Teaching Docs</a>
             <a href="roadmap.html">Roadmap</a>
           </div>
         </div>
@@ -127,7 +125,8 @@
     <h1>Hardware Engineering.</h1>
     <p>Deep dive into PCB trace impedance, I2C pull-ups, and embedded C++ architecture.</p>
     <div class="hero-actions">
-      <a class="btn btn-primary" href="https://github.com/aminalnam/OMEGA" target="_blank">View OMEGA on GitHub</a>
+      <a class="btn btn-primary" href="https://github.com/aminalnam/OMEGA-wave" target="_blank">View OMEGA-wave on
+        GitHub</a>
       <a class="btn btn-secondary" href="https://jonathancapone.art" target="_blank">Art Portfolio</a>
     </div>
   </section>
@@ -138,57 +137,101 @@
       <section class="section section-block" style="background: rgba(0,0,0,0.4);">
         <span class="section-kicker">Educational Deep Dive: Hardware Strategy</span>
         <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">COTS vs Custom Silicon</h2>
-        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">A critical decision in systems engineering is determining when to design custom printed circuit boards (PCBs) versus when to leverage Commercial Off-The-Shelf (COTS) hardware. For the OMEGA edge nodes, we explicitly chose to build upon existing COTS platforms rather than manufacturing custom silicon.</p>
-        
-        <div class="grid-2" style="margin-bottom: 2rem;">
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">A
+          critical decision in systems engineering is determining when to design custom printed circuit boards (PCBs)
+          versus when to leverage Commercial Off-The-Shelf (COTS) hardware. For the OMEGA edge nodes, we explicitly
+          chose to build upon existing COTS platforms rather than manufacturing custom silicon.</p>
+
+        <div class="grid-3" style="margin-bottom: 2rem;">
           <div class="panel" style="padding: 1.5rem;">
-            <span class="status-label status-implemented">The Engineering Tradeoff</span>
-            <h3 style="font-size: 1.2rem;">Time to Deployment</h3>
-            <p style="font-size: 0.85rem;">Designing custom RF hardware for the 915 MHz band requires rigorous impedance matching, Vector Network Analyzer (VNA) tuning, and FCC certification testing. By utilizing pre-certified COTS boards like the LILYGO T-Beam Supreme, we bypass months of hardware iteration and immediately focus on the core value: the firmware and mesh protocol.</p>
+            <span class="status-label status-implemented">Sensor Node</span>
+            <h3 style="font-size: 1.2rem;">T-Beam Supreme</h3>
+            <p style="font-size: 0.85rem;">The core data collection node. Integrates an ESP32-S3, an AXP2101 PMU, and a Semtech SX1262. During integration, we bypassed manufacturer specification errors to map the correct SX1261 pinmap (NSS 41, DIO1 40) directly.</p>
           </div>
           <div class="panel" style="padding: 1.5rem;">
-            <span class="status-label status-implemented">Platform Selection</span>
-            <h3 style="font-size: 1.2rem;">The T-Beam Supreme</h3>
-            <p style="font-size: 0.85rem;">The T-Beam Supreme was selected because it perfectly integrates our required triad into a single tested package: an ESP32-S3 microcontroller, a Semtech SX1262 LoRa transceiver, and a u-blox MAX-M10S GNSS module, all backed by an AXP2101 power management unit.</p>
+            <span class="status-label status-implemented">Long Range Node</span>
+            <h3 style="font-size: 1.2rem;">T-Beam 1W</h3>
+            <p style="font-size: 0.85rem;">The high-power variant featuring an external HPA for +30 dBm EIRP. Firmware-level cooldown algorithms run the cooling fan after transmissions to dissipate residual heat. Its upside-down OLED requires custom rotation logic.</p>
           </div>
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">Mesh Relay</span>
+            <h3 style="font-size: 1.2rem;">T3-S3 LR1121</h3>
+            <p style="font-size: 0.85rem;">A sensor-less mesh router capable of communicating simultaneously across Sub-GHz and 2.4 GHz LoRa bands, crucial for establishing high-bandwidth bulk-transfer handshakes across disparate networks.</p>
+          </div>
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">Shore Gateway</span>
+            <h3 style="font-size: 1.2rem;">T-ETH-ELITE</h3>
+            <p style="font-size: 0.85rem;">The DTO v3.0 physical edge gateway. A LilyGo T-ETH-ELITE baseboard stacked with a T-SX1302 8-channel concentrator. It catches bursts of telemetry across 8 simultaneous channels and forwards them via Semtech UDP over Ethernet.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-content">
+          <span class="section-kicker">RF Physics & Networking</span>
+          <h2>Cross-Family Mesh Interoperability.</h2>
+          <p>Getting the Semtech SX126x (Supreme/1W) and LR11x0 (T3-S3) chip families to communicate over a LoRa mesh presents massive engineering challenges. Despite matching bandwidth, spreading factors, coding rates, and preambles across both architectures, the LR1121 would consistently drop packets from the Supreme, throwing hardware-level <code>HEADER_ERR</code> interrupts.</p>
+          <p>The root cause was isolated to <strong>Sync-Word Encoding Asymmetry</strong>. The SX126x's standard "PRIVATE" <code>0x12</code> sync word is encoded asymmetrically on the physical layer (resulting in over-air bytes <code>[0x14, 0x24]</code>). The LR1121's hardware demodulator attempts to read this as a single byte and fails to validate the header.</p>
+          <p><strong>The Solution:</strong> The OMEGA firmware standardizes the entire mesh federation on the LoRaWAN "PUBLIC" <code>0x34</code> sync word. Because both the SX126x and LR11x0 families encode this public sync word identically on the physical layer, cross-chip packet drops are completely eliminated, allowing heterogeneous fleets of edge nodes to relay packets flawlessly.</p>
         </div>
       </section>
 
       <section class="section section-block" style="background: rgba(0,0,0,0.4); margin-top: 2rem;">
         <span class="section-kicker">Educational Deep Dive: Sensor Wiring</span>
         <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">I2C Bus Capacitance</h2>
-        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">The I2C protocol was designed for communication between chips on the <em>same</em> circuit board. In marine engineering, we often abuse this protocol by running I2C cables 5 meters down into the ocean. If you use standard 10kΩ pull-up resistors, your sensors will silently fail.</p>
-        
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">
+          The I2C protocol was designed for communication between chips on the <em>same</em> circuit board. In marine
+          engineering, we often abuse this protocol by running I2C cables 5 meters down into the ocean. If you use
+          standard 10kΩ pull-up resistors, your sensors will silently fail.</p>
+
         <div class="grid-2" style="margin-bottom: 2rem;">
           <div class="panel" style="padding: 1.5rem;">
             <span class="status-label status-implemented">The Core Concept</span>
             <h3 style="font-size: 1.2rem;">Parasitic Capacitance ($C_p$)</h3>
-            <p style="font-size: 0.85rem;">As a copper wire gets longer, it acts like a capacitor. When the microcontroller tries to release the I2C data line to let it float HIGH (3.3V), the wire's capacitance slowly "charges up" instead of instantly snapping to 3.3V. This rounds off the square wave, causing read errors.</p>
+            <p style="font-size: 0.85rem;">As a copper wire gets longer, it acts like a capacitor. When the
+              microcontroller tries to release the I2C data line to let it float HIGH (3.3V), the wire's capacitance
+              slowly "charges up" instead of instantly snapping to 3.3V. This rounds off the square wave, causing read
+              errors.</p>
           </div>
           <div class="panel" style="padding: 1.5rem;">
             <span class="status-label status-implemented">The Physics</span>
             <h3 style="font-size: 1.2rem;">The RC Time Constant</h3>
-            <p style="font-size: 0.85rem;">The time ($T$) it takes for the voltage to rise is determined by the equation: <strong>$T = R \times C_p$</strong>. Since we cannot easily lower the capacitance ($C_p$) of a physical 5-meter underwater cable, our only option is to drastically lower the pull-up resistance ($R$).</p>
+            <p style="font-size: 0.85rem;">The time ($T$) it takes for the voltage to rise is determined by the
+              equation: <strong>$T = R \times C_p$</strong>. Since we cannot easily lower the capacitance ($C_p$) of a
+              physical 5-meter underwater cable, our only option is to drastically lower the pull-up resistance ($R$).
+            </p>
           </div>
         </div>
 
-        <div style="background: var(--bg); border: 1px solid var(--line); border-radius: 8px; margin: 2rem 0; overflow: hidden;">
-          <div style="display: flex; align-items: center; background: rgba(255,255,255,0.03); padding: 0.5rem 1rem; border-bottom: 1px solid var(--line);">
-            <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-ocean);">Step-by-Step Implementation: Calculating Pull-Up Resistors</span>
+        <div
+          style="background: var(--bg); border: 1px solid var(--line); border-radius: 8px; margin: 2rem 0; overflow: hidden;">
+          <div
+            style="display: flex; align-items: center; background: rgba(255,255,255,0.03); padding: 0.5rem 1rem; border-bottom: 1px solid var(--line);">
+            <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-ocean);">Step-by-Step
+              Implementation: Calculating Pull-Up Resistors</span>
           </div>
           <div style="padding: 1.5rem; color: var(--ink-soft); font-size: 0.95rem; line-height: 1.6;">
-            <p style="margin-top: 0;"><strong>Problem:</strong> You want to run a BME280 sensor on a 5-meter tether using 100kHz standard mode I2C. The maximum allowed rise time ($t_r$) for 100kHz I2C is $1000\text{ns}$.</p>
+            <p style="margin-top: 0;"><strong>Problem:</strong> You want to run a BME280 sensor on a 5-meter tether
+              using 100kHz standard mode I2C. The maximum allowed rise time ($t_r$) for 100kHz I2C is $1000\text{ns}$.
+            </p>
             <ol style="margin: 0; padding-left: 1.2rem;">
-              <li style="margin-bottom: 0.75rem;"><strong>Estimate Cable Capacitance:</strong> A typical shielded twisted pair cable has a capacitance of ~50pF per meter.
+              <li style="margin-bottom: 0.75rem;"><strong>Estimate Cable Capacitance:</strong> A typical shielded
+                twisted pair cable has a capacitance of ~50pF per meter.
                 $$C_p = 5\text{m} \times 50\text{pF/m} = 250\text{pF}$$
               </li>
-              <li style="margin-bottom: 0.75rem;"><strong>Calculate Maximum Resistance ($R_{max}$):</strong> Using the standard I2C formula $R_{max} = \frac{t_r}{0.8473 \times C_p}$:
+              <li style="margin-bottom: 0.75rem;"><strong>Calculate Maximum Resistance ($R_{max}$):</strong> Using the
+                standard I2C formula $R_{max} = \frac{t_r}{0.8473 \times C_p}$:
                 $$R_{max} = \frac{1000 \times 10^{-9}}{0.8473 \times 250 \times 10^{-12}} \approx 4721 \Omega$$
               </li>
-              <li style="margin-bottom: 0.75rem;"><strong>Calculate Minimum Resistance ($R_{min}$):</strong> The resistor must not allow more than 3mA of sink current ($I_{OL}$) when the chip pulls the line low. Assuming a 3.3V ($V_{cc}$) system with a max $0.4V$ low-level voltage ($V_{OL}$):
+              <li style="margin-bottom: 0.75rem;"><strong>Calculate Minimum Resistance ($R_{min}$):</strong> The
+                resistor must not allow more than 3mA of sink current ($I_{OL}$) when the chip pulls the line low.
+                Assuming a 3.3V ($V_{cc}$) system with a max $0.4V$ low-level voltage ($V_{OL}$):
                 $$R_{min} = \frac{V_{cc} - V_{OL}}{I_{OL}} = \frac{3.3V - 0.4V}{3\text{mA}} = 966 \Omega$$
               </li>
-              <li><strong>Select the Resistor:</strong> Your pull-up resistor must be between $966\Omega$ and $4.7\text{k}\Omega$. To ensure crisp square waves against underwater noise, select a strong pull-up near the minimum, such as <strong>$2.2\text{k}\Omega$</strong>. Do NOT use the default $10\text{k}\Omega$ built into most breakout boards!</li>
+              <li><strong>Select the Resistor:</strong> Your pull-up resistor must be between $966\Omega$ and
+                $4.7\text{k}\Omega$. To ensure crisp square waves against underwater noise, select a strong pull-up near
+                the minimum, such as <strong>$2.2\text{k}\Omega$</strong>. Do NOT use the default $10\text{k}\Omega$
+                built into most breakout boards!</li>
             </ol>
           </div>
         </div>
@@ -198,8 +241,10 @@
         <div class="section-content">
           <span class="section-kicker">Embedded C++</span>
           <h2>T-Beam Supreme Architecture.</h2>
-          <p>Located in <code>firmware/tbeam_supreme_dual_sensor/</code>, the C++ codebase is highly optimized for the ESP32-S3 microcontroller. The firmware aggressively manages deep-sleep power states, shutting down the GNSS (GPS) module and the Semtech SX1262 LoRa radio between transmission windows.</p>
-          
+          <p>Located in <code>firmware/tbeam_supreme_dual_sensor/</code>, the C++ codebase is highly optimized for the
+            ESP32-S3 microcontroller. The firmware aggressively manages deep-sleep power states, shutting down the GNSS
+            (GPS) module and the Semtech SX1262 LoRa radio between transmission windows.</p>
+
           <div class="grid-3" style="margin-top: 2rem; margin-bottom: 2rem;">
             <div class="panel" style="padding: 1.5rem;">
               <span class="status-label status-implemented">Core</span>
@@ -209,76 +254,128 @@
             <div class="panel" style="padding: 1.5rem;">
               <span class="status-label status-implemented">RF Transceiver</span>
               <h3 style="font-size: 1.2rem;">Semtech SX1262</h3>
-              <p style="font-size: 0.85rem;">LoRa CSS modulation. Capable of +22dBm output for over-the-horizon links.</p>
+              <p style="font-size: 0.85rem;">LoRa CSS modulation. Capable of +22dBm output for over-the-horizon links.
+              </p>
             </div>
             <div class="panel" style="padding: 1.5rem;">
               <span class="status-label status-implemented">Location</span>
               <h3 style="font-size: 1.2rem;">u-blox MAX-M10S</h3>
-              <p style="font-size: 0.85rem;">Ultra-low-power GNSS. Acquires hot-fixes in &lt;2 seconds before sleeping.</p>
+              <p style="font-size: 0.85rem;">Ultra-low-power GNSS. Acquires hot-fixes in &lt;2 seconds before sleeping.
+              </p>
             </div>
           </div>
 
-          <p><strong>Thermodynamics:</strong> A remote sensor floating in the Pacific cannot plug into a wall outlet. The ESP32-S3 draws roughly 100mA while active, draining a standard 18650 lithium battery in two days. By forcing the hardware into the ULP (Ultra Low Power) sleep state, the draw drops to 15µA.</p>
+          <p><strong>Thermodynamics:</strong> A remote sensor floating in the Pacific cannot plug into a wall outlet.
+            The ESP32-S3 draws roughly 100mA while active, draining a standard 18650 lithium battery in two days. By
+            forcing the hardware into the ULP (Ultra Low Power) sleep state, the draw drops to 15µA.</p>
         </div>
         
+        <div class="section-content" style="margin-top: 3rem;">
+          <span class="section-kicker">Advanced Encoding</span>
+          <h2>Lossless Predictive Batching.</h2>
+          <p>Transmitting every single temperature sample individually across a low-bandwidth LoRa link introduces massive overhead from packet headers, leading to duty-cycle violations. The OMEGA firmware employs <strong>Phase 1 Predictive Batching</strong> to completely eliminate this overhead.</p>
+          <p>The edge node samples its BME280 sensor every 3 seconds into a fast internal ring buffer. Once 10 readings are collected, it encodes them using first-order predictive coding: it transmits the very first reading as a full 32-bit integer, and subsequent readings as tightly packed 4-bit or 8-bit residuals (the delta from the previous reading). This mathematically guarantees a <strong>lossless reconstruction</strong> of the original high-frequency data array while drastically crushing the packet size.</p>
+        </div>
+
+        <div class="section-content" style="margin-top: 3rem;">
+          <span class="section-kicker">Network Disruptions</span>
+          <h2>Store & Forward Resilience.</h2>
+          <p>A drifting sensor node will inevitably pass behind a wave or an island, losing contact with the LoRa mesh federation. If the node blindly attempts to transmit, the data is lost forever. To prevent this, the DTO v3.0 firmware implements an autonomous <strong>Store & Forward</strong> architecture.</p>
+          <p>When the CSMA-CA (Carrier-Sense Multiple Access with Collision Avoidance) logic detects that the channel is jammed or no acknowledgments are received, the ESP32-S3 halts transmission. The encoded telemetry batches are serialized and dumped directly into the physical NVRAM/SPIFFS flash storage. The node then gracefully returns to deep sleep. Once RF connection is mathematically proven to be re-established (e.g. by receiving a heartbeat from the T-ETH-ELITE gateway or a passing LR1121 relay), the edge node flushes its flash buffer, replaying hours of accumulated telemetry over the mesh.</p>
+        </div>
+
         <div class="section-visual" style="max-height: 800px; overflow-y: auto;">
           <span class="panel-kicker">Thermodynamic Sleep Cycle</span>
           <div class="mermaid">
             sequenceDiagram
-                participant RTC as RTC Timer
-                participant MCU as ESP32-S3
-                participant GPS as u-blox GNSS
-                participant RF as SX1262 LoRa
-                
-                RTC->>MCU: Wake (2s before TX)
-                activate MCU
-                MCU->>GPS: Power ON (MOSFET)
-                activate GPS
-                GPS-->>MCU: Hot Fix Acquired
-                MCU->>RF: Power ON & Configure
-                activate RF
-                MCU->>RF: Send Binary Payload
-                RF-->>MCU: TX Complete
-                deactivate RF
-                MCU->>GPS: Power OFF
-                deactivate GPS
-                MCU->>RTC: Set Next Wake
-                MCU->>MCU: esp_deep_sleep_start()
-                deactivate MCU
+            participant RTC as RTC Timer
+            participant MCU as ESP32-S3
+            participant GPS as u-blox GNSS
+            participant RF as SX1262 LoRa
+
+            RTC->>MCU: Wake (2s before TX)
+            activate MCU
+            MCU->>GPS: Power ON (MOSFET)
+            activate GPS
+            GPS-->>MCU: Hot Fix Acquired
+            MCU->>RF: Power ON & Configure
+            activate RF
+            MCU->>RF: Send Binary Payload
+            RF-->>MCU: TX Complete
+            deactivate RF
+            MCU->>GPS: Power OFF
+            deactivate GPS
+            MCU->>RTC: Set Next Wake
+            MCU->>MCU: esp_deep_sleep_start()
+            deactivate MCU
           </div>
         </div>
         <div class="section-visual" style="max-height: 800px; overflow-y: auto; margin-top: 2rem;">
           <span class="panel-kicker">Edge UI & Telemetry</span>
-          <h3 style="font-family: var(--font-serif); font-size: 1.8rem; margin: 0.5rem 1.5rem 1rem; color: var(--white);">OLED Display & PMU Diagnostics</h3>
+          <h3
+            style="font-family: var(--font-serif); font-size: 1.8rem; margin: 0.5rem 1.5rem 1rem; color: var(--white);">
+            OLED Display & PMU Diagnostics</h3>
           <p style="padding: 0 1.5rem 1rem; margin: 0; color: var(--ink-soft); font-size: 0.95rem; line-height: 1.6;">
-            Deploying a headless edge node into the ocean is dangerous if field technicians cannot visually confirm its operational state before launch. The latest firmware introduces a robust local UI using an onboard SH1106 OLED screen and direct I2C communication with the AXP2101 Power Management Unit (PMU).
+            Deploying a headless edge node into the ocean is dangerous if field technicians cannot visually confirm its
+            operational state before launch. The latest firmware introduces a robust local UI using an onboard SH1106
+            OLED screen and direct I2C communication with the AXP2101 Power Management Unit (PMU).
           </p>
           <div style="padding: 0 1.5rem 1.5rem;">
             <ul style="margin: 0; padding-left: 1.2rem; color: var(--ink-soft); font-size: 0.85rem; line-height: 1.8;">
-              <li><strong>Dynamic Field Observability:</strong> The OLED dynamically renders the assigned <code>operator_label</code>, <code>mesh-id</code>, and physical MAC address directly on the screen.</li>
-              <li><strong>Live Hardware Diagnostics:</strong> By querying the internal ESP32-S3 die temperature and the AXP2101 PMU, the screen reports real-time battery voltage, charging status, and thermal metrics.</li>
-              <li><strong>GPS Rendering:</strong> Latitude and longitude coordinates are painted to the display the moment the u-blox GNSS module acquires a hot fix.</li>
+              <li><strong>Dynamic Field Observability:</strong> The OLED dynamically renders the assigned
+                <code>operator_label</code> (e.g. <code>TBSP-S-01</code>), alongside the chip factory eFuse
+                <code>physical_mac</code> directly on the boot screen.
+              </li>
+              <li><strong>Live Hardware Diagnostics:</strong> By querying the internal ESP32-S3 die temperature and the
+                AXP2101 PMU, the screen reports real-time battery voltage, charge percentage, and thermal metrics.</li>
+              <li><strong>GPS Rendering:</strong> Latitude and longitude coordinates are painted to the display the moment the u-blox GNSS module acquires a hot fix. Hardware variants like the T-Beam 1W and LR1121 are also natively supported with specific flash configurations.</li>
             </ul>
           </div>
           <pre style="margin: 0; border-top: 1px solid var(--line); border-radius: 0 0 8px 8px;"><code class="language-cpp">void update_oled_display() {
     display.clear();
     // 1. Render Identity
-    display.drawString(0, 0, "OP: " + String(operator_label));
-    display.drawString(0, 10, "ID: " + String(mesh_id));
+    display.drawString(0, 8, "OA " + String(operator_label) + "   " + String(uptime));
     
     // 2. Render Hardware Health
-    float batt_v = pmu.getBatteryVoltage();
-    float core_temp = temperatureRead();
-    display.drawString(0, 20, "BAT: " + String(batt_v) + "V  TMP: " + String(core_temp) + "C");
+    float esp_temp = temperatureRead();
+    if (pmu.isReady()) {
+        float batt_pct = pmu.getBatteryPercent();
+        display.drawString(0, 19, "T:" + String(esp_temp) + "C  bat:" + String(batt_pct) + "%");
+    }
     
     // 3. Render Position
-    display.drawString(0, 30, "GPS: " + String(gps.location.lat(), 4) + ", " + String(gps.location.lng(), 4));
+    display.drawString(0, 41, String(gps.location.lat(), 4) + "," + String(gps.location.lng(), 4));
     
     display.display();
 }</code></pre>
         </div>
       </section>
-      
+
+      <section class="section section-block" style="background: rgba(0,0,0,0.4); margin-top: 2rem;">
+        <span class="section-kicker">Bare-Metal Realities</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Hardware Quirks Compendium.</h2>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">
+          Working close to the metal inevitably exposes manufacturing anomalies, physical tolerance limits, and undocumented chip behavior. OMEGA's firmware handles these extreme edge cases automatically.</p>
+          
+        <div class="grid-3" style="margin-bottom: 2rem;">
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">Voltage Fallback</span>
+            <h3 style="font-size: 1.2rem;">TCXO Initialization</h3>
+            <p style="font-size: 0.85rem;">While standard RadioLib drivers default to a 1.6V TCXO logic level, the Supreme boards require exactly 1.8V to initialize the SX1262 oscillator. The firmware implements an automatic fallback cascade (1.8V &rarr; 1.6V &rarr; XTAL) to prevent fatal radio panics.</p>
+          </div>
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">Bootloader Limits</span>
+            <h3 style="font-size: 1.2rem;">4MB vs 8MB Partitioning</h3>
+            <p style="font-size: 0.85rem;">The T-Beam 1W hardware ships with only 4MB of flash memory, whereas its binary header mistakenly defaults to 8MB. This mismatch triggers an infinite boot-loop. Custom PlatformIO partition rules (<code>default.csv</code>) explicitly clamp the addressing logic to 4MB.</p>
+          </div>
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">HPA Clamping</span>
+            <h3 style="font-size: 1.2rem;">Amplifier Protection</h3>
+            <p style="font-size: 0.85rem;">The SX1262 can only internally generate +22 dBm. If a user queries for +30 dBm, the chip will throw an initialization error. The firmware dynamically clamps requests to +22 dBm inside the SX1262, allowing the 1W's external High Power Amplifier (HPA) to cleanly boost the signal over the horizon.</p>
+          </div>
+        </div>
+      </section>
+
     </div>
   </main>
 

@@ -1,21 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="utf-8"/>
-  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
   <title>Jonathan Capone — Technical Portfolio</title>
-  
-  <meta name="description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
+
+  <meta name="description"
+    content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
   <meta property="og:title" content="Jonathan Capone — Technical Portfolio" />
-  <meta property="og:description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
+  <meta property="og:description"
+    content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://jonathancapone.com/index.html" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Jonathan Capone — Technical Portfolio" />
-  <meta name="twitter:description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
-  
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌊</text></svg>">
-  
+  <meta name="twitter:description"
+    content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
+
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌊</text></svg>">
+
   <link rel="stylesheet" href="style.css">
   <script type="module">
     import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
@@ -23,18 +28,26 @@
   </script>
   <style>
     /* Failsafe for aggressive browser caching */
-    #ocean-ecosystem, #scroll-progress, #ambient-canvas {
+    #ocean-ecosystem,
+    #scroll-progress,
+    #ambient-canvas {
       position: fixed !important;
     }
   </style>
 </head>
+
 <body>
   <header class="topbar">
     <div class="wrap topbar-inner">
-      <a class="brand" href="index.html" style="display: flex; align-items: center; gap: 0.75rem; text-decoration: none;">
+      <a class="brand" href="index.html"
+        style="display: flex; align-items: center; gap: 0.75rem; text-decoration: none;">
         <div>
-          <span class="brand-title" style="letter-spacing: 0.1em; color: var(--white); display: block; font-family: var(--font-serif); font-size: 1.5rem;">JONATHAN CAPONE</span>
-          <span class="brand-sub" style="display: block; font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent); font-family: var(--font-mono); opacity: 0.9;">Systems Architecture Portfolio</span>
+          <span class="brand-title"
+            style="letter-spacing: 0.1em; color: var(--white); display: block; font-family: var(--font-serif); font-size: 1.5rem;">JONATHAN
+            CAPONE</span>
+          <span class="brand-sub"
+            style="display: block; font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent); font-family: var(--font-mono); opacity: 0.9;">Systems
+            Architecture Portfolio</span>
         </div>
       </a>
       <nav class="nav" aria-label="Main Navigation">
@@ -49,8 +62,6 @@
           <button class="dropbtn">Hardware & Physics &#9662;</button>
           <div class="dropdown-content">
             <a href="hardware.html">Hardware & Firmware</a>
-            <a href="power-systems.html">Power & Thermodynamics</a>
-            <a href="mechanical-engineering.html">Mechanical & Buoyancy</a>
             <a href="rf-physics.html">RF Physics & Propagation</a>
             <a href="biofouling.html">Marine Biology (Fouling)</a>
             <a href="edge-nodes.html">Edge Nodes</a>
@@ -74,11 +85,8 @@
           <div class="dropdown-content">
             <a href="analytics.html">Analytics Pipeline</a>
             <a href="copilot.html">Honu AI Copilot</a>
-            <a href="machine-learning.html">Machine Learning</a>
-            <a href="qc-eval.html">Data Quality (QARTOD)</a>
             <a href="bathymetry.html">Bathymetry</a>
             <a href="calibration.html">Sensor Calibration</a>
-            <a href="economic-model.html">Economic Model</a>
           </div>
         </div>
         
@@ -91,7 +99,6 @@
             <a href="data-providers.html">Data Providers</a>
             <a href="external-data.html">External Integrations</a>
             <a href="examples.html">Data Examples</a>
-            <a href="cloud-infrastructure.html">Cloud Infrastructure</a>
             <a href="api-reference.html">API Reference</a>
           </div>
         </div>
@@ -101,11 +108,6 @@
           <div class="dropdown-content">
             <a href="getting-started.html">Getting Started</a>
             <a href="build-guide.html">Build Guide</a>
-            <a href="deployment-scenarios.html">Deployment Scenarios</a>
-            <a href="marine-operations.html">Marine Ops</a>
-            <a href="compliance.html">Compliance</a>
-            <a href="research-citations.html">Research & Literature</a>
-            <a href="teaching-documentation.html">Teaching Docs</a>
             <a href="roadmap.html">Roadmap</a>
           </div>
         </div>
@@ -137,12 +139,15 @@
         <span class="typing-text" id="hero-typer">Systems Architecture</span>
       </span>
       <h1 id="hero-name" class="fade-up" style="animation-delay: 0.1s; cursor: pointer;">Jonathan Capone.</h1>
-      <p class="fade-up" style="animation-delay: 0.2s; max-width: 800px; font-size: 1.25rem; color: var(--ink-soft); line-height: 1.7; margin-bottom: 2rem;">
-        A technical portfolio showcasing massive-scale systems engineering, embedded hardware design, and deterministic evaluation frameworks. Explore my active projects below.
+      <p class="fade-up"
+        style="animation-delay: 0.2s; max-width: 800px; font-size: 1.25rem; color: var(--ink-soft); line-height: 1.7; margin-bottom: 2rem;">
+        A technical portfolio showcasing massive-scale systems engineering, embedded hardware design, and deterministic
+        evaluation frameworks. Explore my active projects below.
       </p>
       <div class="hero-actions fade-up" style="animation-delay: 0.3s;">
         <a class="btn btn-primary panel magnetic-btn" href="overview.html">Read The Architecture Overview</a>
-        <a class="btn btn-secondary panel magnetic-btn" href="https://github.com/aminalnam/OMEGA" target="_blank">View GitHub Repository</a>
+        <a class="btn btn-secondary panel magnetic-btn" href="https://github.com/aminalnam/OMEGA-wave" target="_blank">View
+          GitHub Repository</a>
       </div>
     </div>
   </section>
@@ -154,31 +159,46 @@
       <!-- FEATURED PROJECTS -->
       <section class="section section-block fade-up" style="padding-top: 0; padding-bottom: 4rem;">
         <span class="section-kicker" style="color: var(--accent);">The Portfolio</span>
-        <h2 class="scramble-text" style="font-family: var(--font-serif); font-size: 2.8rem; margin: 0 0 2rem; letter-spacing: -0.02em;">Flagship Project.</h2>
-        
+        <h2 class="scramble-text"
+          style="font-family: var(--font-serif); font-size: 2.8rem; margin: 0 0 2rem; letter-spacing: -0.02em;">Flagship
+          Project.</h2>
+
         <div class="bento-grid">
-          
+
           <!-- OMEGA Flagship Card -->
-          <a href="overview.html" class="panel omega-panel-hover col-span-2" style="display: flex; flex-direction: row; text-decoration: none; border: 1px solid rgba(59, 130, 246, 0.3); background: linear-gradient(135deg, rgba(15,23,36,0.9) 0%, rgba(10,15,29,0.95) 100%); min-height: 400px; position: relative; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.5);">
-            
-            <div style="flex: 1; padding: 4rem; display: flex; flex-direction: column; justify-content: center; z-index: 2;">
-              <span class="status-label status-implemented" style="align-self: flex-start; margin-bottom: 1.5rem; background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3);">Core Environmental Network</span>
-              <h3 style="font-size: 3.5rem; color: #fff; margin-bottom: 1rem; line-height: 1.1; font-family: var(--font-serif); letter-spacing: -0.02em;">OMEGA Platform</h3>
-              <p style="color: var(--ink-soft); font-size: 1.25rem; line-height: 1.7; margin-bottom: 2.5rem; max-width: 600px;">
-                A globally distributed, ultra-low-power environmental sensing network. Built from scratch with custom IoT hardware, resilient mesh networking, and high-frequency edge analytics. OMEGA democratizes oceanographic telemetry.
+          <a href="overview.html" class="panel omega-panel-hover col-span-2"
+            style="display: flex; flex-direction: row; text-decoration: none; border: 1px solid rgba(59, 130, 246, 0.3); background: linear-gradient(135deg, rgba(15,23,36,0.9) 0%, rgba(10,15,29,0.95) 100%); min-height: 400px; position: relative; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.5);">
+
+            <div
+              style="flex: 1; padding: 4rem; display: flex; flex-direction: column; justify-content: center; z-index: 2;">
+              <span class="status-label status-implemented"
+                style="align-self: flex-start; margin-bottom: 1.5rem; background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3);">Core
+                Environmental Network</span>
+              <h3
+                style="font-size: 3.5rem; color: #fff; margin-bottom: 1rem; line-height: 1.1; font-family: var(--font-serif); letter-spacing: -0.02em;">
+                OMEGA Platform</h3>
+              <p
+                style="color: var(--ink-soft); font-size: 1.25rem; line-height: 1.7; margin-bottom: 2.5rem; max-width: 600px;">
+                A globally distributed, ultra-low-power environmental sensing network. Built from scratch with custom
+                IoT hardware, resilient mesh networking, and high-frequency edge analytics. OMEGA democratizes
+                oceanographic telemetry.
               </p>
-              <div style="display: flex; align-items: center; color: var(--accent-ocean); font-weight: 600; text-transform: uppercase; font-size: 0.95rem; letter-spacing: 0.1em;">
+              <div
+                style="display: flex; align-items: center; color: var(--accent-ocean); font-weight: 600; text-transform: uppercase; font-size: 0.95rem; letter-spacing: 0.1em;">
                 Explore The Architecture &rarr;
               </div>
             </div>
 
             <!-- Visual Sonar Ping Side -->
-            <div class="sonar-bg-side" style="flex: 1; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; border-left: 1px solid rgba(255,255,255,0.05); background: radial-gradient(circle at center, rgba(59, 130, 246, 0.1) 0%, transparent 70%);">
+            <div class="sonar-bg-side"
+              style="flex: 1; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; border-left: 1px solid rgba(255,255,255,0.05); background: radial-gradient(circle at center, rgba(59, 130, 246, 0.1) 0%, transparent 70%);">
               <div class="sonar-wrapper">
                 <div class="sonar-ring sonar-1"></div>
                 <div class="sonar-ring sonar-2"></div>
                 <div class="sonar-ring sonar-3"></div>
-                <div class="sonar-core hover-scale-icon" style="font-size: 6rem; filter: drop-shadow(0 0 20px rgba(59,130,246,0.8)); position: relative; z-index: 10;">🌊</div>
+                <div class="sonar-core hover-scale-icon"
+                  style="font-size: 6rem; filter: drop-shadow(0 0 20px rgba(59,130,246,0.8)); position: relative; z-index: 10;">
+                  🌊</div>
               </div>
             </div>
 
@@ -188,15 +208,17 @@
 
       <section class="section section-block fade-up" style="padding-top: 0; padding-bottom: 2rem;">
         <span class="section-kicker">Project 1</span>
-        <h2 class="scramble-text" style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 2rem;">OMEGA Platform Modules</h2>
-        
+        <h2 class="scramble-text" style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 2rem;">OMEGA
+          Platform Modules</h2>
+
         <div class="bento-grid">
           <!-- Mission Portal (Large Feature) -->
           <a href="mission-portal.html" class="panel col-span-2 row-span-2">
             <div class="bento-content">
               <span class="status-label status-implemented">Portal Software</span>
               <h3 style="font-size: 2.2rem;">Mission Portal</h3>
-              <p style="font-size: 1.1rem; max-width: 500px;">WebGL mapping dashboard, live interactive telemetry tiles, and real-time operations overview for the entire mesh fleet.</p>
+              <p style="font-size: 1.1rem; max-width: 500px;">WebGL mapping dashboard, live interactive telemetry tiles,
+                and real-time operations overview for the entire mesh fleet.</p>
             </div>
           </a>
 
@@ -214,7 +236,7 @@
             <div class="bento-content">
               <span class="status-label status-implemented">Networking</span>
               <h3>Relay Firmware</h3>
-              <p>Delay Tolerant Network (DTN) overlay using Custom Binary TLV compression.</p>
+              <p>Delay Tolerant Network (DTN) overlay using Custom 4-Phase Binary TLV compression (70% denser) and bidirectional LoRa commands.</p>
             </div>
           </a>
 
@@ -243,7 +265,7 @@
               <p>NATO-standard acoustic modulation bridge for subsea nodes.</p>
             </div>
           </a>
-          
+
           <a href="simulation.html" class="panel">
             <div class="bento-content">
               <span class="status-label status-implemented">Emulation</span>
@@ -267,10 +289,12 @@
           </a>
 
           <!-- OMEGA BETA Link -->
-          <a href="omega-beta.html" class="panel bento-item" style="grid-column: 1 / -1; border: 1px solid var(--accent-ocean); background: rgba(59, 130, 246, 0.05);">
+          <a href="omega-beta.html" class="panel bento-item"
+            style="grid-column: 1 / -1; border: 1px solid var(--accent-ocean); background: rgba(59, 130, 246, 0.05);">
             <div class="bento-icon">🔬</div>
             <h3 class="bento-title">OMEGA BETA Analytics</h3>
-            <p class="bento-desc">Live dashboard proving OMEGA's resilience. The BETA framework bombarding the OMEGA gateway with synthetic telemetry.</p>
+            <p class="bento-desc">Live dashboard proving OMEGA's resilience. The BETA framework bombarding the OMEGA
+              gateway with synthetic telemetry.</p>
           </a>
         </div>
       </section>
@@ -278,26 +302,35 @@
       <!-- New BETA Framework Section -->
       <section class="section section-block fade-up" style="margin-top: 4rem;">
         <span class="section-kicker" style="color: var(--accent-green);">Project 2</span>
-        <h2 class="scramble-text" style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 2rem;">BETA Framework Modules</h2>
-        
+        <h2 class="scramble-text" style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 2rem;">BETA
+          Framework Modules</h2>
+
         <div class="bento-grid">
-          
-          <a href="beta-overview.html" class="panel bento-item beta-panel-hover glitch-hover" style="grid-column: 1 / -1;">
+
+          <a href="beta-overview.html" class="panel bento-item beta-panel-hover glitch-hover"
+            style="grid-column: 1 / -1;">
             <div class="bento-icon">⚙️</div>
             <h3 class="bento-title">Deterministic Fuzzing</h3>
-            <p class="bento-desc">A relentless evaluation engine. Continuously generates thousands of highly complex synthetic payload injections, simulating multiple drifting fleets, acoustic anomalies, and deliberate hardware packet corruption to stress-test the OMEGA core.</p>
+            <p class="bento-desc">A relentless evaluation engine. Continuously generates thousands of highly complex
+              synthetic payload injections, simulating multiple drifting fleets, acoustic anomalies, and deliberate
+              hardware packet corruption to stress-test the OMEGA core.</p>
           </a>
 
-          <a href="beta-overview.html" class="panel bento-item beta-panel-hover glitch-hover" style="grid-column: 1 / -1;">
+          <a href="beta-overview.html" class="panel bento-item beta-panel-hover glitch-hover"
+            style="grid-column: 1 / -1;">
             <div class="bento-icon">📈</div>
             <h3 class="bento-title">High-Frequency Analytics</h3>
-            <p class="bento-desc">Calculates extreme-scale telemetry metrics in real-time. Establishes dynamic 5-minute rolling P95 latency baselines and strictly enforces SLAs across the entire DTN routing pipeline.</p>
+            <p class="bento-desc">Calculates extreme-scale telemetry metrics in real-time. Establishes dynamic 5-minute
+              rolling P95 latency baselines and strictly enforces SLAs across the entire DTN routing pipeline.</p>
           </a>
 
-          <a href="beta-overview.html" class="panel bento-item beta-panel-hover glitch-hover" style="grid-column: 1 / -1;">
+          <a href="beta-overview.html" class="panel bento-item beta-panel-hover glitch-hover"
+            style="grid-column: 1 / -1;">
             <div class="bento-icon">🤖</div>
             <h3 class="bento-title">AI Remediation Ticketing</h3>
-            <p class="bento-desc">Fully automated CI/CD integration. When the fuzzer breaks the OMEGA architecture, the AI Core instantly synthesizes error logs, identifies the exact Python/C++ regression, and pushes Jira-style remediation tickets to engineering.</p>
+            <p class="bento-desc">Fully automated CI/CD integration. When the fuzzer breaks the OMEGA architecture, the
+              AI Core instantly synthesizes error logs, identifies the exact Python/C++ regression, and pushes
+              Jira-style remediation tickets to engineering.</p>
           </a>
 
         </div>
@@ -305,19 +338,28 @@
 
       <section class="section section-block fade-up" style="padding-top: 2rem;">
         <span class="section-kicker">Geospatial & Data Tools</span>
-        <h2 class="scramble-text" style="font-family: var(--font-serif); font-size: 2.8rem; margin: 0 0 1.5rem;">Ocean Sensors.</h2>
-        <p style="color: var(--ink-soft); font-size: 1.15rem; margin-bottom: 2.5rem; max-width: 800px; line-height: 1.7;">
-          A sophisticated repository for underwater geospatial workflows. Bridging the gap between raw physical oceanography and modern web mapping interfaces.
+        <h2 class="scramble-text" style="font-family: var(--font-serif); font-size: 2.8rem; margin: 0 0 1.5rem;">Ocean
+          Sensors.</h2>
+        <p
+          style="color: var(--ink-soft); font-size: 1.15rem; margin-bottom: 2.5rem; max-width: 800px; line-height: 1.7;">
+          A sophisticated repository for underwater geospatial workflows. Bridging the gap between raw physical
+          oceanography and modern web mapping interfaces.
         </p>
-        
+
         <div class="bento-grid">
-          <a href="https://github.com/aminalnam/Ocean-Sensors" target="_blank" class="panel col-span-2 omega-panel-hover">
-            <img src="MAP00_contours.png" class="bento-bg-img" style="opacity: 0.15; object-position: right; filter: grayscale(100%) contrast(1.5);" alt="Bathymetry Contours">
+          <a href="https://github.com/aminalnam/Ocean-Sensors" target="_blank"
+            class="panel col-span-2 omega-panel-hover">
+            <img src="MAP00_contours.png" class="bento-bg-img"
+              style="opacity: 0.15; object-position: right; filter: grayscale(100%) contrast(1.5);"
+              alt="Bathymetry Contours">
             <div class="bento-content" style="z-index: 2; position: relative;">
-              <span class="status-label status-implemented" style="background: rgba(255,255,255,0.1);">Open Source Geospatial</span>
+              <span class="status-label status-implemented" style="background: rgba(255,255,255,0.1);">Open Source
+                Geospatial</span>
               <h3 style="font-size: 2rem;">Acoustic Bathymetric Mapping</h3>
               <p style="font-size: 1.1rem; max-width: 500px; line-height: 1.6;">
-                Advanced Python algorithms implementing Inverse Distance Weighting (IDW) interpolation. Converts sparse, noisy acoustic pings into stunning, highly-accurate topographic depth contours and Google Earth KML overlays.
+                Advanced Python algorithms implementing Inverse Distance Weighting (IDW) interpolation. Converts sparse,
+                noisy acoustic pings into stunning, highly-accurate topographic depth contours and Google Earth KML
+                overlays.
               </p>
             </div>
           </a>
@@ -329,51 +371,80 @@
         <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 1.5rem;">
           <div>
             <span class="section-kicker">Global Infrastructure</span>
-            <h2 class="scramble-text" style="font-family: var(--font-serif); font-size: 2.8rem; margin: 0;">Active Mesh Overlay.</h2>
+            <h2 class="scramble-text" style="font-family: var(--font-serif); font-size: 2.8rem; margin: 0;">Active Mesh
+              Overlay.</h2>
           </div>
-          <div style="text-align: right; font-family: var(--font-mono); color: #38bdf8; font-size: 0.85rem; letter-spacing: 0.1em; display: flex; flex-direction: column; align-items: flex-end;">
+          <div
+            style="text-align: right; font-family: var(--font-mono); color: #38bdf8; font-size: 0.85rem; letter-spacing: 0.1em; display: flex; flex-direction: column; align-items: flex-end;">
             <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
-              <span style="display: inline-block; width: 8px; height: 8px; background: #38bdf8; border-radius: 50%; box-shadow: 0 0 8px #38bdf8; animation: pulse 2s infinite;"></span>
+              <span
+                style="display: inline-block; width: 8px; height: 8px; background: #38bdf8; border-radius: 50%; box-shadow: 0 0 8px #38bdf8; animation: pulse 2s infinite;"></span>
               STATUS: ONLINE
             </div>
             <span>ROUTING: DTN PROTOCOL</span>
           </div>
         </div>
-        <div class="panel omega-panel-hover" style="width: 100%; height: 500px; padding: 0; background: rgba(3, 7, 18, 0.95); border: 1px solid rgba(56, 189, 248, 0.3); position: relative; overflow: hidden; box-shadow: inset 0 0 50px rgba(0,0,0,0.8);">
+        <div class="panel omega-panel-hover"
+          style="width: 100%; height: 500px; padding: 0; background: rgba(3, 7, 18, 0.95); border: 1px solid rgba(56, 189, 248, 0.3); position: relative; overflow: hidden; box-shadow: inset 0 0 50px rgba(0,0,0,0.8);">
           <canvas id="global-node-map" style="width: 100%; height: 100%; display: block;"></canvas>
-          <div style="position: absolute; bottom: 1.5rem; left: 1.5rem; display: flex; gap: 1.5rem; font-family: var(--font-mono); font-size: 0.75rem; color: rgba(255,255,255,0.5);">
+          <div
+            style="position: absolute; bottom: 1.5rem; left: 1.5rem; display: flex; gap: 1.5rem; font-family: var(--font-mono); font-size: 0.75rem; color: rgba(255,255,255,0.5);">
             <div style="display: flex; align-items: center; gap: 0.5rem;">
-               <span style="display: block; width: 6px; height: 6px; background: #38bdf8; border-radius: 50%;"></span> Edge Nodes
+              <span style="display: block; width: 6px; height: 6px; background: #38bdf8; border-radius: 50%;"></span>
+              Edge Nodes
             </div>
             <div style="display: flex; align-items: center; gap: 0.5rem;">
-               <span style="display: block; width: 20px; height: 2px; background: linear-gradient(90deg, rgba(56,189,248,0), #38bdf8);"></span> Mesh Link
+              <span
+                style="display: block; width: 20px; height: 2px; background: linear-gradient(90deg, rgba(56,189,248,0), #38bdf8);"></span>
+              Mesh Link
             </div>
           </div>
         </div>
       </section>
 
-</div>
+    </div>
   </main>
 
-      <!-- TECH STACK -->
-      <section class="section section-block wrap" style="border-top: 1px solid var(--line); padding-top: 4rem; padding-bottom: 2rem; margin-top: 2rem;">
-        <span class="section-kicker">Built With</span>
-        <h3 style="font-family: var(--font-mono); font-size: 1.2rem; margin: 0 0 1.5rem; text-transform: uppercase; letter-spacing: 0.15em;">Raw Technologies</h3>
-        <div style="display: flex; flex-wrap: wrap; gap: 1rem;">
-          <span style="background: rgba(255,255,255,0.05); border: 1px solid var(--line); padding: 0.5rem 1rem; border-radius: 99px; font-family: var(--font-mono); font-size: 0.85rem;">Python 3.12+</span>
-          <span style="background: rgba(255,255,255,0.05); border: 1px solid var(--line); padding: 0.5rem 1rem; border-radius: 99px; font-family: var(--font-mono); font-size: 0.85rem;">FastAPI & ASGI</span>
-          <span style="background: rgba(255,255,255,0.05); border: 1px solid var(--line); padding: 0.5rem 1rem; border-radius: 99px; font-family: var(--font-mono); font-size: 0.85rem;">Embedded C++</span>
-          <span style="background: rgba(255,255,255,0.05); border: 1px solid var(--line); padding: 0.5rem 1rem; border-radius: 99px; font-family: var(--font-mono); font-size: 0.85rem;">PlatformIO</span>
-          <span style="background: rgba(255,255,255,0.05); border: 1px solid var(--line); padding: 0.5rem 1rem; border-radius: 99px; font-family: var(--font-mono); font-size: 0.85rem;">SQLite (WAL Mode)</span>
-          <span style="background: rgba(255,255,255,0.05); border: 1px solid var(--line); padding: 0.5rem 1rem; border-radius: 99px; font-family: var(--font-mono); font-size: 0.85rem;">React & WebGL</span>
-          <span style="background: rgba(255,255,255,0.05); border: 1px solid var(--line); padding: 0.5rem 1rem; border-radius: 99px; font-family: var(--font-mono); font-size: 0.85rem;">LoRa CSS Modulation</span>
-          <span style="background: rgba(255,255,255,0.05); border: 1px solid var(--line); padding: 0.5rem 1rem; border-radius: 99px; font-family: var(--font-mono); font-size: 0.85rem;">Binary TLV</span>
-          <span style="background: rgba(255,255,255,0.05); border: 1px solid var(--line); padding: 0.5rem 1rem; border-radius: 99px; font-family: var(--font-mono); font-size: 0.85rem;">IETF SenML</span>
-        </div>
-      </section>
-<footer class="footer wrap">
+  <!-- TECH STACK -->
+  <section class="section section-block wrap"
+    style="border-top: 1px solid var(--line); padding-top: 4rem; padding-bottom: 2rem; margin-top: 2rem;">
+    <span class="section-kicker">Built With</span>
+    <h3
+      style="font-family: var(--font-mono); font-size: 1.2rem; margin: 0 0 1.5rem; text-transform: uppercase; letter-spacing: 0.15em;">
+      Raw Technologies</h3>
+    <div style="display: flex; flex-wrap: wrap; gap: 1rem;">
+      <span
+        style="background: rgba(255,255,255,0.05); border: 1px solid var(--line); padding: 0.5rem 1rem; border-radius: 99px; font-family: var(--font-mono); font-size: 0.85rem;">Python
+        3.12+</span>
+      <span
+        style="background: rgba(255,255,255,0.05); border: 1px solid var(--line); padding: 0.5rem 1rem; border-radius: 99px; font-family: var(--font-mono); font-size: 0.85rem;">FastAPI
+        & ASGI</span>
+      <span
+        style="background: rgba(255,255,255,0.05); border: 1px solid var(--line); padding: 0.5rem 1rem; border-radius: 99px; font-family: var(--font-mono); font-size: 0.85rem;">Embedded
+        C++</span>
+      <span
+        style="background: rgba(255,255,255,0.05); border: 1px solid var(--line); padding: 0.5rem 1rem; border-radius: 99px; font-family: var(--font-mono); font-size: 0.85rem;">PlatformIO</span>
+      <span
+        style="background: rgba(255,255,255,0.05); border: 1px solid var(--line); padding: 0.5rem 1rem; border-radius: 99px; font-family: var(--font-mono); font-size: 0.85rem;">SQLite
+        (WAL Mode)</span>
+      <span
+        style="background: rgba(255,255,255,0.05); border: 1px solid var(--line); padding: 0.5rem 1rem; border-radius: 99px; font-family: var(--font-mono); font-size: 0.85rem;">React
+        & WebGL</span>
+      <span
+        style="background: rgba(255,255,255,0.05); border: 1px solid var(--line); padding: 0.5rem 1rem; border-radius: 99px; font-family: var(--font-mono); font-size: 0.85rem;">LoRa
+        CSS Modulation</span>
+      <span
+        style="background: rgba(255,255,255,0.05); border: 1px solid var(--line); padding: 0.5rem 1rem; border-radius: 99px; font-family: var(--font-mono); font-size: 0.85rem;">Binary
+        TLV</span>
+      <span
+        style="background: rgba(255,255,255,0.05); border: 1px solid var(--line); padding: 0.5rem 1rem; border-radius: 99px; font-family: var(--font-mono); font-size: 0.85rem;">IETF
+        SenML</span>
+    </div>
+  </section>
+  <footer class="footer wrap">
     <span>© Jonathan Capone — Technical Portfolio. OMEGA (formerly OMEGA-wave).</span>
   </footer>
   <script src="main.js"></script>
 </body>
+
 </html>

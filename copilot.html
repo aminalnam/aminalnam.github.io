@@ -43,8 +43,6 @@
           <button class="dropbtn">Hardware & Physics &#9662;</button>
           <div class="dropdown-content">
             <a href="hardware.html">Hardware & Firmware</a>
-            <a href="power-systems.html">Power & Thermodynamics</a>
-            <a href="mechanical-engineering.html">Mechanical & Buoyancy</a>
             <a href="rf-physics.html">RF Physics & Propagation</a>
             <a href="biofouling.html">Marine Biology (Fouling)</a>
             <a href="edge-nodes.html">Edge Nodes</a>
@@ -68,11 +66,8 @@
           <div class="dropdown-content">
             <a href="analytics.html">Analytics Pipeline</a>
             <a href="copilot.html" class="is-current">Honu AI Copilot</a>
-            <a href="machine-learning.html">Machine Learning</a>
-            <a href="qc-eval.html">Data Quality (QARTOD)</a>
             <a href="bathymetry.html">Bathymetry</a>
             <a href="calibration.html">Sensor Calibration</a>
-            <a href="economic-model.html">Economic Model</a>
           </div>
         </div>
         
@@ -85,7 +80,6 @@
             <a href="data-providers.html">Data Providers</a>
             <a href="external-data.html">External Integrations</a>
             <a href="examples.html">Data Examples</a>
-            <a href="cloud-infrastructure.html">Cloud Infrastructure</a>
             <a href="api-reference.html">API Reference</a>
           </div>
         </div>
@@ -95,11 +89,6 @@
           <div class="dropdown-content">
             <a href="getting-started.html">Getting Started</a>
             <a href="build-guide.html">Build Guide</a>
-            <a href="deployment-scenarios.html">Deployment Scenarios</a>
-            <a href="marine-operations.html">Marine Ops</a>
-            <a href="compliance.html">Compliance</a>
-            <a href="research-citations.html">Research & Literature</a>
-            <a href="teaching-documentation.html">Teaching Docs</a>
             <a href="roadmap.html">Roadmap</a>
           </div>
         </div>
@@ -125,7 +114,7 @@
     <h1>AI Orchestration.</h1>
     <p>Deep dive into the 240KB Python tool registry and Read-Only safety constraints.</p>
     <div class="hero-actions">
-      <a class="btn btn-primary" href="https://github.com/aminalnam/OMEGA" target="_blank">View OMEGA on GitHub</a>
+      <a class="btn btn-primary" href="https://github.com/aminalnam/OMEGA-wave" target="_blank">View OMEGA-wave on GitHub</a>
       <a class="btn btn-secondary" href="https://jonathancapone.art" target="_blank">Art Portfolio</a>
     </div>
   </section>
@@ -153,7 +142,7 @@
               <div class="panel" style="padding: 1.5rem;">
                 <span class="status-label status-implemented">Fleet Navigation</span>
                 <h3 style="font-size: 1.2rem;">UI Automation</h3>
-                <p style="font-size: 0.85rem;">Tools like <code>navigate_to_page</code> and <code>highlight_element</code> allow Honu to actually drive the operator's React dashboard via WebSockets.</p>
+                <p style="font-size: 0.85rem;">Tools like <code>navigate_to_page</code> and <code>highlight_element</code> allow Honu to actually drive the operator's 3D Glass Bridge via WebSockets.</p>
               </div>
             </div>
           </section>
@@ -177,7 +166,7 @@
     
     U->>P: "Are there Argo floats near Hawaii?"
     P->>P: Extract "Hawaii" -> bbox[-160, 18, -154, 22]
-    P->>M: Inject [PORTAL CONTEXT] & system prompt
+    P->>M: Inject [GLASS BRIDGE CONTEXT] & system prompt
     M->>R: call: `get_argo_floats_in_bbox`
     R->>DB: SELECT * FROM argo WHERE lat/lon in bbox
     DB-->>R: Return JSON array
@@ -200,7 +189,7 @@
 2. DATA PURITY: You hold ZERO built-in knowledge of this deployment.
    - Every fact must come from a tool call against the gateway's live API.
 3. AMNESIA PREVENTION: You cannot "see" the user's screen.
-   - Before each message, you receive a [PORTAL CONTEXT] block."""</code></pre></div>
+   - Before each message, you receive a [GLASS BRIDGE CONTEXT] block."""</code></pre></div>
           </section>
     
           <section class="section">
