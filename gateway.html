@@ -123,7 +123,17 @@ PRAGMA cache_size=-64000;</code></pre></div>
     
           <section class="section">
             <div class="section-content">
-              <span class="section-kicker">Data Structures</span>
+              
+          <section class="section section-block" style="background: rgba(0,0,0,0.4); margin-top: 2rem; margin-bottom: 2rem;">
+            <span class="section-kicker">Tier 2 Proof</span>
+            <h2>OMEGA Analysed It: Storm Regime-Shift.</h2>
+            <p>The Python gateway's statistical suite doesn't just collect data—it actively analyzes it. Below, OMEGA's Pettitt changepoint detector runs against ingested NOAA buoy 46013 wave data. The algorithm correctly identifies a significant regime shift (a -0.77 m drop at 2026-06-08) as a synoptic storm event subsides.</p>
+            <p><strong>The Significance:</strong> This proves the system's ability to run advanced analysis tools to recognize large-scale weather events happening across the external buoys, which can then be cross-correlated and verified against the telemetry coming from OMEGA's own physical edge nodes.</p>
+            <p><em>The honest line: OMEGA's algorithm detected the shift, but a human chose the example.</em></p>
+            <img src="images/proofs/storm-changepoint.svg" loading="lazy" alt="Storm regime shift at NOAA buoy 46013 with OMEGA changepoint marker" style="max-width: 100%; border-radius: 8px; margin-top: 1rem; border: 1px solid rgba(255,255,255,0.1);">
+          </section>
+
+<span class="section-kicker">Data Structures</span>
               <h2>The Observation Envelope.</h2>
               <p>Disparate marine sensors natively produce chaotic, proprietary data formats—a YSI sonde outputs ASCII strings, while a BlueRobotics pressure sensor outputs raw hex. OMEGA standardizes all incoming telemetry into a strict <strong>Observation Envelope</strong> schema.</p>
 <p>This schema is the universal currency of the OMEGA network. It mathematically guarantees that every measurement entering the system possesses a cryptographic UUID, an ISO-8601 timestamp, explicit SI units, and spatial coordinates (Latitude/Longitude/Depth).</p>

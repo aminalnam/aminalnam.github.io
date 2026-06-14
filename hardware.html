@@ -158,7 +158,15 @@
 
 <section class="section">
             <div class="section-content">
-              <span class="section-kicker">Hardware Reality</span>
+              
+          <section class="section section-block" style="background: rgba(0,0,0,0.4); margin-bottom: 2rem;">
+            <span class="section-kicker">Tier 1 Proof</span>
+            <h2>OMEGA Measured It: Atmospheric Tide.</h2>
+            <p>A $50 bench barometer logged 104,939 pressure readings. The Welch power spectrum below shows a sharp line at <strong>11.99 hours</strong> standing ~580,000x above the noise floor. This is the S2 semidiurnal atmospheric tide, resolved from scratch by OMEGA's own hardware without any external data.</p>
+            <img src="images/proofs/tide-spectrum.svg" loading="lazy" alt="Atmospheric tide spectrum from OMEGA barometer" style="max-width: 100%; border-radius: 8px; margin-top: 1rem; border: 1px solid rgba(255,255,255,0.1);">
+          </section>
+
+<span class="section-kicker">Hardware Reality</span>
               <h2>Cross-Family LoRa Interop.</h2>
               <p>Getting a true multi-hop mesh to work isn't about plugging in antennas; it's about making disparate silicon families talk to each other. The network bridges Semtech's SX1262 (T-Beam Supreme) and their newer LR1121 (T3-S3).</p>
               <p><strong>Execution:</strong> To achieve seamless interop, the firmware had to manually settle sync-word mismatches (enforcing the `0x34` public sync), explicitly declare bandwidth and spreading factor settings that libraries usually abstract away, and implement aggressive polling-based RX with full-chain IRQ mapping. This allowed concurrent sensing, relaying, and USB-forwarding across completely different chipset architectures.</p>
@@ -168,6 +176,9 @@
           <div class="panel" style="margin-top: 1rem; border-left: 4px solid var(--accent);">
             <h3 style="margin: 0 0 0.5rem; color: #fff;">Physical-Layer Reception Evidence</h3>
             <p style="font-size: 0.9rem; color: var(--ink-soft); margin: 0;">Live database querying confirms <strong>205 radio frames</strong> received by an SX1302 gateway from OMEGA nodes, logging physical RF metrics of <strong>RSSI -89 to -31 dBm (avg -38.7)</strong> and <strong>SNR -15 to +12.5 dB (avg +9.2)</strong>. These hardware-level signals cannot be fabricated by a UI.</p>
+
+            <img src="images/proofs/hardware-rssi.svg" loading="lazy" alt="Histogram of RSSI for real LoRa frames" style="max-width: 100%; border-radius: 8px; margin-top: 1rem; display: block;">
+
 
             <img src="images/proofs/hardware-rssi.svg" loading="lazy" alt="Histogram of RSSI for real LoRa frames" style="max-width: 100%; border-radius: 8px; margin-top: 1rem; display: block;">
 
