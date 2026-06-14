@@ -108,6 +108,22 @@
             <p style="font-size: 0.85rem;">An automated test suite reads the visual verification strips and grades them on dynamism, legibility, and narrative escalation, producing a ranked fix list without human intervention.</p>
           </div>
         </div>
+
+
+
+        
+          <div style="margin-top: 2rem; border-radius: 8px; overflow: hidden; border: 1px solid var(--line); display: flex; justify-content: center; background: #111;">
+            <img src="images/visual-timer/aquarium.gif" alt="Animated Aquarium Timer rendering" style="max-width: 100%; display: block; border-radius: 8px;">
+          </div>
+
+</section>
+
+      <section class="section">
+        <div class="section-content">
+          <span class="section-kicker">Deterministic Workflows</span>
+          <h2>Deterministic Integration.</h2>
+          <p>Giving a graphics pipeline the ability to visually test its own output changes everything. The system renders a 3-row verification strip: Row A is the scene swept across the countdown in landscape; Row B in portrait; and Row C tests real-time motion at fixed progress.</p>
+          <p>Once a scene passes its automated critique, a set of deterministic Python scripts seamlessly splices the verified C++ code directly into the firmware. The scripts validate brace balances, forbid standard-library imports, collapse dispatchers, and generate enums, ensuring the final output compiles identically every single time.</p>
         
         <div id="slideshow-wrapper" style="margin-top: 2rem; position: relative; border-radius: 8px; border: 1px solid var(--line); overflow: hidden; background: #111;">
           <div id="slideshow-container" style="position: relative; width: 100%; aspect-ratio: 750 / 366; display: flex; align-items: center; justify-content: center;">
@@ -238,23 +254,7 @@
             timerInterval = setInterval(() => changeTimerSlide(1), 1500);
           });
         </script>
-      </section>
-
-      <section class="section">
-        <div class="section-content">
-          <span class="section-kicker">Deterministic Workflows</span>
-          <h2>Deterministic Integration.</h2>
-          <p>Giving a graphics pipeline the ability to visually test its own output changes everything. The system renders a 3-row verification strip: Row A is the scene swept across the countdown in landscape; Row B in portrait; and Row C tests real-time motion at fixed progress.</p>
-          <p>Once a scene passes its automated critique, a set of deterministic Python scripts seamlessly splices the verified C++ code directly into the firmware. The scripts validate brace balances, forbid standard-library imports, collapse dispatchers, and generate enums, ensuring the final output compiles identically every single time.</p>
-
-
-
-        
-          <div style="margin-top: 2rem; border-radius: 8px; overflow: hidden; border: 1px solid var(--line); display: flex; justify-content: center; background: #111;">
-            <img src="images/visual-timer/aquarium.gif" alt="Animated Aquarium Timer rendering" style="max-width: 100%; display: block; border-radius: 8px;">
-          </div>
-
-</div>
+      </div>
       </section>
 
       <section class="section section-block" style="background: rgba(0,0,0,0.4); margin-top: 2rem;">
