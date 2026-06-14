@@ -160,6 +160,8 @@
         <div class="section-content">
           <span class="section-kicker">System Architecture</span>
           <h2>The 4-Layer Architecture.</h2>
+<div style="margin-bottom: 2rem;"><img src="images/omega/omega-wave_feature-map.png" alt="OMEGA Feature Map" style="width: 100%; border-radius: 8px; border: 1px solid var(--line);"></div>
+
           <p>To enforce fault tolerance and maintain rigid boundaries between hardware execution and human interaction, OMEGA is strictly divided into four distinct strata:</p>
           <p><strong>Layer 0: The Benthic Zone.</strong> Deep-sea and subsurface instruments (such as ADCPs and acoustic modems) that communicate via NATO-standard JANUS acoustic chirps to surface relays.</p>
           <p><strong>Layer 1: The Surface Mesh.</strong> Raw hardware—ESP32 microcontrollers, GPS trackers, and physical probes riding the waves. These devices acquire signals, execute edge ML, and communicate via the Delay Tolerant Network (DTN) over 900MHz LoRa. They have no concept of "the internet" or HTTP.</p>
