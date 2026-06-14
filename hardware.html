@@ -7,12 +7,12 @@
   <title>Jonathan Capone — Hardware & Mesh</title>
 
   <meta name="description" content="OMEGA's physical layer: a LoRa mesh fleet (T-Beam Supreme, LR1121 relays), DTN store-and-forward, 15 µA deep sleep, and NATO JANUS acoustic links." />
-  <meta property="og:title" content="Jonathan Capone — Hardware Architecture" />
+  <meta property="og:title" content="Jonathan Capone — Hardware & Mesh" />
   <meta property="og:description" content="OMEGA's physical layer: a LoRa mesh fleet (T-Beam Supreme, LR1121 relays), DTN store-and-forward, 15 µA deep sleep, and NATO JANUS acoustic links." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://jonathancapone.com/hardware.html" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Jonathan Capone — Hardware Architecture" />
+  <meta name="twitter:title" content="Jonathan Capone — Hardware & Mesh" />
   <meta name="twitter:description" content="OMEGA's physical layer: a LoRa mesh fleet (T-Beam Supreme, LR1121 relays), DTN store-and-forward, 15 µA deep sleep, and NATO JANUS acoustic links." />
 
   <link rel="icon"
@@ -203,48 +203,7 @@
             </div>
           </section>
 
-<section class="section section-block" style="background: rgba(0,0,0,0.4);">
-        <span class="section-kicker">Electromagnetics</span>
-        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Saltwater Fresnel Zones.</h2>
-        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">Operating sub-GHz LoRa over the ocean introduces brutal physical constraints. Unlike a terrestrial deployment where signals pass through air and trees, seawater acts as a near-perfect reflective ground plane that aggressively induces multipath fading and signal cancellation.</p>
-        
-        <div class="section-visual" style="max-height: 800px; overflow-y: auto;">
-          <span class="panel-kicker">The Mathematics of Clearance</span>
-          <pre><code class="language-text">Fresnel Zone Radius Calculation (First Zone):
-R = 17.32 * sqrt((d1 * d2) / (f * D))
 
-Where:
-  R = Radius of the zone in meters
-  d1 = Distance from Transmitter to the obstacle (km)
-  d2 = Distance from Receiver to the obstacle (km)
-  D = Total Distance of the link (km)
-  f = Frequency (915 MHz)
-
-For a 10km link at 915MHz, the maximum radius of the first Fresnel zone is ~28.6 meters.
-To maintain 60% clearance (the absolute minimum for reliable line-of-sight), the antennas 
-must be mounted at least 17.1 meters above the ocean surface. 
-Because drifting buoys are physically limited to 1 meter in height, the geometric horizon 
-and ocean swells actively clip the Fresnel zone, enforcing the necessity of the DTN buffer.</code></pre>
-        </div>
-
-        <div class="grid-3" style="margin-top: 2rem;">
-          <div class="panel" style="padding: 1.5rem;">
-            <span class="status-label status-implemented">Constraint</span>
-            <h3 style="font-size: 1.2rem;">Earth Curvature</h3>
-            <p style="font-size: 0.85rem;">At an antenna height of just 1 meter (typical for a drifting buoy), the absolute geometric horizon is roughly 3.5 kilometers. Without atmospheric ducting, 900MHz RF physically cannot penetrate the earth's curvature past this point.</p>
-          </div>
-          <div class="panel" style="padding: 1.5rem;">
-            <span class="status-label status-implemented">Constraint</span>
-            <h3 style="font-size: 1.2rem;">Multi-path Fading</h3>
-            <p style="font-size: 0.85rem;">Radio waves do not travel in a perfectly straight line; they bounce off the conductive saltwater. When these reflected ghost signals hit the receiving antenna out-of-phase with the direct signal, they destructively interfere, driving the Signal-to-Noise Ratio (SNR) below the noise floor.</p>
-          </div>
-          <div class="panel" style="padding: 1.5rem;">
-            <span class="status-label status-implemented">Solution</span>
-            <h3 style="font-size: 1.2rem;">Chirp Spread Spectrum</h3>
-            <p style="font-size: 0.85rem;">LoRa's CSS modulation is mathematically immune to multipath fading. Because the signal sweeps across a wide frequency band over time, the delayed ghost reflections are mathematically orthogonal to the primary chirp and are easily filtered by the silicon.</p>
-          </div>
-        </div>
-      </section>
 
       <section class="section">
         <div class="section-content">
@@ -562,36 +521,7 @@ build_flags =
         </div>
       </section>
 
-      <section class="section section-block" style="background: rgba(0,0,0,0.4);">
-        <span class="section-kicker">Electromagnetics</span>
-        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Saltwater Fresnel Zones.</h2>
-        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">
-          LoRa specifies a 15-kilometer range, but that assumes a clear Line-of-Sight (LoS) through air. Operating 2
-          feet above the ocean surface is a brutal RF environment.</p>
-
-        <div class="grid-3" style="margin-bottom: 2rem;">
-          <div class="panel" style="padding: 1.5rem;">
-            <span class="status-label status-implemented">Conductive Ground</span>
-            <h3 style="font-size: 1.2rem;">RF Absorption</h3>
-            <p style="font-size: 0.85rem;">Saltwater is highly conductive. It acts as a massive ground plane that
-              actively absorbs and destructively reflects 900MHz energy out of phase, crushing the effective range.</p>
-          </div>
-          <div class="panel" style="padding: 1.5rem;">
-            <span class="status-label status-implemented">Fresnel Clearance</span>
-            <h3 style="font-size: 1.2rem;">Physical Blocking</h3>
-            <p style="font-size: 0.85rem;">The Fresnel Zone is the 3D elliptical area between two antennas. When a
-              6-foot wave rolls between two buoys, it physically blocks the Fresnel zone, temporarily breaking the LoS.
-            </p>
-          </div>
-          <div class="panel" style="padding: 1.5rem;">
-            <span class="status-label status-implemented">DTN Solution</span>
-            <h3 style="font-size: 1.2rem;">Buffered Retries</h3>
-            <p style="font-size: 0.85rem;">Because the RF link drops every few seconds due to rolling waves, OMEGA
-              doesn't rely on continuous streams. It buffers data into SQLite and blasts it during the 3-second window
-              when the buoy crests a wave.</p>
-          </div>
-        </div>
-      </section>
+      
 
       <section class="section section-block" style="background: rgba(0,0,0,0.4);">
         <span class="section-kicker">Mathematical Physics</span>
@@ -740,7 +670,7 @@ build_flags =
             <span class="status-label status-implemented">Step 3</span>
             <h3 style="font-size: 1.2rem;">FSK Modulation</h3>
             <p style="font-size: 0.85rem;">The encoded bits are fired out of the hydrophone as Frequency-Shift Keyed
-              audio chirps at exactly 11.5 kHz.</p>
+              audio chirps centered at 11.5 kHz.</p>
           </div>
         </div>
 

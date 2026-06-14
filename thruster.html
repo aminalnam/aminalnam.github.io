@@ -6,14 +6,14 @@
   <meta content="width=device-width, initial-scale=1" name="viewport" />
   <title>Jonathan Capone — T-Thruster</title>
 
-  <meta name="description" content="T-Thruster — a Wear OS controller built by reverse-engineering the Lilygo T-Thruster UDP protocol for tactile differential-thrust control." />
+  <meta name="description" content="T-Thruster — a Wear OS controller built by reverse-engineering the LilyGO T-Thruster UDP protocol for tactile differential-thrust control." />
   <meta property="og:title" content="Jonathan Capone — T-Thruster" />
-  <meta property="og:description" content="T-Thruster — a Wear OS controller built by reverse-engineering the Lilygo T-Thruster UDP protocol for tactile differential-thrust control." />
+  <meta property="og:description" content="T-Thruster — a Wear OS controller built by reverse-engineering the LilyGO T-Thruster UDP protocol for tactile differential-thrust control." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://jonathancapone.com/thruster.html" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Jonathan Capone — T-Thruster" />
-  <meta name="twitter:description" content="T-Thruster — a Wear OS controller built by reverse-engineering the Lilygo T-Thruster UDP protocol for tactile differential-thrust control." />
+  <meta name="twitter:description" content="T-Thruster — a Wear OS controller built by reverse-engineering the LilyGO T-Thruster UDP protocol for tactile differential-thrust control." />
 
   <link rel="icon"
     href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚤</text></svg>">
@@ -67,7 +67,7 @@
   <section class="hero wrap">
     <span class="eyebrow">Reverse-Engineering & Wear OS</span>
     <h1>T-Thruster.</h1>
-    <p>I bought the Lilygo T-Thruster, but their companion phone app was so outdated it no longer runs on modern phones. So I reverse-engineered the firmware and built my own Wear OS controller from scratch.</p>
+    <p>I bought the LilyGO T-Thruster, but their companion phone app was so outdated it no longer runs on modern phones. So I reverse-engineered the firmware and built my own Wear OS controller from scratch.</p>
     <div class="hero-actions">
         <a class="btn btn-primary" href="https://github.com/aminalnam/T-Thruster" target="_blank">View Repository</a>
         <a class="btn btn-secondary" href="https://jonathancapone.art" target="_blank">Art Portfolio</a>
@@ -81,7 +81,7 @@
         <span class="section-kicker">The Reality of Vendor Apps</span>
         <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Why build a custom watch app?</h2>
         <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">
-          The hardware from Lilygo was great, but the software story was a dead end. The official companion phone app provided by the manufacturer was so severely outdated that it completely failed to install and run on modern phones. Without a functioning controller, the hardware was essentially a brick. Instead of giving up, I decided to dive into their firmware, reverse-engineer the UDP packet structures they were using, and build my own dedicated, tactile Wear OS smartwatch controller from scratch to bring the thruster back to life.
+          The hardware from LilyGO was great, but the software story was a dead end. The official companion phone app provided by the manufacturer was so severely outdated that it completely failed to install and run on modern phones. Without a functioning controller, the hardware was essentially a brick. Instead of giving up, I decided to dive into their firmware, reverse-engineer the UDP packet structures they were using, and build my own dedicated, tactile Wear OS smartwatch controller from scratch to bring the thruster back to life.
         </p>
       </section>
 
@@ -89,7 +89,7 @@
         <div class="section-content">
           <span class="section-kicker">Network Discovery</span>
           <h2>Subnet Scanning & Multicast.</h2>
-          <p>Once I understood the protocol, the first hurdle was simply finding the boat on the network. The Lilygo hardware creates an ad-hoc Wi-Fi network, but the smartwatch has no idea what the target device's IP address is. Hardcoding an IP makes the system brittle; broadcasting blindly wastes battery and congests the network.</p>
+          <p>Once I understood the protocol, the first hurdle was simply finding the boat on the network. The LilyGO hardware creates an ad-hoc Wi-Fi network, but the smartwatch has no idea what the target device's IP address is. Hardcoding an IP makes the system brittle; broadcasting blindly wastes battery and congests the network.</p>
 
         <div class="grid-2" style="margin-bottom: 2rem;">
           <div class="panel" style="padding: 1.5rem;">
@@ -110,8 +110,8 @@
           <span class="section-kicker">Reverse-Engineering Hurdles</span>
           <h2>Physical Protocol Negotiation.</h2>
           <p>Writing software for undocumented hardware introduces catastrophic failure states that don't exist in pure web development. During testing, I discovered that different iterations of the LilyGo control boards interpreted the throttle bytes completely differently.</p>
-          <p><strong>The LilyGo Classic (V1) Short:</strong> On older hardware revisions, the PWM driver was designed such that sending a raw `0` integer caused the H-Bridge to electrically short, risking permanent damage to the silicon. The valid range was `1` to `128`, where `1` was absolute zero throttle. In contrast, the newer V2 hardware uses a standard `0` to `255` range.</p>
-          <p>To prevent hardware destruction, the `ThrusterController.kt` engine implements strict mathematical coercion. Before firing any UDP packet, the joystick's `0.0` to `1.0` float vector is passed through a deterministic protocol filter. If V1 is selected, `0.0` is strictly clamped to `1`, mathematically guaranteeing the silicon will never receive a short-circuit command.</p>
+          <p><strong>The LilyGo Classic (V1) Short:</strong> On older hardware revisions, the PWM driver was designed such that sending a raw <code>0</code> integer caused the H-Bridge to electrically short, risking permanent damage to the silicon. The valid range was <code>1</code> to <code>128</code>, where <code>1</code> was absolute zero throttle. In contrast, the newer V2 hardware uses a standard <code>0</code> to <code>255</code> range.</p>
+          <p>To prevent hardware destruction, the <code>ThrusterController.kt</code> engine implements strict mathematical coercion. Before firing any UDP packet, the joystick's <code>0.0</code> to <code>1.0</code> float vector is passed through a deterministic protocol filter. If V1 is selected, <code>0.0</code> is strictly clamped to <code>1</code>, mathematically guaranteeing the silicon will never receive a short-circuit command.</p>
         </div>
       </section>
 
@@ -124,7 +124,7 @@
           <div class="panel" style="padding: 1.5rem;">
             <span class="status-label status-implemented">Atan2 Geometry</span>
             <h3 style="font-size: 1.2rem;">Radial Bounding</h3>
-            <p style="font-size: 0.85rem;">The custom Compose Canvas joystick tracks drag gestures using Pythogorean distance checks. If the user drags outside the permitted circle, the app uses <code>atan2()</code> to calculate the exact angle and mathematically clamps the thumbpad to the extreme edge of the radius.</p>
+            <p style="font-size: 0.85rem;">The custom Compose Canvas joystick tracks drag gestures using Pythagorean distance checks. If the user drags outside the permitted circle, the app uses <code>atan2()</code> to calculate the exact angle and mathematically clamps the thumbpad to the extreme edge of the radius.</p>
           </div>
           <div class="panel" style="padding: 1.5rem;">
             <span class="status-label status-implemented">Tactile Feedback</span>
