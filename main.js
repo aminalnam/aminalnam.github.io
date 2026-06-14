@@ -1095,3 +1095,22 @@ function initAmbientBackground() {
   
   draw();
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+  const dropbtn = document.querySelector('.dropbtn');
+  const dropdown = document.querySelector('.dropdown');
+  if (dropbtn && dropdown) {
+    dropbtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      const expanded = dropbtn.getAttribute('aria-expanded') === 'true';
+      dropbtn.setAttribute('aria-expanded', !expanded);
+      dropdown.classList.toggle('open');
+    });
+    document.addEventListener('click', function(e) {
+      if (!dropdown.contains(e.target)) {
+        dropdown.classList.remove('open');
+        dropbtn.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
+});

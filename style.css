@@ -1489,3 +1489,10 @@ body {
   fill: rgba(255,255,255,0.02) !important;
   stroke: rgba(255,255,255,0.1) !important;
 }
+
+
+/* Dropdown Accessibility */
+.dropdown:focus-within .dropdown-content,
+.dropdown.open .dropdown-content {
+  display: block;
+}
