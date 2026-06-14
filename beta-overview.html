@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <title>BETA Framework — Evaluation Engine</title>
+
+  <meta name="description" content="BETA Framework: The Deterministic Evaluation Engine." />
+  <meta property="og:title" content="BETA Framework — Evaluation Engine" />
+  <meta property="og:description" content="Evidence tracking, system evaluation, and AI reporting." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://jonathancapone.com/beta-overview.html" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="BETA Framework — Evaluation Engine" />
+  <meta name="twitter:description" content="Evidence tracking, system evaluation, and AI reporting." />
+
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌊</text></svg>">
+
+  <link rel="stylesheet" href="style.css">
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ startOnLoad: true, theme: 'dark', themeVariables: { fontFamily: 'Inter' } });
+  </script>
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="wrap topbar-inner">
+      <a class="brand" href="index.html"
+        style="display: flex; align-items: center; gap: 0.75rem; text-decoration: none;">
+        <div>
+          <span class="brand-title"
+            style="letter-spacing: 0.1em; color: var(--white); display: block; font-family: var(--font-serif); font-size: 1.5rem;">JONATHAN
+            CAPONE</span>
+          <span class="brand-sub"
+            style="display: block; font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent); font-family: var(--font-mono); opacity: 0.9;">Systems
+            Architecture Portfolio</span>
+        </div>
+      </a>
+            <nav class="nav" aria-label="Main Navigation">
+        <a href="index.html">Home</a>
+        <div class="dropdown">
+          <button class="dropbtn" style="background: none; border: none; color: #fff; font-family: inherit; font-size: inherit; cursor: pointer;">OMEGA &#9662;</button>
+          <div class="dropdown-content">
+            <a href="architecture.html">Architecture</a>
+            <a href="hardware.html">Hardware & Mesh</a>
+            <a href="gateway.html">Backend Gateway</a>
+            <a href="mission-portal.html">Mission Portal</a>
+            <a href="engineering-journal.html">Journal</a>
+          </div>
+        </div>
+        <a href="beta-overview.html">BETA</a>
+        <div class="dropdown">
+          <button class="dropbtn" style="background: none; border: none; color: #fff; font-family: inherit; font-size: inherit; cursor: pointer;">Other Projects &#9662;</button>
+          <div class="dropdown-content">
+            <a href="cosnfx.html">CosNFX (Android)</a>
+            <a href="weather-globe.html">Weather Globe</a>
+            <a href="visual-timer.html">Visual Timer</a>
+            <a href="bathymetry.html">Legacy Bathymetry</a>
+          </div>
+        </div>
+        
+        <div style="display: flex; align-items: center; margin-left: 0.5rem; border-left: 1px solid rgba(255,255,255,0.15); padding-left: 1.5rem;">
+          <a href="https://jonathancapone.art" target="_blank" style="font-weight: 600; color: var(--ink-soft);">Art Portfolio</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero wrap" style="text-align: center;">
+    <span class="eyebrow" style="color: var(--accent-ocean);">Testing Framework</span>
+    <h1 style="font-size: 3.5rem; margin-bottom: 1rem;">BETA Framework.</h1>
+    <p style="max-width: 800px; margin: 0 auto 2.5rem; font-size: 1.25rem; color: var(--ink-soft); line-height: 1.7;">
+      The Build Environment for Testing & Analytics (BETA). A standalone deterministic evaluation engine that
+      continuously subjects backend APIs and gateways to high-frequency synthetic telemetry, measuring pipeline latency,
+      detecting performance regressions, and generating AI-driven remediation tickets.
+    </p>
+    <div class="hero-actions" style="justify-content: center;">
+      <a class="btn btn-primary" href="omega-beta.html"
+        style="font-size: 1.1rem; padding: 1rem 2rem; box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.5);">View OMEGA
+        Integration</a>
+      <a class="btn btn-secondary" href="https://github.com/aminalnam/OMEGA-wave" target="_blank">View Test Suite</a>
+    </div>
+  </section>
+
+  <main class="main-shell wrap" role="main">
+    <div class="main-inner">
+
+      <section class="section section-block" style="background: rgba(0,0,0,0.4);">
+        <span class="section-kicker">The Methodology</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Evidence-Based Engineering.
+        </h2>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">
+          When building a complex system that sits between unpredictable physical edge hardware and high-frequency
+          backend databases, "it works on my machine" is an unacceptable standard. Every commit pushed to the target
+          gateway must be empirically proven to handle chaotic telemetry floods without locking the SQLite WAL or
+          dropping HTTP connections.</p>
+
+        <div class="grid-3" style="margin-bottom: 2rem;">
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">Telemetry Generator</span>
+            <h3 style="font-size: 1.2rem;">Deterministic Fuzzing</h3>
+            <p style="font-size: 0.85rem;">BETA generates thousands of synthetic payload injections—simulating multiple
+              drifting devices, acoustic anomalies, and deliberate malformed hardware packets.</p>
+          </div>
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">Performance Matrices</span>
+            <h3 style="font-size: 1.2rem;">Tracking Regressions</h3>
+            <p style="font-size: 0.85rem;">The system tracks the <em>P95 Query Latency</em> and <em>Ingest
+                Throughput</em> over time. If a new software build drops the ingestion rate below 250 obs/sec, a
+              regression flag is thrown.</p>
+          </div>
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">Automated Remediation</span>
+            <h3 style="font-size: 1.2rem;">AI Copilot Ticketing</h3>
+            <p style="font-size: 0.85rem;">Post-run, the Honu AI Agent analyzes the performance deltas. If a regression
+              is detected, it automatically writes a Jira-style technical ticket outlining the suspected bottleneck.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-block" style="padding-top: 2rem;">
+        <span class="section-kicker">The Pipeline</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 2rem;">Automated Evaluation Flow.</h2>
+
+        <div class="section-visual" style="margin-bottom: 2rem;">
+          <div class="mermaid">
+            sequenceDiagram
+            autonumber
+            participant CI as CI/CD Pipeline
+            participant Synth as Synthetic Injector
+            participant GW as OMEGA Gateway
+            participant DB as SQLite WAL
+            participant AI as Honu AI Copilot
+
+            CI->>Synth: Trigger Nightly Evaluation
+            Synth->>GW: Inject 10,000 Fuzzed Payloads (LoRa TLV)
+            GW->>DB: Asynchronous WAL Writes
+            GW-->>Synth: Measure HTTP Response Times
+            Synth->>CI: Output Metrics (P95, Throughput)
+
+            alt Throughput Drops Below Baseline
+            CI->>AI: Send Failure Matrix
+            AI->>AI: Analyze Database Locks & Timings
+            AI->>CI: Generate "Next Moves" Actionable Ticket
+            end
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-block" style="background: rgba(0,0,0,0.4);">
+        <span class="section-kicker">Educational Deep Dive: QA Testing</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Deterministic Fuzzing & Race
+          Conditions</h2>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">A
+          gateway might process a single incoming buoy payload perfectly. But what happens when an underwater acoustic
+          anomaly triggers 50 edge nodes to transmit data at the exact same millisecond? Without rigorous testing, "race
+          conditions" can lock up the database and drop critical scientific data.</p>
+
+        <div class="grid-2" style="margin-bottom: 2rem;">
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">The Core Concept</span>
+            <h3 style="font-size: 1.2rem;">Deterministic Fuzzing</h3>
+            <p style="font-size: 0.85rem;">To guarantee system stability before physical deployment, we must subject the
+              backend to extreme stress. "Fuzzing" involves automatically injecting thousands of synthetic,
+              highly-concurrent, and occasionally malformed telemetry packets to see if the server crashes. Because the
+              payloads are deterministically generated, any bugs discovered are completely reproducible.</p>
+          </div>
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">The Security Flaw</span>
+            <h3 style="font-size: 1.2rem;">SQLite WAL Locking</h3>
+            <p style="font-size: 0.85rem;">When 50 parallel requests try to write to a SQLite database simultaneously,
+              you will hit a <code>database is locked</code> exception. This deep dive demonstrates how to use Python's
+              <code>asyncio</code> to simulate this exact failure mode, proving the necessity of Write-Ahead Logging
+              (WAL) and asynchronous background tasks.</p>
+          </div>
+        </div>
+
+        <div
+          style="background: var(--bg); border: 1px solid var(--line); border-radius: 8px; margin: 2rem 0; overflow: hidden;">
+          <div
+            style="display: flex; align-items: center; background: rgba(255,255,255,0.03); padding: 0.5rem 1rem; border-bottom: 1px solid var(--line);">
+            <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-ocean);">Step-by-Step
+              Implementation: The Asynchronous Injector</span>
+          </div>
+          <div style="padding: 1.5rem; color: var(--ink-soft); font-size: 0.95rem; line-height: 1.6;">
+            <ol style="margin: 0 0 1rem; padding-left: 1.2rem;">
+              <li style="margin-bottom: 0.5rem;"><strong>The Generator:</strong> The `CborPayloadGenerator` creates
+                mathematically valid but completely randomized buoy sensor data.</li>
+              <li style="margin-bottom: 0.5rem;"><strong>The Flood Loop:</strong> We use an asynchronous `while` loop
+                bound by a specific duration to continuously generate payloads.</li>
+              <li><strong>Fire and Forget:</strong> By using `asyncio.create_task()`, we launch the HTTP POST request
+                into the background without waiting for a response, allowing us to hit the gateway with hundreds of
+                concurrent connections per second.</li>
+            </ol>
+            <pre style="margin: 0; border: 1px solid var(--line); border-radius: 8px;"><code class="language-python">import asyncio
+from core.fuzzer import CborPayloadGenerator
+from network.client import AsyncGatewayClient
+
+async def run_synthetic_flood(target_url: str, duration_sec: int, tps: int):
+    """Fires a sustained flood of synthetic marine telemetry."""
+    client = AsyncGatewayClient(target_url)
+    generator = CborPayloadGenerator(node_count=50)
+    
+    print(f"🌊 Initiating flood: {tps} TPS for {duration_sec}s")
+    
+    end_time = asyncio.get_event_loop().time() + duration_sec
+    while asyncio.get_event_loop().time() < end_time:
+        payload = generator.create_drift_telemetry()
+        
+        # Fire-and-forget payload injection (simulating parallel buoys)
+        asyncio.create_task(client.post_telemetry(payload))
+        await asyncio.sleep(1.0 / tps)
+        
+    await client.close()
+    return client.get_latency_metrics()</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-block" style="padding-top: 2rem;">
+        <span class="section-kicker">Performance Thresholds</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Analytics & SLIs.</h2>
+        <p>BETA does not just check if a request returns a 200 OK. It measures the deeply embedded Service Level
+          Indicators (SLIs) of the architecture. If a new software build causes a statistical regression in ingestion
+          latency, the build fails.</p>
+
+        <div class="grid-3" style="margin-top: 2.5rem;">
+          <div
+            style="background: rgba(16, 185, 129, 0.05); border: 1px solid rgba(16, 185, 129, 0.2); border-radius: 8px; padding: 1.5rem; text-align: center;">
+            <div style="font-family: var(--font-mono); color: #10b981; font-size: 2.5rem; margin-bottom: 0.5rem;">&lt;
+              50ms</div>
+            <div style="font-size: 0.9rem; color: var(--white); font-weight: 600;">P95 Ingestion Latency</div>
+            <div style="font-size: 0.8rem; color: var(--ink-soft); margin-top: 0.5rem;">Maximum acceptable wait time for
+              payload acknowledgment.</div>
+          </div>
+
+          <div
+            style="background: rgba(59, 130, 246, 0.05); border: 1px solid rgba(59, 130, 246, 0.2); border-radius: 8px; padding: 1.5rem; text-align: center;">
+            <div style="font-family: var(--font-mono); color: #3b82f6; font-size: 2.5rem; margin-bottom: 0.5rem;">0.00%
+            </div>
+            <div style="font-size: 0.9rem; color: var(--white); font-weight: 600;">WAL Contention Drops</div>
+            <div style="font-size: 0.8rem; color: var(--ink-soft); margin-top: 0.5rem;">Zero tolerance for dropped
+              packets due to database locking.</div>
+          </div>
+
+          <div
+            style="background: rgba(239, 68, 68, 0.05); border: 1px solid rgba(239, 68, 68, 0.2); border-radius: 8px; padding: 1.5rem; text-align: center;">
+            <div style="font-family: var(--font-mono); color: #ef4444; font-size: 2.5rem; margin-bottom: 0.5rem;">> 250
+            </div>
+            <div style="font-size: 0.9rem; color: var(--white); font-weight: 600;">Transactions Per Second</div>
+            <div style="font-size: 0.8rem; color: var(--ink-soft); margin-top: 0.5rem;">Minimum sustained throughput on
+              a low-power Edge Gateway.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-block" style="background: rgba(0,0,0,0.4);">
+        <span class="section-kicker">Educational Deep Dive: SLIs</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Performance Metrics (P95) &
+          Remediation</h2>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">
+          When a synthetic flood finishes, how do we grade the system? Tracking the "average" response time is
+          mathematically flawed because outliers are hidden. Instead, Site Reliability Engineering (SRE) relies on
+          percentiles.</p>
+
+        <div class="grid-2" style="margin-bottom: 2rem;">
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">The Core Concept</span>
+            <h3 style="font-size: 1.2rem;">P95 Latency</h3>
+            <p style="font-size: 0.85rem;">P95 latency means "95% of all requests completed faster than this time." If
+              your average latency is 10ms, but your P95 is 500ms, it means 5% of your buoys are experiencing massive
+              delays (likely due to a queue bottleneck). The BETA framework automatically fails any code commit that
+              degrades the P95 ingestion metric beyond acceptable limits.</p>
+          </div>
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">Implementation Guide</span>
+            <h3 style="font-size: 1.2rem;">AI-Driven Triage</h3>
+            <p style="font-size: 0.85rem;">When the P95 latency spikes, debugging the backend is tedious. The BETA
+              framework feeds the performance deltas, CPU profiles, and the recent Git commit diff directly into the
+              <strong>Honu AI Copilot</strong>. The AI analyzes the bottleneck and generates a ready-to-work Jira ticket
+              for the engineering team.</p>
+          </div>
+        </div>
+
+        <div
+          style="background: var(--bg); border: 1px solid var(--line); border-radius: 8px; margin: 2rem 0; overflow: hidden; font-family: var(--font-mono); font-size: 0.85rem;">
+          <div
+            style="display: flex; align-items: center; background: rgba(255,255,255,0.03); padding: 0.5rem 1rem; border-bottom: 1px solid var(--line);">
+            <span style="color: var(--accent-yellow);">⚠️ Example Output: AI Auto-Triage Ticket</span>
+          </div>
+          <div style="padding: 1.5rem; color: var(--ink-soft); line-height: 1.6;">
+            <div style="color: var(--white); margin-bottom: 1rem;"><strong>Title:</strong> [REGRESSION] P95 Latency
+              spike to 120ms during concurrent SQLite writes</div>
+            <div><strong>Hypothesis:</strong></div>
+            <div>The recent commit (fc92b4) introduced an asynchronous index update on the `telemetry_data` table.
+              Because the database is in WAL mode, the prolonged index rebuild is starving the synchronous writer pool,
+              leading to connection timeouts from the Synthetic Injector.</div>
+            <br>
+            <div><strong>Recommended Remediation:</strong></div>
+            <div>1. Move the index update to a background worker queue (e.g., Celery) rather than blocking the main
+              FastAPI thread.</div>
+            <div>2. Ensure `PRAGMA synchronous = NORMAL` is strictly enforced during high-throughput ingestion windows.
+            </div>
+            <br>
+            <div style="color: #3b82f6;"><strong>Assigned to:</strong> Platform Engineering Team</div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="footer wrap">
+    <span>© Jonathan Capone — Technical Portfolio. OMEGA (formerly OMEGA-wave).</span>
+  </footer>
+  <script src="main.js"></script>
+</body>
+
+</html>
