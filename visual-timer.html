@@ -99,42 +99,166 @@
           </div>
         </div>
         
-        <div style="margin-top: 2rem; position: relative; border-radius: 8px; border: 1px solid var(--line); overflow: hidden; background: #000;">
-                    <div id="slideshow-container" style="position: relative; width: 100%; padding-top: 50%;">
-            <img src="images/visual-timer/individual_faces/face_1.png" class="slide" style="position: absolute; top: 0; left: 0; width: 100%; opacity: 1; transition: opacity 0.8s;">
-            <img src="images/visual-timer/individual_faces/face_2.png" class="slide" style="position: absolute; top: 0; left: 0; width: 100%; opacity: 0; transition: opacity 0.8s;">
-            <img src="images/visual-timer/individual_faces/face_3.png" class="slide" style="position: absolute; top: 0; left: 0; width: 100%; opacity: 0; transition: opacity 0.8s;">
-            <img src="images/visual-timer/individual_faces/face_4.png" class="slide" style="position: absolute; top: 0; left: 0; width: 100%; opacity: 0; transition: opacity 0.8s;">
-            <img src="images/visual-timer/individual_faces/face_5.png" class="slide" style="position: absolute; top: 0; left: 0; width: 100%; opacity: 0; transition: opacity 0.8s;">
-            <img src="images/visual-timer/individual_faces/face_6.png" class="slide" style="position: absolute; top: 0; left: 0; width: 100%; opacity: 0; transition: opacity 0.8s;">
-            <img src="images/visual-timer/individual_faces/face_7.png" class="slide" style="position: absolute; top: 0; left: 0; width: 100%; opacity: 0; transition: opacity 0.8s;">
-            <img src="images/visual-timer/individual_faces/face_8.png" class="slide" style="position: absolute; top: 0; left: 0; width: 100%; opacity: 0; transition: opacity 0.8s;">
-            <img src="images/visual-timer/individual_faces/face_9.png" class="slide" style="position: absolute; top: 0; left: 0; width: 100%; opacity: 0; transition: opacity 0.8s;">
-            <img src="images/visual-timer/individual_faces/face_10.png" class="slide" style="position: absolute; top: 0; left: 0; width: 100%; opacity: 0; transition: opacity 0.8s;">
+        
+        <div style="margin-top: 2rem; border-radius: 8px; border: 1px solid var(--line); background: #0b0c10; padding: 1.5rem;">
+          
+          <!-- Timer Controls -->
+          <div style="display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem; align-items: flex-end; justify-content: space-between;">
+            <div style="display: flex; gap: 1rem;">
+              <div>
+                <label style="display: block; font-family: var(--font-mono); font-size: 0.8rem; color: var(--ink-soft); margin-bottom: 0.5rem;">DURATION (MM:SS)</label>
+                <div style="display: flex; gap: 0.5rem; align-items: center;">
+                  <input type="number" id="timer-min" value="0" min="0" max="99" style="width: 60px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: white; padding: 0.5rem; border-radius: 4px; font-family: var(--font-mono); font-size: 1.2rem; text-align: center;">
+                  <span style="color: white; font-weight: bold;">:</span>
+                  <input type="number" id="timer-sec" value="10" min="0" max="59" style="width: 60px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: white; padding: 0.5rem; border-radius: 4px; font-family: var(--font-mono); font-size: 1.2rem; text-align: center;">
+                </div>
+              </div>
+              <div>
+                <label style="display: block; font-family: var(--font-mono); font-size: 0.8rem; color: var(--ink-soft); margin-bottom: 0.5rem;">THEME SCENE</label>
+                <select id="timer-theme" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: white; padding: 0.5rem; border-radius: 4px; font-family: var(--font-mono); font-size: 1rem; height: 42px;">
+                  <option value="1">Scene 1</option>
+                  <option value="2">Scene 2</option>
+                  <option value="3">Scene 3</option>
+                  <option value="4">Scene 4</option>
+                  <option value="5">Scene 5</option>
+                  <option value="6">Scene 6</option>
+                  <option value="7">Scene 7</option>
+                  <option value="8">Scene 8</option>
+                  <option value="9">Scene 9</option>
+                  <option value="10">Scene 10</option>
+                  <option value="11">Scene 11</option>
+                  <option value="12">Scene 12</option>
+                </select>
+              </div>
+            </div>
+            <div style="display: flex; gap: 0.5rem;">
+              <button id="btn-start" style="background: var(--accent); color: white; border: none; border-radius: 4px; padding: 0.5rem 1.5rem; cursor: pointer; font-family: var(--font-mono); font-weight: bold; font-size: 1rem;">START</button>
+              <button id="btn-pause" style="background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.3); border-radius: 4px; padding: 0.5rem 1rem; cursor: pointer; font-family: var(--font-mono); font-size: 1rem;">PAUSE</button>
+              <button id="btn-reset" style="background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.3); border-radius: 4px; padding: 0.5rem 1rem; cursor: pointer; font-family: var(--font-mono); font-size: 1rem;">RESET</button>
+            </div>
           </div>
-          <div style="position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%); display: flex; gap: 10px; z-index: 10;">
-            <button onclick="changeSlide(-1)" style="background: rgba(0,0,0,0.7); color: white; border: 1px solid rgba(255,255,255,0.3); border-radius: 4px; padding: 6px 12px; cursor: pointer; font-family: var(--font-mono); font-size: 0.9rem;">PREV</button>
-            <button onclick="changeSlide(1)" style="background: rgba(0,0,0,0.7); color: white; border: 1px solid rgba(255,255,255,0.3); border-radius: 4px; padding: 6px 12px; cursor: pointer; font-family: var(--font-mono); font-size: 0.9rem;">NEXT</button>
+
+          <!-- Display Area -->
+          <div style="position: relative; width: 100%; padding-top: 50%; border-radius: 4px; overflow: hidden; background: #000; border: 1px solid rgba(255,255,255,0.1);">
+            <!-- Base faded image -->
+            <img id="timer-base-img" src="images/visual-timer/individual_faces/face_1.png" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.15; filter: grayscale(100%);">
+            
+            <!-- Sweep active image -->
+            <img id="timer-sweep-img" src="images/visual-timer/individual_faces/face_1.png" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); transition: clip-path 0.1s linear;">
+            
+            <!-- Digital Overlay -->
+            <div id="timer-display" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-family: var(--font-mono); font-size: 4rem; font-weight: bold; color: white; text-shadow: 0px 4px 15px rgba(0,0,0,0.8); z-index: 10;">00:10</div>
           </div>
         </div>
+
         <script>
-          let currentSlide = 0;
-          const slides = document.querySelectorAll('.slide');
-          let slideInterval;
-          
-          function changeSlide(direction) {
-            slides[currentSlide].style.opacity = 0;
-            currentSlide = (currentSlide + direction + slides.length) % slides.length;
-            slides[currentSlide].style.opacity = 1;
-            
-            // Reset interval on manual click
-            clearInterval(slideInterval);
-            slideInterval = setInterval(() => changeSlide(1), 5000);
-          }
-          
-          // Auto-advance
-          slideInterval = setInterval(() => changeSlide(1), 5000);
+          document.addEventListener("DOMContentLoaded", function() {
+            let timerInterval;
+            let totalSeconds = 10;
+            let remainingSeconds = 10;
+            let isRunning = false;
+
+            const minInput = document.getElementById('timer-min');
+            const secInput = document.getElementById('timer-sec');
+            const themeSelect = document.getElementById('timer-theme');
+            const btnStart = document.getElementById('btn-start');
+            const btnPause = document.getElementById('btn-pause');
+            const btnReset = document.getElementById('btn-reset');
+            const display = document.getElementById('timer-display');
+            const sweepImg = document.getElementById('timer-sweep-img');
+            const baseImg = document.getElementById('timer-base-img');
+
+            function updateImages() {
+              const themeVal = themeSelect.value;
+              const path = `images/visual-timer/individual_faces/face_${themeVal}.png`;
+              baseImg.src = path;
+              sweepImg.src = path;
+            }
+
+            function formatTime(secs) {
+              const m = Math.floor(secs / 60);
+              const s = Math.floor(secs % 60);
+              return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+            }
+
+            function updateVisuals() {
+              display.textContent = formatTime(remainingSeconds);
+              const pct = totalSeconds > 0 ? (remainingSeconds / totalSeconds) * 100 : 0;
+              sweepImg.style.clipPath = `polygon(0 0, ${pct}% 0, ${pct}% 100%, 0 100%)`;
+            }
+
+            function readInputs() {
+              const m = parseInt(minInput.value) || 0;
+              const s = parseInt(secInput.value) || 0;
+              totalSeconds = (m * 60) + s;
+              if (totalSeconds <= 0) {
+                totalSeconds = 10; // fallback
+                minInput.value = 0;
+                secInput.value = 10;
+              }
+              remainingSeconds = totalSeconds;
+              updateVisuals();
+            }
+
+            function tick() {
+              if (remainingSeconds > 0) {
+                remainingSeconds -= 0.1; // Smooth updates
+                updateVisuals();
+              } else {
+                remainingSeconds = 0;
+                updateVisuals();
+                clearInterval(timerInterval);
+                isRunning = false;
+                btnStart.textContent = "START";
+                display.style.color = "var(--accent)"; // Blink color on finish
+                setTimeout(() => display.style.color = "white", 500);
+                setTimeout(() => display.style.color = "var(--accent)", 1000);
+                setTimeout(() => display.style.color = "white", 1500);
+              }
+            }
+
+            btnStart.addEventListener('click', () => {
+              if (!isRunning) {
+                if (remainingSeconds <= 0) {
+                  readInputs();
+                }
+                timerInterval = setInterval(tick, 100);
+                isRunning = true;
+                btnStart.textContent = "RUNNING...";
+                btnStart.style.opacity = "0.5";
+                btnStart.style.pointerEvents = "none";
+              }
+            });
+
+            btnPause.addEventListener('click', () => {
+              if (isRunning) {
+                clearInterval(timerInterval);
+                isRunning = false;
+                btnStart.textContent = "RESUME";
+                btnStart.style.opacity = "1";
+                btnStart.style.pointerEvents = "auto";
+              }
+            });
+
+            btnReset.addEventListener('click', () => {
+              clearInterval(timerInterval);
+              isRunning = false;
+              readInputs();
+              btnStart.textContent = "START";
+              btnStart.style.opacity = "1";
+              btnStart.style.pointerEvents = "auto";
+              display.style.color = "white";
+            });
+
+            themeSelect.addEventListener('change', updateImages);
+            minInput.addEventListener('change', readInputs);
+            secInput.addEventListener('change', readInputs);
+
+            // Init
+            readInputs();
+          });
         </script>
+
       </section>
 
       <section class="section">
