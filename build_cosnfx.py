@@ -1,4 +1,6 @@
-<!DOCTYPE html>
+import os
+
+html_content = """<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -138,3 +140,13 @@
   </main>
 </body>
 </html>
+"""
+
+def main():
+    target_path = os.path.join(os.getcwd(), 'cosnfx.html')
+    with open(target_path, 'w', encoding='utf-8') as f:
+        f.write(html_content)
+    print(f"Successfully wrote {target_path}")
+
+if __name__ == "__main__":
+    main()
