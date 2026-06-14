@@ -3,15 +3,15 @@
 <head>
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1" name="viewport"/>
-  <title>Jonathan Capone — Event Bus & Watches</title>
+  <title>Jonathan Capone — Software Architecture Decisions</title>
   
-  <meta name="description" content="OMEGA-wave documentation: The Gateway Scheduler." />
-  <meta property="og:title" content="Jonathan Capone — Event Bus & Watches" />
+  <meta name="description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
+  <meta property="og:title" content="Jonathan Capone — Software Architecture Decisions" />
   <meta property="og:description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://jonathancapone.com/event-bus.html" />
+  <meta property="og:url" content="https://jonathancapone.com/software-decisions.html" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Jonathan Capone — Event Bus & Watches" />
+  <meta name="twitter:title" content="Jonathan Capone — Software Architecture Decisions" />
   <meta name="twitter:description" content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
   
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌊</text></svg>">
@@ -55,9 +55,9 @@
             <a href="system-architecture.html">System Architecture</a>
             <a href="gateway.html">Gateway</a>
             <a href="mesh-core.html">Mesh Core</a>
-            <a href="software-decisions.html">Software Architecture</a>
+            <a href="software-decisions.html" class="is-current">Software Architecture</a>
             <a href="engineering-journal.html">Debugging & Journal</a>
-            <a href="event-bus.html" class="is-current">Event Bus & Watches</a>
+            <a href="event-bus.html">Event Bus & Watches</a>
             <a href="security.html">Security & RBAC</a>
           </div>
         </div>
@@ -106,9 +106,9 @@
   </header>
 
   <section class="hero wrap">
-    <span class="eyebrow">Schedulers & Event Bus</span>
-    <h1>Automated Watches.</h1>
-    <p>Deep dive into the asyncio scheduler, node offline watchdogs, and notifications.</p>
+    <span class="eyebrow">The Engineering Trade-offs</span>
+    <h1>Software Decisions.</h1>
+    <p>The real engineering isn't in the features—it's in how the bugs were found and killed.</p>
     <div class="hero-actions">
       <a class="btn btn-primary" href="https://github.com/aminalnam/OMEGA-wave" target="_blank">View OMEGA-wave on GitHub</a>
       <a class="btn btn-secondary" href="https://jonathancapone.art" target="_blank">Art Portfolio</a>
@@ -117,76 +117,52 @@
 
   <main class="main-shell wrap" role="main">
     <div class="main-inner">
+      <section class="section section-block" style="background: rgba(0,0,0,0.4);">
+        <span class="section-kicker">Embedded Systems</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">1. The "Transmits but never receives" LR1121 Bug</h2>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">A T3-S3 LR1121 relay transmitted perfectly but never received anything. Every sign pointed at dead hardware.</p>
+        <div class="panel" style="padding: 1.5rem; margin-bottom: 2rem;">
+          <h3 style="font-size: 1.2rem;">The Investigation & Fix</h3>
+          <p style="font-size: 0.95rem; line-height: 1.6;">I mapped the <strong>entire RX chain interrupts</strong> instead of just <code>RX_DONE</code>. Zero partial detections meant the state machine never engaged. Root cause: RadioLib's <code>startReceive()</code> only arms continuous RX cleanly from <code>STANDBY</code>. Post-boot, it silently failed to arm. I fixed it with a single line: <code>radio.standby()</code> before the boot-time arm. <strong>Lesson: Map the whole signal chain, not just the success interrupt.</strong></p>
+        </div>
+      </section>
 
+      <section class="section">
+        <div class="section-content">
+          <span class="section-kicker">C++ Undefined Behavior</span>
+          <h2>2. SX1302 `-1` GPIO Sentinel.</h2>
+          <p>SPI reads worked but writes to the SX1302 front-end were ignored. Tracing the reset path into the ESP32 port revealed that the reset mask was computed using a `-1` sentinel for an unconnected pin.</p>
+          <p><strong>The Fix:</strong> <code>(1 << -1)</code> is undefined behavior in C. The corrupted mask meant the radio was never actually reset. I added explicit guards before shifting the mask. The board became production-ready.</p>
+        </div>
+      </section>
 
-          <section class="section">
-            <div class="section-content">
-              <span class="section-kicker">Asynchronous Loop</span>
-              <h2>The Gateway Scheduler.</h2>
-              <p>The <code>gateway/scheduler.py</code> module manages a strict Python `asyncio` event loop. This cron-like engine dictates when the gateway should pull satellite ephemeris data, when it should poll NOAA for weather updates, and when it should execute the QARTOD compliance engine across the massive historical SQLite database.</p>
-              
-            </div>
-            
-          </section>
-    
-          <section class="section">
-            <div class="section-content">
-              <span class="section-kicker">System Watchdogs</span>
-              <h2>Automated Fleet Watches.</h2>
-              <p>The <code>gateway/watches.py</code> module is an active monitoring service. It constantly evaluates the timestamp of the last received ping from every edge node in the mesh. If a buoy goes completely silent and misses its Delay Tolerant Network heartbeat window, the Watchdog automatically generates a critical "Node Offline" alarm on the Notification Bus.</p>
-              
-            </div>
-            
-          </section>
-
-          <section class="section section-block" style="background: rgba(0,0,0,0.4);">
-            <span class="section-kicker">Architectural Theory</span>
-            <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">The Pub/Sub Pattern.</h2>
-            <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">A monolithic architecture is incredibly fragile. If the Python script receiving radio packets directly calls the database <code>insert()</code> function, a slow SD card write will physically block the processor from receiving the next radio packet, dropping critical telemetry.</p>
-            
-            <div class="grid-2" style="margin-bottom: 2rem;">
-              <div class="panel" style="padding: 1.5rem;">
-                <span class="status-label status-implemented">Producers (Publishers)</span>
-                <h3 style="font-size: 1.2rem;">The Radio Receiver</h3>
-                <p style="font-size: 0.85rem;">The receiver script does exactly one thing: it parses raw bytes from the UART serial bus. Once verified, it blindly fires an <code>emit("telemetry.received", payload)</code> event onto the memory bus and immediately returns to listening for the next radio packet.</p>
-              </div>
-              <div class="panel" style="padding: 1.5rem;">
-                <span class="status-label status-implemented">Consumers (Subscribers)</span>
-                <h3 style="font-size: 1.2rem;">The Database Writer</h3>
-                <p style="font-size: 0.85rem;">Completely decoupled from the radio, the database writer script runs in an infinite <code>asyncio</code> loop, pulling payloads off the memory bus at its own speed and writing them to SQLite. If the database locks up, the memory queue simply grows, but no live RF packets are ever dropped.</p>
-              </div>
-            </div>
-            
-            <div class="grid-2" style="margin-top: 2rem;">
-              <div class="section-visual" style="max-height: 800px; overflow-y: auto;">
-                <span class="panel-kicker">gateway/database.py (LISTEN/NOTIFY)</span>
-                <pre><code class="language-python">async def listen_to_pg_events():
-    """Binds directly to PostgreSQL internal PubSub bus"""
-    conn = await asyncpg.connect(DSN)
-    # The database itself fires this trigger instantly on INSERT
-    await conn.add_listener('telemetry_inserted', broadcast_to_websockets)
-    
-    while True:
-        await asyncio.sleep(3600) # Keep event loop alive</code></pre>
-              </div>
-
-              <div class="section-visual" style="max-height: 800px; overflow-y: auto;">
-                <span class="panel-kicker">gateway/routers/websockets.py</span>
-                <pre><code class="language-python">@router.websocket("/ws/live")
-async def websocket_endpoint(websocket: WebSocket):
-    await manager.connect(websocket)
-    try:
-        while True:
-            # The client just holds the TCP socket open.
-            # We push JSON from the PostgreSQL listener directly to React.
-            data = await websocket.receive_text()
-    except WebSocketDisconnect:
-        manager.disconnect(websocket)</code></pre>
-              </div>
-            </div>
-          </section>
-    
-    </div>
+      <section class="section">
+        <div class="section-content">
+          <span class="section-kicker">Full-Stack Networking</span>
+          <h2>3. HTTP/1.1 Socket Starvation.</h2>
+          <p>Over the field Pi, the portal hung with an empty map—yet `curl` answered the endpoints in under 0.1s.</p>
+          <p><strong>The Fix:</strong> DevTools showed exactly 6 ESTABLISHED sockets. HTTP/1.1 browsers cap at 6 connections per host, and I had wired two permanent Server-Sent-Events streams onto every page, eating the entire pool. I made the data-stream SSE <strong>lazy</strong>, opening it only when needed.</p>
+        </div>
+      </section>
+      
+      <section class="section">
+        <div class="section-content">
+          <span class="section-kicker">Spatial Algorithms</span>
+          <h2>4. The Fiji → Hawaii Dateline Bug.</h2>
+          <p>The global A* ocean router sent a 2,700-nm Pacific crossing 13,000 nm around the world.</p>
+          <p><strong>The Fix:</strong> The cost landscape was a single -180 to +180 grid that clipped at the boundary. I solved it by searching a <strong>wrapped longitude space</strong>—replicating water cells at L ± 360° so the geodesically short path across the dateline became reachable.</p>
+        </div>
+      </section>
+      
+      <section class="section">
+        <div class="section-content">
+          <span class="section-kicker">Performance</span>
+          <h2>5. The GZip Compression Storm.</h2>
+          <p>Cold loads took 6.4 seconds because <code>GZipMiddleware</code> recompressed multi-MB static bundles on the event loop for every request.</p>
+          <p><strong>The Fix:</strong> I pre-compressed <code>*.gz</code> siblings once at startup and served them directly. Cold-boot DOMContentLoaded dropped from 6,400 ms to <strong>516 ms</strong>.</p>
+        </div>
+      </section>
+</div>
   </main>
 
   <footer class="footer wrap">

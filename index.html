@@ -75,6 +75,7 @@
             <a href="gateway.html">Gateway</a>
             <a href="mesh-core.html">Mesh Core</a>
             <a href="software-decisions.html">Software Architecture</a>
+            <a href="engineering-journal.html">Debugging & Journal</a>
             <a href="event-bus.html">Event Bus & Watches</a>
             <a href="security.html">Security & RBAC</a>
           </div>
@@ -113,12 +114,7 @@
         </div>
         </div>
 
-        <!-- BETA Project Group -->
-        <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 0.75rem; background: rgba(16, 185, 129, 0.05); border: 1px solid rgba(16, 185, 129, 0.2); padding: 0.25rem 1rem; border-radius: 12px;">
-          <span style="font-size: 0.65rem; color: #10b981; text-transform: uppercase; letter-spacing: 0.2em; border-right: 1px solid rgba(16, 185, 129, 0.3); padding-right: 0.75rem; margin-right: 0.25rem;">Project</span>
-          <a href="beta-overview.html" style="font-weight: 700; letter-spacing: 0.1em;">BETA</a>
-          <a href="omega-beta.html">Live Dashboard</a>
-        </div>
+        <!-- Evaluation Nav Group Removed -->
         
         <!-- Art Portfolio -->
         <div style="display: flex; align-items: center; margin-left: 0.5rem; border-left: 1px solid rgba(255,255,255,0.15); padding-left: 1.5rem;">
@@ -148,6 +144,13 @@
         <a class="btn btn-primary panel magnetic-btn" href="overview.html">Read The Architecture Overview</a>
         <a class="btn btn-secondary panel magnetic-btn" href="https://github.com/aminalnam/OMEGA-wave" target="_blank">View
           GitHub Repository</a>
+      </div>
+    
+      <div class="fade-up" style="animation-delay: 0.4s; display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1.5rem; justify-content: center;">
+        <div style="text-align: center;"><div style="font-family: var(--font-serif); font-size: 1.5rem; color: #fff;">~3</div><div style="font-size: 0.7rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.1em;">Weeks Build</div></div>
+        <div style="text-align: center; border-left: 1px solid rgba(255,255,255,0.1); padding-left: 1rem;"><div style="font-family: var(--font-serif); font-size: 1.5rem; color: #fff;">~157k</div><div style="font-size: 0.7rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.1em;">Lines of Code</div></div>
+        <div style="text-align: center; border-left: 1px solid rgba(255,255,255,0.1); padding-left: 1rem;"><div style="font-family: var(--font-serif); font-size: 1.5rem; color: #fff;">762</div><div style="font-size: 0.7rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.1em;">Commits</div></div>
+        <div style="text-align: center; border-left: 1px solid rgba(255,255,255,0.1); padding-left: 1rem;"><div style="font-family: var(--font-serif); font-size: 1.5rem; color: #fff;">14</div><div style="font-size: 0.7rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.1em;">Hardware Targets</div></div>
       </div>
     </div>
   </section>
@@ -287,51 +290,33 @@
             <h3 class="bento-title">Economic Model</h3>
             <p class="bento-desc">Comprehensive cost analysis scaling from local deployments to global operations.</p>
           </a>
-
-          <!-- OMEGA BETA Link -->
-          <a href="omega-beta.html" class="panel bento-item"
-            style="grid-column: 1 / -1; border: 1px solid var(--accent-ocean); background: rgba(59, 130, 246, 0.05);">
-            <div class="bento-icon">🔬</div>
-            <h3 class="bento-title">OMEGA BETA Analytics</h3>
-            <p class="bento-desc">Live dashboard proving OMEGA's resilience. The BETA framework bombarding the OMEGA
-              gateway with synthetic telemetry.</p>
-          </a>
         </div>
       </section>
 
-      <!-- New BETA Framework Section -->
-      <section class="section section-block fade-up" style="margin-top: 4rem;">
-        <span class="section-kicker" style="color: var(--accent-green);">Project 2</span>
-        <h2 class="scramble-text" style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 2rem;">BETA
-          Framework Modules</h2>
+      <!-- Readiness & Evaluation Section -->
+      <section class="section section-block fade-up" style="margin-top: 4rem; padding-bottom: 2rem;">
+        <span class="section-kicker" style="color: var(--accent-ocean);">Project 2</span>
+        <h2 class="scramble-text" style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 2rem;">Honest Evaluation & Readiness.</h2>
 
         <div class="bento-grid">
 
-          <a href="beta-overview.html" class="panel bento-item beta-panel-hover glitch-hover"
-            style="grid-column: 1 / -1;">
+          <a href="simulation.html" class="panel bento-item beta-panel-hover glitch-hover" style="grid-column: 1 / -1;">
+            <div class="bento-icon">🔬</div>
+            <h3 class="bento-title">Absolute Data Purity</h3>
+            <p class="bento-desc">The live map shows only real, deployed hardware. Synthetic data and forecasts are treated as overlays, never ground-truth. The simulation engine strictly purges fabricated rows to protect scientific integrity.</p>
+          </a>
+
+          <a href="simulation.html" class="panel bento-item beta-panel-hover glitch-hover" style="grid-column: 1 / -1;">
             <div class="bento-icon">⚙️</div>
-            <h3 class="bento-title">Deterministic Fuzzing</h3>
-            <p class="bento-desc">A relentless evaluation engine. Continuously generates thousands of highly complex
-              synthetic payload injections, simulating multiple drifting fleets, acoustic anomalies, and deliberate
-              hardware packet corruption to stress-test the OMEGA core.</p>
+            <h3 class="bento-title">Zero-Install Smoke Gate</h3>
+            <p class="bento-desc">A relentless evaluation engine that spins up a throwaway SQLite database in `/tmp`, continuously generating highly complex synthetic payload injections to stress-test the OMEGA core without polluting production.</p>
           </a>
 
-          <a href="beta-overview.html" class="panel bento-item beta-panel-hover glitch-hover"
-            style="grid-column: 1 / -1;">
-            <div class="bento-icon">📈</div>
-            <h3 class="bento-title">High-Frequency Analytics</h3>
-            <p class="bento-desc">Calculates extreme-scale telemetry metrics in real-time. Establishes dynamic 5-minute
-              rolling P95 latency baselines and strictly enforces SLAs across the entire DTN routing pipeline.</p>
-          </a>
-
-          <a href="beta-overview.html" class="panel bento-item beta-panel-hover glitch-hover"
-            style="grid-column: 1 / -1;">
-            <div class="bento-icon">🤖</div>
-            <h3 class="bento-title">AI Remediation Ticketing</h3>
-            <p class="bento-desc">Fully automated CI/CD integration. When the fuzzer breaks the OMEGA architecture, the
-              AI Core instantly synthesizes error logs, identifies the exact Python/C++ regression, and pushes
-              Jira-style remediation tickets to engineering.</p>
-          </a>
+          <div class="panel bento-item beta-panel-hover glitch-hover" style="grid-column: 1 / -1;">
+            <div class="bento-icon">📋</div>
+            <h3 class="bento-title">13-Agent Readiness Audit (63/100)</h3>
+            <p class="bento-desc">Instead of marketing "100% complete", we built a 13-agent AI committee to aggressively review the deployment logs against adversarial vectors. It scored the hardware-agnostic stack an honest 63/100, dictating the remaining firmware blockers.</p>
+          </div>
 
         </div>
       </section>

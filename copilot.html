@@ -56,6 +56,7 @@
             <a href="gateway.html">Gateway</a>
             <a href="mesh-core.html">Mesh Core</a>
             <a href="software-decisions.html">Software Architecture</a>
+            <a href="engineering-journal.html">Debugging & Journal</a>
             <a href="event-bus.html">Event Bus & Watches</a>
             <a href="security.html">Security & RBAC</a>
           </div>
@@ -94,12 +95,7 @@
         </div>
         </div>
 
-        <!-- BETA Project Group -->
-        <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 0.75rem; background: rgba(16, 185, 129, 0.05); border: 1px solid rgba(16, 185, 129, 0.2); padding: 0.25rem 1rem; border-radius: 12px;">
-          <span style="font-size: 0.65rem; color: #10b981; text-transform: uppercase; letter-spacing: 0.2em; border-right: 1px solid rgba(16, 185, 129, 0.3); padding-right: 0.75rem; margin-right: 0.25rem;">Project</span>
-          <a href="beta-overview.html" style="font-weight: 700; letter-spacing: 0.1em;">BETA</a>
-          <a href="omega-beta.html">Live Dashboard</a>
-        </div>
+        <!-- Evaluation Nav Group Removed -->
         
         <!-- Art Portfolio -->
         <div style="display: flex; align-items: center; margin-left: 0.5rem; border-left: 1px solid rgba(255,255,255,0.15); padding-left: 1.5rem;">
@@ -112,7 +108,7 @@
   <section class="hero wrap">
     <span class="eyebrow">Honu AI Copilot</span>
     <h1>AI Orchestration.</h1>
-    <p>Deep dive into the 240KB Python tool registry and Read-Only safety constraints.</p>
+    <p>Deep dive into the massive ~100-tool action registry and Read-Only safety constraints.</p>
     <div class="hero-actions">
       <a class="btn btn-primary" href="https://github.com/aminalnam/OMEGA-wave" target="_blank">View OMEGA-wave on GitHub</a>
       <a class="btn btn-secondary" href="https://jonathancapone.art" target="_blank">Art Portfolio</a>
@@ -125,8 +121,8 @@
 
           <section class="section section-block" style="background: rgba(0,0,0,0.4);">
             <span class="section-kicker">AI Orchestration</span>
-            <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">The 46-Tool Action Registry.</h2>
-            <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">The <code>gateway/copilot.py</code> module is a massive 240KB orchestration loop. Small local LLMs (like Qwen2.5 7B) cannot reliably pick the correct tool if given a dump of 46 different functions. Honu solves this by mathematically filtering tools based on 13 strict Intent Groups.</p>
+            <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">The ~100-Tool Action Registry.</h2>
+            <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">The <code>gateway/copilot.py</code> module is a massive 240KB orchestration loop. Small local LLMs (like Qwen2.5 7B) cannot reliably pick the correct tool if given a dump of ~100 different tools. Honu solves this by mathematically filtering tools based on 13 strict Intent Groups.</p>
             
             <div class="grid-3" style="margin-bottom: 2rem;">
               <div class="panel" style="padding: 1.5rem;">
@@ -179,7 +175,7 @@
               <span class="section-kicker">Safety Constraints</span>
               <h2>Absolute Read-Only Execution.</h2>
               <p>AI hallucinations are dangerous, especially when dealing with physical hardware on a multimillion-dollar edge node. The Honu prompt engine enforces absolute read-only constraints. It is physically impossible for the LLM to execute a mutating API call or alter remote fleet parameters.</p>
-<p><strong>The Physics of Confinement:</strong> Unlike standard chatbot implementations that just "ask" the AI not to break things, OMEGA physically isolates the AI execution environment. The 46-tool registry exposed to the LLM explicitly does not contain functions that perform POST or PUT requests to the SQLite database. The AI is structurally blind to mutation endpoints.</p>
+<p><strong>The Physics of Confinement:</strong> Unlike standard chatbot implementations that just "ask" the AI not to break things, OMEGA physically isolates the AI execution environment. The ~100-tool registry exposed to the LLM explicitly does not contain functions that perform POST or PUT requests to the SQLite database. The AI is structurally blind to mutation endpoints.</p>
 <p><strong>Execution:</strong> The system prompt rigorously reinforces this architectural boundary. If the LLM attempts to hallucinate a command (e.g. `execute_format_nvram`), the orchestration loop detects the unregistered tool attempt and mathematically drops the execution thread, returning an explicit safety violation to the operator.</p>
               
             </div>

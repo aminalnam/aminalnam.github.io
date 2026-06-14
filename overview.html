@@ -66,6 +66,7 @@
             <a href="gateway.html">Gateway</a>
             <a href="mesh-core.html">Mesh Core</a>
             <a href="software-decisions.html">Software Architecture</a>
+            <a href="engineering-journal.html">Debugging & Journal</a>
             <a href="event-bus.html">Event Bus & Watches</a>
             <a href="security.html">Security & RBAC</a>
           </div>
@@ -104,12 +105,7 @@
         </div>
         </div>
 
-        <!-- BETA Project Group -->
-        <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 0.75rem; background: rgba(16, 185, 129, 0.05); border: 1px solid rgba(16, 185, 129, 0.2); padding: 0.25rem 1rem; border-radius: 12px;">
-          <span style="font-size: 0.65rem; color: #10b981; text-transform: uppercase; letter-spacing: 0.2em; border-right: 1px solid rgba(16, 185, 129, 0.3); padding-right: 0.75rem; margin-right: 0.25rem;">Project</span>
-          <a href="beta-overview.html" style="font-weight: 700; letter-spacing: 0.1em;">BETA</a>
-          <a href="omega-beta.html">Live Dashboard</a>
-        </div>
+        <!-- Evaluation Nav Group Removed -->
         
         <!-- Art Portfolio -->
         <div style="display: flex; align-items: center; margin-left: 0.5rem; border-left: 1px solid rgba(255,255,255,0.15); padding-left: 1.5rem;">
@@ -199,66 +195,14 @@
       </section>
 
       <section class="section section-block" style="background: rgba(0,0,0,0.4);">
-        <span class="section-kicker">The Genesis</span>
-        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Shattering the Legacy Paradigm.
-        </h2>
+        <span class="section-kicker">The Core Axiom</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Bearer-Agnostic Observation Protocol.</h2>
         <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">
-          For decades, marine research has been dominated by massive, proprietary $50,000 sensor buoys. These monolithic
-          platforms are incredibly expensive to deploy, mathematically guaranteeing that massive swaths of the ocean
-          remain completely unmonitored.</p>
+          The true intellectual through-line of the OMEGA program is the separation of envelope <em>semantics</em> from per-bearer <em>wire forms</em>. "The standard is the protocol, not the box."
+        </p>
         <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">
-          OMEGA was engineered from the ground up to destroy this paradigm. By fusing wildly cheap ESP32
-          microcontrollers, 3D-printed hydrodynamic hulls, and extremely efficient Delay Tolerant Networking (DTN)
-          protocols, OMEGA allows a single research vessel to scatter hundreds of interconnected "smart buoys" across a
-          vast coastal bay. This creates a high-density, fault-tolerant mesh swarm that can detect microscopic thermal
-          anomalies that a single $50k buoy would completely miss.</p>
-      </section>
-
-      <section class="section">
-        <div class="section-content">
-          <span class="section-kicker">Data Synthesis</span>
-          <h2>The Global Federation.</h2>
-          <p>But a local swarm of drifting buoys is only half the story. The true power of the OMEGA network lies in its
-            ability to automatically federate local, high-frequency physical telemetry with massive global climate
-            databases.</p>
-          <p><strong>The Data Plane:</strong> While the buoys are pinging localized water temperature via LoRa radio,
-            the OMEGA Gateway simultaneously queries ERDDAP servers, Copernicus satellites, and the Global Fishing
-            Watch APIs. It seamlessly mathematically fuses a localized 10-meter temperature anomaly with a 100-kilometer
-            regional satellite heat map, presenting human operators with a unified, panoptic view of the physical
-            ocean—all rendered natively in a single WebGL dashboard.</p>
-        </div>
-      </section>
-
-      <section class="section">
-        <div class="section-content">
-          <span class="section-kicker">Decentralized Science</span>
-          <h2>Data Marketplace & Verification.</h2>
-          <p>The DTO v3.0 architecture introduces a radical new economic engine: <strong>Smart Bounties</strong>. Researchers can draw a geofence on the globe and specify a metric (e.g., dissolved oxygen at 10 meters depth). Opportunistic vessels entering the zone are automatically notified of the bounty and can collect the data to fulfill the contract.</p>
-          <p><strong>Argo Calibration Engine:</strong> To prevent fraudulent data submission, the system automatically cross-references all hardware telemetry against the global baseline. It pings the Argovis API to locate the nearest active Argo profiling float and mathematically validates the uploaded data before releasing the bounty.</p>
-          <p><strong>Data Provenance:</strong> All telemetry is cryptographically signed at the absolute edge—on the physical ESP32 or Raspberry Pi—and anchored to a decentralized ledger via IPFS. This ensures an unbroken, irrefutable chain of custody from the physical ocean to the digital marketplace.</p>
-        </div>
-      </section>
-
-      <section class="section">
-        <div class="section-content">
-          <span class="section-kicker">Edge Compute Physics</span>
-          <h2>The Edge-to-Cloud Continuum.</h2>
-          <p>Marine deployments operate in environments uniquely hostile to traditional IP networks. The physics of
-            transmitting large data volumes over satellite (Iridium/Starlink) or VHF radio links dictates prohibitive
-            costs and restrictive latency boundaries. For instance, streaming raw 20Hz vibration data from a remote buoy
-            to the cloud is economically and physically unviable.</p>
-          <p>OMEGA bypasses these physical limitations by pushing computational complexity entirely to the edge. Instead
-            of piping raw, high-frequency matrices across the ocean, an onboard multi-core ESP32 locally ingests,
-            filters, and reduces millions of data points into a single semantic "Mission Intent" or "Observation
-            Envelope." This process—often involving embedded machine learning or fast Fourier transforms—saves up to 99%
-            of the required bandwidth.</p>
-          <p>In practice, this means an Remote Edge Node (edge node) can detect an acoustic anomaly, classify it
-            locally, and transmit an 84-byte Binary TLV packet via LoRa to a shore gateway, rather than attempting to
-            transmit a 50MB audio file. This paradigm shift enables massive, scalable sensor networks that can operate
-            continuously without cellular dependencies.</p>
-
-        </div>
-
+          This design decision is what allowed an SX1302 concentrator, SignalK marine bridges, and TTN (The Things Network) adapters to all join the mesh with absolutely zero protocol changes. The envelope standardizes identity, time, location, and payload, while the wire format seamlessly transitions from an ultra-dense 84-byte binary TLV over LoRa, to JSON over HTTP, to Semtech-UDP for concentrators.
+        </p>
       </section>
 
       <section class="section">

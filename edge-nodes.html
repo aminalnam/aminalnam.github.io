@@ -56,6 +56,7 @@
             <a href="gateway.html">Gateway</a>
             <a href="mesh-core.html">Mesh Core</a>
             <a href="software-decisions.html">Software Architecture</a>
+            <a href="engineering-journal.html">Debugging & Journal</a>
             <a href="event-bus.html">Event Bus & Watches</a>
             <a href="security.html">Security & RBAC</a>
           </div>
@@ -94,12 +95,7 @@
         </div>
         </div>
 
-        <!-- BETA Project Group -->
-        <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 0.75rem; background: rgba(16, 185, 129, 0.05); border: 1px solid rgba(16, 185, 129, 0.2); padding: 0.25rem 1rem; border-radius: 12px;">
-          <span style="font-size: 0.65rem; color: #10b981; text-transform: uppercase; letter-spacing: 0.2em; border-right: 1px solid rgba(16, 185, 129, 0.3); padding-right: 0.75rem; margin-right: 0.25rem;">Project</span>
-          <a href="beta-overview.html" style="font-weight: 700; letter-spacing: 0.1em;">BETA</a>
-          <a href="omega-beta.html">Live Dashboard</a>
-        </div>
+        <!-- Evaluation Nav Group Removed -->
         
         <!-- Art Portfolio -->
         <div style="display: flex; align-items: center; margin-left: 0.5rem; border-left: 1px solid rgba(255,255,255,0.15); padding-left: 1.5rem;">
@@ -124,21 +120,10 @@
 
           <section class="section">
             <div class="section-content">
-              <span class="section-kicker">Power Engineering</span>
-              <h2>Battery Science & MPPT Solar.</h2>
-              <p>Deploying remote sensor nodes into the environment introduces severe, often fatal hardware constraints. A node cannot plug into a wall outlet; it must harvest and mathematically budget its own power.</p>
-<p>The sensor node firmware integrates Maximum Power Point Tracking (MPPT) algorithms to optimize solar energy harvesting. As the sun moves, the solar panel's voltage fluctuates. The firmware actively modulates the load impedance to ensure the panel always operates at its maximum power extraction point, rapidly charging the internal lithium-ion cells.</p>
-<p><strong>Relevance:</strong> A standard ESP32 draws roughly 100mA while active, draining an 18650 lithium battery in two days. The firmware must meticulously balance the incoming solar joules against the outgoing telemetry requirements, ensuring the battery never drops below its critical 3.2V threshold, which would cause permanent chemical degradation.</p>
-            </div>
-          </section>
-    
-          <section class="section">
-            <div class="section-content">
-              <span class="section-kicker">Hardware Physics</span>
-              <h2>Thermodynamics & Heat Dissipation.</h2>
-              <p>Edge nodes must be encased in completely sealed, hermetic IP67+ waterproof enclosures to survive environmental exposure. However, processors like the ESP32 and accompanying 30dBm LoRa amplifiers generate significant internal heat.</p>
-<p>Because they are sealed, there is zero active ventilation. The system relies entirely on <strong>passive thermal conduction</strong> through the enclosure walls to the surrounding ambient air. If the firmware transmits data continuously, the internal ambient temperature will inevitably rise until the silicon hits its thermal throttling limit, leading to catastrophic system failure or melted PLA mounts.</p>
-<p><strong>How we use this:</strong> OMEGA firmware implements rigid software limiters on radio transmit duty-cycles. It monitors the internal CPU die temperatures and aggressively throttles clock speeds or drops non-critical telemetry packets to ensure the thermal envelope of the enclosure is never breached.</p>
+              <span class="section-kicker">Hardware Reality</span>
+              <h2>Cross-Family LoRa Interop.</h2>
+              <p>Getting a true multi-hop mesh to work isn't about plugging in antennas; it's about making disparate silicon families talk to each other. The network bridges Semtech's SX1262 (T-Beam Supreme) and their newer LR1121 (T3-S3).</p>
+              <p><strong>Execution:</strong> To achieve seamless interop, the firmware had to manually settle sync-word mismatches (enforcing the `0x34` public sync), explicitly declare bandwidth and spreading factor settings that libraries usually abstract away, and implement aggressive polling-based RX with full-chain IRQ mapping. This allowed concurrent sensing, relaying, and USB-forwarding across completely different chipset architectures.</p>
             </div>
           </section>
 
@@ -171,19 +156,11 @@
               <span class="section-kicker">Network Resilience</span>
               <h2>Offline Survival & Store-and-Forward.</h2>
               <p>Oceanographic buoys frequently drift into RF dead zones or experience severe atmospheric interference. If an edge node cannot reach the gateway, it must not drop its critical telemetry.</p>
-<p><strong>Execution:</strong> To solve this, the DTO v3.0 firmware implements an autonomous <strong>Store & Forward</strong> architecture. When a node detects that a transmission has failed (via missing LoRaWAN ACKs or CSMA-CA channel jamming), it seamlessly reroutes the compressed telemetry payload into its non-volatile SPIFFS memory. The node can survive offline for weeks, quietly accumulating data. When connection to the mesh is re-established, the node automatically flushes its queue, seamlessly reconstructing the timeline in the central database.</p>
+<p><strong>Execution:</strong> To solve this, Phase 2 firmware implements an autonomous <strong>Store & Forward</strong> architecture. When a node detects that a transmission has failed (via missing LoRaWAN ACKs or CSMA-CA channel jamming), it seamlessly reroutes the compressed telemetry payload into its non-volatile SPIFFS memory. The node can survive offline for weeks, quietly accumulating data. When connection to the mesh is re-established, the node automatically flushes its queue, seamlessly reconstructing the timeline in the central database.</p>
             </div>
           </section>
 
-          <section class="section">
-            <div class="section-content">
-              <span class="section-kicker">Deployment Operations</span>
-              <h2>Over-The-Air (OTA) Pipelines.</h2>
-              <p>Retrieving a deployed remote sensor from the environment simply to update a line of code is logistically prohibitive. OMEGA implements a robust Over-The-Air (OTA) flashing pipeline over its own DTN mesh network.</p>
-<p><strong>How it works:</strong> The compiled firmware binaries are fragmented, heavily compressed, and signed with a cryptographic private key. The Gateway transmits these fragments sequentially over the LoRa network. The edge node receives the fragments, buffers them in its external SPI flash memory, and reassembles them.</p>
-<p>Crucially, the node then mathematically verifies the cryptographic signature of the reassembled binary. It only switches the boot partition pointer to the new firmware if the validation passes perfectly, completely preventing "bricked" nodes from corrupt RF packets.</p>
-            </div>
-          </section>
+          
     
     </div>
   </main>

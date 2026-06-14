@@ -56,6 +56,7 @@
             <a href="gateway.html" class="is-current">Gateway</a>
             <a href="mesh-core.html">Mesh Core</a>
             <a href="software-decisions.html">Software Architecture</a>
+            <a href="engineering-journal.html">Debugging & Journal</a>
             <a href="event-bus.html">Event Bus & Watches</a>
             <a href="security.html">Security & RBAC</a>
           </div>
@@ -94,12 +95,7 @@
         </div>
         </div>
 
-        <!-- BETA Project Group -->
-        <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 0.75rem; background: rgba(16, 185, 129, 0.05); border: 1px solid rgba(16, 185, 129, 0.2); padding: 0.25rem 1rem; border-radius: 12px;">
-          <span style="font-size: 0.65rem; color: #10b981; text-transform: uppercase; letter-spacing: 0.2em; border-right: 1px solid rgba(16, 185, 129, 0.3); padding-right: 0.75rem; margin-right: 0.25rem;">Project</span>
-          <a href="beta-overview.html" style="font-weight: 700; letter-spacing: 0.1em;">BETA</a>
-          <a href="omega-beta.html">Live Dashboard</a>
-        </div>
+        <!-- Evaluation Nav Group Removed -->
         
         <!-- Art Portfolio -->
         <div style="display: flex; align-items: center; margin-left: 0.5rem; border-left: 1px solid rgba(255,255,255,0.15); padding-left: 1.5rem;">
@@ -127,7 +123,7 @@
             <div class="section-content">
               <span class="section-kicker">Concurrency & IO Bound Limits</span>
               <h2>FastAPI Async Event Loop.</h2>
-              <p>The OMEGA Gateway is not a simple REST API; it is a high-performance, asynchronous edge router built on FastAPI and Uvicorn. Designed to run on embedded Linux (e.g. Raspberry Pi 5) deployed directly at the coastal shore, it acts as the master ingestion point for the entire Delay Tolerant Network.</p>
+              <p>The OMEGA Gateway is a massive <strong>~105,500 LOC Python</strong> backend exposing <strong>~390 FastAPI routes</strong>. It acts as the master ingestion point for the entire Delay Tolerant Network. and Uvicorn. Designed to run on embedded Linux (e.g. Raspberry Pi 5) deployed directly at the coastal shore, it acts as the master ingestion point for the entire Delay Tolerant Network.</p>
 <p><strong>Database Architecture:</strong> Telemetry arrives asynchronously via UDP and Serial ports at massive volumes. A standard SQLite configuration would instantly lock and crash under this concurrent write pressure. The Python backend physically rewrites the SQLite PRAGMA at boot, enforcing Write-Ahead Logging (<code>WAL</code>) mode and <code>NORMAL</code> synchronous behavior. This decouples the read/write locks, allowing the Mission Portal to execute massive <code>SELECT</code> queries over the historical arrays while the edge node bridges concurrently <code>INSERT</code> live TLV frames without blocking.</p>
               <div class="callout"><strong>Background Tasks</strong><p>Heavy normalization operations are relegated to Starlette background tasks, ensuring the endpoint returns a 202 Accepted instantly.</p></div>
             </div>
@@ -163,7 +159,7 @@
             <div class="section-content">
               <span class="section-kicker">Database Engineering</span>
               <h2>SQLite Normalization & WAL.</h2>
-              <p>A fleet of 50 edge nodes transmitting telemetry every 10 seconds generates a continuous, erratic, write-heavy load on the central gateway. Traditional SQLite configurations use database-level locks; when a write occurs, the entire file is locked, which causes `database is locked` exceptions for any dashboard attempting to read the data concurrently.</p>
+              <p>A distributed mesh generates continuous, erratic, write-heavy load. The gateway utilizes a SQLite store specifically designed for mesh provenance (multi-gateway sightings, dedup on `(origin, sequence)`, idempotent ingest). Traditional SQLite configurations use database-level locks; when a write occurs, the entire file is locked, which causes `database is locked` exceptions for any dashboard attempting to read the data concurrently.</p>
 <p>To eliminate this bottleneck, the OMEGA gateway configures its SQLite engine in <strong>Write-Ahead Logging (WAL)</strong> mode using explicit PRAGMA statements on startup. Instead of locking the main database file during a write, changes are appended extremely fast to a separate `.wal` file.</p>
 <p><strong>Relevance:</strong> This allows readers (the Mission Portal fetching historical graphs) to concurrently access the database without ever being blocked by writers (the continuous telemetry ingest). Furthermore, `PRAGMA synchronous=NORMAL` relaxes the rigid sync constraints, vastly increasing write throughput on the SD cards of Raspberry Pi gateways without risking catastrophic corruption.</p>
               
@@ -187,7 +183,13 @@ PRAGMA cache_size=-64000;</code></pre></div>
             </div>
           </section>
 
-          <section class="section section-block" style="background: rgba(0,0,0,0.4);">
+          
+          <div class="panel" style="margin-top: 2rem; border-left: 4px solid var(--accent);">
+            <h4 style="margin: 0 0 0.5rem; color: #fff;">Engineering Reality: HTTP/1.1 Socket Starvation</h4>
+            <p style="font-size: 0.9rem; color: var(--ink-soft); margin: 0;">The portal initially hung over field connections. Debugging DevTools revealed exactly 6 ESTABLISHED sockets—HTTP/1.1's limit—eaten entirely by dual permanent Server-Sent-Events streams. Fixing it required lazy-loading the SSE streams to unblock the map fetches. <a href="engineering-journal.html" style="color: var(--accent);">Read the full journal &rarr;</a></p>
+          </div>
+
+      <section class="section section-block" style="background: rgba(0,0,0,0.4);">
             <span class="section-kicker">Hardware Interfacing</span>
             <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">T-ETH-ELITE & The Ingest Contract.</h2>
             <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">

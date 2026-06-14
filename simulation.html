@@ -56,6 +56,7 @@
             <a href="gateway.html">Gateway</a>
             <a href="mesh-core.html">Mesh Core</a>
             <a href="software-decisions.html">Software Architecture</a>
+            <a href="engineering-journal.html">Debugging & Journal</a>
             <a href="event-bus.html">Event Bus & Watches</a>
             <a href="security.html">Security & RBAC</a>
           </div>
@@ -94,12 +95,7 @@
         </div>
         </div>
 
-        <!-- BETA Project Group -->
-        <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 0.75rem; background: rgba(16, 185, 129, 0.05); border: 1px solid rgba(16, 185, 129, 0.2); padding: 0.25rem 1rem; border-radius: 12px;">
-          <span style="font-size: 0.65rem; color: #10b981; text-transform: uppercase; letter-spacing: 0.2em; border-right: 1px solid rgba(16, 185, 129, 0.3); padding-right: 0.75rem; margin-right: 0.25rem;">Project</span>
-          <a href="beta-overview.html" style="font-weight: 700; letter-spacing: 0.1em;">BETA</a>
-          <a href="omega-beta.html">Live Dashboard</a>
-        </div>
+        <!-- Evaluation Nav Group Removed -->
         
         <!-- Art Portfolio -->
         <div style="display: flex; align-items: center; margin-left: 0.5rem; border-left: 1px solid rgba(255,255,255,0.15); padding-left: 1.5rem;">
@@ -128,7 +124,8 @@
               <span class="section-kicker">Synthetic Generation</span>
               <h2>Procedural Time-Step Environments.</h2>
               <p>Deploying a massive mesh network without testing is catastrophic. The <code>simulator.py</code> module spawns thousands of virtual "Digital Twins" that run the exact same networking logic as the physical edge nodes.</p>
-<p><strong>Procedural Generation:</strong> The Python engine dynamically seeds the portal with realistic mixed-source data including stationary water-quality stations, shore weather endpoints, moving drifters, ROV-style tracks, and bathymetry survey soundings. It actively simulates mesh network interfaces, neighbor presence, and queued packets. Preset scenarios such as <code>coastal-demo</code> and <code>underwater-ops</code> allow developers to inject JANUS acoustic activity and full fleet topologies to test the FastAPI gateway without requiring physical hardware in the loop.</p>
+<p><strong>Absolute Data Purity:</strong> Modeled data is context, never ground truth. Every simulation writes to a temporary database or strictly purges its fabricated rows before commit. Simulated data is NEVER rendered on the live map. An ocean instrument that conflates a forecast with a physical measurement is worse than useless.</p>
+              <p><strong>Procedural Generation:</strong> The Python engine dynamically seeds the portal with realistic mixed-source data including stationary water-quality stations, shore weather endpoints, moving drifters, ROV-style tracks, and bathymetry survey soundings. It actively simulates mesh network interfaces, neighbor presence, and queued packets. Preset scenarios such as <code>coastal-demo</code> and <code>underwater-ops</code> allow developers to inject JANUS acoustic activity and full fleet topologies to test the FastAPI gateway without requiring physical hardware in the loop.</p>
               
             </div>
             <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">gateway/simulator.py</span><pre><code class="language-python">async def tick_digital_twins(twins: list[DigitalTwin], mesh_router: MeshRouter):
@@ -214,7 +211,7 @@
                 </table>
               </div>
               
-              <p><strong>Execution:</strong> Developers plug 5 physical ESP32 boards into a powered USB hub. The simulator logically injects these physical chips into the cloud matrix. The physical boards "believe" they are deployed in the ocean, processing synthetic sensor data and transmitting actual LoRa packets. This exposes obscure memory fragmentation bugs before the silicon ever touches saltwater.</p>
+              <p><strong>Execution:</strong> Developers plug 5 physical ESP32 boards into a powered USB hub. The simulator logically injects these physical chips into the isolated test matrix (never production). The physical boards "believe" they are deployed in the ocean, processing synthetic sensor data and transmitting actual LoRa packets. This exposes obscure memory fragmentation bugs before the silicon ever touches saltwater.</p>
             </div>
           </section>
     
