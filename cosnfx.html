@@ -102,7 +102,7 @@
           <div class="panel" style="padding: 1.5rem;">
             <span class="status-label status-implemented">Networking</span>
             <h3 style="font-size: 1.2rem;">Phone Hub</h3>
-            <p style="font-size: 0.85rem;">A Ktor-powered WebSocket server running silently in a pocket. Acts as Mission Control and handles the secondary ambient synthesis layer.</p>
+            <p style="font-size: 0.85rem;">A Ktor Netty server (Port 8080) handling WebSockets for kinetic sync, the CSS-Color-Sync theme engine, and the multipart asset uploader.</p>
           </div>
           <div class="panel" style="padding: 1.5rem;">
             <span class="status-label status-implemented">Visuals</span>
@@ -110,6 +110,11 @@
             <p style="font-size: 0.85rem;">A lightweight graphics library of 20 mathematical visual archetypes rendered via custom Canvas-draw operations to prevent battery drain.</p>
           </div>
         </div>
+          <div class="panel" style="margin-top: 2rem; border-left: 4px solid var(--accent); grid-column: 1 / -1;">
+            <h3 style="margin: 0 0 0.5rem; color: #fff;">Engineering Reality: The "Ignition Twist" Interrupt</h3>
+            <p style="font-size: 0.9rem; color: var(--ink-soft); margin: 0;">Performers cannot tap a tiny smartwatch screen in the middle of a stage sequence. To solve this, the kinetic engine includes a global system interrupt: a sharp wrist flick (<code>abs(liveGyroY) > 22.0f</code>) instantly toggles the system between ARM and MUTE states without requiring visual interaction.</p>
+          </div>
+
       </section>
 
       <section class="section">
@@ -130,14 +135,19 @@
           <div class="panel" style="padding: 1.5rem;">
             <span class="status-label status-implemented">Kinematics</span>
             <h3 style="font-size: 1.2rem;">Angular Jerk</h3>
-            <p style="font-size: 0.85rem;">Instead of looking at gravity, the engine fuses the Gyroscope to detect <strong>Angular Velocity</strong> (the "snap") and Linear Accelerometers to detect <strong>G-force Jerk</strong> (the physical "impact" at the end of a punch).</p>
+            <p style="font-size: 0.85rem;">Instead of relying on basic gravity, the engine fuses the Gyroscope to detect <strong>Angular Velocity</strong> (threshold > 12.0f) and Linear Accelerometers to detect <strong>G-force Jerk</strong> (threshold > 25.0f) to isolate true physical strikes.</p>
           </div>
           <div class="panel" style="padding: 1.5rem;">
             <span class="status-label status-implemented">State Machines</span>
             <h3 style="font-size: 1.2rem;">3-Tier Posture Gate</h3>
-            <p style="font-size: 0.85rem;">While the arm is resting (RELAXED), the sensors are electronically muted to save battery. Only when the arm is raised into a combat posture (READY) does the high-frequency polling loop prime the system for a STRIKE.</p>
+            <p style="font-size: 0.85rem;">While the arm is resting (Gravity Y > 8.2), the system locks out. Only when the arm is raised into a combat posture (Gravity Y < 4.0) does the high-frequency polling loop prime the tactical nodes to 100% opacity and listen for a strike.</p>
           </div>
         </div>
+          <div class="panel" style="margin-top: 2rem; border-left: 4px solid var(--accent); grid-column: 1 / -1;">
+            <h3 style="margin: 0 0 0.5rem; color: #fff;">Engineering Reality: The "Ignition Twist" Interrupt</h3>
+            <p style="font-size: 0.9rem; color: var(--ink-soft); margin: 0;">Performers cannot tap a tiny smartwatch screen in the middle of a stage sequence. To solve this, the kinetic engine includes a global system interrupt: a sharp wrist flick (<code>abs(liveGyroY) > 22.0f</code>) instantly toggles the system between ARM and MUTE states without requiring visual interaction.</p>
+          </div>
+
       </section>
 
       <section class="section">
