@@ -20,10 +20,6 @@
 
   <link rel="stylesheet" href="style.css">
 
-  <script src='https://api.mapbox.com/mapbox-gl-js/v3.0.1/mapbox-gl.js'></script>
-  <link href='https://api.mapbox.com/mapbox-gl-js/v3.0.1/mapbox-gl.css' rel='stylesheet' />
-
-  
   <meta property="og:image" content="https://jonathancapone.com/images/overview/project-documentation_overview.png" />
   <link rel="canonical" href="https://jonathancapone.com/mission-portal.html" />
 </head>
@@ -78,73 +74,6 @@
 <a class="btn btn-secondary" href="https://jonathancapone.art" target="_blank">Art Portfolio</a>
     </div>
 
-    <!-- Live Interactive Mapbox Canvas -->
-    <div id='map'
-      style='width: 100%; height: 500px; border-radius: 8px; margin: 3rem 0 0 0; border: 1px solid var(--line);'></div>
-    <script>
-      // Public Read-Only Token for map rendering
-      mapboxgl.accessToken = 'pk.REPLACE_ME_WITH_RESTRICTED_TOKEN';
-      const map = new mapboxgl.Map({
-        container: 'map',
-        style: 'mapbox://styles/mapbox/dark-v11',
-        center: [-122.4194, 37.6],
-        zoom: 9,
-        pitch: 60,
-        bearing: -20
-      });
-
-      map.addControl(new mapboxgl.NavigationControl());
-
-      map.on('load', () => {
-        // Add 3D terrain
-        map.addSource('mapbox-dem', {
-          'type': 'raster-dem',
-          'url': 'mapbox://mapbox.mapbox-terrain-dem-v1',
-          'tileSize': 512,
-          'maxzoom': 14
-        });
-        map.setTerrain({ 'source': 'mapbox-dem', 'exaggeration': 1.5 });
-
-        // Add synthetic fleet telemetry
-        map.addSource('fleet', {
-          type: 'geojson',
-          data: {
-            "type": "FeatureCollection",
-            "features": [
-              { "type": "Feature", "geometry": { "type": "Point", "coordinates": [-122.5, 37.7] }, "properties": { "id": "buoy-alpha" } },
-              { "type": "Feature", "geometry": { "type": "Point", "coordinates": [-122.65, 37.6] }, "properties": { "id": "buoy-beta" } },
-              { "type": "Feature", "geometry": { "type": "Point", "coordinates": [-122.55, 37.5] }, "properties": { "id": "rov-x1" } }
-            ]
-          }
-        });
-
-        // Add glowing pulse effect
-        map.addLayer({
-          'id': 'fleet-glow',
-          'type': 'circle',
-          'source': 'fleet',
-          'paint': {
-            'circle-radius': 15,
-            'circle-color': '#10b981',
-            'circle-opacity': 0.3,
-            'circle-blur': 1
-          }
-        });
-
-        // Add solid core
-        map.addLayer({
-          'id': 'fleet-core',
-          'type': 'circle',
-          'source': 'fleet',
-          'paint': {
-            'circle-radius': 5,
-            'circle-color': '#10b981',
-            'circle-stroke-width': 2,
-            'circle-stroke-color': '#fff'
-          }
-        });
-      });
-    </script>
   </section>
 
   <main class="main-shell wrap" id="main">
