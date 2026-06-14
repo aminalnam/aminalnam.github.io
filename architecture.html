@@ -168,6 +168,12 @@
           <p><strong>Layer 0: The Benthic Zone.</strong> Deep-sea and subsurface instruments (such as ADCPs and acoustic modems) that communicate via NATO-standard JANUS acoustic chirps to surface relays.</p>
           <p><strong>Layer 1: The Surface Mesh.</strong> Raw hardware—ESP32 microcontrollers, GPS trackers, and physical probes riding the waves. These devices acquire signals, execute edge ML, and communicate via the Delay Tolerant Network (DTN) over 900MHz LoRa. They have no concept of "the internet" or HTTP.</p>
           <p><strong>Layer 2: The Gateway Normalizers.</strong> Software routers acting as the vital bridge. They ingest disjointed, highly compressed binary formats (Binary TLV / Acoustic FSK) from the edge and "inflate" them into the globally standard <strong>Envelope Protocol v1.0</strong> (JSON/CBOR). The gateway normalizes these packets into unified, queryable SQLite WAL records.</p>
+
+          <div class="panel" style="margin-top: 2rem; border-left: 4px solid var(--accent);">
+            <h3 style="margin: 0 0 0.5rem; color: #fff;">Program Scale</h3>
+            <p style="font-size: 0.9rem; color: var(--ink-soft); margin: 0;"><strong>Scale:</strong> ~3 weeks of intensive build &middot; 762 commits &middot; ~105k lines of Python + ~52k lines of portal JS &middot; ~390 HTTP endpoints &middot; 14 firmware board targets.</p>
+          </div>
+
           <p><strong>Layer 3: The Mission Portal.</strong> The 3D Digital Twin consumed by human operators. The portal is entirely decoupled from the hardware layer; it interacts exclusively with the Gateway APIs via standard HTTP/REST and WebSockets.</p>
           <p>This strict division ensures that if the portal server goes offline, the gateway safely continues buffering telemetry into its WAL database. Conversely, if the gateway loses connection to the internet, the edge nodes continue to safely execute their firmware loops and hold data in their DTN carry buffers without crashing due to network timeouts.</p>
           <div class="callout"><strong>Decoupled State</strong>
