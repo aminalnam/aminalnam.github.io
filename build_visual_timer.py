@@ -8,16 +8,16 @@ html_content = """<!DOCTYPE html>
   <meta content="width=device-width, initial-scale=1" name="viewport" />
   <title>Jonathan Capone — Ultimate Visual Timer</title>
 
-  <meta name="description" content="A configurable, glanceable e-ink timer for the ESP32-S3 CrowPanel." />
+  <meta name="description" content="A configurable, glanceable e-ink timer for the ESP32-S3 CrowPanel, driven by autonomous LLM agents." />
   <meta property="og:title" content="Jonathan Capone — Ultimate Visual Timer" />
   <meta property="og:description"
-    content="A configurable, glanceable e-ink timer for the ESP32-S3 CrowPanel." />
+    content="A configurable, glanceable e-ink timer for the ESP32-S3 CrowPanel, driven by autonomous LLM agents." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://jonathancapone.com/visual-timer.html" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Jonathan Capone — Ultimate Visual Timer" />
   <meta name="twitter:description"
-    content="A configurable, glanceable e-ink timer for the ESP32-S3 CrowPanel." />
+    content="A configurable, glanceable e-ink timer for the ESP32-S3 CrowPanel, driven by autonomous LLM agents." />
 
   <link rel="icon"
     href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⏳</text></svg>">
@@ -65,9 +65,9 @@ html_content = """<!DOCTYPE html>
   </header>
 
   <section class="hero wrap">
-    <span class="eyebrow">Embedded UI</span>
+    <span class="eyebrow">Embedded UI & Autonomous Agents</span>
     <h1>Ultimate Visual Timer.</h1>
-    <p>A configurable, glanceable e‑ink timer for the ESP32‑S3 CrowPanel.</p>
+    <p>A configurable, glanceable e‑ink timer that tells time as 101 tiny animated story scenes.</p>
     <div class="hero-actions">
         <a class="btn btn-secondary" href="https://jonathancapone.art" target="_blank">Art Portfolio</a>
     </div>
@@ -78,24 +78,24 @@ html_content = """<!DOCTYPE html>
 
       <section class="section section-block" style="background: rgba(0,0,0,0.4);">
         <span class="section-kicker">At A Glance</span>
-        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">E-Ink UI Constraints</h2>
-        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">The Ultimate Visual Timer is an embedded firmware built for the Elecrow CrowPanel ESP32‑S3 2.13" E‑Paper HMI. It replaces traditional hardcoded digit widgets with 41 dynamic, full-screen animated faces running on a complex deep-sleep power model.</p>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Scaling Embedded Content</h2>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">The Ultimate Visual Timer runs on the Elecrow CrowPanel ESP32‑S3 2.13" E‑Paper display. But rather than hand-coding firmware, this project is a showcase of building a <strong>production pipeline for autonomous design agents</strong> to generate 101 distinct, stateless C++ animations—audited and integrated by Python scripts.</p>
 
         <div class="grid-3" style="margin-bottom: 2rem;">
           <div class="panel" style="padding: 1.5rem;">
             <span class="status-label status-implemented">Visuals</span>
-            <h3 style="font-size: 1.2rem;">41 Animated Faces</h3>
-            <p style="font-size: 0.85rem;">Every face is a pure stateless function that draws a scene—like a rising tide, an eclipsed moon, or a Rube Goldberg machine—that resolves exactly as time hits zero.</p>
+            <h3 style="font-size: 1.2rem;">101 Animated Stories</h3>
+            <p style="font-size: 0.85rem;">Every face is a pure stateless function that draws a scene—like a rising tide, an eclipsed moon, or a Rube Goldberg machine. Hand-coding these would take years; an LLM agent fleet did it systematically.</p>
           </div>
           <div class="panel" style="padding: 1.5rem;">
-            <span class="status-label status-implemented">Power</span>
-            <h3 style="font-size: 1.2rem;">Micro-amp Standby</h3>
-            <p style="font-size: 0.85rem;">Leverages the bistable nature of E-ink. The board deep-sleeps completely between updates or when idle, keeping the image on screen with zero power. Survives weeks on a tiny Li-Po battery.</p>
+            <span class="status-label status-implemented">Pipeline</span>
+            <h3 style="font-size: 1.2rem;">1-Bit Render Mirrors</h3>
+            <p style="font-size: 0.85rem;">A Python/Pillow shim perfectly re-implements the ESP32 GFX primitives on the desktop. The LLM agents write C++, render a verification strip in Python, and visually critique their own output against a contract.</p>
           </div>
           <div class="panel" style="padding: 1.5rem;">
-            <span class="status-label status-implemented">Connectivity</span>
-            <h3 style="font-size: 1.2rem;">Local Web Remote</h3>
-            <p style="font-size: 0.85rem;">Features an embedded captive portal and an HTTP endpoint (<code>uvt.local</code>) allowing full configuration of the timer from a phone without requiring a firmware reflash.</p>
+            <span class="status-label status-implemented">Quality Gate</span>
+            <h3 style="font-size: 1.2rem;">Automated Fleet Audit</h3>
+            <p style="font-size: 0.85rem;">A fleet of 101 independent agents reads the visual verification strips and grades them on dynamism, legibility, and narrative escalation, producing a ranked fix list without human intervention.</p>
           </div>
         </div>
         
@@ -106,9 +106,10 @@ html_content = """<!DOCTYPE html>
 
       <section class="section">
         <div class="section-content">
-          <span class="section-kicker">Graphics Architecture</span>
-          <h2>Stateless Functional Rendering.</h2>
-          <p>Rather than loading heavy bitmaps into memory, every visual face is a pure C++ function that calculates a single frame based on a <code>FaceCtx</code> snapshot (containing remaining seconds and fractional progress). Because it never touches global state, the firmware can safely transition into deep-sleep and wake up to render the exact correct pixel field instantly.</p>
+          <span class="section-kicker">Agentic Workflows</span>
+          <h2>Deterministic Integration.</h2>
+          <p>Giving a generative AI agent the ability to see its own output changes everything. The agents render a 3-row verification strip: Row A is the scene swept across the countdown in landscape; Row B in portrait; and Row C tests real-time motion at fixed progress.</p>
+          <p>Once an agent's scene passes its self-critique, a set of deterministic Python scripts seamlessly splices the verified C++ code directly into the firmware. The scripts validate brace balances, forbid standard-library imports, collapse dispatchers, and generate enums, ensuring the final output compiles identically every single time.</p>
           <div class="grid-2" style="margin-top: 2rem; gap: 1rem;">
             <img src="images/visual-timer/art_tide.png" alt="Tide Face" style="width: 100%; border-radius: 8px; border: 1px solid var(--line);">
             <img src="images/visual-timer/art_eclipse.png" alt="Eclipse Face" style="width: 100%; border-radius: 8px; border: 1px solid var(--line);">
@@ -127,9 +128,9 @@ html_content = """<!DOCTYPE html>
             <p style="font-size: 0.85rem;">When paused or finished, the ESP32-S3 enters deep-sleep mode, drawing only tens of microamps. The bistable display controller retains the final image frame infinitely with zero power.</p>
           </div>
           <div class="panel" style="padding: 1.5rem;">
-            <span class="status-label status-implemented">Ghosting Mitigation</span>
-            <h3 style="font-size: 1.2rem;">Partial vs Full Refreshes</h3>
-            <p style="font-size: 0.85rem;">To avoid the jarring black-and-white flash of an E-ink screen, the timer utilizes fast partial refreshes. To prevent pigment ghosting over long timers, it enforces a mathematical clean full-refresh every 30 partial updates.</p>
+            <span class="status-label status-implemented">Hardware Quirks</span>
+            <h3 style="font-size: 1.2rem;">Driver Profiling</h3>
+            <p style="font-size: 0.85rem;">Identical part numbers don't guarantee identical glass. On a replacement board, the SSD1680 panel ghosted severely. Diagnosing the issue required switching the GxEPD2 controller profile (to <code>GDEY0213B74</code>), proving the necessity of confirming driver waveforms against actual physical batches.</p>
           </div>
         </div>
       </section>

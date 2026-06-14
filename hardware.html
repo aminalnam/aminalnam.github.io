@@ -162,6 +162,12 @@
             </div>
           </section>
 
+          <div class="panel" style="margin-top: 2rem; border-left: 4px solid var(--accent);">
+            <h4 style="margin: 0 0 0.5rem; color: #fff;">Engineering Reality: The "Transmits but never Receives" Bug</h4>
+            <p style="font-size: 0.9rem; color: var(--ink-soft); margin: 0;">During the bring-up of the LR1121 relay node, it would transmit perfectly but receive absolutely nothing. The RX interrupt count was zero. Instead of guessing, I mapped the full RX-chain IRQ set (preamble/sync/header/CRC). Zero partials localized the failure to the state machine, not the RF frontend. Root cause: RadioLib's <code>startReceive()</code> only arms continuous RX cleanly from <code>STANDBY</code>. Fixing it required a single line: <code>radio.standby()</code> before arming. RX went from 0% to 100%. <a href="engineering-journal.html" style="color: var(--accent);">Read the full journal &rarr;</a></p>
+          </div>
+
+
           <section class="section section-block" style="background: rgba(0,0,0,0.4);">
             <span class="section-kicker">Energy Physics</span>
             <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Power Budgets & Insolation.</h2>
