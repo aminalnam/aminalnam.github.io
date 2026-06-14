@@ -654,9 +654,9 @@ pre code {
   padding: 4rem 0; 
   text-align: center; 
   font-family: var(--font-mono); 
-  font-size: 0.85rem; 
-  color: rgba(148, 163, 184, 0.6); 
-  text-transform: uppercase; 
+  font-size: 0.85rem;
+  color: rgba(148, 163, 184, 0.85);
+  text-transform: uppercase;
   letter-spacing: 0.2em; 
 }
 
