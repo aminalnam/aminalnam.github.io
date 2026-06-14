@@ -64,9 +64,9 @@
   </header>
 
   <section class="hero wrap">
-    <span class="eyebrow">Wear OS Embedded Control</span>
+    <span class="eyebrow">Reverse-Engineering & Wear OS</span>
     <h1>T-Thruster.</h1>
-    <p>A tactical Wear OS application for differential hardware control, utilizing UDP Multicast and Jetpack Compose kinematics.</p>
+    <p>I bought the Lilygo T-Thruster, but their companion phone app was outdated. So I reverse-engineered their protocol and built my own Wear OS controller.</p>
     <div class="hero-actions">
         <a class="btn btn-secondary" href="https://jonathancapone.art" target="_blank">Art Portfolio</a>
     </div>
@@ -76,9 +76,18 @@
     <div class="main-inner">
 
       <section class="section section-block" style="background: rgba(0,0,0,0.4);">
-        <span class="section-kicker">Network Discovery</span>
-        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Subnet Scanning & Multicast</h2>
-        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">A remote marine environment lacks dedicated DNS or static IP addressing. When the smartwatch connects to the hardware's ad-hoc Wi-Fi network, it has no idea what the target device's IP address is. Hardcoding an IP makes the system brittle; broadcasting blindly wastes battery and congests the network.</p>
+        <span class="section-kicker">The Reality of Vendor Apps</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Why build a custom watch app?</h2>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">
+          The hardware from Lilygo was great, but the software story was lacking. The provided companion phone app was severely outdated, clunky, and prone to disconnecting. Instead of dealing with the poor user experience of a bad mobile app while trying to steer a physical boat, I decided to sniff the UDP packets, reverse-engineer the expected payload structure, and build a dedicated, tactile smartwatch controller from scratch.
+        </p>
+      </section>
+
+      <section class="section">
+        <div class="section-content">
+          <span class="section-kicker">Network Discovery</span>
+          <h2>Subnet Scanning & Multicast.</h2>
+          <p>Once I understood the protocol, the first hurdle was simply finding the boat on the network. The Lilygo hardware creates an ad-hoc Wi-Fi network, but the smartwatch has no idea what the target device's IP address is. Hardcoding an IP makes the system brittle; broadcasting blindly wastes battery and congests the network.</p>
 
         <div class="grid-2" style="margin-bottom: 2rem;">
           <div class="panel" style="padding: 1.5rem;">
@@ -96,9 +105,9 @@
 
       <section class="section">
         <div class="section-content">
-          <span class="section-kicker">Hardware Safety</span>
+          <span class="section-kicker">Reverse-Engineering Hurdles</span>
           <h2>Physical Protocol Negotiation.</h2>
-          <p>Writing software to control physical motors introduces catastrophic failure states that don't exist in pure web development. In this project, different iterations of the LilyGo control boards interpreted bytes completely differently.</p>
+          <p>Writing software for undocumented hardware introduces catastrophic failure states that don't exist in pure web development. During testing, I discovered that different iterations of the LilyGo control boards interpreted the throttle bytes completely differently.</p>
           <p><strong>The LilyGo Classic (V1) Short:</strong> On older hardware revisions, the PWM driver was designed such that sending a raw `0` integer caused the H-Bridge to electrically short, risking permanent damage to the silicon. The valid range was `1` to `128`, where `1` was absolute zero throttle. In contrast, the newer V2 hardware uses a standard `0` to `255` range.</p>
           <p>To prevent hardware destruction, the `ThrusterController.kt` engine implements strict mathematical coercion. Before firing any UDP packet, the joystick's `0.0` to `1.0` float vector is passed through a deterministic protocol filter. If V1 is selected, `0.0` is strictly clamped to `1`, mathematically guaranteeing the silicon will never receive a short-circuit command.</p>
         </div>
