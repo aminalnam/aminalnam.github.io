@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <title>Jonathan Capone — Thruster</title>
+
+  <meta name="description" content="A Wear OS differential thruster controller using UDP multicast and Jetpack Compose." />
+  <meta property="og:title" content="Jonathan Capone — Thruster" />
+  <meta property="og:description"
+    content="A Wear OS differential thruster controller using UDP multicast and Jetpack Compose." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://jonathancapone.com/thruster.html" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Jonathan Capone — Thruster" />
+  <meta name="twitter:description"
+    content="A Wear OS differential thruster controller using UDP multicast and Jetpack Compose." />
+
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚤</text></svg>">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="wrap topbar-inner">
+      <a class="brand" href="index.html"
+        style="display: flex; align-items: center; gap: 0.75rem; text-decoration: none;">
+        <div>
+          <span class="brand-title"
+            style="letter-spacing: 0.1em; color: var(--white); display: block; font-family: var(--font-serif); font-size: 1.5rem;">JONATHAN
+            CAPONE</span>
+          <span class="brand-sub"
+            style="display: block; font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent); font-family: var(--font-mono); opacity: 0.9;">Systems
+            Architecture Portfolio</span>
+        </div>
+      </a>
+            <nav class="nav" aria-label="Main Navigation">
+        <a href="index.html">Home</a>
+        <div class="dropdown">
+          <button class="dropbtn" style="background: none; border: none; color: #fff; font-family: inherit; font-size: inherit; cursor: pointer;">OMEGA &#9662;</button>
+          <div class="dropdown-content">
+            <a href="architecture.html">Architecture</a>
+            <a href="hardware.html">Hardware & Mesh</a>
+            <a href="gateway.html">Backend Gateway</a>
+            <a href="mission-portal.html">Mission Portal</a>
+          </div>
+        </div>
+        <a href="bathymetry.html">OMEGA-bath</a>
+        <a href="beta-overview.html">BETA</a>
+        <a href="cosnfx.html">CosNFX</a>
+        <a href="weather-globe.html">Weather Globe</a>
+        <a href="visual-timer.html">Visual Timer</a>
+        <a href="thruster.html">Thruster</a>
+        <a href="engineering-journal.html">Journal</a>
+        
+        <div style="display: flex; align-items: center; margin-left: 0.5rem; border-left: 1px solid rgba(255,255,255,0.15); padding-left: 1.5rem;">
+          <a href="https://jonathancapone.art" target="_blank" style="font-weight: 600; color: var(--ink-soft);">Art Portfolio</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero wrap">
+    <span class="eyebrow">Wear OS Embedded Control</span>
+    <h1>Thruster.</h1>
+    <p>A tactical Wear OS application for differential hardware control, utilizing UDP Multicast and Jetpack Compose kinematics.</p>
+    <div class="hero-actions">
+        <a class="btn btn-secondary" href="https://jonathancapone.art" target="_blank">Art Portfolio</a>
+    </div>
+  </section>
+
+  <main class="main-shell wrap" role="main">
+    <div class="main-inner">
+
+      <section class="section section-block" style="background: rgba(0,0,0,0.4);">
+        <span class="section-kicker">Network Discovery</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Subnet Scanning & Multicast</h2>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">A remote marine environment lacks dedicated DNS or static IP addressing. When the smartwatch connects to the hardware's ad-hoc Wi-Fi network, it has no idea what the target device's IP address is. Hardcoding an IP makes the system brittle; broadcasting blindly wastes battery and congests the network.</p>
+
+        <div class="grid-2" style="margin-bottom: 2rem;">
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">Discovery Layer</span>
+            <h3 style="font-size: 1.2rem;">Safe-Payload Pinging</h3>
+            <p style="font-size: 0.85rem;">The app implements an aggressive, mathematically constrained subnet scanner. It iterates from <code>subnet.1</code> to <code>subnet.254</code>, firing a specifically crafted "zero-throttle" UDP payload. This guarantees that if it hits the thruster, the motors will not physically fire during discovery.</p>
+          </div>
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">Telemetry Acknowledgment</span>
+            <h3 style="font-size: 1.2rem;">UDP Port 2390</h3>
+            <p style="font-size: 0.85rem;">The watch listens concurrently on UDP Port 2390. When the hardware receives the safe ping, it immediately returns a telemetry packet containing signal strength (RSSI) and battery voltage. The watch captures the sender's IP address and locks onto it, instantly completing the dynamic handshake.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-content">
+          <span class="section-kicker">Hardware Safety</span>
+          <h2>Physical Protocol Negotiation.</h2>
+          <p>Writing software to control physical motors introduces catastrophic failure states that don't exist in pure web development. In this project, different iterations of the LilyGo control boards interpreted bytes completely differently.</p>
+          <p><strong>The LilyGo Classic (V1) Short:</strong> On older hardware revisions, the PWM driver was designed such that sending a raw `0` integer caused the H-Bridge to electrically short, risking permanent damage to the silicon. The valid range was `1` to `128`, where `1` was absolute zero throttle. In contrast, the newer V2 hardware uses a standard `0` to `255` range.</p>
+          <p>To prevent hardware destruction, the `ThrusterController.kt` engine implements strict mathematical coercion. Before firing any UDP packet, the joystick's `0.0` to `1.0` float vector is passed through a deterministic protocol filter. If V1 is selected, `0.0` is strictly clamped to `1`, mathematically guaranteeing the silicon will never receive a short-circuit command.</p>
+        </div>
+      </section>
+
+      <section class="section section-block" style="background: rgba(0,0,0,0.4); margin-top: 2rem;">
+        <span class="section-kicker">UI Engineering</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Kinematic Jetpack Compose</h2>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">Controlling differential thrust on a 1.4-inch circular smartwatch screen requires absolute precision. A standard square bounding box would result in dead zones at the corners of the round display.</p>
+        
+        <div class="grid-2" style="margin-bottom: 2rem;">
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">Atan2 Geometry</span>
+            <h3 style="font-size: 1.2rem;">Radial Bounding</h3>
+            <p style="font-size: 0.85rem;">The custom Compose Canvas joystick tracks drag gestures using Pythogorean distance checks. If the user drags outside the permitted circle, the app uses <code>atan2()</code> to calculate the exact angle and mathematically clamps the thumbpad to the extreme edge of the radius.</p>
+          </div>
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">Tactile Feedback</span>
+            <h3 style="font-size: 1.2rem;">Haptic Edge-Limits</h3>
+            <p style="font-size: 0.85rem;">Operators driving the thruster cannot constantly stare at their wrist. When the mathematical drag vector crosses the maximum boundary radius, the Compose layer instantly triggers the watch's internal <code>Vibrator</code> motor, providing a physical "click" that confirms maximum throttle has been reached without looking.</p>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+</body>
+</html>
