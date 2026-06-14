@@ -98,9 +98,38 @@
           </div>
         </div>
         
-        <div style="margin-top: 2rem;">
-            <img src="images/visual-timer/visual-clock_all-faces-contact-sheet.png" alt="Visual Timer Faces" style="width: 100%; border-radius: 8px; border: 1px solid var(--line);">
+        <div style="margin-top: 2rem; position: relative; border-radius: 8px; border: 1px solid var(--line); overflow: hidden; background: #000;">
+          <div id="slideshow-container" style="position: relative; width: 100%; padding-top: 35.6%;">
+            <img src="images/visual-timer/slides/slide_1.png" class="slide" style="position: absolute; top: 0; left: 0; width: 100%; opacity: 1; transition: opacity 0.8s;">
+            <img src="images/visual-timer/slides/slide_2.png" class="slide" style="position: absolute; top: 0; left: 0; width: 100%; opacity: 0; transition: opacity 0.8s;">
+            <img src="images/visual-timer/slides/slide_3.png" class="slide" style="position: absolute; top: 0; left: 0; width: 100%; opacity: 0; transition: opacity 0.8s;">
+            <img src="images/visual-timer/slides/slide_4.png" class="slide" style="position: absolute; top: 0; left: 0; width: 100%; opacity: 0; transition: opacity 0.8s;">
+            <img src="images/visual-timer/slides/slide_5.png" class="slide" style="position: absolute; top: 0; left: 0; width: 100%; opacity: 0; transition: opacity 0.8s;">
+            <img src="images/visual-timer/slides/slide_6.png" class="slide" style="position: absolute; top: 0; left: 0; width: 100%; opacity: 0; transition: opacity 0.8s;">
+          </div>
+          <div style="position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%); display: flex; gap: 10px; z-index: 10;">
+            <button onclick="changeSlide(-1)" style="background: rgba(0,0,0,0.7); color: white; border: 1px solid rgba(255,255,255,0.3); border-radius: 4px; padding: 6px 12px; cursor: pointer; font-family: var(--font-mono); font-size: 0.9rem;">PREV</button>
+            <button onclick="changeSlide(1)" style="background: rgba(0,0,0,0.7); color: white; border: 1px solid rgba(255,255,255,0.3); border-radius: 4px; padding: 6px 12px; cursor: pointer; font-family: var(--font-mono); font-size: 0.9rem;">NEXT</button>
+          </div>
         </div>
+        <script>
+          let currentSlide = 0;
+          const slides = document.querySelectorAll('.slide');
+          let slideInterval;
+          
+          function changeSlide(direction) {
+            slides[currentSlide].style.opacity = 0;
+            currentSlide = (currentSlide + direction + slides.length) % slides.length;
+            slides[currentSlide].style.opacity = 1;
+            
+            // Reset interval on manual click
+            clearInterval(slideInterval);
+            slideInterval = setInterval(() => changeSlide(1), 5000);
+          }
+          
+          // Auto-advance
+          slideInterval = setInterval(() => changeSlide(1), 5000);
+        </script>
       </section>
 
       <section class="section">
