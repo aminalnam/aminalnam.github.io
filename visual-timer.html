@@ -109,35 +109,133 @@
           </div>
         </div>
         
-        <div style="margin-top: 2rem; position: relative; border-radius: 8px; border: 1px solid var(--line); overflow: hidden; background: #111;">
-          <div id="slideshow-container" style="position: relative; width: 100%; aspect-ratio: 3050 / 432; display: flex; align-items: center; justify-content: center;">
-            <img src="images/visual-timer/art_eclipse.png" class="slide" style="position: absolute; width: 100%; height: 100%; object-fit: contain; opacity: 1; transition: opacity 0.5s ease-in-out;">
-            <img src="images/visual-timer/art_tide.png" class="slide" style="position: absolute; width: 100%; height: 100%; object-fit: contain; opacity: 0; transition: opacity 0.5s ease-in-out;">
+        <div id="slideshow-wrapper" style="margin-top: 2rem; position: relative; border-radius: 8px; border: 1px solid var(--line); overflow: hidden; background: #111;">
+          <div id="slideshow-container" style="position: relative; width: 100%; aspect-ratio: 750 / 366; display: flex; align-items: center; justify-content: center;">
+            <img id="timer-slide" src="images/visual-timer/timers/001_Lemmings.png" style="width: 100%; height: 100%; object-fit: contain;">
           </div>
           <div style="position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%); display: flex; gap: 10px; z-index: 10;">
-            <button onclick="changeSlide(-1)" style="background: rgba(0,0,0,0.8); color: white; border: 1px solid rgba(255,255,255,0.4); border-radius: 4px; padding: 6px 16px; cursor: pointer; font-family: var(--font-mono); font-size: 0.9rem; transition: background 0.2s;">PREV</button>
-            <button onclick="changeSlide(1)" style="background: rgba(0,0,0,0.8); color: white; border: 1px solid rgba(255,255,255,0.4); border-radius: 4px; padding: 6px 16px; cursor: pointer; font-family: var(--font-mono); font-size: 0.9rem; transition: background 0.2s;">NEXT</button>
+            <button onclick="changeTimerSlide(-1)" style="background: rgba(0,0,0,0.8); color: white; border: 1px solid rgba(255,255,255,0.4); border-radius: 4px; padding: 6px 16px; cursor: pointer; font-family: var(--font-mono); font-size: 0.9rem; transition: background 0.2s;">PREV</button>
+            <button onclick="changeTimerSlide(1)" style="background: rgba(0,0,0,0.8); color: white; border: 1px solid rgba(255,255,255,0.4); border-radius: 4px; padding: 6px 16px; cursor: pointer; font-family: var(--font-mono); font-size: 0.9rem; transition: background 0.2s;">NEXT</button>
           </div>
         </div>
         <script>
           document.addEventListener('DOMContentLoaded', () => {
-            let currentSlide = 0;
-            const slides = document.querySelectorAll('.slide');
-            if(slides.length === 0) return;
-            let slideInterval;
-            
-            window.changeSlide = function(direction) {
-              slides[currentSlide].style.opacity = 0;
-              currentSlide = (currentSlide + direction + slides.length) % slides.length;
-              slides[currentSlide].style.opacity = 1;
+            const images = [
+                '001_Lemmings.png',
+                '002_Race.png',
+                '003_Machine.png',
+                '004_Letters.png',
+                '005_Hatch.png',
+                '006_Roadtrip.png',
+                '007_Fuse.png',
+                '008_Rocket.png',
+                '009_Candle.png',
+                '010_Web.png',
+                '011_Bloom.png',
+                '012_Toast.png',
+                '013_Fireflies.png',
+                '014_Lighthouse.png',
+                '015_Skyline.png',
+                '016_Submarine.png',
+                '017_Sheep.png',
+                '018_Summit.png',
+                '019_Melt.png',
+                '020_Train.png',
+                '021_Balloon.png',
+                '022_Mug.png',
+                '023_Orbit.png',
+                '024_Clocktower.png',
+                '025_Conveyor.png',
+                '026_Hourglass.png',
+                '027_Elevator.png',
+                '028_Battery.png',
+                '029_Popcorn.png',
+                '030_Sandcastle.png',
+                '031_Butterfly.png',
+                '032_Ferris.png',
+                '033_Bathtub.png',
+                '034_Honeycomb.png',
+                '035_Crane.png',
+                '036_Volcano.png',
+                '037_Plane.png',
+                '038_Pancakes.png',
+                '039_Piggy.png',
+                '040_Sailboat.png',
+                '041_Fishing.png',
+                '042_Campfire.png',
+                '043_Meteor.png',
+                '044_Kite.png',
+                '045_Crossing.png',
+                '046_Soda.png',
+                '047_Snowglobe.png',
+                '048_Stacker.png',
+                '049_Vending.png',
+                '050_Whale.png',
+                '051_Robot.png',
+                '052_Jack-box.png',
+                '053_Coaster.png',
+                '054_Kettle.png',
+                '055_Hoops.png',
+                '056_Snake.png',
+                '057_Invaders.png',
+                '058_Frogger.png',
+                '059_Breakout.png',
+                '060_Dino.png',
+                '061_Flappy.png',
+                '062_Pong.png',
+                '063_Boss.png',
+                '064_Loading.png',
+                '065_Platform.png',
+                '066_Climb.png',
+                '067_Sokoban.png',
+                '068_Minesweep.png',
+                '069_Pinball.png',
+                '070_Slots.png',
+                '071_Whack.png',
+                '072_Bowling.png',
+                '073_Golf.png',
+                '074_Jigsaw.png',
+                '075_Rubik.png',
+                '076_Knitting.png',
+                '077_Washer.png',
+                '078_Microwave.png',
+                '079_Roomba.png',
+                '080_Wreck.png',
+                '081_Chute.png',
+                '082_UFO.png',
+                '083_Cuckoo.png',
+                '084_Avalanche.png',
+                '085_Press.png',
+                '086_Beaver.png',
+                '087_Rings.png',
+                '088_Nesting.png',
+                '089_Origami.png',
+                '090_Brush.png',
+                '091_Gumball.png',
+                '092_Cake.png',
+                '093_Tornado.png',
+                '094_Claw.png',
+                '095_Ski.png',
+                '096_Igloo.png',
+                '097_Catapult.png',
+                '098_Treasure.png',
+                '099_Drumroll.png',
+                '100_Hanoi.png',
+                '101_Pinata.png'
+            ];
+            let currentIdx = 0;
+            const slideImg = document.getElementById('timer-slide');
+            let timerInterval;
+
+            window.changeTimerSlide = function(direction) {
+              currentIdx = (currentIdx + direction + images.length) % images.length;
+              slideImg.src = 'images/visual-timer/timers/' + images[currentIdx];
               
-              // Reset interval on manual click
-              clearInterval(slideInterval);
-              slideInterval = setInterval(() => changeSlide(1), 4000);
+              clearInterval(timerInterval);
+              timerInterval = setInterval(() => changeTimerSlide(1), 1500);
             };
-            
-            // Auto-advance
-            slideInterval = setInterval(() => changeSlide(1), 4000);
+
+            timerInterval = setInterval(() => changeTimerSlide(1), 1500);
           });
         </script>
       </section>
