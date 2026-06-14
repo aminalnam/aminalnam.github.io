@@ -110,13 +110,9 @@
         </div>
         
         <div style="margin-top: 2rem; position: relative; border-radius: 8px; border: 1px solid var(--line); overflow: hidden; background: #111;">
-          <div id="slideshow-container" style="position: relative; width: 100%; aspect-ratio: 2.8 / 1; display: flex; align-items: center; justify-content: center;">
-            <img src="images/visual-timer/slides/slide_1.png" class="slide" style="position: absolute; width: 100%; height: 100%; object-fit: contain; opacity: 1; transition: opacity 0.5s ease-in-out;">
-            <img src="images/visual-timer/slides/slide_2.png" class="slide" style="position: absolute; width: 100%; height: 100%; object-fit: contain; opacity: 0; transition: opacity 0.5s ease-in-out;">
-            <img src="images/visual-timer/slides/slide_3.png" class="slide" style="position: absolute; width: 100%; height: 100%; object-fit: contain; opacity: 0; transition: opacity 0.5s ease-in-out;">
-            <img src="images/visual-timer/slides/slide_4.png" class="slide" style="position: absolute; width: 100%; height: 100%; object-fit: contain; opacity: 0; transition: opacity 0.5s ease-in-out;">
-            <img src="images/visual-timer/slides/slide_5.png" class="slide" style="position: absolute; width: 100%; height: 100%; object-fit: contain; opacity: 0; transition: opacity 0.5s ease-in-out;">
-            <img src="images/visual-timer/slides/slide_6.png" class="slide" style="position: absolute; width: 100%; height: 100%; object-fit: contain; opacity: 0; transition: opacity 0.5s ease-in-out;">
+          <div id="slideshow-container" style="position: relative; width: 100%; aspect-ratio: 3050 / 432; display: flex; align-items: center; justify-content: center;">
+            <img src="images/visual-timer/art_eclipse.png" class="slide" style="position: absolute; width: 100%; height: 100%; object-fit: contain; opacity: 1; transition: opacity 0.5s ease-in-out;">
+            <img src="images/visual-timer/art_tide.png" class="slide" style="position: absolute; width: 100%; height: 100%; object-fit: contain; opacity: 0; transition: opacity 0.5s ease-in-out;">
           </div>
           <div style="position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%); display: flex; gap: 10px; z-index: 10;">
             <button onclick="changeSlide(-1)" style="background: rgba(0,0,0,0.8); color: white; border: 1px solid rgba(255,255,255,0.4); border-radius: 4px; padding: 6px 16px; cursor: pointer; font-family: var(--font-mono); font-size: 0.9rem; transition: background 0.2s;">PREV</button>
@@ -152,6 +148,10 @@
           <h2>Deterministic Integration.</h2>
           <p>Giving a graphics pipeline the ability to visually test its own output changes everything. The system renders a 3-row verification strip: Row A is the scene swept across the countdown in landscape; Row B in portrait; and Row C tests real-time motion at fixed progress.</p>
           <p>Once a scene passes its automated critique, a set of deterministic Python scripts seamlessly splices the verified C++ code directly into the firmware. The scripts validate brace balances, forbid standard-library imports, collapse dispatchers, and generate enums, ensuring the final output compiles identically every single time.</p>
+          <div style="margin-top: 2rem; border-radius: 8px; overflow: hidden; border: 1px solid var(--line);">
+            <img src="images/visual-timer/00_art_contact.png" alt="Visual Timer Art Contact Sheet" style="width: 100%; display: block;">
+          </div>
+
 
         </div>
       </section>
