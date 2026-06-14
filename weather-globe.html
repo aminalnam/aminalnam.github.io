@@ -91,50 +91,67 @@
 
   <main class="main-shell wrap" role="main">
     <div class="main-inner">
-
       <section class="section section-block" style="background: rgba(0,0,0,0.4);">
-        <span class="section-kicker">At A Glance</span>
-        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Embedded Precision</h2>
-        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">Most "Earth globe" gadgets use static textures spinning on a timer. This project calculates the true subsolar point (NOAA solar position) for the current UTC, downloads NASA VIIRS daily cloud mosaics, and additively blends NASA Black Marble city lights on the night side.</p>
+        <span class="section-kicker">Overview</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">The Weather Globe</h2>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">The Weather Globe is a standalone, internet-connected desk display built on an ESP32-S3 microcontroller. Utilizing a 1.75" round AMOLED screen, the device acts as a live window onto Earth and the solar system. Its primary feature is a real-time, sun-synchronous rendering of Earth, complete with accurate day/night shadow lines, live cloud cover downloaded daily from NASA satellites, and illuminated city lights on the night side.</p>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">Operating entirely on the device without the need for companion mobile apps or cloud accounts, it features a built-in captive portal for WiFi configuration and a web-based settings dashboard.</p>
+      </section>
 
-        <div class="grid-3" style="margin-bottom: 2rem;">
+      <section class="section" style="margin-top: 2rem;">
+        <span class="section-kicker">Features</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Key Features</h2>
+        <div class="grid-2" style="margin-bottom: 2rem; gap: 1rem;">
           <div class="panel" style="padding: 1.5rem;">
-            <span class="status-label status-implemented">Rendering</span>
-            <h3 style="font-size: 1.2rem;">Spherized Math</h3>
-            <p style="font-size: 0.85rem;">A precomputed lookup table maps every pixel on the round display to a geographic normal. The rendering thread shades day to night using a smootherstep terminator with 8×8 Bayer dithering to prevent RGB565 color banding.</p>
+            <h3 style="font-size: 1.2rem; color: var(--accent);">Live Sun-Synchronous Earth</h3>
+            <p style="font-size: 0.85rem; color: var(--ink-soft);">Calculates the real-time position of the sun to accurately drape a soft twilight terminator (day/night line) across the globe.</p>
           </div>
           <div class="panel" style="padding: 1.5rem;">
-            <span class="status-label status-implemented">Pipelines</span>
-            <h3 style="font-size: 1.2rem;">NASA Cloud Ingest</h3>
-            <p style="font-size: 0.85rem;">A dedicated RTOS task fetches NASA VIIRS true-color snapshots, decodes the JPEGs in memory, feathers the dateline seam, and publishes the new texture atomically via pointer-swap.</p>
+            <h3 style="font-size: 1.2rem; color: var(--accent);">Real-Time Satellite Data</h3>
+            <p style="font-size: 0.85rem; color: var(--ink-soft);">Automatically fetches and maps live cloud cover from NASA's VIIRS satellites, layering it over the base map.</p>
           </div>
           <div class="panel" style="padding: 1.5rem;">
-            <span class="status-label status-implemented">Verification</span>
-            <h3 style="font-size: 1.2rem;">Host Replicas</h3>
-            <p style="font-size: 0.85rem;">Because AMOLED screens can't easily be screenshotted, the entire firmware rendering engine has a pixel-perfect Python replica on the desktop. Visual changes are proven on the replica before being flashed.</p>
+            <h3 style="font-size: 1.2rem; color: var(--accent);">Dynamic Night Lights</h3>
+            <p style="font-size: 0.85rem; color: var(--ink-soft);">Renders NASA "Black Marble" city lights exclusively on the shadowed hemisphere of the Earth.</p>
+          </div>
+          <div class="panel" style="padding: 1.5rem;">
+            <h3 style="font-size: 1.2rem; color: var(--accent);">Multi-Planetary Exploration</h3>
+            <p style="font-size: 0.85rem; color: var(--ink-soft);">Allows users to switch the view to any of 10 celestial bodies: Earth, Mercury, Venus, Mars, Jupiter, Saturn, Uranus, Neptune, the Moon, and the Sun.</p>
+          </div>
+          <div class="panel" style="padding: 1.5rem;">
+            <h3 style="font-size: 1.2rem; color: var(--accent);">Local Time & Weather Card</h3>
+            <p style="font-size: 0.85rem; color: var(--ink-soft);">On a user-defined schedule, the globe smoothly transitions to a full-screen, data-rich card displaying local time, date, temperature, "feels like" temperature, humidity, and wind speed.</p>
+          </div>
+          <div class="panel" style="padding: 1.5rem;">
+            <h3 style="font-size: 1.2rem; color: var(--accent);">Web Settings Portal</h3>
+            <p style="font-size: 0.85rem; color: var(--ink-soft);">Hosts a local web server (accessible via the device's IP) to adjust motion speed (true 24-hour rotation vs. smooth time-lapse), brightness, camera tilt, screen rotation, and weather card cadence.</p>
           </div>
         </div>
       </section>
 
-      <section class="section">
-        <div class="section-content">
-          <span class="section-kicker">Deep-Dive Diagnostics</span>
-          <h2>Engineering the Edge Cases.</h2>
-          <p>The real story of embedded systems lies in the hardware edge cases. Here are three critical bugs resolved during field-testing:</p>
-          
-          <div class="grid-2" style="margin-top: 2rem; gap: 1rem;">
-              <div class="panel" style="padding: 1.5rem;">
-                <h3 style="font-size: 1.2rem; color: var(--accent);">1. The Odd-Aligned CO5300 AMOLED</h3>
-                <p style="font-size: 0.85rem;">Text rendered perfectly on the host replica but garbled randomly on the physical panel. Root cause: the CO5300 display driver passes raw x/y/w/h coordinates without rounding. Any partial SPI write with an <em>odd</em> dimension shifts and corrupts the hardware buffer. The fix involved strict even-padding on every text blit.</p>
-              </div>
-              <div class="panel" style="padding: 1.5rem;">
-                <h3 style="font-size: 1.2rem; color: var(--accent);">2. Sub-Second NTP Judder</h3>
-                <p style="font-size: 0.85rem;">During time-lapse animations, the globe would hold still for 30 frames then awkwardly lurch forward. The underlying NTP clock was bound to <code>time(nullptr)</code>, which is whole-second granular. The fix derived a sub-second fractional offset using <code>millis()</code>, re-anchoring on every RTC tick to prevent wrapping, resulting in drift-free, 60fps smoothness.</p>
-              </div>
-              <div class="panel" style="padding: 1.5rem;">
-                <h3 style="font-size: 1.2rem; color: var(--accent);">3. The Phantom Station Hotspot</h3>
-                <p style="font-size: 0.85rem;">When the globe was moved to a new house, the captive portal refused to load on <code>192.168.4.1</code>. The ESP32's SoftAP channel strictly follows the Station radio. The radio kept hunting for the old home network saved deep in the driver, dragging the hotspot off-channel. The fix: explicitly wipe the persistent driver credentials and serve the portal in pure <code>WIFI_AP</code> mode.</p>
-              </div>
+      <section class="section section-block" style="background: rgba(0,0,0,0.4);">
+        <div class="grid-2" style="gap: 2rem;">
+          <div>
+            <span class="section-kicker">Hardware</span>
+            <h2 style="font-family: var(--font-serif); font-size: 2rem; margin: 0 0 1rem;">Specifications</h2>
+            <ul style="color: var(--ink-soft); font-size: 0.95rem; line-height: 1.8;">
+              <li><strong>Display:</strong> 1.75" round AMOLED, 466 × 466 pixel resolution (CO5300 QSPI driver).</li>
+              <li><strong>Microcontroller:</strong> LilyGo T-Display-S3 (Espressif ESP32-S3, dual-core 240 MHz).</li>
+              <li><strong>Memory:</strong> 8 MB PSRAM / 16 MB Flash.</li>
+              <li><strong>Connectivity:</strong> WiFi 802.11 b/g/n (2.4 GHz).</li>
+              <li><strong>Power:</strong> 5V via USB-C.</li>
+            </ul>
+          </div>
+          <div>
+            <span class="section-kicker">Software</span>
+            <h2 style="font-family: var(--font-serif); font-size: 2rem; margin: 0 0 1rem;">Architecture</h2>
+            <ul style="color: var(--ink-soft); font-size: 0.95rem; line-height: 1.8;">
+              <li><strong>Firmware:</strong> Written in C++ using PlatformIO and the Arduino framework.</li>
+              <li><strong>Multi-Threading:</strong> Utilizes FreeRTOS to divide labor across the ESP32-S3's two cores. Core 1 handles the high-framerate renderTask for smooth, drift-free 3D globe rotation, while Core 0 manages the cloudTask and infoTask with atomic texture and weather buffer swaps to prevent visual stutter during network calls.</li>
+              <li><strong>Data APIs:</strong> Integrates entirely free, no-key public APIs: NASA GIBS/VIIRS (clouds/maps), ip-api (IP-based rough geolocation), Open-Meteo (hyper-local weather), and NTP (time synchronization).</li>
+              <li><strong>Offline Resilience:</strong> If the network drops, the globe seamlessly continues its rotation using the most recently cached time and cloud assets, automatically resuming background updates when the connection is restored.</li>
+              <li><strong>Host-Side Tooling:</strong> Includes a Python backend suite for generating planet textures, night-light maps, and font/icon atlases. Because the physical SPI screen cannot be easily captured, the backend includes visual verification scripts to preview and test visual changes locally before flashing.</li>
+            </ul>
           </div>
         </div>
       </section>
