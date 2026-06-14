@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8" />
   <meta content="width=device-width, initial-scale=1" name="viewport" />
-  <title>Jonathan Capone — Mission Portal</title>
+  <title>Jonathan Capone — Mission Portal & AI</title>
 
   <meta name="description"
     content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
@@ -46,84 +46,25 @@
             Architecture Portfolio</span>
         </div>
       </a>
-      <nav class="nav" aria-label="Main Navigation">
-        <a href="index.html">Home</a>
+            <nav class="nav" aria-label="Main Navigation">
+        <a href="index.html" class="nav-link ">Home</a>
+        <a href="architecture.html" class="nav-link ">Architecture</a>
+        <a href="hardware.html" class="nav-link ">Hardware & Mesh</a>
+        <a href="gateway.html" class="nav-link ">Backend Gateway</a>
+        <a href="mission-portal.html" class="nav-link is-current">Mission Portal</a>
+        <a href="engineering-journal.html" class="nav-link ">Engineering Journal</a>
         
-        <!-- OMEGA Project Group -->
-        <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 0.75rem; background: rgba(59, 130, 246, 0.05); border: 1px solid rgba(59, 130, 246, 0.2); padding: 0.25rem 1rem; border-radius: 12px;">
-          <span style="font-size: 0.65rem; color: #60a5fa; text-transform: uppercase; letter-spacing: 0.2em; border-right: 1px solid rgba(59, 130, 246, 0.3); padding-right: 0.75rem; margin-right: 0.25rem;">Project</span>
-          <a href="overview.html" style="font-weight: 700; letter-spacing: 0.1em;">OMEGA</a>
-          
-          <div class="dropdown">
-          <button class="dropbtn">Hardware & Physics &#9662;</button>
-          <div class="dropdown-content">
-            <a href="hardware.html">Hardware & Firmware</a>
-            <a href="rf-physics.html">RF Physics & Propagation</a>
-            <a href="biofouling.html">Marine Biology (Fouling)</a>
-            <a href="edge-nodes.html">Edge Nodes</a>
-          </div>
-        </div>
-        
-        <div class="dropdown">
-          <button class="dropbtn">Software & Arch &#9662;</button>
-          <div class="dropdown-content">
-            <a href="system-architecture.html">System Architecture</a>
-            <a href="gateway.html">Gateway</a>
-            <a href="mesh-core.html">Mesh Core</a>
-            <a href="software-decisions.html">Software Architecture</a>
-            <a href="engineering-journal.html">Debugging & Journal</a>
-            <a href="event-bus.html">Event Bus & Watches</a>
-            <a href="security.html">Security & RBAC</a>
-          </div>
-        </div>
-
-        <div class="dropdown">
-          <button class="dropbtn">Data & AI &#9662;</button>
-          <div class="dropdown-content">
-            <a href="analytics.html">Analytics Pipeline</a>
-            <a href="copilot.html">Honu AI Copilot</a>
-            <a href="bathymetry.html">Bathymetry</a>
-            <a href="calibration.html">Sensor Calibration</a>
-          </div>
-        </div>
-        
-        <div class="dropdown">
-          <button class="dropbtn">Tools & API &#9662;</button>
-          <div class="dropdown-content">
-            <a href="mission-portal.html" class="is-current">Mission Portal</a>
-            <a href="janus-acoustic.html">JANUS Acoustics</a>
-            <a href="simulation.html">Simulation</a>
-            <a href="data-providers.html">Data Providers</a>
-            <a href="external-data.html">External Integrations</a>
-            <a href="examples.html">Data Examples</a>
-            <a href="api-reference.html">API Reference</a>
-          </div>
-        </div>
-        
-        <div class="dropdown">
-          <button class="dropbtn">Guides & Ops &#9662;</button>
-          <div class="dropdown-content">
-            <a href="getting-started.html">Getting Started</a>
-            <a href="build-guide.html">Build Guide</a>
-            <a href="roadmap.html">Roadmap</a>
-          </div>
-        </div>
-        </div>
-
-        <!-- Evaluation Nav Group Removed -->
-        
-        <!-- Art Portfolio -->
         <div style="display: flex; align-items: center; margin-left: 0.5rem; border-left: 1px solid rgba(255,255,255,0.15); padding-left: 1.5rem;">
-          <a href="https://jonathancapone.art" target="_blank" style="font-weight: 600;">Art Portfolio</a>
+          <a href="https://jonathancapone.art" target="_blank" style="font-weight: 600; color: var(--ink-soft);">Art Portfolio</a>
         </div>
       </nav>
     </div>
   </header>
 
   <section class="hero wrap">
-    <span class="eyebrow">Component</span>
-    <h1>Mission Portal</h1>
-    <p>The WebGL mapping dashboard and control interface.</p>
+    <span class="eyebrow">Presentation Layer</span>
+    <h1>Mission Portal & AI.</h1>
+    <p>The ~52,500 LOC Vanilla JS 3D digital twin and the offline-capable Honu AI.</p>
     <div class="hero-actions">
       <a class="btn btn-primary" href="https://github.com/aminalnam/OMEGA-wave" target="_blank">View OMEGA-wave on GitHub</a>
       <a class="btn btn-secondary" href="https://jonathancapone.art" target="_blank">Art Portfolio</a>
@@ -325,7 +266,505 @@ export interface DigitalTwinCommand {
         </div>
       </section>
 
-    </div>
+    
+
+<section class="section">
+            <div class="section-content">
+              <span class="section-kicker">Mathematical Signal Processing</span>
+              <h2>QARTOD Quality Control Math.</h2>
+              <p>The <code>gateway/analytics.py</code> engine is the mathematical workhorse of the shore system. It constantly crunches millions of historical SQLite telemetry points using strict QARTOD (Quality Assurance / Quality Control of Real-Time Oceanographic Data) standards.</p>
+              <p><strong>Spike Detection via First Derivative:</strong> When a hydrophone passes a thermocline, it might record a massive, legitimate spike in temperature (an ocean front). Standard deviation checks would flag this as an error. OMEGA uses the mathematical first derivative test: <code>|V2 - V1| - |V3 - V1| / 2 > Spike_Threshold</code>. This equation proves whether a sudden spike mathematically returned to the baseline (a sensor glitch) or established a new baseline (a legitimate oceanographic event).</p>
+              <p><strong>Gross Range Processing:</strong> For localized anomalies, the numpy arrays execute vectorized operations using the Median Absolute Deviation (MAD): <code>MAD = median(|Xi - median(X)|)</code>. Because standard averages are destroyed by massive outliers, the MAD provides an unbreakable center. If a value exceeds <code>MAD * 1.4826 * 3</code>, it is flagged as suspect. At 6 sigmas, it is stripped from the DOM.</p>
+            </div>
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">gateway/qc.py</span><pre><code class="language-python">def _threshold_bundle(values: list[float]) -> dict[str, float] | None:
+    # Calculate QARTOD compliant statistical bounds
+    center = np.median(values)
+    mad = np.median(np.abs(values - center))
+    robust_sigma = mad * 1.4826
+    
+    return {
+        "gross_range_suspect_min": center - robust_sigma * 3,
+        "gross_range_suspect_max": center + robust_sigma * 3,
+        "gross_range_fail_min": center - robust_sigma * 6,
+        "gross_range_fail_max": center + robust_sigma * 6,
+    }</code></pre></div>
+
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto; margin-top: 2rem;">
+              <span class="panel-kicker">gateway/analytics_merge.py</span>
+              <pre><code class="language-python">import pandas as pd
+import sqlite3
+
+def build_multivariate_dataset(db_path: str):
+    """
+    Oceanographic sensors sample at different frequencies. 
+    Temperatures arrive every 15m; Salinity arrives every 1h.
+    We must use Pandas merge_asof() to align time-series backward 
+    in time to the nearest exact sample, avoiding future-data leakage.
+    """
+    conn = sqlite3.connect(db_path)
+    
+    # Load raw telemetry into DataFrames
+    df_temp = pd.read_sql("SELECT timestamp, temperature FROM telemetry", conn)
+    df_salt = pd.read_sql("SELECT timestamp, salinity FROM telemetry", conn)
+    
+    # Sort by time required for asof merge
+    df_temp.sort_values("timestamp", inplace=True)
+    df_salt.sort_values("timestamp", inplace=True)
+    
+    # Merge Salinity to Temperature, looking backward up to 2 hours
+    df_merged = pd.merge_asof(
+        df_temp, 
+        df_salt, 
+        on="timestamp", 
+        direction="backward",
+        tolerance=pd.Timedelta("2h")
+    )
+    
+    return df_merged.dropna()</code></pre>
+            </div>
+          </section>
+    
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">Depth Mapping</span>
+              <h2>Bathymetry & IDW Math.</h2>
+              <p>The <code>gateway/bathymetry_ingest.py</code> and <code>bathymetry_export.py</code> modules handle massive acoustic sounding files (CSV). The pipeline normalizes millions of overlapping sonar pings, filters out acoustic multipath errors, and passes the clean data into the 3D Inverse Distance Weighting (IDW) interpolation engine.</p>
+              <p><strong>The Mathematics:</strong> Edge node acoustic sweeps are fundamentally sparse—they only collect data along the physical transit path. To generate a continuous topological surface, OMEGA uses the mathematical IDW formula: <code>Z_est = Σ (Z_i / D_i^p) / Σ (1 / D_i^p)</code>. A target cell's depth is calculated by sampling known data points within a radius. Points physically closer to the target cell (small <code>D_i</code>) exert exponentially higher gravitational "pull" on the final estimate, governed by the power parameter <code>p</code>.</p>
+              <p><strong>Execution:</strong> The Python engine calculates this massive N-body problem using heavily vectorized NumPy matrix broadcasting. It generates a high-resolution 2D grid, which is mathematically translated into GeoJSON contour polygons for the Mission Portal's WebGL engine.</p>
+            </div>
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;">
+              <span class="panel-kicker">gateway/bathymetry_core.py</span>
+              <pre><code class="language-python">def calculate_idw(grid_x, grid_y, points, values, power=2.0):
+    # Flatten the grid for vectorized NumPy distance calculation
+    grid_points = np.c_[grid_x.ravel(), grid_y.ravel()]
+    
+    # Calculate the Euclidian distance matrix between grid and known soundings
+    dist = cdist(grid_points, points)
+    
+    # Apply the Inverse Distance Weighting mathematics
+    # Prevent divide-by-zero for points directly on top of soundings
+    dist = np.where(dist == 0, 1e-10, dist)
+    weights = 1.0 / (dist ** power)
+    
+    # Calculate the normalized topological estimate
+    z_est = np.sum(weights * values, axis=1) / np.sum(weights, axis=1)
+    
+    return z_est.reshape(grid_x.shape)</code></pre>
+            </div>
+          </section>
+    
+          <section class="section section-block" style="background: rgba(0,0,0,0.4);">
+            <span class="section-kicker">Predictive Signal Processing</span>
+            <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Fast Fourier Transforms (FFT).</h2>
+            <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">Wait until a biofouling colony completely encases a hydrophone, and the acoustic mission is already lost. OMEGA utilizes the mathematical Fast Fourier Transform algorithm <code>X_k = Σ x_n e^(-i 2π k n / N)</code> to detect microscopic biological growth weeks before the hardware is compromised.</p>
+            
+            <div class="grid-3" style="margin-bottom: 2rem;">
+              <div class="panel" style="padding: 1.5rem;">
+                <span class="status-label status-implemented">Hanning Window</span>
+                <h3 style="font-size: 1.2rem;">Signal Preparation</h3>
+                <p style="font-size: 0.85rem;">The edge node records micro-acoustic vibration arrays. Before the FFT, the data is mathematically multiplied against a Hanning Window function <code>w(n) = 0.5 - 0.5*cos(2πn/N)</code> to force the ends of the time-series to zero, eliminating spectral leakage.</p>
+              </div>
+              <div class="panel" style="padding: 1.5rem;">
+                <span class="status-label status-implemented">Spectral Shift</span>
+                <h3 style="font-size: 1.2rem;">Time to Frequency</h3>
+                <p style="font-size: 0.85rem;">The FFT algorithm converts the time-domain reflections into a frequency-domain histogram. It calculates the exact amplitude of every constituent sine wave making up the complex acoustic pulse.</p>
+              </div>
+              <div class="panel" style="padding: 1.5rem;">
+                <span class="status-label status-implemented">Biofouling Detection</span>
+                <h3 style="font-size: 1.2rem;">Harmonic Dampening</h3>
+                <p style="font-size: 0.85rem;">A clean hydrophone rings precisely at 11.5kHz. If calcified barnacles grow on the transducer face, the mass mathematically shifts the harmonic resonance, creating a dampening curve that triggers a maintenance alert.</p>
+              </div>
+            </div>
+          </section>
+
+<section class="section section-block" style="background: rgba(0,0,0,0.4);">
+            <span class="section-kicker">AI Orchestration</span>
+            <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">The ~100-Tool Action Registry.</h2>
+            <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">The <code>gateway/copilot.py</code> module is a massive 240KB orchestration loop. Small local LLMs (like Qwen2.5 7B) cannot reliably pick the correct tool if given a dump of ~100 different tools. Honu solves this by mathematically filtering tools based on 13 strict Intent Groups.</p>
+            
+            <div class="grid-3" style="margin-bottom: 2rem;">
+              <div class="panel" style="padding: 1.5rem;">
+                <span class="status-label status-implemented">Ocean Science</span>
+                <h3 style="font-size: 1.2rem;">Global Federations</h3>
+                <p style="font-size: 0.85rem;">Tools like <code>get_argo_floats</code>, <code>get_coral_reef_watch</code>, and <code>get_ocean_currents</code> allow the AI to automatically query NASA and Copernicus databases.</p>
+              </div>
+              <div class="panel" style="padding: 1.5rem;">
+                <span class="status-label status-implemented">Maritime Security</span>
+                <h3 style="font-size: 1.2rem;">Fishing & SAR</h3>
+                <p style="font-size: 0.85rem;">The AI can use <code>search_fishing_vessels</code> and <code>get_gfw_fishing_stats</code> to pull Synthetic Aperture Radar hits from Global Fishing Watch.</p>
+              </div>
+              <div class="panel" style="padding: 1.5rem;">
+                <span class="status-label status-implemented">Fleet Navigation</span>
+                <h3 style="font-size: 1.2rem;">UI Automation</h3>
+                <p style="font-size: 0.85rem;">Tools like <code>navigate_to_page</code> and <code>highlight_element</code> allow Honu to actually drive the operator's 3D Glass Bridge via WebSockets.</p>
+              </div>
+            </div>
+          </section>
+    
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">Spatial Mathematics</span>
+              <h2>Natural Language to Geo-Bounds.</h2>
+              <p>When an operator asks <i>"Show me buoys near the East Coast"</i>, feeding that raw string into an external API will fail. The Copilot engine executes strict spatial pre-processing before the LLM even sees the message.</p>
+              <p><strong>Execution:</strong> The Python <code>_preprocess_query</code> function scans the text against a registry of 30+ geographic regions. It translates "east coast" into a strict mathematical bounding box <code>[-82.0, 24.0, -66.0, 45.0]</code>. The engine then securely injects this box into the tool parameters. This eliminates AI hallucination—the model is physically unable to invent fake GPS coordinates.</p>
+            </div>
+            
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;">
+              <span class="panel-kicker">Honu Execution Loop</span>
+              <pre><code class="language-mermaid">sequenceDiagram
+    participant U as Operator
+    participant P as Intent Preprocessor
+    participant M as LLM Engine
+    participant R as Tool Registry
+    participant DB as SQLite WAL
+    
+    U->>P: "Are there Argo floats near Hawaii?"
+    P->>P: Extract "Hawaii" -> bbox[-160, 18, -154, 22]
+    P->>M: Inject [GLASS BRIDGE CONTEXT] & system prompt
+    M->>R: call: `get_argo_floats_in_bbox`
+    R->>DB: SELECT * FROM argo WHERE lat/lon in bbox
+    DB-->>R: Return JSON array
+    R-->>M: Inject data into context
+    M-->>U: "Found 12 floats. I've highlighted them."</code></pre>
+            </div>
+          </section>
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">Safety Constraints</span>
+              <h2>Absolute Read-Only Execution.</h2>
+              <p>AI hallucinations are dangerous, especially when dealing with physical hardware on a multimillion-dollar edge node. The Honu prompt engine enforces absolute read-only constraints. It is physically impossible for the LLM to execute a mutating API call or alter remote fleet parameters.</p>
+<p><strong>The Physics of Confinement:</strong> Unlike standard chatbot implementations that just "ask" the AI not to break things, OMEGA physically isolates the AI execution environment. The ~100-tool registry exposed to the LLM explicitly does not contain functions that perform POST or PUT requests to the SQLite database. The AI is structurally blind to mutation endpoints.</p>
+<p><strong>Execution:</strong> The system prompt rigorously reinforces this architectural boundary. If the LLM attempts to hallucinate a command (e.g. `execute_format_nvram`), the orchestration loop detects the unregistered tool attempt and mathematically drops the execution thread, returning an explicit safety violation to the operator.</p>
+              
+            </div>
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">gateway/copilot.py</span><pre><code class="language-python">SYSTEM_PROMPT = """You are Honu, the OMEGA Intelligence Engine.
+1. READ-ONLY OPERATIONS: You are strictly an analytical and navigational tool.
+   - You must NEVER send outbound telemetry or execute hardware controls.
+2. DATA PURITY: You hold ZERO built-in knowledge of this deployment.
+   - Every fact must come from a tool call against the gateway's live API.
+3. AMNESIA PREVENTION: You cannot "see" the user's screen.
+   - Before each message, you receive a [GLASS BRIDGE CONTEXT] block."""</code></pre></div>
+          </section>
+    
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">Language Processing</span>
+              <h2>The Query Preprocessor.</h2>
+              <p>When an operator types a natural language request, feeding it directly into a small parameter LLM often results in incorrect tool selection or hallucinated coordinates. OMEGA intercepts all queries using a dedicated <code>_preprocess_query</code> function.</p>
+              <p><strong>Pattern Recognition:</strong> The preprocessor scans the raw string for over 20 oceanographic metric synonyms (e.g., mapping "SST" or "water temp" to <code>sea-surface-temperature</code>). It simultaneously cross-references a library of predefined bounding boxes (e.g., <code>_GEO_BOXES["east coast"]</code>). To prevent "east coast" from accidentally triggering a generic "us" bounding box, the Python engine mathematically sorts the keys by string length descending.</p>
+              <p><strong>System Directives:</strong> Because the frontend concatenates previous chat turns into a single payload, the preprocessor strictly trims the payload to the first paragraph (<code>\n\n</code>). If a match is found, the engine invisibly injects a rigid system directive into the conversation history, mathematically forcing the LLM to use the correct tool and coordinates, eliminating hallucination entirely.</p>
+            </div>
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">gateway/copilot.py</span><pre><code class="language-python">def _preprocess_query(history: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    # Find the last user message
+    user_text = ""
+    for msg in reversed(history):
+        if msg.get("role") == "user":
+            user_text = (msg.get("content") or "").lower().strip()
+            break
+
+    # Prevent multi-paragraph pollution from frontend concatenation
+    if "\n\n" in user_text:
+        user_text = user_text.split("\n\n")[0].strip()
+
+    # Detect metric
+    detected_metric: str | None = None
+    for phrase, metric in sorted(_METRIC_KEYWORDS.items(), key=lambda x: -len(x[0])):
+        if phrase in user_text:
+            detected_metric = metric
+            break
+
+    # (Directives injected based on detected metric and geographic bbox)
+    # ...</code></pre></div>
+          </section>
+
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">Execution Engine</span>
+              <h2>Auto-Execution Overrides.</h2>
+              <p>Even with preprocessor directives, 7B parameter models can still stubbornly refuse to select the correct analytical tool. For example, the <code>spot_sample</code> tool only returns weather data—it completely lacks <code>salinity</code> and <code>dissolved-oxygen</code> arrays. If an operator asks for salinity, the LLM will often hallucinate and blindly fire <code>spot_sample</code> anyway.</p>
+              <p><strong>The Override:</strong> OMEGA employs an <code>_detect_autoexec</code> bypass. When critical metric pathways (like salinity) are detected, the Copilot Engine completely circumvents the LLM's decision-making process. The Python backend manually executes the API call via <code>httpx.ASGITransport</code> against the <code>get_measurement_statistics</code> endpoint, fetches the live data, and injects the results directly into the LLM's context window as a simulated tool response.</p>
+              <p><strong>Result:</strong> The AI is downgraded from a "decision maker" to a mere "summarizer," dramatically increasing the deterministic reliability of the agent while retaining its natural language fluidity.</p>
+            </div>
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">gateway/copilot.py</span><pre><code class="language-python">def _detect_autoexec(history: list[dict[str, Any]]) -> dict[str, Any] | None:
+    # Detect metric and location using sorted keyword registries
+    # ...
+    params: dict[str, Any] = {"metric_name": detected_metric}
+    if detected_bbox:
+        params.update({
+            "min_lat": str(detected_bbox["min_lat"]),
+            "max_lat": str(detected_bbox["max_lat"]),
+            "min_lon": str(detected_bbox["min_lon"]),
+            "max_lon": str(detected_bbox["max_lon"]),
+        })
+
+    return {
+        "tool": "get_measurement_statistics",
+        "path": "/v1/measurements/statistics",
+        "params": params,
+    }</code></pre></div>
+          </section>
+
+<section class="section section-block" style="background: rgba(0,0,0,0.4);">
+            <span class="section-kicker">Spatial Interpolation Mathematics</span>
+            <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">IDW & Kriging Algorithms.</h2>
+            <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">When a remote sensor conducts a sonar survey, it generates discrete point clouds with massive unmapped voids between the transect lines. OMEGA must mathematically estimate the depth of these voids to construct a continuous 3D topographic map.</p>
+            
+            <div class="grid-2" style="margin-bottom: 2rem;">
+              <div class="panel" style="padding: 1.5rem;">
+                <span class="status-label status-implemented">gateway/bathymetry.py</span>
+                <h3 style="font-size: 1.2rem;">Inverse Distance Weighting (IDW)</h3>
+                <p style="font-size: 0.85rem;">When generating the bathymetric grid, OMEGA uses an IDW algorithm to estimate the depth of unmapped coordinates based on nearby soundings. It projects the coordinates to a localized flat plane using the Earth's radius (<code>6,371,008.8m</code>).</p>
+                <pre><code class="language-python" style="font-size: 0.75rem;">def _estimate_depth(
+    points: list[dict[str, Any]], *,
+    center_x: float, center_y: float,
+    power: float, neighbors: int,
+) -> tuple[float, float] | None:
+    # ... distance calculation ...
+    distances.sort(key=lambda item: item[0])
+    selected = distances[:neighbors]
+    numerator = 0.0
+    denominator = 0.0
+    for distance, depth_m in selected:
+        # Distance clamped to 0.25m to prevent division by zero
+        weight = 1.0 / max(distance, 0.25) ** power
+        numerator += depth_m * weight
+        denominator += weight
+
+    if denominator == 0:
+        return None
+    return numerator / denominator, selected[0][0]</code></pre>
+                <p style="font-size: 0.85rem; margin-top: 1rem;">The math applies a <code>power</code> weight (default 2.0) so a ping 2 meters away has 4 times less influence. Distances are clamped to <code>max(distance, 0.25)</code> to prevent infinite weights at exact coordinates.</p>
+              </div>
+              <div class="panel" style="padding: 1.5rem;">
+                <span class="status-label status-implemented">gateway/bathymetry_grid.py</span>
+                <h3 style="font-size: 1.2rem;">ETOPO Fallback Grid</h3>
+                <p style="font-size: 0.85rem;">Because deployed sensors only report bathymetry where they sit, an open-ocean route has no depth context by default. OMEGA bundles a coarse global elevation grid (0.25 degrees, sourced from NOAA's ETOPO) to fill the gaps between real soundings.</p>
+                <pre><code class="language-python" style="font-size: 0.75rem;">def seafloor_depth_m(lat: float, lon: float) -> float | None:
+    # Bilinear sampling of the 0.25-degree grid
+    fi = (lat - _LAT0) / GRID_RESOLUTION_DEG
+    fj = (lon - _LON0) / GRID_RESOLUTION_DEG
+    i0 = min(max(int(fi), 0), n_lat - 2)
+    j0 = min(max(int(fj), 0), n_lon - 2)
+    ti = min(max(fi - i0, 0.0), 1.0)
+    tj = min(max(fj - j0, 0.0), 1.0)
+
+    a00 = float(grid[i0, j0])
+    a01 = float(grid[i0, j0 + 1])
+    a10 = float(grid[i0 + 1, j0])
+    a11 = float(grid[i0 + 1, j0 + 1])
+    
+    # Any land corner means this cell straddles a coastline.
+    # Leave near-shore depth to sensor soundings.
+    if a00 >= 0.0 or a01 >= 0.0 or a10 >= 0.0 or a11 >= 0.0:
+        return None
+        
+    top = a00 + (a01 - a00) * tj
+    bottom = a10 + (a11 - a10) * tj
+    altitude = top + (bottom - top) * ti
+    return round(-altitude, 1)</code></pre>
+              </div>
+            </div>
+          </section>
+
+          <section class="section section-block" style="background: rgba(0,0,0,0.4); margin-top: 2rem;">
+            <span class="section-kicker">Algorithm Implementation</span>
+            <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Executing IDW in Python.</h2>
+            <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">To generate topographic maps from raw sonar ping arrays, OMEGA utilizes a deterministic Inverse Distance Weighting (IDW) algorithm. This is calculated directly using core Numpy tensor operations across a meshed raster grid.</p>
+            
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;">
+              <span class="panel-kicker">scripts/csv_to_png_depth_interpolated.py</span>
+              <pre><code class="language-python">import numpy as np
+
+def idw_interpolation(x, y, z, xi, yi, power=2.0, epsilon=1e-12):
+    """
+    Inverse Distance Weighting (IDW) spatial interpolation.
+    
+    Args:
+        x, y: 1D numpy arrays of known longitude/latitude coordinates.
+        z: 1D numpy array of known depth soundings.
+        xi, yi: 2D meshgrid arrays representing the target output raster.
+        power: Weighting power (higher p = steeper decay of influence).
+    """
+    zi = np.zeros_like(xi, dtype=float)
+    
+    # Iterate across the target 2D raster grid
+    for row in range(xi.shape[0]):
+        for col in range(xi.shape[1]):
+            # Calculate the Euclidean distance from this pixel to every known sonar ping
+            dx = x - xi[row, col]
+            dy = y - yi[row, col]
+            dist = np.sqrt(dx * dx + dy * dy)
+            
+            # Prevent division by zero if a pixel perfectly overlaps a sounding
+            if np.any(dist < epsilon):
+                zi[row, col] = z[np.argmin(dist)]
+                continue
+                
+            # Apply the IDW mathematical formula: W_i = 1 / (d_i ^ p)
+            weights = 1.0 / np.power(dist, power)
+            
+            # Calculate the weighted average of the depths
+            zi[row, col] = np.sum(weights * z) / np.sum(weights)
+            
+    return zi</code></pre>
+            </div>
+            <p style="color: var(--ink-soft); font-size: 1rem; line-height: 1.6; max-width: 800px; margin-top: 1.5rem;">
+              <strong>The Math:</strong> The weight of a known sonar point decreases as the distance increases. The <code>power</code> variable controls the steepness of this decay. A power of <code>2.0</code> (inverse square) is standard for bathymetry, meaning a ping 2 meters away has 4 times less influence than a ping 1 meter away.
+            </p>
+          </section>
+    
+          <section class="section" style="margin-top: 2rem;">
+            <div class="section-content">
+              <span class="section-kicker">Sonar Physics</span>
+              <h2>Acoustic Sounding Cones.</h2>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+                <img src="MAP00_depth_map.png" style="width: 100%; border-radius: 8px; border: 1px solid var(--line);" alt="Raw Depth Map">
+                <img src="MAP00_interpolated.png" style="width: 100%; border-radius: 8px; border: 1px solid var(--line);" alt="Interpolated Bathymetry Map">
+              </div>
+<p>Sonar physics dictate that a transducer does not shoot a laser-thin line directly downwards; it emits an expanding acoustic cone. In shallow water (2 meters), the acoustic footprint on the floor is extremely small, resulting in highly accurate, localized depth readings.</p>
+<p>However, in deep water (500 meters), the acoustic footprint can cover a massive area, physically averaging out steep underwater cliffs or small wrecks. The OMEGA bathymetry processor dynamically adjusts confidence weights based on depth-derived footprint sizes. Shallow readings are trusted completely; deep readings are mathematically smoothed to account for the wider acoustic dispersion, ensuring the final generated 3D map is physically accurate.</p>
+              
+            </div>
+            
+          </section>
+    
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">Bathymetric Execution</span>
+              <h2>Interpolated Depth Soundings.</h2>
+              <p>The <code>bathymetry-sounding.json</code> envelope is generated thousands of times per hour by the sensor's active sonar pinging the lakebed. Note the specific metric <code>bathymetry-depth: 12.4m</code> encoded in the strict SenML format.</p>
+<p><strong>Execution:</strong> The gateway consumes these disparate envelopes and stores them as massive arrays of raw coordinate points in SQLite. The Mission Portal then queries these points and executes an Inverse Distance Weighting (IDW) interpolation algorithm directly in the client's browser. This mathematics transforms discrete, scattered sonar pings into a beautiful, continuous 3D contour map, giving operators instant, real-time feedback on the topography of the unmapped ocean floor.</p>
+              
+            </div>
+          </section>
+          
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">Offline Processing</span>
+              <h2>Data Pipeline Scripts.</h2>
+              <p>While the Mission Portal handles real-time IDW rendering, OMEGA also provides a suite of offline Python scripts for generating publishable scientific assets directly from raw CSV exports.</p>
+              <ul>
+                <li style="margin-bottom: 1rem;"><strong><code>csv_to_png_depth_contours.py</code></strong>: Generates high-resolution, static 2D heatmaps with distinct topological contour lines using matplotlib. These static PNGs are designed for inclusion in formal academic papers.</li>
+                <li style="margin-bottom: 1rem;"><strong><code>csv_to_kmz_depth_overlay.py</code></strong>: Takes the interpolated depth arrays and projects them over satellite imagery, packaging the result into a compressed KMZ file. This allows marine biologists to drag-and-drop the 3D bathymetric overlay directly into Google Earth Pro for geospatial fusion with historical coral reef datasets.</li>
+              </ul>
+            </div>
+            
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;">
+              <span class="panel-kicker">scripts/csv_to_png_depth_contours.py</span>
+              <pre><code class="language-python">import numpy as np
+import matplotlib.pyplot as plt
+
+def build_grid(points, grid_size, power):
+    lats = np.array([p["lat"] for p in points], dtype=float)
+    lons = np.array([p["lon"] for p in points], dtype=float)
+    depths = np.array([p["depth_m"] for p in points], dtype=float)
+
+    lon_min, lon_max = lons.min(), lons.max()
+    lat_min, lat_max = lats.min(), lats.max()
+
+    # Generate the empty raster meshgrid
+    xi_vals = np.linspace(lon_min, lon_max, grid_size)
+    yi_vals = np.linspace(lat_min, lat_max, grid_size)
+    xi, yi = np.meshgrid(xi_vals, yi_vals)
+    
+    # Execute IDW Math
+    zi = idw_interpolation(lons, lats, depths, xi, yi, power=power)
+    return lons, lats, depths, xi, yi, zi, lon_min, lon_max, lat_min, lat_max
+
+def render_contours(xi, yi, zi, lons, lats, levels=12, output_path="map.png"):
+    plt.figure(figsize=(9, 7))
+    
+    # Render the base color heatmap
+    filled = plt.contourf(xi, yi, zi, levels=levels)
+    
+    # Overlay crisp contour lines on top of the heatmap
+    plt.contour(xi, yi, zi, levels=levels)
+    
+    plt.colorbar(filled, label="Depth (m)")
+    
+    # Scatter plot the actual raw sonar ping locations 
+    # to show where the interpolation occurred
+    plt.scatter(lons, lats, s=6.0)
+    
+    plt.xlabel("Longitude")
+    plt.ylabel("Latitude")
+    plt.title("Bathymetric Contour Map")
+    plt.tight_layout()
+    plt.savefig(output_path, dpi=300)
+    plt.close()</code></pre>
+            </div>
+            
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto; margin-top: 1rem;"><span class="panel-kicker">bathymetry-sounding.example.json</span><pre><code class="language-json">{
+  "spec": "omega-wave.observation-envelope/1",
+  "message_id": "bathymetry-example-0001",
+  "message_type": "observation",
+  "origin": {
+    "node_id": "urn:omega-wave:node:survey-a:vessel-01",
+    "device_id": "multibeam-sonar-main",
+    "capability_ref": "https://example.invalid/omega-wave/things/survey-a-vessel-01-multibeam.td.json",
+    "firmware_version": "0.2.0"
+  },
+  "routing": {
+    "priority": "normal",
+    "ttl_s": 86400,
+    "ack_mode": "gateway",
+    "max_hops": 8
+  },
+  "sample": {
+    "sampled_at": "2026-04-18T19:00:00Z",
+    "sequence": 1,
+    "location": {
+      "lat": 36.801,
+      "lon": -121.79
+    }
+  },
+  "tags": {
+    "site": "survey-a",
+    "platform": "survey-vessel",
+    "medium": "water",
+    "station_name": "Survey Vessel 01"
+  },
+  "payload": {
+    "mode": "senml",
+    "content_type": "application/senml+json",
+    "schema_ref": "urn:ietf:rfc:8428",
+    "records": [
+      {
+        "bn": "urn:omega-wave:thing:survey-a:vessel-01:multibeam/",
+        "bt": 1776548400
+      },
+      {
+        "n": "bathymetry-depth",
+        "u": "m",
+        "v": 12.4
+      }
+    ]
+  }
+}</code></pre></div>
+          </section>
+    
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">Data Standards</span>
+              <h2>CF-Compliant NetCDF Pipelines.</h2>
+              <p>Scientific data is fundamentally useless if it is trapped in proprietary formats. OMEGA is designed for institutional interoperability and strictly adheres to the Climate and Forecast (CF) Metadata Conventions (<code>cf_metadata.py</code>).</p>
+<p><strong>Execution:</strong> All raw JSON/TLV telemetry collected by the edge nodes is eventually serialized into massive, multi-dimensional NetCDF arrays (<code>cf_netcdf.py</code>). These arrays include rigorous metadata describing the exact sensor used, the calibration date, and the QA/QC flags. This allows the data to be seamlessly ingested into national supercomputing repositories (like NCEI) for long-term climate modeling archival.</p>
+              
+            </div>
+            
+          </section>
+    
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">4D Data Arrays</span>
+              <h2>Copernicus 4D Data Cubes.</h2>
+              <p>The gateway does not just read flat CSV files; it is engineered to parse true 4D data cubes (Latitude, Longitude, Depth, Time) using the <code>copernicus_cube.py</code> architecture. These cubes represent terabytes of oceanic modeling data.</p>
+<p><strong>Relevance:</strong> By accessing the Copernicus Marine Service APIs, the OMEGA gateway extracts specific slices of this data cube. This allows the visualization portal to render complex, volumetric slices of ocean salinity and ocean color (Chlorophyll-a), and mathematically overlay the exact 3D physical position of the edge node directly inside the simulated data cube.</p>
+              
+            </div>
+            
+          </section>
+</div>
   </main>
 
   <footer class="footer wrap">

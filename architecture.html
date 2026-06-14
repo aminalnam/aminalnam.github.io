@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <title>Jonathan Capone — Architecture & Design</title>
+
+  <meta name="description" content="OMEGA-wave documentation: The Global Federation." />
+  <meta property="og:title" content="Jonathan Capone — Platform Overview" />
+  <meta property="og:description"
+    content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://jonathancapone.com/overview.html" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Jonathan Capone — Platform Overview" />
+  <meta name="twitter:description"
+    content="OMEGA is a mixed-bearer environmental sensor, maritime operations, and field gateway platform." />
+
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌊</text></svg>">
+
+  <link rel="stylesheet" href="style.css">
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ startOnLoad: true, theme: 'dark', themeVariables: { fontFamily: 'Inter' } });
+  </script>
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="wrap topbar-inner">
+      <a class="brand" href="index.html"
+        style="display: flex; align-items: center; gap: 0.75rem; text-decoration: none;">
+        <div>
+          <span class="brand-title"
+            style="letter-spacing: 0.1em; color: var(--white); display: block; font-family: var(--font-serif); font-size: 1.5rem;">JONATHAN
+            CAPONE</span>
+          <span class="brand-sub"
+            style="display: block; font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent); font-family: var(--font-mono); opacity: 0.9;">Systems
+            Architecture Portfolio</span>
+        </div>
+      </a>
+            <nav class="nav" aria-label="Main Navigation">
+        <a href="index.html" class="nav-link ">Home</a>
+        <a href="architecture.html" class="nav-link is-current">Architecture</a>
+        <a href="hardware.html" class="nav-link ">Hardware & Mesh</a>
+        <a href="gateway.html" class="nav-link ">Backend Gateway</a>
+        <a href="mission-portal.html" class="nav-link ">Mission Portal</a>
+        <a href="engineering-journal.html" class="nav-link ">Engineering Journal</a>
+        
+        <div style="display: flex; align-items: center; margin-left: 0.5rem; border-left: 1px solid rgba(255,255,255,0.15); padding-left: 1.5rem;">
+          <a href="https://jonathancapone.art" target="_blank" style="font-weight: 600; color: var(--ink-soft);">Art Portfolio</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero wrap">
+    <span class="eyebrow">System Design</span>
+    <h1>Architecture & Design.</h1>
+    <p>The Bearer-Agnostic observation protocol and 4-Layer architectural division.</p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="manifesto.html">Read the System Manifesto</a>
+      <a class="btn btn-secondary" href="https://github.com/aminalnam/OMEGA-wave" target="_blank">View OMEGA-wave on GitHub</a>
+    </div>
+  </section>
+
+  <main class="main-shell wrap" role="main">
+    <div class="main-inner">
+
+      <section class="section section-block" style="padding-top: 0; padding-bottom: 2rem;">
+        <span class="section-kicker" style="color: var(--accent);">The Engineering Reality</span>
+        <h3 style="font-family: var(--font-serif); font-size: 2.2rem; margin: 0 0 1.5rem;">Designing for the Extremes.
+        </h3>
+        <p
+          style="color: var(--ink-soft); font-size: 1.15rem; margin-bottom: 2.5rem; max-width: 850px; line-height: 1.7;">
+          Deploying delicate silicon and lithium into the ocean demands extreme adaptation. Saltwater corrodes hardware,
+          rolling waves physically block RF signals, and winter storms severely limit solar charging budgets. Standard
+          IoT frameworks instantly collapse under these conditions. To survive and operate autonomously, OMEGA relies on
+          hyper-resilient, bare-metal engineering:
+        </p>
+
+        <div class="grid-3" style="margin-bottom: 4rem;">
+          <div class="panel" style="padding: 2rem;">
+            <span class="status-label status-implemented">Thermodynamics</span>
+            <h3 style="font-size: 1.4rem;">15µA Deep Sleep</h3>
+            <p style="font-size: 0.95rem;">Edge nodes mathematically budget incoming solar joules, physically cutting
+              power rails to drop into 15µA deep-sleep cycles to survive 14-hour winter nights.</p>
+          </div>
+          <div class="panel" style="padding: 2rem;">
+            <span class="status-label status-implemented">Compression</span>
+            <h3 style="font-size: 1.4rem;">Binary TLV Frames</h3>
+            <p style="font-size: 0.95rem;">JSON is too heavy for the ocean. OMEGA crushes 283B payloads into highly dense 84B Custom Binary TLV frames (70% savings), and utilizes 4-Phase Advanced Encoding including predictive coding, FFT bins, and OTA ML loading.</p>
+          </div>
+          <div class="panel" style="padding: 2rem;">
+            <span class="status-label status-implemented">Resilience</span>
+            <h3 style="font-size: 1.4rem;">SQLite WAL Routing</h3>
+            <p style="font-size: 0.95rem;">The FastAPI backend writes asynchronously to a SQLite WAL database to prevent
+              total system lockups during massive RF data influxes from the physical mesh.</p>
+          </div>
+        </div>
+
+        <span class="section-kicker">Data Flow</span>
+        <h3 style="font-family: var(--font-serif); font-size: 2.2rem; margin: 0 0 2rem;">The Telemetry Pipeline.</h3>
+
+        <div class="section-visual" style="margin-bottom: 2rem;">
+          <div class="mermaid">
+            flowchart TD
+            subgraph L1 [Stage 1: Physical / Hardware]
+            E1(Buoy: T-Beam Supreme)
+            E2(Relay: LR1121)
+            end
+            subgraph L2 [Stage 2: Mesh Transport]
+            DTN{DTN: Binary TLV + Batching}
+            end
+            subgraph L3 [Stage 3: Gateway]
+            UDP(Semtech UDP / T-ETH-ELITE)
+            ASGI[FastAPI / Envelope Protocol v1.0]
+            end
+            subgraph L4 [Stage 4: Presentation]
+            UI((3D WebGL Glass Bridge))
+            end
+
+            E1 <-->|LoRa 900MHz| L2
+              E2 <-->|LoRa 900MHz| L2
+                L2 <-->|LoRa / CSMA-CA| UDP
+                  UDP <-->|CBOR / JSON| ASGI
+                    ASGI <-->|HTTP Long-Polling| UI
+
+                      classDef default fill:#0a0f1d,stroke:#9aa2b1,stroke-width:1px,color:#9aa2b1;
+                      classDef node fill:#101529,stroke:#3b82f6,stroke-width:2px,color:#fff;
+                      class E1,E2,UDP,ASGI,UI node;
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-block" style="background: rgba(0,0,0,0.4);">
+        <span class="section-kicker">The Core Axiom</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Bearer-Agnostic Observation Protocol.</h2>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">
+          The true intellectual through-line of the OMEGA program is the separation of envelope <em>semantics</em> from per-bearer <em>wire forms</em>. "The standard is the protocol, not the box."
+        </p>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">
+          This design decision is what allowed an SX1302 concentrator, SignalK marine bridges, and TTN (The Things Network) adapters to all join the mesh with absolutely zero protocol changes. The envelope standardizes identity, time, location, and payload, while the wire format seamlessly transitions from an ultra-dense 84-byte binary TLV over LoRa, to JSON over HTTP, to Semtech-UDP for concentrators.
+        </p>
+      </section>
+
+      <section class="section">
+        <div class="section-content">
+          <span class="section-kicker">System Architecture</span>
+          <h2>The 4-Layer Architecture.</h2>
+          <p>To enforce fault tolerance and maintain rigid boundaries between hardware execution and human interaction, OMEGA is strictly divided into four distinct strata:</p>
+          <p><strong>Layer 0: The Benthic Zone.</strong> Deep-sea and subsurface instruments (such as ADCPs and acoustic modems) that communicate via NATO-standard JANUS acoustic chirps to surface relays.</p>
+          <p><strong>Layer 1: The Surface Mesh.</strong> Raw hardware—ESP32 microcontrollers, GPS trackers, and physical probes riding the waves. These devices acquire signals, execute edge ML, and communicate via the Delay Tolerant Network (DTN) over 900MHz LoRa. They have no concept of "the internet" or HTTP.</p>
+          <p><strong>Layer 2: The Gateway Normalizers.</strong> Software routers acting as the vital bridge. They ingest disjointed, highly compressed binary formats (Binary TLV / Acoustic FSK) from the edge and "inflate" them into the globally standard <strong>Envelope Protocol v1.0</strong> (JSON/CBOR). The gateway normalizes these packets into unified, queryable SQLite WAL records.</p>
+          <p><strong>Layer 3: The Mission Portal.</strong> The 3D Digital Twin consumed by human operators. The portal is entirely decoupled from the hardware layer; it interacts exclusively with the Gateway APIs via standard HTTP/REST and WebSockets.</p>
+          <p>This strict division ensures that if the portal server goes offline, the gateway safely continues buffering telemetry into its WAL database. Conversely, if the gateway loses connection to the internet, the edge nodes continue to safely execute their firmware loops and hold data in their DTN carry buffers without crashing due to network timeouts.</p>
+          <div class="callout"><strong>Decoupled State</strong>
+            <p>This 4-layer division ensures that if the portal server goes offline, the gateway continues buffering telemetry, and if the gateway dies, the edge node continues to operate safely in its firmware loop.</p>
+          </div>
+        </div>
+        <div class="section-visual" style="max-height: 800px; overflow-y: auto;">
+          <span class="panel-kicker">OMEGA Architecture Diagram</span>
+          <pre><code class="language-mermaid">graph TD
+    subgraph Layer 0: Benthic Zone
+        A1[Multi-Parameter Sonde] -->|UART| A2[Acoustic Modem]
+        A2 -->|JANUS 11.5kHz FSK| A3((Thermocline Refraction))
+    end
+    
+    subgraph Layer 1: Surface Mesh
+        A3 -->|Acoustic Link| B1[Surface Buoy Relay]
+        B1 -->|TLV Encoding| B2[LoRa 900MHz SX1262]
+        B2 -->|CSMA-CA CSS| B3((Marine RF Link))
+    end
+    
+    subgraph Layer 2: Shore Gateway
+        B3 -->|RF Reception| C1[Python ASGI Receiver]
+        C1 -->|Pub/Sub Queue| C2[Service Layer]
+        C2 -->|QARTOD Spike Math| C3[(SQLite WAL Database)]
+    end
+    
+    subgraph Layer 3: Mission Portal
+        C3 -->|REST JSON| D1[FastAPI Routers]
+        D1 -->|WebSockets| D2[React DOM Client]
+        D2 -->|Throttle Hooks| D3[3D WebGL Digital Twin]
+    end</code></pre>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-content">
+          <span class="section-kicker">Failure Modeling</span>
+          <h2>Resilient Architectures.</h2>
+          <p>Marine sensors exist in a state of continuous degradation. Batteries drain unexpectedly in cold water,
+            thermoclines bend and absorb acoustic communications, and salt aggressively corrodes IP67 seals. A brittle,
+            tightly coupled architecture will inevitably collapse when a single critical node vanishes from the network.
+          </p>
+          <p>OMEGA is fundamentally designed around the principle of <strong>Asynchronous Resiliency</strong> and Delay
+            Tolerant Networking (DTN). There are no blocking network calls in the core firmware that would freeze an
+            execution thread if an acknowledgment packet is lost in the noise floor.</p>
+          <p>Instead, data is stored locally in circular flash buffers and forwarded only when a viable physical
+            route—such as a passing edge node acting as a data mule, or an active satellite pass overhead—is
+            mathematically proven to exist. This "store-and-forward" resilience ensures that brief connectivity windows
+            are fully utilized to offload critical envelopes, while preserving battery life during extended blackout
+            periods.</p>
+
+        </div>
+
+      </section>
+
+    
+
+<section class="section section-block" style="background: rgba(0,0,0,0.4);">
+        <span class="section-kicker">Network Topology</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">The 4-Layer Stack.</h2>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">OMEGA is built upon a rigid, decoupled 4-layer architecture. From extreme physical environments at the edge to high-performance data visualization in the cloud, every component strictly enforces an architectural boundary.</p>
+        
+        <div class="section-visual" style="margin-bottom: 3rem;">
+          <div class="mermaid">
+            flowchart TD
+                subgraph L1 [Layer 1: Physical / Hardware]
+                    E1(Buoy: T-Beam Supreme)
+                    E2(Relay: LR1121)
+                end
+                subgraph L2 [Layer 2: Mesh Transport]
+                    DTN{DTN: Binary TLV + Batching}
+                end
+                subgraph L3 [Layer 3: Gateway & Broker]
+                    USB(USB-CDC Serial Bridge)
+                    ASGI[FastAPI / Federated Broker]
+                end
+                subgraph L4 [Layer 4: Spatial Twin]
+                    UI((3D WebGL Glass Bridge))
+                end
+
+                E1 <-->|LoRa 900MHz| L2
+                E2 <-->|LoRa 900MHz| L2
+                L2 <-->|LoRa / CSMA-CA| USB
+                USB <-->|JSON Stream| ASGI
+                ASGI <-->|HTTP Long-Polling| UI
+
+                classDef default fill:#0a0f1d,stroke:#9aa2b1,stroke-width:1px,color:#9aa2b1;
+                classDef node fill:#101529,stroke:#3b82f6,stroke-width:2px,color:#fff;
+                class E1,E2,USB,ASGI,UI node;
+          </div>
+        </div>
+
+        <div class="grid-3" style="margin-bottom: 2rem;">
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">Layer 1</span>
+            <h3 style="font-size: 1.2rem;">Physical / Hardware</h3>
+            <p style="font-size: 0.85rem;">Edge Nodes, T-Beam Supremes, and LR1121 modules operating in cross-family synchronization. Features active thermal management, +30dBm HPAs, and 15µA deep sleep cycles.</p>
+          </div>
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">Layer 2</span>
+            <h3 style="font-size: 1.2rem;">Mesh Transport</h3>
+            <p style="font-size: 0.85rem;">Delay Tolerant Network (DTN) running a Custom Binary TLV protocol. Features lossless predictive coding, multi-sample batching, and CSMA-CA collision avoidance over LoRa.</p>
+          </div>
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">Layer 3</span>
+            <h3 style="font-size: 1.2rem;">Federated Data Broker</h3>
+            <p style="font-size: 0.85rem;">Python FastAPI ASGI Router running on embedded Linux. High-performance data brokerage layer caching macro-APIs as Cloud-Optimized GeoTIFFs (COG) and Zarr chunks while persisting ground-truth via SQLite WAL.</p>
+          </div>
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">Layer 4</span>
+            <h3 style="font-size: 1.2rem;">Spatial Digital Twin</h3>
+            <p style="font-size: 0.85rem;">High-performance 3D WebGL environment operating on a 4D temporal and Z-axis engine, presenting a decoupled Glass Bridge UI.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-content">
+          <span class="section-kicker">Layer 1: Physical</span>
+          <h2>Cross-Family Hardware Interoperability.</h2>
+          <p>Deploying a mixed-fleet of edge nodes requires extreme RF coordination. OMEGA utilizes both Semtech SX1262 (for telemetry) and LR1121 (for routing/relaying) chips. Because the silicon drivers behave differently at the sub-GHz level, achieving cross-family interoperability was a massive engineering hurdle.</p>
+          <p><strong>Execution:</strong> By enforcing a <code>PUBLIC 0x34</code> Sync Word, disabling Low Data Rate Optimization (<code>forceLDRO(false)</code>), and jittering the heartbeat cadence to prevent synchronous collisions, OMEGA achieves a >95% successful cross-family LoRa frame decode rate.</p>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-content">
+          <span class="section-kicker">Layer 2: Transport</span>
+          <h2>The Bidirectional DTN &amp; Bearer Arbitrage.</h2>
+          <p>Standard IoT relies on persistent MQTT or HTTP connections. Over the ocean, those connections do not exist. OMEGA operates a <strong>Delay Tolerant Network (DTN)</strong> utilizing a Custom Binary TLV Protocol that crushes a 283B JSON payload into a highly dense 84B frame.</p>
+          <p><strong>Bearer Arbitrage & QoS:</strong> A single edge node might have LoRa, HaLow, and cellular radios available simultaneously. OMEGA dynamically routes packets by message priority (alarm vs. bulk) rather than fixed links. Critical alarms are routed instantly over cellular/low-latency bearers, while bulk telemetry utilizes LoRa store-and-forward.</p>
+          <p><strong>Foreign-Mesh Last Resort:</strong> When OMEGA's native bearers fail, the network can route envelopes over foreign open meshes (like Meshtastic). To ensure legal compliance and protect shared airtime, a strict, firmware-enforced duty-cycle guardrail governs exactly how much traffic is permitted over these external channels.</p>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-content">
+          <span class="section-kicker">Layer 3: Gateway</span>
+          <h2>The Federated Data Broker &amp; Universal Contract.</h2>
+          <p>The OMEGA Gateway acts as the translation boundary between the physical RF mesh and the 3D Digital Twin. Crucially, the gateway is defined by a <strong>protocol contract</strong>, not a physical hardware box. Any community member can safely deploy their own gateway that simply captures raw frames and forwards them via IP.</p>
+          <p><strong>Universal Ingest:</strong> The network layer handles all deduplication and identity resolution centrally. The gateway accepts observations from an array of heterogeneous networks—including a native SignalK bridge for cruising vessels, TTN/LoRaWAN integrations, and the SX1302 concentrator. They all feed into the same unified <code>/v1/ingest/frame</code> contract, instantly turning boats and third-party meshes into first-class OMEGA stations.</p>
+          <p><strong>High-Throughput Caching & IO:</strong> To support a lag-free 3D WebGL globe, the broker caches macro-APIs as <strong>Cloud-Optimized GeoTIFFs (COG)</strong>. Furthermore, to prevent database locking when edge nodes are spamming telemetry, the backend enforces <strong>Write-Ahead Logging (WAL)</strong> on its SQLite storage, completely decoupling read/write locks.</p>
+        </div>
+      </section>
+
+<section class="section section-block" style="background: rgba(0,0,0,0.4);">
+        <span class="section-kicker">Language Choice</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Why Python over Go or Rust?</h2>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">For an extreme-scale telemetry gateway handling raw binary bytes over UART, high-performance compiled languages like Rust or Go seem like the obvious choice. So why does OMEGA run on Python?</p>
+        
+        <div class="grid-2" style="margin-bottom: 2rem;">
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">The Trade-off</span>
+            <h3 style="font-size: 1.2rem;">Speed vs Science</h3>
+            <p style="font-size: 0.85rem;">Python is mathematically slower than C++ or Rust due to its Global Interpreter Lock (GIL). However, the target audience for OMEGA isn't elite backend software engineers—it's marine biologists, climatologists, and university researchers. By writing the entire gateway in Python, researchers can natively inject <code>pandas</code>, <code>scipy</code>, and <code>numpy</code> models directly into the pipeline without needing to learn a low-level systems language.</p>
+          </div>
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">The Mitigation</span>
+            <h3 style="font-size: 1.2rem;">FastAPI & ASGI</h3>
+            <p style="font-size: 0.85rem;">To offset Python's speed penalty, the Gateway is built entirely on FastAPI and the <code>asyncio</code> event loop. By strictly enforcing non-blocking I/O operations (using <code>await</code> for all database queries and HTTP requests), the Gateway achieves concurrency levels more than adequate for handling thousands of 50-baud LoRa packets.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-block" style="background: rgba(0,0,0,0.4); margin-top: 2rem;">
+        <span class="section-kicker">Database Choice</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Why SQLite over PostgreSQL?</h2>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">A monolithic SQLite file is generally considered an anti-pattern in modern microservice architecture. Why didn't we use a containerized PostgreSQL instance?</p>
+        <p style="color: var(--ink-soft); font-size: 1rem; line-height: 1.6; max-width: 800px;">
+          <strong>The Constraint:</strong> The central Federated Data Broker is often deployed on an embedded Linux SBC (e.g., Raspberry Pi 5) operating on a constantly pitching vessel in a highly corrosive marine environment. Power is frequently lost without warning when waves crash over solar panels. SD cards in these environments are notorious for catastrophic sector corruption under heavy write loads or sudden power loss.
+          <br><br>
+          <strong>The Decision:</strong> Running a heavy Docker daemon with a PostgreSQL volume is a massive operational risk on a fragile SD card. SQLite compiles directly into the Python process, eliminating the daemon dependency. A SQLite database is a single, physical <code>.db</code> file on the filesystem. This means field operators can literally unplug a USB stick, copy <code>omega.db</code>, and instantly have a 100% complete, air-gapped backup of their entire deployment. By enabling Write-Ahead Logging (<code>PRAGMA journal_mode=WAL</code>), we bypass SQLite's concurrent locking limitations, achieving the safety of a flat file with the speed of a networked database.
+        </p>
+      </section>
+
+      <section class="section section-block" style="background: rgba(0,0,0,0.4); margin-top: 2rem;">
+        <span class="section-kicker">Frontend Choice</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Why a 3D WebGL Digital Twin?</h2>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">Standard mapping libraries like Leaflet.js manipulate the browser's Document Object Model (DOM). When OMEGA begins plotting 50,000 historical temperature readings or a 2-million-point bathymetry cloud, the DOM crashes.</p>
+        
+        <div class="section-visual" style="padding: 1.5rem;">
+            <div class="mermaid">
+            graph LR
+                subgraph DOM Rendering
+                    L[Leaflet.js] -->|Generates| D1[SVG Node 1]
+                    L -->|Generates| D2[SVG Node 50,000]
+                    D2 --> Crash[Browser Freezes]
+                end
+                subgraph GPU Rendering
+                    R[React State] -->|Array Buffer| W[deck.gl / WebGL]
+                    W -->|Direct Write| G[GPU Canvas]
+                    G --> Fast[60 FPS]
+                end
+                
+                classDef bad fill:#3f1010,stroke:#ef4444,stroke-width:2px,color:#fff;
+                classDef good fill:#101529,stroke:#3b82f6,stroke-width:2px,color:#fff;
+                class Crash bad;
+                class Fast good;
+            </div>
+        </div>
+        
+        <p style="color: var(--ink-soft); font-size: 1rem; line-height: 1.6; max-width: 800px;">
+          <strong>The Decision:</strong> The 3D Glass Bridge is built explicitly to manage the complex, high-frequency state updates pumping through the WebSocket firehose. For geospatial rendering, we abandoned DOM-based SVGs entirely and adopted a robust Spatial Engine (CesiumJS / Deck.gl). This framework bypasses the browser's DOM entirely, passing massive TypedArrays of coordinates directly into the computer's Graphics Processing Unit (GPU) via WebGL. This allows a standard operator laptop to render the entire Pacific Ocean and 4D Temporal structures at 60 Frames-Per-Second without breaking a sweat.
+        </p>
+
+        <div class="section-visual" style="max-height: 800px; overflow-y: auto;">
+          <span class="panel-kicker">React Deck.gl Implementation</span>
+          <pre><code class="language-javascript">import { DeckGL } from '@deck.gl/react';
+import { ScatterplotLayer } from '@deck.gl/layers';
+
+// Rendering 50,000 historical telemetry points at 60 FPS
+function TelemetryMap({ data }) {
+  const layer = new ScatterplotLayer({
+    id: 'telemetry-layer',
+    data,
+    // WebGL bypasses the DOM and injects directly to the GPU
+    getPosition: d => [d.longitude, d.latitude],
+    getFillColor: d => {
+      // Color map based on raw temperature
+      if (d.temperature > 25) return [239, 68, 68]; // Red
+      return [59, 130, 246]; // Blue
+    },
+    getRadius: d => 10,
+    radiusUnits: 'pixels',
+    pickable: true
+  });
+
+  return (
+    &lt;DeckGL
+      initialViewState={{ longitude: -157, latitude: 21, zoom: 6 }}
+      controller={true}
+      layers={[layer]}
+    /&gt;
+  );
+}</code></pre>
+        </div>
+      </section>
+
+      <section class="section section-block" style="background: rgba(0,0,0,0.4); margin-top: 2rem;">
+        <span class="section-kicker">Trust Model</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Absolute Data Purity &amp; Float-Free Signing.</h2>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">An ocean instrument that conflates a forecast with a measurement is scientifically useless. OMEGA enforces an "Absolute Data Purity" axiom: the live map shows <strong>only</strong> real, deployed hardware and real measurements. Missing data renders as an honest gap, never imputed.</p>
+        
+        <div class="grid-2" style="margin-bottom: 2rem;">
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">The Problem</span>
+            <h3 style="font-size: 1.2rem;">Cross-Language Float Bugs</h3>
+            <p style="font-size: 0.85rem;">Cryptographically signing a JSON payload containing floating-point numbers is notoriously brittle. Python might serialize a coordinate as <code>1e-07</code> while a JavaScript node emits <code>0.0000001</code>. The data is identical, but the string representation differs, breaking the signature verification and making cross-platform trust impossible.</p>
+          </div>
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">The Solution</span>
+            <h3 style="font-size: 1.2rem;">Float-Free Ed25519 Envelopes</h3>
+            <p style="font-size: 0.85rem;">OMEGA utilizes Ed25519 signatures over a deterministic, <strong>float-free signing view</strong>. Measurements are converted to integer epoch seconds, microdegrees, and millimeters. The canonical serializer strictly rejects any floating-point numbers. This guarantees that signed bytes are 100% reproducible on a $30 microcontroller and a cloud server alike, securing the federation against spoofed readings.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-block" style="background: rgba(0,0,0,0.4); margin-top: 2rem;">
+        <span class="section-kicker">Operator Self-Service</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">SafeFormula AST vs. eval().</h2>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">Operators frequently need custom derived metrics (e.g., dewpoint, heat index, density) calculated on the fly without writing backend code. The naive approach is running Python's <code>eval()</code> on the server, which is a massive code-injection vulnerability on a public gateway.</p>
+        <p style="color: var(--ink-soft); font-size: 1rem; line-height: 1.6; max-width: 800px;">
+          <strong>The Solution:</strong> The backend implements a custom Abstract Syntax Tree (AST) interpreter for derived metrics. It parses and validates mathematical formulas at <strong>definition time</strong>, explicitly allowing only numeric literals and a whitelisted set of math operations (<code>sqrt</code>, <code>sin</code>, <code>log</code>). It actively rejects attribute access, function calls, and import tricks at parse time. This provides operators full mathematical expressiveness while guaranteeing complete safety.
+        </p>
+      </section>
+</div>
+  </main>
+
+  <footer class="footer wrap">
+    <span>© Jonathan Capone — Technical Portfolio. OMEGA (formerly OMEGA-wave).</span>
+  </footer>
+  <script src="main.js"></script>
+</body>
+
+</html>
