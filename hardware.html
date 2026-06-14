@@ -28,6 +28,7 @@
 </head>
 
 <body>
+  <a href="#main" class="skip-link">Skip to content</a>
   <header class="topbar">
     <div class="wrap topbar-inner">
       <a class="brand" href="index.html"
@@ -45,7 +46,7 @@
         <a href="index.html">Home</a>
         <a href="about.html">About</a>
         <div class="dropdown">
-          <button class="dropbtn" style="background: none; border: none; color: #fff; font-family: inherit; font-size: inherit; cursor: pointer;">OMEGA &#9662;</button>
+          <button class="dropbtn" style="background: none; border: none; color: #fff; font-family: inherit; font-size: inherit; cursor: pointer;" aria-expanded="false" aria-haspopup="true">OMEGA &#9662;</button>
           <div class="dropdown-content">
             <a href="architecture.html">Architecture</a>
             <a href="hardware.html">Hardware & Mesh</a>
@@ -77,7 +78,7 @@
     </div>
   </section>
 
-  <main class="main-shell wrap" role="main">
+  <main class="main-shell wrap" role="main" id="main">
     <div class="main-inner">
 
       <section class="section section-block" style="background: rgba(0,0,0,0.4);">
@@ -165,7 +166,7 @@
           </section>
 
           <div class="panel" style="margin-top: 2rem; border-left: 4px solid var(--accent);">
-            <h4 style="margin: 0 0 0.5rem; color: #fff;">Engineering Reality: The "Transmits but never Receives" Bug</h4>
+            <h3 style="margin: 0 0 0.5rem; color: #fff;">Engineering Reality: The "Transmits but never Receives" Bug</h3>
             <p style="font-size: 0.9rem; color: var(--ink-soft); margin: 0;">During the bring-up of the LR1121 relay node, it would transmit perfectly but receive absolutely nothing. The RX interrupt count was zero. Instead of guessing, I mapped the full RX-chain IRQ set (preamble/sync/header/CRC). Zero partials localized the failure to the state machine, not the RF frontend. Root cause: RadioLib's <code>startReceive()</code> only arms continuous RX cleanly from <code>STANDBY</code>. Fixing it required a single line: <code>radio.standby()</code> before arming. RX went from 0% to 100%. <a href="engineering-journal.html" style="color: var(--accent);">Read the full journal &rarr;</a></p>
           </div>
 

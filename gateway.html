@@ -22,6 +22,7 @@
   <link rel="canonical" href="https://jonathancapone.com/gateway.html" />
 </head>
 <body>
+  <a href="#main" class="skip-link">Skip to content</a>
   <header class="topbar">
     <div class="wrap topbar-inner">
       <a class="brand" href="index.html" style="display: flex; align-items: center; gap: 0.75rem; text-decoration: none;">
@@ -34,7 +35,7 @@
         <a href="index.html">Home</a>
         <a href="about.html">About</a>
         <div class="dropdown">
-          <button class="dropbtn" style="background: none; border: none; color: #fff; font-family: inherit; font-size: inherit; cursor: pointer;">OMEGA &#9662;</button>
+          <button class="dropbtn" style="background: none; border: none; color: #fff; font-family: inherit; font-size: inherit; cursor: pointer;" aria-expanded="false" aria-haspopup="true">OMEGA &#9662;</button>
           <div class="dropdown-content">
             <a href="architecture.html">Architecture</a>
             <a href="hardware.html">Hardware & Mesh</a>
@@ -66,7 +67,7 @@
     </div>
   </section>
 
-  <main class="main-shell wrap" role="main">
+  <main class="main-shell wrap" role="main" id="main">
     <div class="main-inner">
     
 
@@ -134,7 +135,7 @@ PRAGMA cache_size=-64000;</code></pre></div>
 
           
           <div class="panel" style="margin-top: 2rem; border-left: 4px solid var(--accent);">
-            <h4 style="margin: 0 0 0.5rem; color: #fff;">Engineering Reality: HTTP/1.1 Socket Starvation</h4>
+            <h3 style="margin: 0 0 0.5rem; color: #fff;">Engineering Reality: HTTP/1.1 Socket Starvation</h3>
             <p style="font-size: 0.9rem; color: var(--ink-soft); margin: 0;">The portal initially hung over field connections. Debugging DevTools revealed exactly 6 ESTABLISHED sockets—HTTP/1.1's limit—eaten entirely by dual permanent Server-Sent-Events streams. Fixing it required lazy-loading the SSE streams to unblock the map fetches. <a href="engineering-journal.html" style="color: var(--accent);">Read the full journal &rarr;</a></p>
           </div>
 

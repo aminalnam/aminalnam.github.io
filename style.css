@@ -858,7 +858,7 @@ pre code {
   font-size: 1.1rem;
   font-family: var(--font-sans);
 }
-#search-input:focus { outline: none; }
+#search-input:focus { outline: 2px solid var(--accent); outline-offset: 2px; }
 
 .search-results {
   max-height: 400px;
@@ -1495,4 +1495,30 @@ body {
 .dropdown:focus-within .dropdown-content,
 .dropdown.open .dropdown-content {
   display: block;
+}
+
+/* Accessibility Additions */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: var(--accent);
+  color: #fff;
+  padding: 8px;
+  z-index: 9999;
+  transition: top 0.2s;
+}
+.skip-link:focus {
+  top: 0;
+}
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.nav a, .dropbtn {
+  min-height: 44px;
+  padding: 0.6rem 0.75rem;
+}
+.btn-primary {
+  background: #2563eb !important;
 }
