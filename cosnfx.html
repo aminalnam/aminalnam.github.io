@@ -64,74 +64,75 @@
   </header>
 
   <section class="hero wrap">
-    <span class="eyebrow">Wear OS & IMU Telemetry</span>
+    <span class="eyebrow">Wear OS & Audio Engineering</span>
     <h1>CosNFX.</h1>
-    <p>A Wear OS IMU-driven kinetic synthesizer and tactical heads-up display.</p>
+    <p>The engineering of a flawless hero prop. A Wear OS IMU-driven kinetic synthesizer with 1.4ms audio latency.</p>
     <div class="hero-actions">
         <a class="btn btn-secondary" href="https://jonathancapone.art" target="_blank">Art Portfolio</a>
     </div>
   </section>
 
-  <main class="main-shell wrap" role="main">
+    <main class="main-shell wrap" role="main">
     <div class="main-inner">
 
       <section class="section section-block" style="background: rgba(0,0,0,0.4);">
         <span class="section-kicker">At A Glance</span>
-        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Kinetic Wearable Platform</h2>
-        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">CosNFX is an Android Wear OS application that transforms a smartwatch into a kinetic sound and visual effects engine. It leverages high-frequency IMU sensors to translate physical arm movements into dynamic sounds, haptic feedback, and on-screen tactical visuals.</p>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Distributed Master/Drone Architecture</h2>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">In professional stage magic, a sound effect that fires 50ms late ruins the immersion. CosNFX is an Android Wear OS application that transforms a smartwatch into a flawless sensory instrument, delivering instant acoustic and visual feedback with the same reliability as a physical drum.</p>
 
         <div class="grid-3" style="margin-bottom: 2rem;">
           <div class="panel" style="padding: 1.5rem;">
             <span class="status-label status-implemented">Sensors</span>
-            <h3 style="font-size: 1.2rem;">8 Recognized Gestures</h3>
-            <p style="font-size: 0.85rem;">The underlying <code>HeroSynth</code> engine continuously processes accelerometer and gyroscope telemetry (Pitch, Roll, Accel) to detect specific gestures like punches, uppercuts, shield raises, and whip snaps.</p>
+            <h3 style="font-size: 1.2rem;">Watch Master</h3>
+            <p style="font-size: 0.85rem;">The tactical instrument on the wrist. Handles all aggressive motion detection, IMU state machines, and high-intensity synthesis.</p>
           </div>
           <div class="panel" style="padding: 1.5rem;">
-            <span class="status-label status-implemented">UI Engine</span>
-            <h3 style="font-size: 1.2rem;">Wear OS Jetpack Compose</h3>
-            <p style="font-size: 0.85rem;">The tactical interface is built entirely with Jetpack Compose for Wear OS, featuring a "7-Node Radial Tactical Array" and a central "Identity Reactor Core" that responds fluidly to the user's kinetic states.</p>
+            <span class="status-label status-implemented">Networking</span>
+            <h3 style="font-size: 1.2rem;">Phone Hub</h3>
+            <p style="font-size: 0.85rem;">A Ktor-powered WebSocket server running silently in a pocket. Acts as Mission Control and handles the secondary ambient synthesis layer.</p>
           </div>
           <div class="panel" style="padding: 1.5rem;">
-            <span class="status-label status-implemented">Connectivity</span>
-            <h3 style="font-size: 1.2rem;">Embedded Web Server</h3>
-            <p style="font-size: 0.85rem;">The watch runs a local <code>PowersWebServer</code>, enabling it to bridge over local WiFi to a mobile phone, allowing users to select from 20 different VFX profiles remotely.</p>
+            <span class="status-label status-implemented">Visuals</span>
+            <h3 style="font-size: 1.2rem;">Vfx-Omni Engine</h3>
+            <p style="font-size: 0.85rem;">A lightweight graphics library of 20 mathematical visual archetypes rendered via custom Canvas-draw operations to prevent battery drain.</p>
           </div>
         </div>
-        
       </section>
 
       <section class="section">
         <div class="section-content">
-          <span class="section-kicker">Kinetic Detection Engine</span>
-          <h2>The HeroSynth Architecture.</h2>
-          <p>Processing raw IMU data in real time on a constrained wearable device requires aggressive optimization to prevent battery drain while maintaining instant responsiveness. The <code>HeroSynth</code> class polls the hardware at high sampling rates, running a localized physics model that applies smoothing functions to the Pitch, Roll, and Acceleration vectors.</p>
-          <p>When a physical threshold is breached (e.g., a rapid forward acceleration followed by a deceleration and roll twist), the engine fires a trigger event. This translates the abstract math of the sensors into tangible actions like <code>snap_over</code>, <code>punch</code>, or <code>shield_raise</code>.</p>
+          <span class="section-kicker">Audio Engineering</span>
+          <h2>The Latency Wall.</h2>
+          <p>Standard Android audio routing has a round-trip latency of 40ms to 100ms. For a kinetic prop triggered by a physical wrist snap, this delay is completely unacceptable.</p>
+          <p>To break the latency wall, the system completely bypasses the standard high-level media players. The audio engine is written to stream raw mono PCM data directly into the hardware's <code>AudioTrack</code>. By aggressively optimizing the internal buffer down to just <strong>64 samples</strong>, the system achieves a hardware response time of <strong>~1.4ms</strong>. This guarantees that the sound of a "Laser Blast" erupts from the speaker at the precise micro-moment the user's wrist hits its maximum velocity peak.</p>
         </div>
       </section>
 
       <section class="section section-block" style="background: rgba(0,0,0,0.4); margin-top: 2rem;">
-        <span class="section-kicker">Network Capabilities</span>
-        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Distributed Combat Links</h2>
+        <span class="section-kicker">Sensor Fusion</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Solving the Ghost Trigger</h2>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">Early prototypes relied solely on arm orientation, which resulted in "ghost triggers" every time the user gestured naturally while talking. The "Ironclad" Kinetic Engine was built to solve this via math.</p>
         
         <div class="grid-2" style="margin-bottom: 2rem;">
           <div class="panel" style="padding: 1.5rem;">
-            <span class="status-label status-implemented">Health Deductions</span>
-            <h3 style="font-size: 1.2rem;">Multiplayer UDP Sync</h3>
-            <p style="font-size: 0.85rem;">The embedded web server supports a distributed combat mode. It listens for <code>COMBAT_ATTACK</code> network events. When struck virtually by another paired system, the smartwatch instantly calculates a health deduction, vibrating the wrist heavily with a haptic <code>impact_damage</code> routine.</p>
+            <span class="status-label status-implemented">Kinematics</span>
+            <h3 style="font-size: 1.2rem;">Angular Jerk</h3>
+            <p style="font-size: 0.85rem;">Instead of looking at gravity, the engine fuses the Gyroscope to detect <strong>Angular Velocity</strong> (the "snap") and Linear Accelerometers to detect <strong>G-force Jerk</strong> (the physical "impact" at the end of a punch).</p>
           </div>
           <div class="panel" style="padding: 1.5rem;">
-            <span class="status-label status-implemented">Dynamic Shielding</span>
-            <h3 style="font-size: 1.2rem;">Kinetic Blocking</h3>
-            <p style="font-size: 0.85rem;">If the wearer physically raises their arm into the <code>shield</code> detection posture precisely as a network attack arrives, the HeroSynth blocks the damage, triggering an audio-visual deflection sequence instead.</p>
+            <span class="status-label status-implemented">State Machines</span>
+            <h3 style="font-size: 1.2rem;">3-Tier Posture Gate</h3>
+            <p style="font-size: 0.85rem;">While the arm is resting (RELAXED), the sensors are electronically muted to save battery. Only when the arm is raised into a combat posture (READY) does the high-frequency polling loop prime the system for a STRIKE.</p>
           </div>
         </div>
       </section>
 
       <section class="section">
         <div class="section-content">
-          <span class="section-kicker">Diagnostics</span>
-          <h2>The Sensor Lab.</h2>
-          <p>Deploying gesture-based algorithms in the real world is chaotic. To debug the physics model live, the watch features an on-board <strong>Sensor Lab</strong>. It visualizes the raw incoming telemetry streams directly on the tiny 1.4" display, allowing the developer to tune the threshold bounds of the kinetic simulator while physically wearing the hardware.</p>
+          <span class="section-kicker">Orchestration</span>
+          <h2>The Surround Synthesis Paradox.</h2>
+          <p>Wireless networks introduce unpredictable jitter. When attempting to trigger sounds simultaneously on both a phone and a watch, the phone will always react faster. Rather than fighting this fundamental law of physics, the system engineers it into a feature.</p>
+          <p><strong>Surround Synthesis</strong>: The phone instantly triggers a high-frequency "Ignition" transient sound. A split-second later, the watch delivers the deep "Core Impact" audio directly from the hand. The result is a cinematic 3D presence where power audibly sounds like it is "charging up" in the user's chest and "erupting" physically from their hand.</p>
         </div>
       </section>
 
