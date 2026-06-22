@@ -97,7 +97,7 @@
         <div class="section-content">
           <span class="section-kicker">Overview</span>
           <h2>The Weather Globe.</h2>
-          <p>The Weather Globe is a standalone, internet-connected desk display built on an ESP32-S3 microcontroller. Utilizing a 1.75" round AMOLED screen, the device acts as a live window onto Earth and the solar system. Its primary feature is a real-time, sun-synchronous rendering of Earth, complete with accurate day/night shadow lines, live cloud cover downloaded daily from NASA satellites, and illuminated city lights on the night side.</p>
+          <p>The Weather Globe is a standalone, internet-connected desk display built on an ESP32-S3 microcontroller. Utilizing a 1.75" round AMOLED screen, the device acts as a live window onto Earth and the solar system. Its primary feature is a real-time, sun-synchronous rendering of Earth, complete with accurate day/night shadow lines, live cloud cover pulled from NASA VIIRS satellites and refreshed in the background, and illuminated city lights on the night side.</p>
           <p>Operating entirely on the device without the need for companion mobile apps or cloud accounts, it features a built-in captive portal for WiFi configuration and a web-based settings dashboard.</p>
     <div class="hero-actions" style="margin-top: 1rem;">
         <a class="btn btn-secondary" href="weather-globe-manual.html" style="background: rgba(255,255,255,0.1); border-color: transparent;">📖 Read the Owner's Manual</a>
@@ -155,7 +155,7 @@
             <h2>Architecture.</h2>
             <ul style="color: var(--ink-soft); font-size: 0.95rem; line-height: 1.8;">
               <li><strong>Firmware:</strong> Written in C++ using PlatformIO and the Arduino framework.</li>
-              <li><strong>Multi-Threading:</strong> Utilizes FreeRTOS to divide labor across the ESP32-S3's two cores. Core 1 handles the high-framerate renderTask for smooth, drift-free 3D globe rotation, while Core 0 manages the cloudTask and infoTask with atomic texture and weather buffer swaps to prevent visual stutter during network calls.</li>
+              <li><strong>Multi-Threading:</strong> Utilizes FreeRTOS to divide labor across the ESP32-S3's two cores. Core 1 runs the render loop uninterrupted for smooth, drift-free globe rotation, while Core 0 manages the cloudTask and infoTask with atomic texture and weather buffer swaps to prevent visual stutter during network calls.</li>
               <li><strong>Data APIs:</strong> Integrates entirely free, no-key public APIs: NASA GIBS/VIIRS (clouds/maps), ip-api (IP-based rough geolocation), Open-Meteo (hyper-local weather), and NTP (time synchronization).</li>
               <li><strong>Offline Resilience:</strong> If the network drops, the globe seamlessly continues its rotation using the most recently cached time and cloud assets, automatically resuming background updates when the connection is restored.</li>
               <li><strong>Host-Side Tooling:</strong> Includes a Python backend suite for generating planet textures, night-light maps, and font/icon atlases. Because the physical SPI screen cannot be easily captured, the backend includes visual verification scripts to preview and test visual changes locally before flashing.</li>
@@ -179,12 +179,37 @@
           <div class="panel" style="padding: 1.5rem;">
             <span class="status-label status-implemented">Pipelines</span>
             <h3 style="font-size: 1.2rem;">NASA Cloud Ingest</h3>
-            <p style="font-size: 0.85rem;">A dedicated RTOS task fetches NASA VIIRS true-color snapshots, decodes the JPEGs in memory, feathers the dateline seam, and publishes the new texture atomically via pointer-swap.</p>
+            <p style="font-size: 0.85rem;">A dedicated RTOS task fetches a NASA VIIRS true-color snapshot from the EarthData WVS snapshot API, decodes the JPEG in memory into a 1024×512 buffer, feathers the dateline seam, and publishes the new texture atomically via pointer-swap. It re-fetches roughly every 3 hours once online (and retries within ~10 minutes after a failed download).</p>
           </div>
           <div class="panel" style="padding: 1.5rem;">
             <span class="status-label status-implemented">Verification</span>
             <h3 style="font-size: 1.2rem;">Host Replicas</h3>
-            <p style="font-size: 0.85rem;">Because AMOLED screens can't easily be screenshotted, the entire firmware rendering engine has a pixel-perfect Python replica on the desktop. Visual changes are proven on the replica before being flashed.</p>
+            <p style="font-size: 0.85rem;">Because AMOLED screens can't easily be screenshotted, the firmware rendering engine has a Python replica on the desktop. Visual changes are previewed against the replica before being flashed.</p>
+          </div>
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">Robustness</span>
+            <h3 style="font-size: 1.2rem;">Cloud Completeness</h3>
+            <p style="font-size: 0.85rem;">The fiddliest piece. A freshly-built daily mosaic has missing satellite swaths, so the firmware judges completeness by counting no-data pixels only in the mid-latitude band (≈±45°) — polar night is legitimately black and must not count as a gap. If that band exceeds ~5% missing the day is rejected and the task steps back day-by-day (up to 7 days) to the most recent fully-assembled mosaic. Any remaining no-data pixels are filled from a Blue Marble base image, so the globe never shows a black void — or an invented cloud — as it spins.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-block" style="background: rgba(0,0,0,0.4); margin-bottom: 2rem;">
+        <span class="section-kicker">By The Numbers</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Scope</h2>
+        <p style="color: var(--ink-soft); font-size: 1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">Honest figures, read straight from the repository — a small, single-purpose firmware plus the host tooling that feeds it.</p>
+        <div class="grid-3" style="gap: 1rem;">
+          <div class="panel" style="padding: 1.5rem;">
+            <h3 style="font-size: 1.6rem; color: var(--accent); margin: 0;">~1,460 lines</h3>
+            <p style="font-size: 0.85rem; margin-top: 0.4rem;">The entire device program in one file, <code>firmware/src/main.cpp</code> (C++ / Arduino), backed by ~3,500 lines of Python host tooling in <code>backend/</code>.</p>
+          </div>
+          <div class="panel" style="padding: 1.5rem;">
+            <h3 style="font-size: 1.6rem; color: var(--accent); margin: 0;">~11.6 MB assets</h3>
+            <p style="font-size: 0.85rem; margin-top: 0.4rem;">12 LittleFS binaries — eleven 1 MB RGB565 body textures plus a packed font/icon atlas — in a ~14 MB filesystem partition on the 16 MB flash.</p>
+          </div>
+          <div class="panel" style="padding: 1.5rem;">
+            <h3 style="font-size: 1.6rem; color: var(--accent); margin: 0;">10 bodies</h3>
+            <p style="font-size: 0.85rem; margin-top: 0.4rem;">Earth plus the eight other planets, the Moon and the Sun, all sun-shaded; targeting the LilyGo T-Display-S3 AMOLED (ESP32-S3, 8 MB PSRAM) via PlatformIO.</p>
           </div>
         </div>
       </section>
@@ -202,7 +227,7 @@
               </div>
               <div class="panel" style="padding: 1.5rem;">
                 <h3 style="font-size: 1.2rem; color: var(--accent);">2. Sub-Second NTP Judder</h3>
-                <p style="font-size: 0.85rem;">During time-lapse animations, the globe would hold still for 30 frames then awkwardly lurch forward. The underlying NTP clock was bound to <code>time(nullptr)</code>, which is whole-second granular. The fix derived a sub-second fractional offset using <code>millis()</code>, re-anchoring on every RTC tick to prevent wrapping, resulting in drift-free, 60fps smoothness.</p>
+                <p style="font-size: 0.85rem;">During time-lapse animations, the globe would hold still for 30 frames then awkwardly lurch forward. The underlying NTP clock was bound to <code>time(nullptr)</code>, which is whole-second granular. The fix derived a sub-second fractional offset using <code>millis()</code>, re-anchoring on every RTC tick to prevent wrapping, so the spin advances smoothly between whole-second clock ticks. (The render loop is unbounded — it yields once per frame and simply runs as fast as the panel allows; frame rate is measured in the serial heartbeat, not capped at a target.)</p>
               </div>
               <div class="panel" style="padding: 1.5rem;">
                 <h3 style="font-size: 1.2rem; color: var(--accent);">3. The Phantom Station Hotspot</h3>

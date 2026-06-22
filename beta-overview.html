@@ -99,13 +99,13 @@
           </div>
           <div class="panel" style="padding: 1.5rem;">
             <span class="status-label status-implemented">Local Dashboard</span>
-            <h3 style="font-size: 1.2rem;">FastAPI Backend</h3>
-            <p style="font-size: 0.85rem;">A high-performance backend serving JSON data and HTML pages from local SQLite databases. Supports multiple decoupled workspaces seamlessly.</p>
+            <h3 style="font-size: 1.2rem;">Stdlib HTTP Server</h3>
+            <p style="font-size: 0.85rem;">A dependency-free Python server (built on <code>http.server</code> / <code>ThreadingTCPServer</code>) serves JSON data and generated HTML from local SQLite workspaces. No web framework, no external runtime dependencies.</p>
           </div>
           <div class="panel" style="padding: 1.5rem;">
             <span class="status-label status-implemented">Advisory AI</span>
             <h3 style="font-size: 1.2rem;">Ollama Integration</h3>
-            <p style="font-size: 0.85rem;">Leverages local, privacy-preserving models (e.g., Llama 3.2) as advisory project managers. The deterministic tracking engine remains the absolute source of truth.</p>
+            <p style="font-size: 0.85rem;">Optionally uses local, privacy-preserving Ollama models (e.g. Llama 3.2, Gemma, Qwen) as an advisory analyst and project manager. The deterministic tracking engine remains the source of truth; AI output is marked advisory and gated by real evidence.</p>
           </div>
         </div>
       </section>
@@ -122,8 +122,8 @@
           </div>
           <div class="panel" style="padding: 1.5rem;">
             <span class="status-label status-implemented">The Migration</span>
-            <h3 style="font-size: 1.2rem;">FastAPI Web UI</h3>
-            <p style="font-size: 0.85rem;">Moving to a full FastAPI-powered web dashboard was required to visualize the sprawling data. It allowed the tool to track <em>itself</em> (using BETA on BETA) alongside unrelated hardware projects.</p>
+            <h3 style="font-size: 1.2rem;">Generated Web UI</h3>
+            <p style="font-size: 0.85rem;">Moving to a local web dashboard was required to visualize the sprawling data. BETA generates static HTML plus a JSON data feed served by a small stdlib server, which let the tool track <em>itself</em> (using BETA on BETA) alongside unrelated hardware projects.</p>
           </div>
         </div>
       </section>
@@ -136,10 +136,95 @@
 <pre>
   Data Ingestion                          Analytics Engine                 Dashboard UI
   ──────────────                          ────────────────                 ────────────
-  report.json files ──┐                   Parse & Sanitize                 Serve Local Dashboard
-  Project Scans     ──┼─► SQLite DB ──►   Calculate Deltas ──► JSON ──►    (FastAPI Backend)
+  report.json files ──┐                   Quarantine & Sanitize            Serve Local Dashboard
+  Project Scans     ──┼─► SQLite DB ──►   Calculate Deltas ──► JSON ──►    (stdlib http.server)
   AI Sessions       ──┘                   Generate Reports                 Action Tracker
 </pre>
+        </div>
+      </section>
+
+      <section class="section section-block" style="padding-top: 2rem;">
+        <span class="section-kicker">Automation Layer</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">One Command Interface.</h2>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">
+          A single PowerShell helper (<code>dev.ps1</code>) wraps the Python CLI behind a validated set of verbs, so the day-to-day loop does not require remembering raw module flags. It bootstraps and configures workspaces, ingests external <code>report.json</code> artifacts and project info, records measured evidence and work sessions, runs the test suite, serves the dashboard, and invokes the local AI analyst.
+        </p>
+
+        <div class="section-visual" style="margin-bottom: 2rem; overflow-x: auto; font-family: var(--font-mono); font-size: 0.85rem; color: #a1a1aa; background: #0f111a; border: 1px solid #1e293b; border-radius: 8px; padding: 1.5rem;">
+<pre>
+  .\dev.ps1 doctor           # environment + workspace checks
+  .\dev.ps1 init-project     # bootstrap a tracked workspace
+  .\dev.ps1 evidence-template / record-evidence   # capture measured runs
+  .\dev.ps1 record-work      # log a work session to the ledger
+  .\dev.ps1 test             # run the standalone unittest suite
+  .\dev.ps1 refresh / serve  # rebuild + serve the local dashboard
+  .\dev.ps1 ai / ask / manage-ai  -Model gemma4:latest   # advisory Ollama
+</pre>
+        </div>
+        <p style="font-size: 0.85rem; color: var(--ink-soft); max-width: 800px;">Raw <code>python -m beta &lt;command&gt;</code> calls still work; <code>dev.ps1</code> is a convenience layer over the same engine. The Python package itself ships with <em>zero</em> third-party dependencies.</p>
+      </section>
+
+      <section class="section section-block" style="background: rgba(0,0,0,0.4);">
+        <span class="section-kicker">What It Measures</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Metrics, Not Vibes.</h2>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">
+          The deterministic engine derives a fixed set of tracked metrics from ingested evidence, then consolidates them into a single prioritized backlog. Nothing here is a vanity number — each metric maps back to a signal in the data.
+        </p>
+
+        <div class="grid-3" style="margin-bottom: 2rem;">
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">Proof Health</span>
+            <h3 style="font-size: 1.2rem;">Evidence Quality</h3>
+            <p style="font-size: 0.85rem;">Correctness, effectiveness, efficiency, evidence coverage, backlog health, and regression load, plus per-claim coverage and data-quality checks (baseline availability, repeatability, scenario diversity, sample size).</p>
+          </div>
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">Core OMEGA Metrics</span>
+            <h3 style="font-size: 1.2rem;">Run Throughput</h3>
+            <p style="font-size: 0.85rem;">Ingest throughput, write p95, query p95, station coverage, bathymetry, mesh routes, portal payload, database bytes per observation, and wire savings — compared run-over-run against the same scenario.</p>
+          </div>
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">Workflow Health</span>
+            <h3 style="font-size: 1.2rem;">Project Velocity</h3>
+            <p style="font-size: 0.85rem;">Evidence velocity, repeat depth, connected-source coverage, active-measurement coverage, and AI availability, alongside PM metrics for runs/scenarios tracked, improved vs regressed metrics, and open P0/P1 work.</p>
+          </div>
+        </div>
+
+        <div class="panel" style="padding: 1.5rem;">
+          <span class="status-label status-implemented">Action Tracker</span>
+          <h3 style="font-size: 1.2rem;">Metrics &rarr; Prioritized Backlog</h3>
+          <p style="font-size: 0.85rem;">The Plan, Manager, and AI screens consolidate the operating plan, deterministic work guidance, measurement plan, manager risks, missing data sources, metric backlog, and advisory Ollama suggestions into statused action records. Each action carries a source, priority, metric, next step, success signal, and evidence requirement. Actions can be active, blocked by missing real data, gated by manager risks, or flagged as advisory AI items — AI can feed the tracker, but status stays gated by real project evidence.</p>
+        </div>
+      </section>
+
+      <section class="section section-block" style="padding-top: 2rem;">
+        <span class="section-kicker">Honest Tracking</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">The Blank-Chart Trade-off.</h2>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">
+          BETA's whole point is to not lie about progress. That choice has a deliberate, visible cost: until real field or bench evidence is provided, the charts can be entirely blank.
+        </p>
+
+        <div class="grid-3" style="margin-bottom: 2rem;">
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label" style="background: rgba(154,162,177,0.15); color: var(--ink-soft);">By Design</span>
+            <h3 style="font-size: 1.2rem;">Blank Until Proven</h3>
+            <p style="font-size: 0.85rem;">If no accepted real report exists, project pages show <code>Needs data</code> and keep all proof charts empty. An empty chart is treated as the honest answer, not a bug to paper over with placeholder data.</p>
+          </div>
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">Quarantine</span>
+            <h3 style="font-size: 1.2rem;">Marker Set</h3>
+            <p style="font-size: 0.85rem;">Reports carrying demo, synthetic, simulated, fixture, mock, dummy, fake, example, placeholder, template, or draft markers — plus the OMEGA-specific <code>local-proof</code> and <code>coastal-demo</code> tags — are quarantined before metrics run. (<code>smoke</code> is treated as a soft marker.) They stay visible as audit inputs but never drive charts, scores, or AI analysis.</p>
+          </div>
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">Provenance</span>
+            <h3 style="font-size: 1.2rem;">Data &amp; Model Lineage</h3>
+            <p style="font-size: 0.85rem;">Every dashboard JSON and exported report records the BETA version, analysis schema, data-version ID, project config versions, real vs quarantined report counts, and the Ollama model used for advisory review — so you can tell which model and which data shaped a result without treating model output as proof.</p>
+          </div>
+        </div>
+
+        <div class="panel" style="padding: 1.5rem;">
+          <span class="status-label status-implemented">Version History &amp; Deltas</span>
+          <h3 style="font-size: 1.2rem;">Tracking Its Own Drift</h3>
+          <p style="font-size: 0.85rem;">When dashboards or reports are generated, BETA appends compact workspace/project records to <code>version-history.json</code> and compares the latest scoped record against the previous one — calling out material changes such as a different AI model, new real evidence, fewer quarantined reports, or a changed config version. Each tracked project (for example <code>omega</code> and <code>beta</code> itself) gets its own scoped page and data feed; the workspace dashboard is only a project selector and does not combine metrics across projects.</p>
         </div>
       </section>
 

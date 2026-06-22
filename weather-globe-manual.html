@@ -99,7 +99,7 @@
         <h3 style="font-size: 1.3rem; margin-bottom: 0.5rem; color: var(--white);">The living Earth (the default view)</h3>
         <ul style="color: var(--ink-soft); line-height: 1.7; margin-bottom: 1.5rem; padding-left: 1.5rem;">
           <li style="margin-bottom: 0.5rem;"><strong>Real day & night:</strong> The globe is sun-synchronous: the sunlit half and the shadowed half are placed using the real position of the Sun for the current date and time, with a soft, natural twilight band along the day/night line. As the hours pass, the Earth turns beneath the light just as the real planet does.</li>
-          <li style="margin-bottom: 0.5rem;"><strong>Live clouds:</strong> Cloud cover is downloaded daily from NASA's VIIRS satellites and draped over the globe, so the weather systems you see are real and current.</li>
+          <li style="margin-bottom: 0.5rem;"><strong>Live clouds:</strong> Cloud cover is pulled from NASA's VIIRS satellites and draped over the globe, refreshed in the background every few hours, so the weather systems you see are real and current.</li>
           <li style="margin-bottom: 0.5rem;"><strong>City lights:</strong> After dusk, the night side lights up with the glow of the world's cities (NASA "Black Marble" night-lights).</li>
         </ul>
 
@@ -242,7 +242,7 @@
         <h2 style="font-family: var(--font-serif); font-size: 2rem; margin-bottom: 1rem;">6. What happens automatically</h2>
         <p style="color: var(--ink-soft); line-height: 1.7; margin-bottom: 1rem;">Once it's online, the globe takes care of itself:</p>
         <ul style="color: var(--ink-soft); line-height: 1.7; margin-bottom: 1.5rem; padding-left: 1.5rem;">
-          <li>Clouds refresh in the background roughly every 3 hours (and retry sooner if a download fails). If today's worldwide image isn't finished yet, the globe automatically falls back to the most recent complete day.</li>
+          <li>Clouds refresh in the background roughly every 3 hours (and retry within ~10 minutes if a download fails). NASA's daily worldwide image is assembled swath by swath, so a fresh day is often patchy; the globe checks how complete each day is and, if too many gaps remain, automatically steps back day by day (up to a week) to the most recent fully-assembled image. Any small leftover gaps are filled from a base Earth map so you never see a blank patch.</li>
           <li>Weather updates about every 20 minutes; your location is checked periodically too.</li>
           <li>The clock stays accurate via internet time sync, so the day/night line and the card are always right. Temperature units pick themselves — °F in the United States, °C elsewhere.</li>
           <li>If the internet drops, the globe keeps right on spinning with the last clouds it downloaded; it simply resumes live updates when the connection returns. It also watches the connection and reconnects on its own if your router blips.</li>
@@ -284,7 +284,7 @@
         <p style="color: var(--ink-soft); line-height: 1.7; margin-bottom: 0.5rem;"><strong>Build & flash:</strong></p>
         <pre style="background: rgba(0,0,0,0.5); padding: 1rem; border-radius: 4px; overflow-x: auto; color: var(--accent); margin-bottom: 1rem;"><code>cd firmware
 pio run -e lilygo-t-display-s3-amoled -t upload      # firmware
-pio run -e lilygo-t-display-s3-amoled -t uploadfs    # LittleFS assets in data/ (~13 MB, slow)</code></pre>
+pio run -e lilygo-t-display-s3-amoled -t uploadfs    # LittleFS assets in data/ (~11.6 MB across 12 binaries, slow)</code></pre>
         <p style="color: var(--ink-soft); line-height: 1.7; margin-bottom: 1rem;"><strong>Serial monitor:</strong> 115200 baud over USB-C (USB-CDC). A boot heartbeat prints the frame rate, time-lapse scale, and active cloud buffer.</p>
         <p style="color: var(--ink-soft); line-height: 1.7; margin-bottom: 1rem;"><strong>Regenerating image assets:</strong> the planet textures, night lights, and the card font/icon atlas are produced by the <code>backend/</code> generators (e.g. <code>python backend/gen_planets.py</code>, <code>python backend/gen_card_assets.py</code>). After regenerating, run <code>uploadfs</code> and reflash so the firmware and assets stay in sync — flashing one without the other will corrupt the card. Because the device screen can't be captured, every visual change is validated against the Python replicas in <code>backend/</code> (<code>simulate_realtime.py</code> for the globe, <code>verify_assets.py</code> for the card) before flashing.</p>
       </section>

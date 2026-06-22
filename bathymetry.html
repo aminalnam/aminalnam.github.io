@@ -5,14 +5,14 @@
   <meta content="width=device-width, initial-scale=1" name="viewport"/>
   <title>Jonathan Capone — Legacy Bathymetry</title>
   
-  <meta name="description" content="OMEGA-bath — a legacy Arduino platform that turns noisy acoustic pings into accurate topographic depth contours and Google Earth KML." />
+  <meta name="description" content="OMEGA-bath — an open-source Arduino Mega ROV logger that records georeferenced depth, then reconstructs exploratory bathymetric maps and Google Earth overlays with IDW interpolation in Python." />
   <meta property="og:title" content="Jonathan Capone — Legacy Bathymetry" />
-  <meta property="og:description" content="OMEGA-bath — a legacy Arduino platform that turns noisy acoustic pings into accurate topographic depth contours and Google Earth KML." />
+  <meta property="og:description" content="OMEGA-bath — an open-source Arduino Mega ROV logger that records georeferenced depth, then reconstructs exploratory bathymetric maps and Google Earth overlays with IDW interpolation in Python." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://jonathancapone.com/bathymetry.html" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Jonathan Capone — Legacy Bathymetry" />
-  <meta name="twitter:description" content="OMEGA-bath — a legacy Arduino platform that turns noisy acoustic pings into accurate topographic depth contours and Google Earth KML." />
+  <meta name="twitter:description" content="OMEGA-bath — an open-source Arduino Mega ROV logger that records georeferenced depth, then reconstructs exploratory bathymetric maps and Google Earth overlays with IDW interpolation in Python." />
   
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌊</text></svg>">
   
@@ -60,9 +60,9 @@
   <section class="hero wrap">
     <span class="eyebrow">Legacy</span>
     <h1>OMEGA-bath</h1>
-    <p>A legacy Arduino Mega platform for generating high-resolution depth maps.</p>
+    <p>A legacy Arduino Mega platform that logs georeferenced depth from a moving ROV and reconstructs exploratory bathymetric maps in post-processing.</p>
     <div class="hero-actions">
-      
+        <a class="btn btn-primary" href="https://github.com/aminalnam/OMEGA-bath" target="_blank">View Repository</a>
     </div>
   </section>
 
@@ -132,9 +132,24 @@
                   <td style="padding: 1rem;">Limits mapping when the platform is moving too quickly.</td>
                 </tr>
                 <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
-                  <td style="padding: 1rem;"><code>maxMapPitchDeg</code></td>
+                  <td style="padding: 1rem;"><code>maxMapPitchDeg</code> / <code>maxMapRollDeg</code></td>
                   <td style="padding: 1rem;">10.0°</td>
-                  <td style="padding: 1rem;">Rejects mapping points when platform tilt exceeds the allowed pitch range.</td>
+                  <td style="padding: 1rem;">Rejects mapping points when platform tilt exceeds the allowed pitch/roll range.</td>
+                </tr>
+                <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                  <td style="padding: 1rem;"><code>minMapSats</code></td>
+                  <td style="padding: 1rem;">5</td>
+                  <td style="padding: 1rem;">Minimum satellite count required before a fix can produce a mapping point.</td>
+                </tr>
+                <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                  <td style="padding: 1rem;"><code>minMapSpacingMetersBase</code></td>
+                  <td style="padding: 1rem;">2.0 m</td>
+                  <td style="padding: 1rem;">Base minimum spacing between accepted points; scales adaptively with speed (2&ndash;10 m) to prevent oversampling.</td>
+                </tr>
+                <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                  <td style="padding: 1rem;"><code>maxDepthJumpCm</code></td>
+                  <td style="padding: 1rem;">50.0 cm</td>
+                  <td style="padding: 1rem;">Rejects isolated depth samples that jump too far from the smoothed value, suppressing transient sonar spikes.</td>
                 </tr>
               </tbody>
             </table>
@@ -160,6 +175,35 @@
               <h3 style="font-size: 1.2rem; color: #fff;">Raw vs Mapping Logs</h3>
               <p style="font-size: 0.95rem; color: var(--ink-soft); margin-top: 0.5rem;">The raw data log preserves the complete field record, including conditions that may not be suitable for mapping. The map log contains only accepted points. That separation makes the reconstruction step more predictable and keeps the record transparent.</p>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-block" style="background: rgba(0,0,0,0.4); margin-top: 2rem;">
+        <span class="section-kicker">Signal Conditioning</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Cleaning the signal in the field.</h2>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">Beyond the acceptance gates, the firmware does work on each reading before it is ever logged, so the recorded series is already conditioned by the time it reaches the Python scripts.</p>
+
+        <div class="grid-2">
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">Depth smoothing</span>
+            <h3 style="font-size: 1.2rem; margin-top: 1rem;">Moving average and spike rejection</h3>
+            <p style="font-size: 0.95rem; color: var(--ink-soft); margin-top: 1rem;">Sonar range is read over UART with a checksum, then passed through a 5-sample moving average. Samples that jump more than <code>maxDepthJumpCm</code> (50 cm) from the previous value are discarded, and depth is invalidated after a 2-second timeout with no valid return.</p>
+          </div>
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">Sound-speed correction</span>
+            <h3 style="font-size: 1.2rem; margin-top: 1rem;">Temperature-based, no salinity input</h3>
+            <p style="font-size: 0.95rem; color: var(--ink-soft); margin-top: 1rem;">Acoustic depth depends on the speed of sound in water. The firmware adjusts the reported range from a 1500 m/s baseline using the measured DS18B20 temperature. It is a temperature-only model; the repository lists salinity-aware correction as a future improvement.</p>
+          </div>
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">SD recovery</span>
+            <h3 style="font-size: 1.2rem; margin-top: 1rem;">Reopen files after a write failure</h3>
+            <p style="font-size: 0.95rem; color: var(--ink-soft); margin-top: 1rem;">If a log write fails or the card drops out, the logger retries <code>SD.begin()</code> and reopens both files on a 3-second interval, counting recoveries so a field session is not lost to a transient card fault.</p>
+          </div>
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">UTC time &amp; GPS warmup</span>
+            <h3 style="font-size: 1.2rem; margin-top: 1rem;">Trustworthy timestamps</h3>
+            <p style="font-size: 0.95rem; color: var(--ink-soft); margin-top: 1rem;">All timestamps are logged in UTC to remove timezone ambiguity, and a 10-second GPS warmup window keeps early, unreliable fixes out of the mapping dataset.</p>
           </div>
         </div>
       </section>
@@ -198,7 +242,7 @@ def idw_interpolation(x, y, z, xi, yi, power=2.0, epsilon=1e-12):
     return zi</code></pre>
         </div>
         <p style="color: var(--ink-soft); font-size: 1rem; line-height: 1.6; max-width: 800px; margin-top: 1.5rem;">
-          <strong>The Math:</strong> The weight of a known sonar point decreases as the distance increases. A power of <code>2.0</code> (inverse square) is standard for bathymetry, meaning a ping 2 meters away has 4 times less influence than a ping 1 meter away.
+          <strong>The Math:</strong> The weight of a known sonar point decreases as the distance increases. The scripts default to a power of <code>2.0</code> (inverse square), so a ping 2 meters away has 4 times less influence than a ping 1 meter away. The exponent is adjustable via <code>--power</code>, alongside <code>--grid-size</code> for interpolation density.
         </p>
       </section>
 
@@ -206,12 +250,15 @@ def idw_interpolation(x, y, z, xi, yi, power=2.0, epsilon=1e-12):
         <div class="section-content">
           <span class="section-kicker">Data Pipelines</span>
           <h2>Offline Python Processing.</h2>
-          <p>The same accepted points can become several different map products. OMEGA provides a suite of offline Python scripts for generating publishable scientific assets directly from raw CSV exports.</p>
+          <p>The same accepted points can become several different map products. OMEGA-bath includes a set of offline Python scripts that read a mapping CSV and produce interpolated depth surfaces, contour maps, and georeferenced Google Earth overlays.</p>
           <ul>
-            <li style="margin-bottom: 1rem;"><strong><code>csv_to_png_depth_interpolated.py</code></strong>: Shows the continuous surface estimated from the accepted points.</li>
-            <li style="margin-bottom: 1rem;"><strong><code>csv_to_png_depth_contours.py</code></strong>: Turns the surface into depth lines that emphasize shape and slope. Designed for inclusion in formal academic papers.</li>
-            <li style="margin-bottom: 1rem;"><strong><code>csv_to_kmz_depth_overlay.py</code></strong>: Places a raster surface over its geographic footprint in Google Earth, packaging the result into a compressed KMZ file.</li>
+            <li style="margin-bottom: 1rem;"><strong><code>csv_to_png_depth_points.py</code></strong>: Scatter view of the recorded points, colored by depth, for checking survey coverage before interpolation.</li>
+            <li style="margin-bottom: 1rem;"><strong><code>csv_to_png_depth_interpolated.py</code></strong>: Continuous depth surface estimated from the accepted points via IDW.</li>
+            <li style="margin-bottom: 1rem;"><strong><code>csv_to_png_depth_contours.py</code></strong>: Renders the interpolated surface as filled contour bands with sample points overlaid, emphasizing shape and slope.</li>
+            <li style="margin-bottom: 1rem;"><strong><code>csv_to_kml_points.py</code> / <code>csv_to_kml_points_colored.py</code></strong>: Export measured points to Google Earth, optionally colored by depth.</li>
+            <li style="margin-bottom: 1rem;"><strong><code>csv_to_kmz_depth_overlay.py</code></strong>: Places the interpolated surface over its geographic footprint in Google Earth, packaging the result into a compressed KMZ.</li>
           </ul>
+          <p style="color: var(--ink-soft); font-size: 0.95rem; margin-top: 0.5rem;">The repository documents the outputs as exploratory mapping products. The system uses single-beam depth sensing and IDW interpolation, so the reconstructed surface is a modeled estimate rather than a formal hydrographic survey.</p>
         </div>
       </section>
 

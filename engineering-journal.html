@@ -5,14 +5,14 @@
   <meta content="width=device-width, initial-scale=1" name="viewport"/>
   <title>Jonathan Capone — Engineering Journal</title>
   
-  <meta name="description" content="Five OMEGA debugging case studies: the LR1121 RX bug, an SX1302 GPIO sentinel, HTTP/1.1 socket starvation, a dateline pathfinding bug, and a GZip compression storm." />
+  <meta name="description" content="OMEGA debugging deep-dives: the LR1121 RX bug, an SX1302 GPIO sentinel, an interpreter fallback chain, HTTP/1.1 socket starvation, phantom GPS coordinates, a dateline pathfinding bug, fail-fast lock contention, and a GZip compression storm." />
   <meta property="og:title" content="Jonathan Capone — Engineering Journal" />
-  <meta property="og:description" content="Five OMEGA debugging case studies: the LR1121 RX bug, an SX1302 GPIO sentinel, HTTP/1.1 socket starvation, a dateline pathfinding bug, and a GZip compression storm." />
+  <meta property="og:description" content="OMEGA debugging deep-dives: the LR1121 RX bug, an SX1302 GPIO sentinel, an interpreter fallback chain, HTTP/1.1 socket starvation, phantom GPS coordinates, a dateline pathfinding bug, fail-fast lock contention, and a GZip compression storm." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://jonathancapone.com/engineering-journal.html" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Jonathan Capone — Engineering Journal" />
-  <meta name="twitter:description" content="Five OMEGA debugging case studies: the LR1121 RX bug, an SX1302 GPIO sentinel, HTTP/1.1 socket starvation, a dateline pathfinding bug, and a GZip compression storm." />
+  <meta name="twitter:description" content="OMEGA debugging deep-dives: the LR1121 RX bug, an SX1302 GPIO sentinel, an interpreter fallback chain, HTTP/1.1 socket starvation, phantom GPS coordinates, a dateline pathfinding bug, fail-fast lock contention, and a GZip compression storm." />
   
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌊</text></svg>">
   
@@ -75,7 +75,7 @@
         <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">A T3-S3 LR1121 relay transmitted perfectly but never received anything. Every sign pointed at dead hardware.</p>
         <div class="panel" style="padding: 1.5rem; margin-bottom: 2rem;">
           <h3 style="font-size: 1.2rem;">The Investigation & Fix</h3>
-          <p style="font-size: 0.95rem; line-height: 1.6;">I mapped the <strong>entire RX chain interrupts</strong> instead of just <code>RX_DONE</code>. Zero partial detections meant the state machine never engaged. Root cause: RadioLib's <code>startReceive()</code> only arms continuous RX cleanly from <code>STANDBY</code>. Post-boot, it silently failed to arm. I fixed it with a single line: <code>radio.standby()</code> before the boot-time arm. <strong>Lesson: Map the whole signal chain, not just the success interrupt.</strong></p>
+          <p style="font-size: 0.95rem; line-height: 1.6;">I mapped the <strong>entire RX chain interrupts</strong> instead of just <code>RX_DONE</code>. Zero partial detections meant the state machine never engaged. Root cause: RadioLib's <code>startReceive()</code> only arms continuous RX cleanly from <code>STANDBY</code>. Post-boot, it silently failed to arm. The fix had two halves: <code>radio.standby()</code> before the boot-time arm, plus a re-arm after every transmit (the chip returns to standby after TX). RX reliability went from <strong>0% to 100%</strong>. <strong>Lesson: Map the whole signal chain, not just the success interrupt.</strong></p>
         </div>
       </section>
 
@@ -84,7 +84,7 @@
           <span class="section-kicker">C++ Undefined Behavior</span>
           <h2>2. SX1302 `-1` GPIO Sentinel.</h2>
           <p>SPI reads worked but writes to the SX1302 front-end were ignored. Tracing the reset path into the ESP32 port revealed that the reset mask was computed using a `-1` sentinel for an unconnected pin.</p>
-          <p><strong>The Fix:</strong> <code>(1 << -1)</code> is undefined behavior in C. The corrupted mask meant the radio was never actually reset. I added explicit guards before shifting the mask. The board became production-ready.</p>
+          <p><strong>The Fix:</strong> <code>(1 << -1)</code> is undefined behavior in C. The corrupted mask meant the radio was never actually reset. I added explicit guards before shifting the mask. The board became production-ready for receive use.</p>
         </div>
       </section>
 
@@ -102,7 +102,7 @@
           <span class="section-kicker">Spatial Algorithms</span>
           <h2>4. The Fiji → Hawaii Dateline Bug.</h2>
           <p>The global A* ocean router sent a 2,700-nm Pacific crossing 13,000 nm around the world.</p>
-          <p><strong>The Fix:</strong> The cost landscape was a single -180 to +180 grid that clipped at the boundary. I solved it by searching a <strong>wrapped longitude space</strong>—replicating water cells at L ± 360° so the geodesically short path across the dateline became reachable.</p>
+          <p><strong>The Fix:</strong> The cost landscape was a single -180 to +180 grid that clipped at the boundary. I solved it by searching a <strong>wrapped longitude space</strong>—replicating water cells at L ± 360° so the geodesically short path across the dateline became reachable. Verified at <strong>2,729 nm</strong>, with non-dateline routes (NYC→Lisbon, CA→HI) provably unchanged.</p>
         </div>
       </section>
       
@@ -112,6 +112,33 @@
           <h2>5. The GZip Compression Storm.</h2>
           <p>Cold loads took 6.4 seconds because <code>GZipMiddleware</code> recompressed multi-MB static bundles on the event loop for every request.</p>
           <p><strong>The Fix:</strong> I pre-compressed <code>*.gz</code> siblings once at startup and served them directly. Cold-boot DOMContentLoaded dropped from 6,400 ms to <strong>516 ms</strong>.</p>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-content">
+          <span class="section-kicker">Sensor Data Integrity</span>
+          <h2>6. Phantom GPS — a Sensor 100 km From Where It Sat.</h2>
+          <p>A Supreme node showed a wandering position up to ~100 km from its actual bench location, and had quietly archived ~370 bogus coordinates that contaminated any historical query. The module reported 0–2 satellites and an HDOP of 25+—no real lock—yet <code>TinyGPS++</code> flagged the coordinates "valid," so the firmware transmitted them unconditionally and the gateway stored every one.</p>
+          <p><strong>The Fix:</strong> "Valid" from the GPS library is an internal flag, not a quality guarantee. I gated position at two layers. In firmware, a <code>gpsHasRealFix()</code> check rides latitude/longitude only when the fix is valid <strong>and</strong> fresh (&lt; 5 s) <strong>and</strong> ≥ 4 satellites <strong>and</strong> HDOP in range; otherwise the node reports its satellite count and HDOP but no position. At the gateway, an ingest-side quality filter so last-known-fix only counts frames with real fixes. I deliberately chose non-destructive filtering over a destructive DB cleanup. <strong>Lesson: validate real data at the point of origin and the point of entry—once phantom data is archived it is nearly impossible to remove cleanly.</strong></p>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-content">
+          <span class="section-kicker">Subprocess & Environment</span>
+          <h2>7. The Wrong Interpreter in a Fallback Chain.</h2>
+          <p>Copernicus wind / current / SST overlays rendered as "degraded, empty frames." The gateway logs showed the rendering subprocess exiting with <code>ModuleNotFoundError</code>. The overlay subprocess runs <code>copernicusmarine.subset</code> under a chosen interpreter, and the selection logic blindly trusted the first candidate that existed.</p>
+          <p><strong>The Fix:</strong> The fallback chain was (1) an env var, (2) a cached bundled runtime, (3) <code>sys.executable</code>. The bundled runtime existed but lacked the <code>copernicusmarine</code> package—so the subprocess picked it, failed the import, and returned an empty placeholder, while the system Python that did have the package sat unused. I capability-check before committing: test each candidate with <code>importlib.util.find_spec(...)</code> and use the first that actually has it. <strong>Lesson: capability-test before you trust—the "better" cached option may be incomplete.</strong></p>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-content">
+          <span class="section-kicker">Concurrency</span>
+          <h2>8. Fail-Fast Lock Contention.</h2>
+          <p>Toggling a Copernicus field on would intermittently return 0 features; toggling off and on sometimes fixed it. Maddeningly timing-dependent. The field endpoint guarded an expensive remote download with a <strong>non-blocking</strong> lock—so whenever a background cache-warmer or any concurrent request held it, an interactive toggle instantly fell back to a degraded empty response instead of waiting.</p>
+          <p><strong>The Fix:</strong> Interactive endpoints now wait up to 20 s for the lock, and additionally fall back to reading the disk-cached cube <em>without</em> the lock (the lock only needs to serialize remote downloads; reading an existing cube is safe and concurrent). Six simultaneous cold requests—the case that degraded 8/8 to empty—now all return real data. <strong>Lesson: prefer blocking-with-timeout plus a read-only fallback so the system degrades to stale rather than empty.</strong></p>
         </div>
       </section>
 </div>
