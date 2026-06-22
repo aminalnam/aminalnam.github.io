@@ -137,8 +137,9 @@
   Data Ingestion                          Analytics Engine                 Dashboard UI
   ──────────────                          ────────────────                 ────────────
   report.json files ──┐                   Quarantine & Sanitize            Serve Local Dashboard
-  Project Scans     ──┼─► SQLite DB ──►   Calculate Deltas ──► JSON ──►    (stdlib http.server)
-  AI Sessions       ──┘                   Generate Reports                 Action Tracker
+  Project Scans       │                   Calculate Deltas                 (stdlib http.server)
+  GitHub issues + CI ─┼─► SQLite DB ──►   Daily Snapshot + Trend ─► JSON ► Action Tracker
+  AI Sessions       ──┘                   Generate Reports                 Trend Lines
 </pre>
         </div>
       </section>
@@ -156,7 +157,9 @@
   .\dev.ps1 init-project     # bootstrap a tracked workspace
   .\dev.ps1 evidence-template / record-evidence   # capture measured runs
   .\dev.ps1 record-work      # log a work session to the ledger
-  .\dev.ps1 test             # run the standalone unittest suite
+  .\dev.ps1 test / run-tests # BETA suite, or allowlisted per-project test commands
+  .\dev.ps1 github-import / import-tests   # pull issues + milestones, CI / test results
+  .\dev.ps1 snapshot-project # persist a dated snapshot for trend lines
   .\dev.ps1 refresh / serve  # rebuild + serve the local dashboard
   .\dev.ps1 ai / ask / manage-ai  -Model gemma4:latest   # advisory Ollama
 </pre>
@@ -207,7 +210,7 @@
           <div class="panel" style="padding: 1.5rem;">
             <span class="status-label" style="background: rgba(154,162,177,0.15); color: var(--ink-soft);">By Design</span>
             <h3 style="font-size: 1.2rem;">Blank Until Proven</h3>
-            <p style="font-size: 0.85rem;">If no accepted real report exists, project pages show <code>Needs data</code> and keep all proof charts empty. An empty chart is treated as the honest answer, not a bug to paper over with placeholder data.</p>
+            <p style="font-size: 0.85rem;">If no accepted real report exists, project pages show <code>Needs data</code> and keep all proof charts empty. An empty chart is treated as the honest answer, not a bug to paper over with placeholder data. Likewise, a software metric with no measurement is shown as <code>not measured</code> — never a misleading <code>0.0</code>.</p>
           </div>
           <div class="panel" style="padding: 1.5rem;">
             <span class="status-label status-implemented">Quarantine</span>
@@ -224,7 +227,7 @@
         <div class="panel" style="padding: 1.5rem;">
           <span class="status-label status-implemented">Version History &amp; Deltas</span>
           <h3 style="font-size: 1.2rem;">Tracking Its Own Drift</h3>
-          <p style="font-size: 0.85rem;">When dashboards or reports are generated, BETA appends compact workspace/project records to <code>version-history.json</code> and compares the latest scoped record against the previous one — calling out material changes such as a different AI model, new real evidence, fewer quarantined reports, or a changed config version. Each tracked project (for example <code>omega</code> and <code>beta</code> itself) gets its own scoped page and data feed; the workspace dashboard is only a project selector and does not combine metrics across projects.</p>
+          <p style="font-size: 0.85rem;">When dashboards or reports are generated, BETA appends compact workspace/project records to <code>version-history.json</code> and compares the latest scoped record against the previous one — calling out material changes such as a different AI model, new real evidence, fewer quarantined reports, or a changed config version. BETA also persists a dated project snapshot each day, so every tracked metric carries a trend line over time rather than just a latest value. Each tracked project (for example <code>omega</code> and <code>beta</code> itself) gets its own scoped page and data feed; the workspace dashboard is only a project selector and does not combine metrics across projects.</p>
         </div>
       </section>
 
