@@ -75,7 +75,7 @@
             <div class="section-content">
               <span class="section-kicker">Concurrency & IO Bound Limits</span>
               <h2>FastAPI Async Event Loop.</h2>
-              <p>The OMEGA Gateway is a massive <strong>~105,500 LOC Python</strong> backend exposing <strong>~390 FastAPI routes</strong>. Designed to run on embedded Linux (e.g. Raspberry Pi 5) deployed directly at the coastal shore, it acts as the master ingestion point for the entire Delay Tolerant Network.</p>
+              <p>The OMEGA Gateway is a <strong>~105,500 LOC Python</strong> backend exposing <strong>~420 FastAPI routes</strong> — including OGC <strong>SensorThings API v1.1</strong> and ERDDAP-compatible read surfaces for standards-based interop. Designed to run on embedded Linux (e.g. Raspberry Pi 5) deployed directly at the coastal shore, it acts as the master ingestion point for the entire Delay Tolerant Network.</p>
 <p><strong>Database Architecture:</strong> Telemetry arrives asynchronously via UDP and Serial ports at massive volumes. A standard SQLite configuration would instantly lock and crash under this concurrent write pressure. The Python backend physically rewrites the SQLite PRAGMA at boot, enforcing Write-Ahead Logging (<code>WAL</code>) mode and <code>NORMAL</code> synchronous behavior. This decouples the read/write locks, allowing the Mission Portal to execute massive <code>SELECT</code> queries over the historical arrays while the edge node bridges concurrently <code>INSERT</code> live TLV frames without blocking.</p>
               <div class="callout"><strong>Background Tasks</strong><p>Heavy normalization operations are relegated to Starlette background tasks, ensuring the endpoint returns a 202 Accepted instantly.</p></div>
             </div>
@@ -832,7 +832,7 @@ async def websocket_endpoint(websocket: WebSocket):
               </table>
             </div>
             
-            <p style="margin-top: 2rem;"><strong>Execution:</strong> Instead of building our own $20k floats, OMEGA simply pulls the live, open-source Argo CTD (Conductivity, Temperature, Depth) casts via ERDDAP. The gateway mathematically cross-references these deep-ocean profiles against our cheap $200 surface buoys, ensuring scientific accuracy for free.</p>
+            <p style="margin-top: 2rem;"><strong>Execution:</strong> Instead of building its own $20k floats, OMEGA pulls live, open-source Argo CTD (Conductivity, Temperature, Depth) casts via ERDDAP. The gateway cross-references these deep-ocean profiles against the cheap $200 surface buoys as an independent calibration reference.</p>
           </section>
     
           <section class="section">
