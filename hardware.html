@@ -6,14 +6,14 @@
   <meta content="width=device-width, initial-scale=1" name="viewport" />
   <title>Jonathan Capone — Hardware & Mesh</title>
 
-  <meta name="description" content="OMEGA's physical layer: a LoRa mesh fleet (T-Beam Supreme, LR1121 relays), DTN store-and-forward, 15 µA deep sleep, and NATO JANUS acoustic links." />
+  <meta name="description" content="OMEGA's physical layer: a LoRa mesh fleet (T-Beam Supreme, LR1121 relays), DTN store-and-forward, and an experimental JANUS acoustic bridge." />
   <meta property="og:title" content="Jonathan Capone — Hardware & Mesh" />
-  <meta property="og:description" content="OMEGA's physical layer: a LoRa mesh fleet (T-Beam Supreme, LR1121 relays), DTN store-and-forward, 15 µA deep sleep, and NATO JANUS acoustic links." />
+  <meta property="og:description" content="OMEGA's physical layer: a LoRa mesh fleet (T-Beam Supreme, LR1121 relays), DTN store-and-forward, and an experimental JANUS acoustic bridge." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://jonathancapone.com/hardware.html" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Jonathan Capone — Hardware & Mesh" />
-  <meta name="twitter:description" content="OMEGA's physical layer: a LoRa mesh fleet (T-Beam Supreme, LR1121 relays), DTN store-and-forward, 15 µA deep sleep, and NATO JANUS acoustic links." />
+  <meta name="twitter:description" content="OMEGA's physical layer: a LoRa mesh fleet (T-Beam Supreme, LR1121 relays), DTN store-and-forward, and an experimental JANUS acoustic bridge." />
 
   <link rel="icon"
     href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌊</text></svg>">
@@ -84,7 +84,7 @@
       <section class="section section-block" style="background: rgba(0,0,0,0.4);">
         <span class="section-kicker">Layer 1: Fleet Infrastructure</span>
         <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">The COTS Federation</h2>
-        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">To achieve global scalability and rapid hardware iteration, the OMEGA physical layer leverages Commercial Off-The-Shelf (COTS) edge silicon rather than manufacturing custom PCBs. The entire fleet is standardized on the Espressif ESP32-S3 microcontroller, unified by a custom embedded C++ firmware stack.</p>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">To achieve global scalability and rapid hardware iteration, the OMEGA physical layer leverages Commercial Off-The-Shelf (COTS) edge silicon rather than manufacturing custom PCBs. The fleet standardizes on Espressif ESP32 / ESP32-S3 microcontrollers (the T-Beam Supreme runs an ESP32; the T3-S3 relay and the gateway use the ESP32-S3), unified by a custom embedded C++ firmware stack.</p>
 
         <div class="grid-3" style="margin-bottom: 2rem;">
           <div class="panel" style="padding: 1.5rem;">
@@ -95,7 +95,7 @@
           <div class="panel" style="padding: 1.5rem;">
             <span class="status-label status-implemented">Sensor Node</span>
             <h3 style="font-size: 1.2rem;">T-Beam Supreme</h3>
-            <p style="font-size: 0.85rem;">The standard marine sensing edge node. It pairs the ESP32-S3 with a Semtech SX1262 LoRa transceiver and an ultra-low-power u-blox MAX-M10S GNSS module. Capable of +22dBm output, it gathers localized environmental data and manages complex deep-sleep thermodynamic cycles to survive strictly on solar power.</p>
+            <p style="font-size: 0.85rem;">The standard marine sensing edge node. It pairs an ESP32 with a Semtech SX1262 LoRa transceiver and an ultra-low-power u-blox MAX-M10S GNSS module. Capable of +22dBm output, it gathers localized environmental data and runs on a solar-charged 18650 cell (~60 mA average draw); deep-sleep duty-cycling to stretch runtime is on the roadmap.</p>
           </div>
           <div class="panel" style="padding: 1.5rem;">
             <span class="status-label status-implemented">Mesh Relay</span>
@@ -111,7 +111,7 @@
           <h2>Lossless Predictive Batching.</h2>
           <p>Transmitting individual oceanographic measurements (e.g., a temperature reading every 3 seconds) across a low-bandwidth LoRa link introduces catastrophic overhead from packet headers, leading directly to regulatory duty-cycle violations and massive battery drain.</p>
           <p>To solve this, the OMEGA edge firmware executes <strong>Phase 1 Predictive Batching</strong> entirely locally on the ESP32-S3. The node samples sensors into an internal RAM ring buffer. Once the buffer is full, the C++ engine applies a first-order predictive coding algorithm: it transmits the first baseline measurement as a full 32-bit integer, but encodes all subsequent readings as tightly packed 4-bit or 8-bit residuals (the delta from the previous reading).</p>
-          <p><strong>Result:</strong> This mathematically guarantees a completely lossless reconstruction of the high-frequency telemetry array at the Shore Gateway, while physically crushing the LoRa packet size by over 80%.</p>
+          <p><strong>Result:</strong> This guarantees a completely lossless reconstruction of the high-frequency telemetry array at the Shore Gateway, while multi-sample predictive batching collapses the per-reading overhead of sending each sample as its own packet.</p>
         </div>
       </section>
 
@@ -120,21 +120,21 @@
           <span class="section-kicker">Mesh Resilience</span>
           <h2>Store & Forward Architecture.</h2>
           <p>Oceanographic sensor buoys frequently drift into RF dead zones, pass behind massive waves, or suffer from atmospheric interference. If an edge node attempts to blindly transmit during a network blackout, the data is permanently lost. To guarantee <em>Absolute Data Purity</em>, the DTO v3.0 firmware utilizes an autonomous Store & Forward mechanism.</p>
-          <p>When the firmware's CSMA-CA (Carrier-Sense Multiple Access) layer detects channel jamming, or the MAC layer fails to receive cryptographic LoRaWAN acknowledgments, the ESP32-S3 instantly aborts transmission. The compressed telemetry payload is serialized and dumped directly into the physical NVRAM/SPIFFS flash memory partition.</p>
-          <p>The node can survive offline for weeks, quietly accumulating environmental history. Once a connection to the mesh is re-established (proven by receiving a network heartbeat from a passing LR1121 relay or the T-ETH-ELITE), the node flushes its flash buffer, sequentially replaying its queue and seamlessly reconstructing the historical timeline within the Federated Data Broker.</p>
+          <p>When the firmware's CSMA-CA (Carrier-Sense Multiple Access) layer detects channel jamming, or the MAC layer fails to receive cryptographic LoRaWAN acknowledgments, the node instantly aborts transmission. The compressed telemetry payload is serialized and written to the on-board SD card store-and-forward buffer.</p>
+          <p>The node can survive offline for weeks, quietly accumulating environmental history. Once a connection to the mesh is re-established (proven by receiving a network heartbeat from a passing LR1121 relay or the T-ETH-ELITE), the node flushes its SD-card buffer, sequentially replaying its queue and seamlessly reconstructing the historical timeline within the Federated Data Broker.</p>
         </div>
       </section>
 
       <section class="section section-block" style="background: rgba(0,0,0,0.4); margin-top: 2rem;">
         <span class="section-kicker">Edge Operations</span>
         <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Power Management & Thermodynamics.</h2>
-        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">A remote sensor floating in the ocean cannot plug into a wall outlet. It must meticulously harvest and budget its own power. A spinning ESP32-S3 draws roughly 100mA, which will completely drain a lithium cell in two days. The firmware strictly manages these physics.</p>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">A remote sensor floating in the ocean cannot plug into a wall outlet. It must budget its own power. The documented power budget is roughly 60 mA average draw, which gives on the order of 50 hours of runtime on a single 18650 cell. Battery voltage is telemetered back to shore via the on-board ADC so operators can watch the budget in real time.</p>
 
         <div class="grid-2" style="margin-bottom: 2rem;">
           <div class="panel" style="padding: 1.5rem;">
-            <span class="status-label status-implemented">Deep Sleep Cycling</span>
-            <h3 style="font-size: 1.2rem;">15µA Survival Mode</h3>
-            <p style="font-size: 0.85rem;">Between transmission windows, the firmware issues an <code>esp_deep_sleep_start()</code> command. It physically cuts the MOSFET power rails to the GNSS and LoRa chips, dropping the entire board's consumption from 100mA to 15 micro-amps, mathematically guaranteeing survival through long winter nights.</p>
+            <span class="status-label status-planned">Roadmap</span>
+            <h3 style="font-size: 1.2rem;">Deep Sleep &amp; Adaptive Sampling</h3>
+            <p style="font-size: 0.85rem;">Deep-sleep cycling between transmission windows and dynamic, battery-aware sample-rate scaling are designed as future work to stretch the budget beyond the current ~50 h figure. They are not yet shipped; today the only MOSFET on the board drives the cooling fan, not the sensor rails.</p>
           </div>
           <div class="panel" style="padding: 1.5rem;">
             <span class="status-label status-implemented">Local UI Diagnostics</span>
@@ -147,10 +147,10 @@
       <section class="section">
         <div class="section-content">
           <span class="section-kicker">Remote Lifecycle Management</span>
-          <h2>Over-The-Air (OTA) Pipelines.</h2>
-          <p>Retrieving a deployed remote sensor from the environment simply to update a line of code is logistically prohibitive. The firmware incorporates a robust Over-The-Air (OTA) flashing pipeline over its own DTN mesh network.</p>
-          <p>The compiled firmware binaries are fragmented, heavily compressed, and signed with a cryptographic private key. The T-ETH-ELITE Gateway transmits these fragments sequentially over the LoRa network. The edge node receives the fragments, buffers them in its external SPI flash memory, and reassembles them.</p>
-          <p>Crucially, the node then mathematically verifies the cryptographic signature of the reassembled binary. It only switches the boot partition pointer to the new firmware if the validation passes perfectly, completely preventing "bricked" nodes caused by corrupt RF packets.</p>
+          <h2>Over-The-Air (OTA) Foundation.</h2>
+          <p>Retrieving a deployed remote sensor from the environment simply to update a line of code is logistically prohibitive, so OMEGA is building toward firmware-over-mesh. What exists today is the <strong>gateway-side foundation</strong>: a firmware-image registry where each build is signed with an Ed25519 key, carries a sha256 integrity hash, and goes through explicit version negotiation before a node is offered an update.</p>
+          <p>The registry now supports a <strong>channelized stable/beta rollout</strong>: beta nodes canary a new build in the field before it is promoted to the stable channel, so a bad image is caught on a small population rather than the whole fleet.</p>
+          <p><strong>Not yet built:</strong> the on-device half of the pipeline — chunked transfer of the image over the mesh, A/B boot-partition swapping, and automatic rollback on a failed flash — is designed but not yet implemented. Until that lands, OTA is a gateway capability, not an end-to-end one.</p>
         </div>
       </section>
 
@@ -179,9 +179,6 @@
 
             <img src="images/proofs/hardware-rssi.svg" loading="lazy" alt="Histogram of RSSI for real LoRa frames" style="max-width: 100%; border-radius: 8px; margin-top: 1rem; display: block;">
 
-
-            <img src="images/proofs/hardware-rssi.svg" loading="lazy" alt="Histogram of RSSI for real LoRa frames" style="max-width: 100%; border-radius: 8px; margin-top: 1rem; display: block;">
-
           </div>
 
 
@@ -191,26 +188,32 @@
           </div>
 
 
+          <div class="panel" style="margin-top: 2rem; border-left: 4px solid var(--accent);">
+            <h3 style="margin: 0 0 0.5rem; color: #fff;">Honest Gaps: What Is and Isn't Proven</h3>
+            <p style="font-size: 0.9rem; color: var(--ink-soft); margin: 0;">Link-level reception is real and proven — 205 frames decoded by the gateway, with measured RSSI and SNR. What is <em>not</em> yet field-demonstrated is multi-hop mesh <strong>routing</strong>: relaying a frame across intermediate nodes to a destination has not been shown in the field. Much of the field-hardening firmware is written but not yet flashed to deployed hardware, and the bench RF window that produced these results was only about 6 to 7 days. The reception evidence is solid; the end-to-end mesh and long-duration field behavior are still open.</p>
+          </div>
+
+
           <section class="section section-block" style="background: rgba(0,0,0,0.4);">
             <span class="section-kicker">Energy Physics</span>
             <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Power Budgets & Insolation.</h2>
-            <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">A remote node operating in winter might only receive 2 hours of direct solar insolation per day. The node must mathematically budget its stored energy to survive a 14-hour night.</p>
-            
+            <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">A remote node has to live within a tight energy budget. The current build runs at roughly 60 mA average draw, giving on the order of 50 hours on a single 18650 cell, with battery voltage reported back to shore over the air.</p>
+
             <div class="grid-3" style="margin-bottom: 2rem;">
               <div class="panel" style="padding: 1.5rem;">
-                <span class="status-label status-implemented">Dark Current</span>
-                <h3 style="font-size: 1.2rem;">The Silent Killer</h3>
-                <p style="font-size: 0.85rem;">Even when not actively transmitting, a spinning ESP32 processor draws a "dark current" of 100mA. Overnight, this will completely drain the lithium cell, causing the physical hardware to freeze.</p>
+                <span class="status-label status-implemented">Measured Budget</span>
+                <h3 style="font-size: 1.2rem;">~60 mA Average</h3>
+                <p style="font-size: 0.85rem;">The documented power budget is approximately 60 mA average draw, which works out to roughly 50 hours of runtime on a single 18650 lithium cell before recharge.</p>
               </div>
               <div class="panel" style="padding: 1.5rem;">
-                <span class="status-label status-implemented">Deep Sleep</span>
-                <h3 style="font-size: 1.2rem;">15µA Survival</h3>
-                <p style="font-size: 0.85rem;">The firmware physically cuts the MOSFET power rail to auxiliary sensors and LoRa chips, dropping the entire board into a 15 micro-amp deep sleep state between transmissions.</p>
+                <span class="status-label status-implemented">Telemetered Voltage</span>
+                <h3 style="font-size: 1.2rem;">ADC Battery Sense</h3>
+                <p style="font-size: 0.85rem;">Battery voltage is sampled by the on-board ADC and reported in the telemetry stream, so operators can watch each node's state of charge from shore rather than guessing.</p>
               </div>
               <div class="panel" style="padding: 1.5rem;">
-                <span class="status-label status-implemented">Dynamic Polling</span>
-                <h3 style="font-size: 1.2rem;">Battery-Aware Rates</h3>
-                <p style="font-size: 0.85rem;">If the battery voltage drops below 3.6V, the firmware automatically downscales its sample rate from every 10 minutes to every 60 minutes, mathematically guaranteeing survival until sunrise.</p>
+                <span class="status-label status-planned">Roadmap</span>
+                <h3 style="font-size: 1.2rem;">Deep Sleep &amp; Adaptive Rates</h3>
+                <p style="font-size: 0.85rem;">Deep-sleep cycling and battery-aware sample-rate scaling are designed as future work to extend the budget. They are not yet shipped; the single MOSFET on the board currently drives the cooling fan, not the sensor rails.</p>
               </div>
             </div>
           </section>
@@ -220,7 +223,7 @@
               <span class="section-kicker">Network Resilience</span>
               <h2>Offline Survival & Store-and-Forward.</h2>
               <p>Oceanographic buoys frequently drift into RF dead zones or experience severe atmospheric interference. If an edge node cannot reach the gateway, it must not drop its critical telemetry.</p>
-<p><strong>Execution:</strong> To solve this, Phase 2 firmware implements an autonomous <strong>Store & Forward</strong> architecture. When a node detects that a transmission has failed (via missing LoRaWAN ACKs or CSMA-CA channel jamming), it seamlessly reroutes the compressed telemetry payload into its non-volatile SPIFFS memory. The node can survive offline for weeks, quietly accumulating data. When connection to the mesh is re-established, the node automatically flushes its queue, seamlessly reconstructing the timeline in the central database.</p>
+<p><strong>Execution:</strong> To solve this, Phase 2 firmware implements an autonomous <strong>Store & Forward</strong> architecture. When a node detects that a transmission has failed (via missing LoRaWAN ACKs or CSMA-CA channel jamming), it seamlessly reroutes the compressed telemetry payload onto its on-board SD card buffer. The node can survive offline for weeks, quietly accumulating data. When connection to the mesh is re-established, the node automatically flushes its queue, seamlessly reconstructing the timeline in the central database.</p>
             </div>
           </section>
 
@@ -228,30 +231,27 @@
 
       <section class="section">
         <div class="section-content">
-          <span class="section-kicker">Thermodynamics</span>
-          <h2>The 1-Watt Thermal Envelope.</h2>
-          <p>To punch through ocean swells and achieve true over-the-horizon transmission, OMEGA employs custom High Power Amplifiers (HPA) and the <strong>T-Beam 1W</strong> to push a blistering +30dBm (1 Watt) of RF output power. However, generating 1 Watt of RF inside a hermetically sealed IP67 waterproof enclosure creates a thermal crisis.</p>
-          <p><strong>Silicon Constraints:</strong> The SX1262 chip itself is physically incapable of driving +30dBm; attempting to do so will permanently destroy the silicon. OMEGA safely caps the internal SX1262 PA at +22dBm, routing the signal into the external HPA.</p>
-          <p><strong>TX-Burst Fan Control:</strong> To survive the thermal load, the ESP32-S3 physically spins up an external cooling fan on maximum GPIO drive just seconds before a transmission burst, and spins it down immediately after the packet clears the antenna. This prevents thermal throttling while strictly preserving the power budget during deep sleep.</p>
+          <span class="section-kicker">RF Power &amp; PA Thermal Management</span>
+          <h2>The High-Power Amplifier Path.</h2>
+          <p>To push through ocean swells, OMEGA pairs the <strong>LilyGo T-Beam 1W</strong> board (which carries its own on-board amplifier) with an external High Power Amplifier (HPA) stage. The hardware is <strong>+30 dBm-capable</strong>, but the firmware runs it conservatively — the transmit-power setting ships at <strong>+20 dBm</strong> in normal operation rather than driving the chain flat out.</p>
+          <p><strong>How the chain is driven:</strong> the SX1262 is hard-clamped at <strong>+22 dBm</strong> and the external HPA does the rest. The PA is switched in over the radio's <code>DIO2</code> RF-switch control line, and the firmware applies an <strong>800 µs PA ramp</strong> so the amplifier settles before the burst rather than slamming on. This keeps the silicon inside its safe operating area while still feeding the HPA a clean drive level.</p>
+          <p><strong>Proactive fan cooling:</strong> the firmware spins up a GPIO/MOSFET-driven cooling fan before each transmit burst and runs a short post-TX cooldown after the packet clears. This is straightforward proactive PA thermal management — keeping the amplifier stage in a comfortable temperature band during back-to-back bursts — not a response to any thermal emergency.</p>
         </div>
         
         <div class="section-visual">
-          <span class="panel-kicker">TX-Burst Cooling Matrix</span>
+          <span class="panel-kicker">TX-Burst Cooling Sequence</span>
           <div class="mermaid">
             graph TD
-              A[Deep Sleep - 15µA] --> B[RTC Wake]
-              B --> C{Temp Check}
-              C -- > 45°C --> D[Spin up Fan on Max GPIO]
-              C -- < 45°C --> E[Passive Cooling Sufficient]
-              D --> F[SX1262 Fire @ +22dBm]
-              E --> F
-              F --> G[External HPA Boosts to +30dBm]
-              G --> H[LoRa Packet TX]
-              H --> I[Spin Down Fan]
-              I --> A
-              
+              A[TX Burst Scheduled] --> B[Spin up Cooling Fan]
+              B --> C[800µs PA Ramp via DIO2 RF-switch]
+              C --> D[SX1262 driven, clamped +22dBm]
+              D --> E[External HPA stage]
+              E --> F[LoRa Packet TX at ~+20dBm operational]
+              F --> G[Post-TX Cooldown]
+              G --> H[Spin down Fan]
+
               classDef node fill:#101529,stroke:#3b82f6,stroke-width:2px,color:#fff;
-              class A,B,C,D,E,F,G,H,I node;
+              class A,B,C,D,E,F,G,H node;
           </div>
         </div>
       </section>
@@ -412,15 +412,17 @@
 
       <section class="section">
         <div class="section-content">
-          <span class="section-kicker">Long-Range Wi-Fi</span>
-          <h2>IEEE 802.11ah HaLow Bridging.</h2>
-          <p>Standard 900MHz LoRa is restricted to a few hundred bytes per second—perfect for telemetry, but entirely
-            useless for streaming underwater video feeds. To solve this, OMEGA integrates T-HaLow ESP32-S3 boards.</p>
-          <p><strong>Execution:</strong> The firmware configures one node as an <code>ap-root</code> (Access Point) and
-            another as a <code>sta-client</code> (Station). This establishes a transparent IEEE 802.11ah Wi-Fi
-            connection over sub-GHz frequencies. It creates a massive, long-range TCP/IP tunnel that bypasses standard
-            2.4GHz Wi-Fi limitations, allowing the edge node to stream live RTSP camera feeds directly to the shore
-            gateway from over a kilometer away.</p>
+          <span class="section-kicker">Long-Range Wi-Fi (Designed)</span>
+          <h2>IEEE 802.11ah HaLow IP Backhaul.</h2>
+          <p>LoRa is a great telemetry bearer but a poor IP pipe. To give the fleet an optional higher-throughput
+            <em>backhaul</em> link, OMEGA has a companion-firmware architecture for 802.11ah (HaLow) on T-HaLow ESP32-S3
+            boards. HaLow here is strictly an IP backhaul between a node and shore — it is not a mesh bearer, and it is
+            not intended for video.</p>
+          <p><strong>Status — designed, not yet brought up:</strong> the build flags below configure one side as an
+            <code>ap-root</code> and the peer as an <code>sta-client</code> to form a sub-GHz TCP/IP link. On the
+            hardware, the HaLow radio (the TX-AH module) runs its own firmware and is driven over SPI by the host ESP32;
+            that SPI path is not yet implemented, so bring-up is pending the vendor hardware. The companion firmware and
+            its peering configuration exist on paper and in the build, but no live HaLow link has been stood up yet.</p>
 
         </div>
         <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span
@@ -437,12 +439,14 @@ build_flags =
       <section class="section">
         <div class="section-content">
           <span class="section-kicker">Protocol Bridging</span>
-          <h2>Meshtastic Piggybacking.</h2>
-          <p>OMEGA does not reinvent the wheel. While it has its own routing logic, it includes a robust Python bridge
-            to <strong>Meshtastic</strong>.</p>
-          <p>If operators have existing consumer Meshtastic LoRa radios, the OMEGA Gateway can serialize its outbox
-            payloads and push them over the Meshtastic serial API. This allows OMEGA to hijack established consumer
-            meshes to bounce encrypted telemetry packets across vast distances for free.</p>
+          <h2>Meshtastic &amp; MeshCore Bridging.</h2>
+          <p>OMEGA does not reinvent the wheel. It ships a runnable <strong>Meshtastic</strong> bridge built on the
+            official Meshtastic Python SDK — bidirectional, over both serial and TCP, and tested against real radios —
+            alongside a <strong>MeshCore</strong> mesh-interface framework for the same role.</p>
+          <p>The intent is that of a <strong>last-resort bearer</strong>: if operators already have Meshtastic or
+            MeshCore radios in the area, the OMEGA gateway can serialize its outbox payloads and piggyback them across
+            that existing mesh. Crucially this is reciprocal — OMEGA also <em>forwards</em> the host mesh's own traffic
+            in return, so it behaves as a good airtime citizen rather than a free rider on someone else's network.</p>
 
         </div>
 
@@ -548,25 +552,26 @@ build_flags =
         <span class="section-kicker">Mathematical Physics</span>
         <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">The Mathematics of LoRa.</h2>
         <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">
-          How does OMEGA achieve 15km of range using only 1 Watt of transmission power? It requires manipulating the
-          fundamental physics of the Link Budget and Chirp Spread Spectrum (CSS) modulation.</p>
+          OMEGA's edge node is a LilyGo T-Beam 1W-class LoRa node. How far it actually reaches comes down to the Link
+          Budget and Chirp Spread Spectrum (CSS) modulation — with the important caveat that the antenna gain and the
+          real-world field range have not yet been characterized.</p>
 
         <div class="grid-2" style="margin-bottom: 2rem;">
           <div class="panel" style="padding: 1.5rem;">
             <span class="status-label status-implemented">The Link Budget</span>
             <h3 style="font-size: 1.2rem;">Rx = Tx + Gains - Losses</h3>
-            <p style="font-size: 0.85rem;">The Link Budget mathematically determines if a packet survives the journey.
-              <code>Rx</code> (Receiver Sensitivity) must be greater than the <code>Tx</code> (Transmit Power) minus
-              Free Space Path Loss. OMEGA uses massive 8dBi fiberglass antennas to mathematically force the
-              <code>Gains</code> high enough to overcome the oceanic path loss.</p>
+            <p style="font-size: 0.85rem;">The Link Budget determines whether a packet survives the journey:
+              <code>Rx</code> (receiver sensitivity) must beat the <code>Tx</code> (transmit power) plus antenna gains
+              minus path loss. In normal builds the firmware ships at roughly <strong>+13 to +17 dBm</strong>. The
+              antenna gain is not yet characterized, so the gain term — and the resulting field range — remain open.</p>
           </div>
           <div class="panel" style="padding: 1.5rem;">
             <span class="status-label status-implemented">Chirp Spread Spectrum</span>
             <h3 style="font-size: 1.2rem;">Spreading Factor 12 (SF12)</h3>
-            <p style="font-size: 0.85rem;">By spreading the signal across a wider frequency band over a longer time
-              duration (SF12), OMEGA drastically drops the bit rate (to ~1200 bps), but mathematically increases the
-              processing gain. This pushes the receiver sensitivity to -137 dBm, allowing the SX1262 radio to literally
-              pull the signal out from <em>below</em> the thermal noise floor.</p>
+            <p style="font-size: 0.85rem;">By spreading the signal across a wider band over a longer symbol duration
+              (SF12), the bit rate drops (to ~1200 bps) but the processing gain rises. The documented decode floor at
+              SF12 is about <strong>-134 dBm</strong>, letting the SX1262 pull a signal out from near the thermal noise
+              floor.</p>
           </div>
         </div>
 
@@ -594,27 +599,27 @@ build_flags =
         <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Machine Learning over LoRa.
         </h2>
         <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">
-          Moving beyond basic scalar telemetry, OMEGA's advanced Delay Tolerant Network (DTN) now supports the
-          transmission of complex mathematical features and entire Machine Learning architectures across ultra-low
-          bandwidth links.</p>
+          Beyond basic scalar telemetry, OMEGA's binary mesh protocol reserves namespace and command slots for moving
+          complex spectral features — and eventually whole ML models — across ultra-low-bandwidth links. These are
+          forward-compatible protocol provisions (Phases 3 &amp; 4): defined in the codec, not yet running on edge
+          hardware.</p>
 
         <div class="grid-2" style="margin-bottom: 2rem;">
           <div class="panel" style="padding: 1.5rem;">
-            <span class="status-label status-implemented">Phase 3: FFT Bin Codec</span>
-            <h3 style="font-size: 1.2rem;">Spectral Feature Bags</h3>
-            <p style="font-size: 0.85rem;">Instead of attempting to stream raw acoustic audio or high-frequency
-              vibration data over a 250bps LoRa link (which is impossible), the edge nodes perform local Fast Fourier
-              Transforms (FFT). The mesh protocol compresses these frequency bins into a highly optimized
-              <code>DERIVED-namespace</code> binary payload, transmitting only the critical spectral peaks to the shore
-              gateway.</p>
+            <span class="status-label" style="background: rgba(154,162,177,0.15); color: var(--ink-soft);">Phase 3 — Designed</span>
+            <h3 style="font-size: 1.2rem;">FFT Spectral Feature Bags</h3>
+            <p style="font-size: 0.85rem;">Streaming raw acoustic or high-frequency vibration data over a 250bps LoRa
+              link is impossible, so the protocol reserves a <code>DERIVED-namespace</code> TLV for on-edge spectral
+              features: a node would run a local FFT and transmit only the critical frequency-bin peaks. The TLV slot is
+              reserved in the codec; the on-edge FFT compute is a forward-compatible hook, not yet wired to a sensor.</p>
           </div>
           <div class="panel" style="padding: 1.5rem;">
-            <span class="status-label status-implemented">Phase 4: OTA ML Protocol</span>
+            <span class="status-label" style="background: rgba(154,162,177,0.15); color: var(--ink-soft);">Phase 4 — Designed</span>
             <h3 style="font-size: 1.2rem;">Over-The-Air Edge AI</h3>
-            <p style="font-size: 0.85rem;">When the shore gateway needs to update an edge node's classification model
-              (e.g., detecting a new acoustic signature), it fragments a quantized TensorFlow Lite Micro model into
-              small TLV chunks. The mesh automatically reconstructs the model on the remote node without requiring
-              physical retrieval of the buoy.</p>
+            <p style="font-size: 0.85rem;">To update an edge node's classification model without retrieving the buoy, the
+              codec can fragment a quantized TensorFlow Lite Micro model into small TLV chunks for OTA transmission. The
+              chunk-encoder exists in <code>mesh_binary_codec.py</code> (below); on-node reconstruction and activation
+              are designed but not yet wired in firmware.</p>
           </div>
         </div>
 
@@ -635,34 +640,36 @@ build_flags =
 
 <section class="section">
         <div class="section-content">
-          <span class="section-kicker">Acoustic Physics</span>
+          <span class="section-kicker">Acoustic Physics (Experimental)</span>
           <h2>Snell's Law & Refraction.</h2>
-          <p>Standard radio frequencies cannot penetrate water. To communicate with Remotely Operated Vehicles (ROVs)
-            and benthic sensors, the surface fleet utilizes acoustic modems broadcasting the NATO-standard JANUS
-            protocol (STANAG 4748).</p>
-          <p><strong>Acoustic Modulation:</strong> Sound waves travel at ~1,500 m/s underwater, subject to massive
-            multi-path reflections and thermocline refraction. The JANUS standard uses robust Frequency-Shift Keying
-            (FSK) to encode binary data into audio chirps. The Python <code>janus_bridge.py</code> module listens for
-            the distinct 86-bit JANUS wakeup tone, synchronizes the Phase-Locked Loop (PLL), and decodes the subsequent
-            data blocks into standard JSON envelopes that can be bridged onto the LoRa mesh.</p>
+          <p>Standard radio frequencies cannot penetrate water. The NATO-standard JANUS protocol (STANAG 4748) is the
+            intended way to reach Remotely Operated Vehicles (ROVs) and benthic sensors. The physics below is why
+            acoustic links are hard; the OMEGA side of it is currently a message format and a software bridge, not an
+            on-device modem.</p>
+          <p><strong>Where OMEGA actually sits:</strong> sound travels at ~1,500 m/s underwater, subject to heavy
+            multi-path and thermocline refraction, and JANUS uses Frequency-Shift Keying (FSK) to carry data over that
+            channel. OMEGA does <em>not</em> do the FFT wakeup detection, PLL synchronization, or FSK demodulation
+            itself. Instead, <code>janus_bridge.py</code> defines the JANUS message format and forwards JANUS JSON to
+            and from an <strong>external acoustic / SDR modem</strong>, which owns the real DSP. The bridge's job is
+            translating those messages onto the LoRa mesh — there is no on-device signal processing.</p>
 
         </div>
         <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span
             class="panel-kicker">gateway/janus_bridge.py</span>
-          <pre><code class="language-python">async def handle_acoustic_fsk_stream(audio_buffer: bytes):
-    # Detect and decode STANAG 4748 JANUS acoustic frames.
-    # 1. Execute Fast Fourier Transform (FFT) to detect wakeup tone
-    power_spectrum = np.abs(np.fft.rfft(audio_buffer))
-    wakeup_idx = np.argmax(power_spectrum)
-    
-    if is_janus_frequency(wakeup_idx):
-        logger.info("Acoustic Wakeup Detected. Synchronizing PLL...")
-        
-        # 2. Demodulate the FSK payload
-        binary_stream = _demodulate_fsk(audio_buffer)
-        
-        # 3. Bridge the acoustic data to the shore API
-        await inject_telemetry_to_mesh(binary_stream)</code></pre>
+          <pre><code class="language-python">async def forward_janus_message(janus_json: dict):
+    # The bridge does NOT demodulate audio. The external acoustic/SDR
+    # modem owns the FFT wakeup, PLL sync, and FSK demod; it hands us
+    # decoded JANUS messages as JSON, and we hand it JSON to transmit.
+
+    # 1. Validate the JANUS message envelope
+    if not is_valid_janus_envelope(janus_json):
+        return
+
+    # 2. Translate the JANUS payload into an OMEGA Envelope frame
+    frame = janus_to_envelope(janus_json)
+
+    # 3. Bridge it onto the LoRa mesh
+    await inject_telemetry_to_mesh(frame)</code></pre>
         </div>
       </section>
 

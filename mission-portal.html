@@ -69,7 +69,7 @@
   <section class="hero wrap">
     <span class="eyebrow">Presentation Layer</span>
     <h1>Mission Portal & AI.</h1>
-    <p>The ~52,500 LOC Vanilla JS 3D digital twin and the offline-capable Honu AI.</p>
+    <p>The ~52,500 LOC Vanilla JS 3D digital twin and Honu, a read-only AI that runs fully offline on a local Ollama model or falls back to cloud (Anthropic).</p>
     <div class="hero-actions">
 <a class="btn btn-secondary" href="https://jonathancapone.art" target="_blank">Art Portfolio</a>
     </div>
@@ -84,6 +84,11 @@
           <div class="panel" style="margin-top: 2rem; border-left: 4px solid var(--accent);">
             <h2 style="margin: 0 0 0.5rem; color: #fff; font-family: var(--font-serif); font-size: 1.65rem;">Engineering Reality: The Fiji &rarr; Hawaii Dateline Bug</h2>
             <p style="font-size: 0.9rem; color: var(--ink-soft); margin: 0;">The global A* ocean router originally routed a 2,700-nm Pacific crossing 13,000 nm around the world. The fix required extending the cost landscape to a wrapped longitude space (replicating cells at L ± 360°) so the geodesically short path across the antimeridian became reachable. <a href="engineering-journal.html" style="color: var(--accent);">Read the full journal &rarr;</a></p>
+          </div>
+
+          <div class="panel" style="margin-top: 2rem; border-left: 4px solid var(--accent);">
+            <h2 style="margin: 0 0 0.5rem; color: #fff; font-family: var(--font-serif); font-size: 1.65rem;">Engineering Reality: What Is and Isn't Done</h2>
+            <p style="font-size: 0.9rem; color: var(--ink-soft); margin: 0;">Honest status, not a pitch. The DTO v3 3D twin is <strong>partially implemented and in-flight</strong>, not finished. Honu is read-only and analytical, but it now also runs an <strong>autonomous daily anomaly patrol</strong> that proactively briefs the operator on spatial outliers rather than waiting to be asked. Overall self-assessed readiness sits at <strong>63 / 100</strong>.</p>
           </div>
 
           <section class="section">
@@ -140,8 +145,8 @@
           </div>
           <div class="panel" style="padding: 1.5rem;">
             <span class="status-label status-implemented">/plan</span>
-            <h3 style="font-size: 1.2rem;">Predictive Simulation</h3>
-            <p style="font-size: 0.85rem;">A Particle Dispersion Engine simulating spills and passive drifters using 7-day current forecasts, alongside a kinematic hazard engine cross-referencing hardware capabilities against AIS traffic and GEBCO bathymetry.</p>
+            <h3 style="font-size: 1.2rem;">Routing & Hazards</h3>
+            <p style="font-size: 0.85rem;">A global ocean A* wayfinding router that costs paths by significant wave height and treats GEBCO depth and seamarks as hazards, plus live AIS vessel ingestion shown on the map. <em>Planned:</em> a Lagrangian drift/spill simulator (not yet built; the AIS feed is not wired to any dispersion sim).</p>
           </div>
           <div class="panel" style="padding: 1.5rem;">
             <span class="status-label status-implemented">/analyze</span>
@@ -159,6 +164,39 @@
             <span class="status-label status-implemented">/public</span>
             <h3 style="font-size: 1.2rem;">Public Federation</h3>
             <p style="font-size: 0.85rem;">A read-only mode with command and routing tools disabled. Designed as a safe URL state for classrooms and researchers to view live telemetry and interact with 3D environmental visualizations.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-block" style="background: rgba(0,0,0,0.4);">
+        <span class="section-kicker">Collaboration & Science</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Federation, Journals & Scoring.</h2>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">
+          Beyond live observation, the portal carries the machinery for working with peers, recording the research process, and grading a mission after the fact.
+        </p>
+
+        <div class="grid-2" style="margin-bottom: 2rem;">
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">Federation Layer</span>
+            <h3 style="font-size: 1.2rem;">Peers on the Map</h3>
+            <p style="font-size: 0.85rem;">The Observe map can render the federation directory—this gateway plus announced peers—as a toggleable layer. Markers are color-coded teal for self, blue for an active peer, and gray for a revoked peer, with tooltips exposing the operator, region, and policy for each entry.</p>
+          </div>
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">Lab Journal</span>
+            <h3 style="font-size: 1.2rem;">Campaigns & Entries</h3>
+            <p style="font-size: 0.85rem;">Research campaigns are first-class objects with a lifecycle of planned, active, and done. Journal entries are typed as note, hypothesis, observation, or decision; hypotheses track their own state of open, supported, or refuted. This structured record is the substrate for DOI-ready dataset packaging.</p>
+          </div>
+        </div>
+        <div class="grid-2" style="margin-bottom: 2rem;">
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">Mission Scoring</span>
+            <h3 style="font-size: 1.2rem;">Plan vs. Actual</h3>
+            <p style="font-size: 0.85rem;">After a transit, the portal scores the sailed track against the planned route: cross-track error statistics (mean, max, and p90), planned versus actual path length, and the gap between the planned destination and where the platform actually ended up.</p>
+          </div>
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">Sensor Annotations</span>
+            <h3 style="font-size: 1.2rem;">Notes Pinned to Data</h3>
+            <p style="font-size: 0.85rem;">Operators can pin persistent notes to a single point or a range on a series—for example "sensor knocked" or "calibration." These annotations travel with the data and render directly on the charts, so context is never lost between sessions.</p>
           </div>
         </div>
       </section>
@@ -207,9 +245,9 @@ export interface DigitalTwinCommand {
             <div class="section-content">
               <span class="section-kicker">Mathematical Signal Processing</span>
               <h2>QARTOD Quality Control Math.</h2>
-              <p>The <code>gateway/analytics.py</code> engine is the mathematical workhorse of the shore system. It constantly crunches millions of historical SQLite telemetry points using strict QARTOD (Quality Assurance / Quality Control of Real-Time Oceanographic Data) standards.</p>
-              <p><strong>Spike Detection via First Derivative:</strong> When a hydrophone passes a thermocline, it might record a massive, legitimate spike in temperature (an ocean front). Standard deviation checks would flag this as an error. OMEGA uses the mathematical first derivative test: <code>|V2 - V1| - |V3 - V1| / 2 > Spike_Threshold</code>. This equation proves whether a sudden spike mathematically returned to the baseline (a sensor glitch) or established a new baseline (a legitimate oceanographic event).</p>
-              <p><strong>Gross Range Processing:</strong> For localized anomalies, the numpy arrays execute vectorized operations using the Median Absolute Deviation (MAD): <code>MAD = median(|Xi - median(X)|)</code>. Because standard averages are destroyed by massive outliers, the MAD provides an unbreakable center. If a value exceeds <code>MAD * 1.4826 * 3</code>, it is flagged as suspect. At 6 sigmas, it is stripped from the DOM.</p>
+              <p>The <code>gateway/qc.py</code> engine is the mathematical workhorse of the shore system, with the spatial buddy check living in <code>gateway/buddy_check.py</code>. It crunches historical SQLite telemetry points using the QARTOD (Quality Assurance / Quality Control of Real-Time Oceanographic Data) framework. The equations below are illustrative of the approach rather than verbatim transcriptions of the code.</p>
+              <p><strong>Spike Detection via First Derivative:</strong> When a hydrophone passes a thermocline, it might record a massive, legitimate spike in temperature (an ocean front). Standard deviation checks would flag this as an error. OMEGA uses a first-derivative spike test of the form <code>|V2 - V1| - |V3 - V1| / 2 > Spike_Threshold</code> to distinguish a sudden spike that returned to the baseline (a likely sensor glitch) from one that established a new baseline (a legitimate oceanographic event).</p>
+              <p><strong>Gross Range Processing:</strong> For localized anomalies, the numpy arrays execute vectorized operations using the Median Absolute Deviation (MAD): <code>MAD = median(|Xi - median(X)|)</code>. Because standard averages are destroyed by massive outliers, the MAD provides a robust center. A value beyond <code>MAD * 1.4826 * 3</code> is flagged as suspect; beyond 6 sigma it is flagged as a hard failure.</p>
             </div>
             <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">gateway/qc.py</span><pre><code class="language-python">def _threshold_bundle(values: list[float]) -> dict[str, float] | None:
     # Calculate QARTOD compliant statistical bounds
@@ -225,37 +263,19 @@ export interface DigitalTwinCommand {
     }</code></pre></div>
 
             <div class="section-visual" style="max-height: 800px; overflow-y: auto; margin-top: 2rem;">
-              <span class="panel-kicker">gateway/analytics_merge.py</span>
-              <pre><code class="language-python">import pandas as pd
-import sqlite3
+              <span class="panel-kicker">gateway/buddy_check.py</span>
+              <pre><code class="language-python">def buddy_check(target, neighbors, *, max_diff: float):
+    # Spatial QARTOD check: a reading is only trusted if it
+    # agrees with its geographic "buddies" within max_diff.
+    # An isolated outlier that disagrees with every nearby
+    # station is flagged as suspect rather than accepted.
+    if not neighbors:
+        return "unevaluated"
 
-def build_multivariate_dataset(db_path: str):
-    """
-    Oceanographic sensors sample at different frequencies. 
-    Temperatures arrive every 15m; Salinity arrives every 1h.
-    We must use Pandas merge_asof() to align time-series backward 
-    in time to the nearest exact sample, avoiding future-data leakage.
-    """
-    conn = sqlite3.connect(db_path)
-    
-    # Load raw telemetry into DataFrames
-    df_temp = pd.read_sql("SELECT timestamp, temperature FROM telemetry", conn)
-    df_salt = pd.read_sql("SELECT timestamp, salinity FROM telemetry", conn)
-    
-    # Sort by time required for asof merge
-    df_temp.sort_values("timestamp", inplace=True)
-    df_salt.sort_values("timestamp", inplace=True)
-    
-    # Merge Salinity to Temperature, looking backward up to 2 hours
-    df_merged = pd.merge_asof(
-        df_temp, 
-        df_salt, 
-        on="timestamp", 
-        direction="backward",
-        tolerance=pd.Timedelta("2h")
-    )
-    
-    return df_merged.dropna()</code></pre>
+    deltas = [abs(target.value - n.value) for n in neighbors]
+    if min(deltas) > max_diff:
+        return "suspect"
+    return "pass"</code></pre>
             </div>
           </section>
     
@@ -289,25 +309,25 @@ def build_multivariate_dataset(db_path: str):
           </section>
     
           <section class="section section-block" style="background: rgba(0,0,0,0.4);">
-            <span class="section-kicker">Predictive Signal Processing</span>
-            <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Fast Fourier Transforms (FFT).</h2>
-            <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">Wait until a biofouling colony completely encases a hydrophone, and the acoustic mission is already lost. OMEGA utilizes the mathematical Fast Fourier Transform algorithm <code>X_k = Σ x_n e^(-i 2π k n / N)</code> to detect microscopic biological growth weeks before the hardware is compromised.</p>
-            
+            <span class="section-kicker">Validated Spectral Analysis</span>
+            <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Welch Power Spectrum: The S2 Atmospheric Tide.</h2>
+            <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">A spectral analysis is only worth showing if it resolves a known physical signal. OMEGA runs a Welch power-spectrum estimate over its own barometer's pressure time-series and recovers the <strong>S2 semidiurnal atmospheric tide</strong> at a period of roughly <strong>11.99 hours</strong>—a real, textbook-predictable oscillation in surface pressure. Resolving it from the gateway's own data validates that the spectral pipeline is wired correctly end to end.</p>
+
             <div class="grid-3" style="margin-bottom: 2rem;">
               <div class="panel" style="padding: 1.5rem;">
-                <span class="status-label status-implemented">Hanning Window</span>
-                <h3 style="font-size: 1.2rem;">Signal Preparation</h3>
-                <p style="font-size: 0.85rem;">The edge node records micro-acoustic vibration arrays. Before the FFT, the data is mathematically multiplied against a Hanning Window function <code>w(n) = 0.5 - 0.5*cos(2πn/N)</code> to force the ends of the time-series to zero, eliminating spectral leakage.</p>
+                <span class="status-label status-implemented">Welch Method</span>
+                <h3 style="font-size: 1.2rem;">Segment Averaging</h3>
+                <p style="font-size: 0.85rem;">The barometer series is split into overlapping windowed segments and the per-segment periodograms are averaged. This trades a little frequency resolution for a far more stable spectral estimate than a single raw FFT of the whole record.</p>
               </div>
               <div class="panel" style="padding: 1.5rem;">
-                <span class="status-label status-implemented">Spectral Shift</span>
-                <h3 style="font-size: 1.2rem;">Time to Frequency</h3>
-                <p style="font-size: 0.85rem;">The FFT algorithm converts the time-domain reflections into a frequency-domain histogram. It calculates the exact amplitude of every constituent sine wave making up the complex acoustic pulse.</p>
+                <span class="status-label status-implemented">Time to Frequency</span>
+                <h3 style="font-size: 1.2rem;">Period Recovery</h3>
+                <p style="font-size: 0.85rem;">The estimate converts the time-domain pressure record into power-versus-frequency, where the dominant peaks correspond to physical periods (in hours) rather than abstract bin indices.</p>
               </div>
               <div class="panel" style="padding: 1.5rem;">
-                <span class="status-label status-implemented">Biofouling Detection</span>
-                <h3 style="font-size: 1.2rem;">Harmonic Dampening</h3>
-                <p style="font-size: 0.85rem;">A clean hydrophone rings precisely at 11.5kHz. If calcified barnacles grow on the transducer face, the mass mathematically shifts the harmonic resonance, creating a dampening curve that triggers a maintenance alert.</p>
+                <span class="status-label status-implemented">S2 Tide</span>
+                <h3 style="font-size: 1.2rem;">~11.99 h Confirmation</h3>
+                <p style="font-size: 0.85rem;">A clear peak lands near the 12-hour mark, matching the S2 semidiurnal atmospheric tide. Because the period is known independently, recovering it is a ground-truth check on the analysis rather than a discovered claim.</p>
               </div>
             </div>
           </section>
@@ -315,7 +335,7 @@ def build_multivariate_dataset(db_path: str):
 <section class="section section-block" style="background: rgba(0,0,0,0.4);">
             <span class="section-kicker">AI Orchestration</span>
             <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">The ~100-Tool Action Registry.</h2>
-            <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">The <code>gateway/copilot.py</code> module is a massive 240KB orchestration loop. Small local LLMs (like Qwen2.5 7B) cannot reliably pick the correct tool if given a dump of ~100 different tools. Honu solves this by mathematically filtering tools based on 13 strict Intent Groups.</p>
+            <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">The <code>gateway/copilot.py</code> module is a roughly ~265 KB orchestration loop. Small local LLMs (like Qwen2.5 7B) cannot reliably pick the correct tool if given a dump of ~100 different tools. Honu solves this by filtering the available tools down based on 16 Intent Groups.</p>
             
             <div class="grid-3" style="margin-bottom: 2rem;">
               <div class="panel" style="padding: 1.5rem;">
@@ -367,7 +387,7 @@ def build_multivariate_dataset(db_path: str):
             <div class="section-content">
               <span class="section-kicker">Safety Constraints</span>
               <h2>Absolute Read-Only Execution.</h2>
-              <p>AI hallucinations are dangerous, especially when dealing with physical hardware on a multimillion-dollar edge node. The Honu prompt engine enforces absolute read-only constraints. It is physically impossible for the LLM to execute a mutating API call or alter remote fleet parameters.</p>
+              <p>AI hallucinations are dangerous, especially when dealing with physical hardware on a multimillion-dollar edge node. Honu is strictly read-only and analytical, and it runs fully offline on a local Ollama model or falls back to cloud (Anthropic). The prompt engine enforces absolute read-only constraints: it is physically impossible for the LLM to execute a mutating API call or alter remote fleet parameters.</p>
 <p><strong>The Physics of Confinement:</strong> Unlike standard chatbot implementations that just "ask" the AI not to break things, OMEGA physically isolates the AI execution environment. The ~100-tool registry exposed to the LLM explicitly does not contain functions that perform POST or PUT requests to the SQLite database. The AI is structurally blind to mutation endpoints.</p>
 <p><strong>Execution:</strong> The system prompt rigorously reinforces this architectural boundary. If the LLM attempts to hallucinate a command (e.g. `execute_format_nvram`), the orchestration loop detects the unregistered tool attempt and mathematically drops the execution thread, returning an explicit safety violation to the operator.</p>
               
@@ -386,7 +406,7 @@ def build_multivariate_dataset(db_path: str):
               <span class="section-kicker">Language Processing</span>
               <h2>The Query Preprocessor.</h2>
               <p>When an operator types a natural language request, feeding it directly into a small parameter LLM often results in incorrect tool selection or hallucinated coordinates. OMEGA intercepts all queries using a dedicated <code>_preprocess_query</code> function.</p>
-              <p><strong>Pattern Recognition:</strong> The preprocessor scans the raw string for over 20 oceanographic metric synonyms (e.g., mapping "SST" or "water temp" to <code>sea-surface-temperature</code>). It simultaneously cross-references a library of predefined bounding boxes (e.g., <code>_GEO_BOXES["east coast"]</code>). To prevent "east coast" from accidentally triggering a generic "us" bounding box, the Python engine mathematically sorts the keys by string length descending.</p>
+              <p><strong>Pattern Recognition:</strong> The preprocessor scans the raw string for 18 oceanographic metric synonyms (e.g., mapping "SST" or "water temp" to <code>sea-surface-temperature</code>). It simultaneously cross-references a library of predefined bounding boxes (e.g., <code>_GEO_BOXES["east coast"]</code>). To prevent "east coast" from accidentally triggering a generic "us" bounding box, the Python engine mathematically sorts the keys by string length descending.</p>
               <p><strong>System Directives:</strong> Because the frontend concatenates previous chat turns into a single payload, the preprocessor strictly trims the payload to the first paragraph (<code>\n\n</code>). If a match is found, the engine invisibly injects a rigid system directive into the conversation history, mathematically forcing the LLM to use the correct tool and coordinates, eliminating hallucination entirely.</p>
             </div>
             <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">gateway/copilot.py</span><pre><code class="language-python">def _preprocess_query(history: list[dict[str, Any]]) -> list[dict[str, Any]]:
@@ -472,8 +492,8 @@ def build_multivariate_dataset(db_path: str):
               </div>
               <div class="panel" style="padding: 1.5rem;">
                 <span class="status-label status-implemented">gateway/bathymetry_grid.py</span>
-                <h3 style="font-size: 1.2rem;">ETOPO Fallback Grid</h3>
-                <p style="font-size: 0.85rem;">Because deployed sensors only report bathymetry where they sit, an open-ocean route has no depth context by default. OMEGA bundles a coarse global elevation grid (0.25 degrees, sourced from NOAA's ETOPO) to fill the gaps between real soundings.</p>
+                <h3 style="font-size: 1.2rem;">GEBCO Fallback Grid</h3>
+                <p style="font-size: 0.85rem;">Because deployed sensors only report bathymetry where they sit, an open-ocean route has no depth context by default. OMEGA bundles a coarse global elevation grid (0.25 degrees, sourced from GEBCO) to fill the gaps between real soundings, with bilinear sampling and a nearest-cell fallback.</p>
                 <pre><code class="language-python" style="font-size: 0.75rem;">def seafloor_depth_m(lat: float, lon: float) -> float | None:
     # Bilinear sampling of the 0.25-degree grid
     fi = (lat - _LAT0) / GRID_RESOLUTION_DEG

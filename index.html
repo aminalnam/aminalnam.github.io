@@ -129,7 +129,7 @@
           <a href="architecture.html" class="panel" style="padding: 2rem; display: block; text-decoration: none;">
             <span class="status-label status-implemented">Flagship</span>
             <h3 style="font-size: 1.6rem; color: #fff; margin-top: 1rem; margin-bottom: 0.5rem;">OMEGA</h3>
-            <p style="font-size: 0.95rem; color: var(--ink-soft); margin-top: 0.5rem;">A mixed-bearer environmental sensor, maritime operations, and field gateway platform. Built over ~3 weeks (105k LOC Python, 52k LOC JS).</p>
+            <p style="font-size: 0.95rem; color: var(--ink-soft); margin-top: 0.5rem;">An open, hardware-agnostic ocean-sensing mesh: a signed (Ed25519) observation protocol, a FastAPI gateway, and a science workbench validated against NOAA (r=0.965 to 0.971). Now an open multi-operator federation (zero-config Ed25519 join + data-policy directory). ~3 weeks, 762 commits, 105k LOC Python + 52k LOC JS.</p>
           </a>
 
           <a href="beta-overview.html" class="panel" style="padding: 2rem; display: block; text-decoration: none;">
@@ -141,19 +141,19 @@
           <a href="cosnfx.html" class="panel" style="padding: 2rem; display: block; text-decoration: none;">
             <span class="status-label status-implemented">Wear OS / Audio</span>
             <h3 style="font-size: 1.6rem; color: #fff; margin-top: 1rem; margin-bottom: 0.5rem;">CosNFX</h3>
-            <p style="font-size: 0.95rem; color: var(--ink-soft); margin-top: 0.5rem;">A Wear OS IMU-driven kinetic synthesizer — arm gestures trigger ~1.4 ms sound synthesis and reactive visual FX, synced across watch and phone.</p>
+            <p style="font-size: 0.95rem; color: var(--ink-soft); margin-top: 0.5rem;">A standalone Wear OS app that fires motion-triggered hero SFX from your wrist — measured-axis gesture detection, gesture calibration, themed identities, and external prop (lights/devices) control.</p>
           </a>
 
           <a href="weather-globe.html" class="panel" style="padding: 2rem; display: block; text-decoration: none;">
             <span class="status-label status-implemented">Web App</span>
             <h3 style="font-size: 1.6rem; color: #fff; margin-top: 1rem; margin-bottom: 0.5rem;">Weather Globe</h3>
-            <p style="font-size: 0.95rem; color: var(--ink-soft); margin-top: 0.5rem;">A real-time weather visualization engine built with Claude.</p>
+            <p style="font-size: 0.95rem; color: var(--ink-soft); margin-top: 0.5rem;">A giftable ESP32-S3 desk globe on a 1.75-inch round AMOLED: live Earth with NASA VIIRS satellite clouds, a real day/night terminator, and Black Marble city lights; ten selectable solar-system bodies and an optional time + weather card — one board, no app, no accounts, no API keys.</p>
           </a>
 
           <a href="visual-timer.html" class="panel" style="padding: 2rem; display: block; text-decoration: none;">
             <span class="status-label status-implemented">Utility App</span>
             <h3 style="font-size: 1.6rem; color: #fff; margin-top: 1rem; margin-bottom: 0.5rem;">Visual Timer</h3>
-            <p style="font-size: 0.95rem; color: var(--ink-soft); margin-top: 0.5rem;">A specialized time-management application developed with Claude.</p>
+            <p style="font-size: 0.95rem; color: var(--ink-soft); margin-top: 0.5rem;">An ESP32-S3 e-paper countdown timer with 101 hand-built animated story-scene faces (a kite climbing, a boss fight, a wrecking ball) — each scene IS the clock, hitting its climax exactly at zero; 61 faces have a bespoke time's-up finale, and the whole library was quality-gated by an autonomous 101-agent audit.</p>
           </a>
 
           <a href="thruster.html" class="panel" style="padding: 2rem; display: block; text-decoration: none;">
@@ -186,7 +186,7 @@
           <a href="architecture.html" class="panel bento-item beta-panel-hover glitch-hover" style="grid-column: 1 / -1;">
             <div class="bento-icon">⚙️</div>
             <h3 class="bento-title">Zero-Install Smoke Gate</h3>
-            <p class="bento-desc">A relentless evaluation engine that spins up a throwaway SQLite database in `/tmp`, continuously generating highly complex synthetic payload injections to stress-test the OMEGA core without polluting production.</p>
+            <p class="bento-desc">A zero-install CI canary (Node/Playwright) that hits the live gateway read-only and asserts ~31/31 critical pages render and the map and overlays load — a cheap regression gate proving the portal loads without crashing.</p>
           </a>
 
 
@@ -201,7 +201,7 @@
           <div style="display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 0.5rem;">
             <h3 class="bento-title" style="color: #ff3b30; margin: 0;">13-Agent Readiness Audit (63/100)</h3>
           </div>
-          <p class="bento-desc" style="color: var(--ink-soft); max-width: 800px; margin-bottom: 0;">Instead of marketing "100% complete", we built a 13-agent AI committee to aggressively review the deployment logs against adversarial vectors. It scored the hardware-agnostic stack an honest <strong>63/100</strong> (protocol 76, gateway 68, firmware 65, bearers 45). It dictated the remaining firmware blockers, proving a willingness to document an honest gap analysis rather than a green dashboard.</p>
+          <p class="bento-desc" style="color: var(--ink-soft); max-width: 800px; margin-bottom: 0;">Instead of marketing "100% complete", we built a 13-agent AI committee to aggressively review the deployment logs against adversarial vectors. It scored the hardware-agnostic stack an honest <strong>63/100</strong> (protocol 76, library 68, gateway 68, firmware 65, bearers 45, field-toolchain 68). It dictated the remaining firmware blockers, proving a willingness to document an honest gap analysis rather than a green dashboard.</p>
         </div>
       </div>
 

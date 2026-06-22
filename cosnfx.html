@@ -6,14 +6,14 @@
   <meta content="width=device-width, initial-scale=1" name="viewport" />
   <title>Jonathan Capone — CosNFX</title>
 
-  <meta name="description" content="CosNFX — a Wear OS IMU-driven kinetic synthesizer for stage magic with ~1.4 ms audio latency and a master/drone architecture." />
+  <meta name="description" content="CosNFX — a standalone Wear OS app that fires motion-triggered hero sound effects from your wrist: measured-axis gesture detection, gesture calibration, themed identities, and external prop (lights/devices) control." />
   <meta property="og:title" content="Jonathan Capone — CosNFX" />
-  <meta property="og:description" content="CosNFX — a Wear OS IMU-driven kinetic synthesizer for stage magic with ~1.4 ms audio latency and a master/drone architecture." />
+  <meta property="og:description" content="CosNFX — a standalone Wear OS app that fires motion-triggered hero sound effects from your wrist: measured-axis gesture detection, gesture calibration, themed identities, and external prop (lights/devices) control." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://jonathancapone.com/cosnfx.html" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Jonathan Capone — CosNFX" />
-  <meta name="twitter:description" content="CosNFX — a Wear OS IMU-driven kinetic synthesizer for stage magic with ~1.4 ms audio latency and a master/drone architecture." />
+  <meta name="twitter:description" content="CosNFX — a standalone Wear OS app that fires motion-triggered hero sound effects from your wrist: measured-axis gesture detection, gesture calibration, themed identities, and external prop (lights/devices) control." />
 
   <link rel="icon"
     href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⌚</text></svg>">
@@ -68,7 +68,7 @@
   <section class="hero wrap">
     <span class="eyebrow">Wear OS & Audio Engineering</span>
     <h1>CosNFX.</h1>
-    <p>The engineering of a flawless hero prop. A Wear OS IMU-driven kinetic synthesizer with 1.4ms audio latency.</p>
+    <p>Motion-triggered hero SFX from your wrist — a standalone Wear OS app where natural gestures fire themed sounds and elemental energy bursts, tuned to how you actually move.</p>
     <div class="hero-actions">
         <a class="btn btn-secondary" href="https://jonathancapone.art" target="_blank">Art Portfolio</a>
     </div>
@@ -81,81 +81,95 @@
         <div class="section-content">
           <span class="section-kicker">Overview</span>
           <h2>Bring Your Character to Life.</h2>
-          <p>CosNFX is an app designed to bring your Cosplays, LARP characters, and Halloween costumes to life. It makes your costume interactive by using your physical arm movements to trigger sound effects—so when you throw a punch, cast a spell, or strike a pose, the audio perfectly matches your motion.</p>
-          <p>It gives you complete creative control to build your own character profile and upload your own sounds. You can create your own custom physical gestures and link them together to perform multipart combo moves that trigger epic sound sequences.</p>
-          <p>For a louder and more immersive experience, the companion phone software plays sound effects simultaneously with your watch. You can even interact with other CosNFX users and actually battle each other!</p>
+          <p>CosNFX brings cosplay, LARP, and stage-magic characters to life: natural arm movements — a punch, a wrist flick, an overhead raise — fire high-fidelity sound effects and elemental energy bursts straight from the wrist. It runs as a <strong>standalone Wear OS app</strong> (no phone required to perform), tested on a Galaxy Watch 7.</p>
+          <p>Each character is an <strong>identity</strong> with its own colour, sound kit, and energy field; swipe to switch between built-ins (Superhero, Cyborg, Sorcerer, Warrior, Netrunner, and Halloween Ghost / Reaper / Witch) or build your own. From a phone browser you assign gestures, upload your own <code>.wav</code>/<code>.mp3</code>, chain gestures into combos, and route audio — with no app to install on the phone.</p>
+          <p><span class="status-label status-implemented">Active beta</span> &nbsp; Kotlin + Jetpack Compose (Wear Material 3) · ~4,400 lines of Kotlin across 9 modules · <code>com.jdcap.cosnfx</code> v2.5.2.</p>
         </div>
       </section>
 
 
       <section class="section section-block" style="background: rgba(0,0,0,0.4);">
         <span class="section-kicker">At A Glance</span>
-        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Distributed Master/Drone Architecture</h2>
-        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">In professional stage magic, a sound effect that fires 50ms late ruins the immersion. CosNFX is an Android Wear OS application that transforms a smartwatch into a flawless sensory instrument, delivering instant acoustic and visual feedback with the same reliability as a physical drum.</p>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Watch Core, Phone Mission Control</h2>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">The watch is the impact core; the phone is the configuration surface and an optional second speaker. A single Android foreground service (<code>HeroService</code>) owns the audio engine, the sensors, and an embedded web server, so they survive the screen sleeping or the app backgrounding.</p>
 
         <div class="grid-3" style="margin-bottom: 2rem;">
           <div class="panel" style="padding: 1.5rem;">
-            <span class="status-label status-implemented">Sensors</span>
-            <h3 style="font-size: 1.2rem;">Watch Master</h3>
-            <p style="font-size: 0.85rem;">The tactical instrument on the wrist. Handles all aggressive motion detection, IMU state machines, and high-intensity synthesis.</p>
+            <span class="status-label status-implemented">Watch</span>
+            <h3 style="font-size: 1.2rem;">HeroService + HeroSynth</h3>
+            <p style="font-size: 0.85rem;">A foreground service hosts the self-healing <code>AudioTrack</code> engine, gravity/accel/gyro sensor fusion, and the measured-axis gesture detectors. The watch UI is one page: a split sun/moon core ringed by per-gesture elemental orbs.</p>
           </div>
           <div class="panel" style="padding: 1.5rem;">
-            <span class="status-label status-implemented">Networking</span>
-            <h3 style="font-size: 1.2rem;">Phone Hub</h3>
-            <p style="font-size: 0.85rem;">A Ktor Netty server (Port 8080) handling WebSockets for kinetic sync, the CSS-Color-Sync theme engine, and the multipart asset uploader.</p>
+            <span class="status-label status-implemented">Phone</span>
+            <h3 style="font-size: 1.2rem;">Mission Control (8 tabs)</h3>
+            <p style="font-size: 0.85rem;">The watch runs an embedded Ktor server on :8080; any phone browser on the same Wi-Fi opens an 8-tab panel — Gestures, Combos, Look, Combat, Library, Props, Calibrate, System — over REST + a WebSocket event stream. Nothing to install on the phone.</p>
           </div>
           <div class="panel" style="padding: 1.5rem;">
             <span class="status-label status-implemented">Visuals</span>
-            <h3 style="font-size: 1.2rem;">Vfx-Omni Engine</h3>
-            <p style="font-size: 0.85rem;">A lightweight graphics library of 20 mathematical visual archetypes rendered via custom Canvas-draw operations to prevent battery drain.</p>
+            <h3 style="font-size: 1.2rem;">AGSL GPU Energy Fields</h3>
+            <p style="font-size: 0.85rem;">Per-identity energy fields render on a GPU AGSL shader (with a Canvas fallback), plus audio-reactive elemental bursts per gesture — frame-throttled so they pause when the screen is off.</p>
           </div>
         </div>
-          <div class="panel" style="margin-top: 2rem; border-left: 4px solid var(--accent); grid-column: 1 / -1;">
-            <h3 style="margin: 0 0 0.5rem; color: #fff;">Engineering Reality: The "Ignition Twist" Interrupt</h3>
-            <p style="font-size: 0.9rem; color: var(--ink-soft); margin: 0;">Performers cannot tap a tiny smartwatch screen in the middle of a stage sequence. To solve this, the kinetic engine includes a global system interrupt: a sharp wrist flick (<code>abs(liveGyroY) > 22.0f</code>) instantly toggles the system between ARM and MUTE states without requiring visual interaction.</p>
-          </div>
-
       </section>
 
       <section class="section">
         <div class="section-content">
           <span class="section-kicker">Audio Engineering</span>
-          <h2>The Latency Wall.</h2>
-          <p>Standard Android audio routing has a round-trip latency of 40ms to 100ms. For a kinetic prop triggered by a physical wrist snap, this delay is completely unacceptable.</p>
-          <p>To break the latency wall, the system completely bypasses the standard high-level media players. The audio engine is written to stream raw mono PCM data directly into the hardware's <code>AudioTrack</code>. By aggressively optimizing the internal buffer down to just <strong>64 samples</strong>, the system achieves a hardware response time of <strong>~1.4ms</strong>. This guarantees that the sound of a "Laser Blast" erupts from the speaker at the precise micro-moment the user's wrist hits its maximum velocity peak.</p>
+          <h2>Low-Latency by Design.</h2>
+          <p>Standard Android media players add 40–100 ms of round-trip latency — unacceptable for a sound triggered by a physical wrist snap. CosNFX bypasses them and streams raw 16-bit PCM straight into a hardware <code>AudioTrack</code> on a <code>MAX_PRIORITY</code> thread, requesting <code>PERFORMANCE_MODE_LOW_LATENCY</code> (the fast HAL path, with a fallback build for devices that reject it).</p>
+          <p>The engine is <strong>self-healing</strong>: build, play, and render are wrapped in a retry loop that releases and rebuilds the track after a Bluetooth/audio-focus change (which used to throw uncaught and kill the process). Writes use 256-sample chunks (~6 ms — latency negligible, far fewer underruns). To save power the track pauses when idle, but that pause is <strong>arm-gated</strong>: it stays warm (~2.5 s) while armed so every gesture in a performance fires instantly, and pauses fast (250 ms) when disarmed.</p>
         </div>
       </section>
 
       <section class="section section-block" style="background: rgba(0,0,0,0.4); margin-top: 2rem;">
         <span class="section-kicker">Sensor Fusion</span>
-        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Solving the Ghost Trigger</h2>
-        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">Early prototypes relied solely on arm orientation, which resulted in "ghost triggers" every time the user gestured naturally while talking. The "Ironclad" Kinetic Engine was built to solve this via math.</p>
-        
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Measured-Axis Gesture Detection</h2>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">The hard problem is firing on a real gesture and never on natural conversation. The honest fix was to stop trusting the textbook: on this Galaxy Watch 7 the sensor axes aren't what the docs assume, so each gesture is keyed to the axis it actually drives — read from a live on-watch inspector.</p>
+
         <div class="grid-2" style="margin-bottom: 2rem;">
           <div class="panel" style="padding: 1.5rem;">
-            <span class="status-label status-implemented">Kinematics</span>
-            <h3 style="font-size: 1.2rem;">Angular Jerk</h3>
-            <p style="font-size: 0.85rem;">Instead of relying on basic gravity, the engine fuses the Gyroscope to detect <strong>Angular Velocity</strong> (threshold > 12.0f) and Linear Accelerometers to detect <strong>G-force Jerk</strong> (threshold > 25.0f) to isolate true physical strikes.</p>
+            <span class="status-label status-implemented">Measured axes</span>
+            <h3 style="font-size: 1.2rem;">One Axis Per Gesture</h3>
+            <p style="font-size: 0.85rem;"><strong>Gravity X</strong> is the arm up/down axis (gravity Y stays ~0 in every pose), gating the armed state and the overhead Raise. Wrist snaps (Underhand / Overhand / Come-here) read <strong>gyro X</strong>; the three thrust/translation moves each own a distinct accel axis — <strong>Hadouken = X, Wave = Y, Punch = Z</strong> — detected by which axis dominates, so they can't trip each other.</p>
           </div>
           <div class="panel" style="padding: 1.5rem;">
-            <span class="status-label status-implemented">State Machines</span>
-            <h3 style="font-size: 1.2rem;">3-Tier Posture Gate</h3>
-            <p style="font-size: 0.85rem;">While the arm is resting (Gravity Y > 8.2), the system locks out. Only when the arm is raised into a combat posture (Gravity Y < 4.0) does the high-frequency polling loop prime the tactical nodes to 100% opacity and listen for a strike.</p>
+            <span class="status-label status-implemented">Anti-cross-talk</span>
+            <h3 style="font-size: 1.2rem;">Reorientation Suppression</h3>
+            <p style="font-size: 0.85rem;">A fast change in the gravity vector (&Delta;gravity &gt; 1.6 — i.e. you're raising your arm) mutes the accel and come-here detectors for 400 ms, so raising your arm can't trip a thrust. All lanes share a 350 ms global cooldown: one gesture per motion.</p>
           </div>
         </div>
-          <div class="panel" style="margin-top: 2rem; border-left: 4px solid var(--accent); grid-column: 1 / -1;">
-            <h3 style="margin: 0 0 0.5rem; color: #fff;">Engineering Reality: The "Ignition Twist" Interrupt</h3>
-            <p style="font-size: 0.9rem; color: var(--ink-soft); margin: 0;">Performers cannot tap a tiny smartwatch screen in the middle of a stage sequence. To solve this, the kinetic engine includes a global system interrupt: a sharp wrist flick (<code>abs(liveGyroY) > 22.0f</code>) instantly toggles the system between ARM and MUTE states without requiring visual interaction.</p>
-          </div>
-
       </section>
 
       <section class="section">
         <div class="section-content">
-          <span class="section-kicker">Orchestration</span>
-          <h2>The Surround Synthesis Paradox.</h2>
-          <p>Wireless networks introduce unpredictable jitter. When attempting to trigger sounds simultaneously on both a phone and a watch, the phone will always react faster. Rather than fighting this fundamental law of physics, the system engineers it into a feature.</p>
-          <p><strong>Surround Synthesis</strong>: The phone instantly triggers a high-frequency "Ignition" transient sound. A split-second later, the watch delivers the deep "Core Impact" audio directly from the hand. The result is a cinematic 3D presence where power audibly sounds like it is "charging up" in the user's chest and "erupting" physically from their hand.</p>
+          <span class="section-kicker">Calibration</span>
+          <h2>Teach the Watch Your Motion.</h2>
+          <p>Fixed axes fit how the prop sits on <em>this</em> wrist and how <em>this</em> performer moves; a very different pose can drift. So calibration is built in: record a built-in impulse gesture a few times and the watch auto-aims that gesture's detector at the channel your motion actually drives — fitting detection to you instead of a hard-coded axis.</p>
+          <p>It's per-gesture (Calibrate / Redo), with Recalibrate-all and Reset-to-defaults, and it's an <strong>opt-in backup, never a regression</strong>: an uncalibrated gesture keeps its built-in detection unchanged, and an under-sampled capture is rejected rather than saved.</p>
+        </div>
+      </section>
+
+      <section class="section section-block" style="background: rgba(0,0,0,0.4); margin-top: 2rem;">
+        <span class="section-kicker">Props &amp; Output</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">From the Wrist to the Room</h2>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">A gesture doesn't have to stop at sound — it can also fire an external action and be routed across devices.</p>
+
+        <div class="grid-2" style="margin-bottom: 2rem;">
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">Props</span>
+            <h3 style="font-size: 1.2rem;">External Lights &amp; Devices</h3>
+            <p style="font-size: 0.85rem;">An opt-in per-gesture HTTP action (method + URL + body) fires alongside the sound — driving anything with a local web API: WLED strips, Philips Hue, Home Assistant (smoke machines, fans), DIY ESP32/Arduino, or IFTTT. Each row has a Test button. It's device-agnostic — you supply the URL — and scoped to the trusted LAN.</p>
+          </div>
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">Audio routing</span>
+            <h3 style="font-size: 1.2rem;">Per-Device Mix &amp; Combat Link</h3>
+            <p style="font-size: 0.85rem;">A watch/phone &times; main/support matrix sends the main sound to the phone speaker and the support layer to the watch — any mix, or silence either. An opt-in Combat Link relays strike / shield / damage events between paired devices for co-op or versus play.</p>
+          </div>
+        </div>
+
+        <div class="panel" style="margin-top: 2rem; border-left: 4px solid var(--accent);">
+          <h3 style="margin: 0 0 0.5rem; color: #fff;">Engineering Reality: Battery vs. Latency</h3>
+          <p style="font-size: 0.9rem; color: var(--ink-soft); margin: 0;">A performance prop has to stay instant without draining the watch mid-show. Sensors run full-rate only while armed and downshift when disarmed; the audio track stays warm while armed and pauses fast when not. The screen (kept on while armed) is the real drain — so the watch <strong>auto-disarms after ~4 minutes idle</strong> (any gesture resets it), letting the screen sleep and the watch fall to its idle floor. CosNFX is in active beta development.</p>
         </div>
       </section>
 
