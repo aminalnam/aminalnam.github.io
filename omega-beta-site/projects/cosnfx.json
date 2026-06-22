@@ -1,0 +1,3251 @@
+{
+  "action_tracker": {
+    "action_count": 49,
+    "actions": [
+      {
+        "action_id": "operating-plan-real-report-available",
+        "created_from": "deterministic",
+        "data_needed": "",
+        "evidence_needed": "A fresh matching proof report plus before/after metric comparison.",
+        "metric": "real_report_available",
+        "model": "",
+        "next_step": "Run the same scenario used by the comparable baseline. Capture report.json and import it into BETA. Check whether the target metric improved, stabilized, or regressed again. If it regresses again, profile the owning code path before adding new features.",
+        "owner_role": "Engineering",
+        "priority": "P0",
+        "project_key": "cosnfx",
+        "source": "operating-plan",
+        "source_label": "Deterministic operating plan",
+        "status": "active",
+        "success_metric": "accepted real report count",
+        "title": "Collect real evidence before optimizing",
+        "why": "The current imported reports are not accepted as real proof data, so progress and improvement claims would be misleading."
+      },
+      {
+        "action_id": "work-guidance-real-report-available",
+        "created_from": "deterministic",
+        "data_needed": "",
+        "evidence_needed": "accepted real report count",
+        "metric": "real_report_available",
+        "model": "",
+        "next_step": "Run a real bench, field, CI, or hardware validation and import its report.json into this project.",
+        "owner_role": "Project owner",
+        "priority": "P0",
+        "project_key": "cosnfx",
+        "source": "work-guidance",
+        "source_label": "Deterministic work guidance",
+        "status": "active",
+        "success_metric": "accepted real report count",
+        "title": "Collect real evidence before optimizing",
+        "why": "The current imported reports are not accepted as real proof data, so progress and improvement claims would be misleading."
+      },
+      {
+        "action_id": "operating-plan-ai-recommendation-follow-through",
+        "created_from": "deterministic",
+        "data_needed": "",
+        "evidence_needed": "A fresh matching proof report plus before/after metric comparison.",
+        "metric": "ai_recommendation_follow_through",
+        "model": "",
+        "next_step": "Run the same scenario used by the comparable baseline. Capture report.json and import it into BETA. Check whether the target metric improved, stabilized, or regressed again. If it regresses again, profile the owning code path before adding new features.",
+        "owner_role": "Engineering",
+        "priority": "P1",
+        "project_key": "cosnfx",
+        "source": "operating-plan",
+        "source_label": "Deterministic operating plan",
+        "status": "active",
+        "success_metric": "High-value AI recommendations have a decision, owner, and result metric.",
+        "title": "AI Recommendation Follow-Through",
+        "why": "AI advice should become tracked actions whose impact can be measured later."
+      },
+      {
+        "action_id": "work-guidance-ai-recommendation-follow-through",
+        "created_from": "deterministic",
+        "data_needed": "",
+        "evidence_needed": "High-value AI recommendations have a decision, owner, and result metric.",
+        "metric": "ai_recommendation_follow_through",
+        "model": "",
+        "next_step": "Record AI recommendations, mark which ones were tried, and connect them to metric movement.",
+        "owner_role": "Project owner",
+        "priority": "P1",
+        "project_key": "cosnfx",
+        "source": "work-guidance",
+        "source_label": "Deterministic work guidance",
+        "status": "active",
+        "success_metric": "High-value AI recommendations have a decision, owner, and result metric.",
+        "title": "AI Recommendation Follow-Through",
+        "why": "AI advice should become tracked actions whose impact can be measured later."
+      },
+      {
+        "action_id": "measurement-plan-ai-recommendation-follow-through",
+        "created_from": "deterministic",
+        "data_needed": "",
+        "evidence_needed": "High-value AI recommendations have a decision, owner, and result metric.",
+        "metric": "ai_recommendation_follow_through",
+        "model": "",
+        "next_step": "Record AI recommendations, mark which ones were tried, and connect them to metric movement.",
+        "owner_role": "AI/project manager",
+        "priority": "P1",
+        "project_key": "cosnfx",
+        "source": "measurement-plan",
+        "source_label": "Measurement plan",
+        "status": "active",
+        "success_metric": "High-value AI recommendations have a decision, owner, and result metric.",
+        "title": "AI Recommendation Follow-Through",
+        "why": "AI advice should become tracked actions whose impact can be measured later."
+      },
+      {
+        "action_id": "metric-backlog-ai-recommendation-follow-through",
+        "created_from": "deterministic",
+        "data_needed": "",
+        "evidence_needed": "High-value AI recommendations have a decision, owner, and result metric.",
+        "metric": "ai_recommendation_follow_through",
+        "model": "",
+        "next_step": "Add this metric to a real report, CI import, bench log, field note, or manual evidence record.",
+        "owner_role": "AI/project manager",
+        "priority": "P1",
+        "project_key": "cosnfx",
+        "source": "metric-backlog",
+        "source_label": "Manager metric backlog",
+        "status": "active",
+        "success_metric": "High-value AI recommendations have a decision, owner, and result metric.",
+        "title": "AI Recommendation Follow-Through",
+        "why": "This planned metric is not active yet."
+      },
+      {
+        "action_id": "data-source-evidence",
+        "created_from": "deterministic",
+        "data_needed": "",
+        "evidence_needed": "Repeat the same scenario after changes so every metric has a before/after comparison.",
+        "metric": "evidence",
+        "model": "",
+        "next_step": "Repeat the same scenario after changes so every metric has a before/after comparison.",
+        "owner_role": "Project manager",
+        "priority": "P1",
+        "project_key": "cosnfx",
+        "source": "data-source",
+        "source_label": "Missing data source",
+        "status": "active",
+        "success_metric": "source connected",
+        "title": "Connect Comparable Baseline",
+        "why": "A matching prior scenario separates real progress from one-off numbers."
+      },
+      {
+        "action_id": "data-source-evidence",
+        "created_from": "deterministic",
+        "data_needed": "",
+        "evidence_needed": "Replace quarantined reports with real evidence or mark real reports explicitly with metadata.data_authenticity=real.",
+        "metric": "evidence",
+        "model": "",
+        "next_step": "Replace quarantined reports with real evidence or mark real reports explicitly with metadata.data_authenticity=real.",
+        "owner_role": "Project manager",
+        "priority": "P1",
+        "project_key": "cosnfx",
+        "source": "data-source",
+        "source_label": "Missing data source",
+        "status": "active",
+        "success_metric": "source connected",
+        "title": "Connect Quarantined Demo Reports",
+        "why": "Synthetic, demo, smoke, fixture, and local proof reports stay visible for audit but are excluded from metrics."
+      },
+      {
+        "action_id": "data-source-evidence",
+        "created_from": "deterministic",
+        "data_needed": "",
+        "evidence_needed": "Import real bench, field, CI, hardware, or project proof reports with no demo/synthetic/local-proof markers.",
+        "metric": "evidence",
+        "model": "",
+        "next_step": "Import real bench, field, CI, hardware, or project proof reports with no demo/synthetic/local-proof markers.",
+        "owner_role": "Project manager",
+        "priority": "P1",
+        "project_key": "cosnfx",
+        "source": "data-source",
+        "source_label": "Missing data source",
+        "status": "active",
+        "success_metric": "source connected",
+        "title": "Connect Real Proof Reports",
+        "why": "Only accepted real run reports drive charts, regressions, findings, claims, and AI analysis."
+      },
+      {
+        "action_id": "data-source-evidence",
+        "created_from": "deterministic",
+        "data_needed": "",
+        "evidence_needed": "Run the same scenario several times before treating a change as proven.",
+        "metric": "evidence",
+        "model": "",
+        "next_step": "Run the same scenario several times before treating a change as proven.",
+        "owner_role": "Project manager",
+        "priority": "P1",
+        "project_key": "cosnfx",
+        "source": "data-source",
+        "source_label": "Missing data source",
+        "status": "active",
+        "success_metric": "source connected",
+        "title": "Connect Repeatability",
+        "why": "Multiple runs expose noise, flaky behavior, and repeated regressions."
+      },
+      {
+        "action_id": "data-source-evidence",
+        "created_from": "deterministic",
+        "data_needed": "",
+        "evidence_needed": "Run proof scenarios at 100, 500, and 1000+ observations and compare the curves.",
+        "metric": "evidence",
+        "model": "",
+        "next_step": "Run proof scenarios at 100, 500, and 1000+ observations and compare the curves.",
+        "owner_role": "Project manager",
+        "priority": "P1",
+        "project_key": "cosnfx",
+        "source": "data-source",
+        "source_label": "Missing data source",
+        "status": "active",
+        "success_metric": "source connected",
+        "title": "Connect Sample Scale",
+        "why": "Larger samples make performance, storage, and reliability claims harder to fake."
+      },
+      {
+        "action_id": "data-source-evidence",
+        "created_from": "deterministic",
+        "data_needed": "",
+        "evidence_needed": "Add at least one scale or field-like scenario beside the current coastal proof.",
+        "metric": "evidence",
+        "model": "",
+        "next_step": "Add at least one scale or field-like scenario beside the current coastal proof.",
+        "owner_role": "Project manager",
+        "priority": "P1",
+        "project_key": "cosnfx",
+        "source": "data-source",
+        "source_label": "Missing data source",
+        "status": "active",
+        "success_metric": "source connected",
+        "title": "Connect Scenario Diversity",
+        "why": "More scenarios reduce the risk of proving only one narrow demo path."
+      },
+      {
+        "action_id": "data-source-planning",
+        "created_from": "deterministic",
+        "data_needed": "",
+        "evidence_needed": "Register planned sources, then connect real files or folders as they become available.",
+        "metric": "planning",
+        "model": "",
+        "next_step": "Register planned sources, then connect real files or folders as they become available.",
+        "owner_role": "Project manager",
+        "priority": "P1",
+        "project_key": "cosnfx",
+        "source": "data-source",
+        "source_label": "Missing data source",
+        "status": "active",
+        "success_metric": "source connected",
+        "title": "Connect Source Connection Plan",
+        "why": "Source connectors define which project inputs BETA should expect for issues, CI, docs, bench, field, metrics, and AI sessions."
+      },
+      {
+        "action_id": "operating-plan-project-todo-count",
+        "created_from": "deterministic",
+        "data_needed": "",
+        "evidence_needed": "A fresh matching proof report plus before/after metric comparison.",
+        "metric": "project_todo_count",
+        "model": "",
+        "next_step": "Run the same scenario used by the comparable baseline. Capture report.json and import it into BETA. Check whether the target metric improved, stabilized, or regressed again. If it regresses again, profile the owning code path before adding new features.",
+        "owner_role": "Engineering",
+        "priority": "P1",
+        "project_key": "cosnfx",
+        "source": "operating-plan",
+        "source_label": "Deterministic operating plan",
+        "status": "active",
+        "success_metric": "at least three project todos with priority and status",
+        "title": "Create a real project todo list",
+        "why": "1 project(s) are tracked, but there are no persistent todos for planned work, blockers, or completion evidence."
+      },
+      {
+        "action_id": "work-guidance-project-todo-count",
+        "created_from": "deterministic",
+        "data_needed": "",
+        "evidence_needed": "at least three project todos with priority and status",
+        "metric": "project_todo_count",
+        "model": "",
+        "next_step": "Add the top three project todos: one current focus, one measurement/evidence item, and one blocker or risk item.",
+        "owner_role": "Project owner",
+        "priority": "P1",
+        "project_key": "cosnfx",
+        "source": "work-guidance",
+        "source_label": "Deterministic work guidance",
+        "status": "active",
+        "success_metric": "at least three project todos with priority and status",
+        "title": "Create a real project todo list",
+        "why": "1 project(s) are tracked, but there are no persistent todos for planned work, blockers, or completion evidence."
+      },
+      {
+        "action_id": "operating-plan-dashboard-render-success",
+        "created_from": "deterministic",
+        "data_needed": "",
+        "evidence_needed": "A fresh matching proof report plus before/after metric comparison.",
+        "metric": "dashboard_render_success",
+        "model": "",
+        "next_step": "Run the same scenario used by the comparable baseline. Capture report.json and import it into BETA. Check whether the target metric improved, stabilized, or regressed again. If it regresses again, profile the owning code path before adding new features.",
+        "owner_role": "Engineering",
+        "priority": "P1",
+        "project_key": "cosnfx",
+        "source": "operating-plan",
+        "source_label": "Deterministic operating plan",
+        "status": "active",
+        "success_metric": "Dashboard rebuild succeeds and the project page opens with the expected scoped data.",
+        "title": "Dashboard Render Smoke",
+        "why": "The app has to rebuild and load project pages after evidence changes."
+      },
+      {
+        "action_id": "work-guidance-dashboard-render-success",
+        "created_from": "deterministic",
+        "data_needed": "",
+        "evidence_needed": "Dashboard rebuild succeeds and the project page opens with the expected scoped data.",
+        "metric": "dashboard_render_success",
+        "model": "",
+        "next_step": "Run dashboard generation, open the BETA and OMEGA project pages, and record the render result.",
+        "owner_role": "Project owner",
+        "priority": "P1",
+        "project_key": "cosnfx",
+        "source": "work-guidance",
+        "source_label": "Deterministic work guidance",
+        "status": "active",
+        "success_metric": "Dashboard rebuild succeeds and the project page opens with the expected scoped data.",
+        "title": "Dashboard Render Smoke",
+        "why": "The app has to rebuild and load project pages after evidence changes."
+      },
+      {
+        "action_id": "measurement-plan-dashboard-render-success",
+        "created_from": "deterministic",
+        "data_needed": "",
+        "evidence_needed": "Dashboard rebuild succeeds and the project page opens with the expected scoped data.",
+        "metric": "dashboard_render_success",
+        "model": "",
+        "next_step": "Run dashboard generation, open the BETA and OMEGA project pages, and record the render result.",
+        "owner_role": "Frontend QA",
+        "priority": "P1",
+        "project_key": "cosnfx",
+        "source": "measurement-plan",
+        "source_label": "Measurement plan",
+        "status": "active",
+        "success_metric": "Dashboard rebuild succeeds and the project page opens with the expected scoped data.",
+        "title": "Dashboard Render Smoke",
+        "why": "The app has to rebuild and load project pages after evidence changes."
+      },
+      {
+        "action_id": "metric-backlog-dashboard-render-success",
+        "created_from": "deterministic",
+        "data_needed": "",
+        "evidence_needed": "Dashboard rebuild succeeds and the project page opens with the expected scoped data.",
+        "metric": "dashboard_render_success",
+        "model": "",
+        "next_step": "Add this metric to a real report, CI import, bench log, field note, or manual evidence record.",
+        "owner_role": "Frontend QA",
+        "priority": "P1",
+        "project_key": "cosnfx",
+        "source": "metric-backlog",
+        "source_label": "Manager metric backlog",
+        "status": "active",
+        "success_metric": "Dashboard rebuild succeeds and the project page opens with the expected scoped data.",
+        "title": "Dashboard Render Smoke",
+        "why": "This planned metric is not active yet."
+      },
+      {
+        "action_id": "operating-plan-project-control-coverage",
+        "created_from": "deterministic",
+        "data_needed": "",
+        "evidence_needed": "A fresh matching proof report plus before/after metric comparison.",
+        "metric": "project_control_coverage",
+        "model": "",
+        "next_step": "Run the same scenario used by the comparable baseline. Capture report.json and import it into BETA. Check whether the target metric improved, stabilized, or regressed again. If it regresses again, profile the owning code path before adding new features.",
+        "owner_role": "Engineering",
+        "priority": "P1",
+        "project_key": "cosnfx",
+        "source": "operating-plan",
+        "source_label": "Deterministic operating plan",
+        "status": "active",
+        "success_metric": "Coverage rises when useful controls are added and browser-verified.",
+        "title": "Project Control Coverage",
+        "why": "BETA needs no-command controls for setup, todos, work, evidence, reports, and AI management."
+      },
+      {
+        "action_id": "work-guidance-project-control-coverage",
+        "created_from": "deterministic",
+        "data_needed": "",
+        "evidence_needed": "Coverage rises when useful controls are added and browser-verified.",
+        "metric": "project_control_coverage",
+        "model": "",
+        "next_step": "Review the project page controls and record how many intended project-management workflows are covered.",
+        "owner_role": "Project owner",
+        "priority": "P1",
+        "project_key": "cosnfx",
+        "source": "work-guidance",
+        "source_label": "Deterministic work guidance",
+        "status": "active",
+        "success_metric": "Coverage rises when useful controls are added and browser-verified.",
+        "title": "Project Control Coverage",
+        "why": "BETA needs no-command controls for setup, todos, work, evidence, reports, and AI management."
+      },
+      {
+        "action_id": "measurement-plan-project-control-coverage",
+        "created_from": "deterministic",
+        "data_needed": "",
+        "evidence_needed": "Coverage rises when useful controls are added and browser-verified.",
+        "metric": "project_control_coverage",
+        "model": "",
+        "next_step": "Review the project page controls and record how many intended project-management workflows are covered.",
+        "owner_role": "Product/project manager",
+        "priority": "P1",
+        "project_key": "cosnfx",
+        "source": "measurement-plan",
+        "source_label": "Measurement plan",
+        "status": "active",
+        "success_metric": "Coverage rises when useful controls are added and browser-verified.",
+        "title": "Project Control Coverage",
+        "why": "BETA needs no-command controls for setup, todos, work, evidence, reports, and AI management."
+      },
+      {
+        "action_id": "metric-backlog-project-control-coverage",
+        "created_from": "deterministic",
+        "data_needed": "",
+        "evidence_needed": "Coverage rises when useful controls are added and browser-verified.",
+        "metric": "project_control_coverage",
+        "model": "",
+        "next_step": "Add this metric to a real report, CI import, bench log, field note, or manual evidence record.",
+        "owner_role": "Product/project manager",
+        "priority": "P1",
+        "project_key": "cosnfx",
+        "source": "metric-backlog",
+        "source_label": "Manager metric backlog",
+        "status": "active",
+        "success_metric": "Coverage rises when useful controls are added and browser-verified.",
+        "title": "Project Control Coverage",
+        "why": "This planned metric is not active yet."
+      },
+      {
+        "action_id": "operating-plan-unit-test-pass-rate",
+        "created_from": "deterministic",
+        "data_needed": "",
+        "evidence_needed": "A fresh matching proof report plus before/after metric comparison.",
+        "metric": "unit_test_pass_rate",
+        "model": "",
+        "next_step": "Run the same scenario used by the comparable baseline. Capture report.json and import it into BETA. Check whether the target metric improved, stabilized, or regressed again. If it regresses again, profile the owning code path before adding new features.",
+        "owner_role": "Engineering",
+        "priority": "P1",
+        "project_key": "cosnfx",
+        "source": "operating-plan",
+        "source_label": "Deterministic operating plan",
+        "status": "active",
+        "success_metric": "Pass rate holds at the project target and regressions are linked to specific work.",
+        "title": "Software Test Pass Rate",
+        "why": "Proves BETA is still correct while project-management and AI features are added."
+      }
+    ],
+    "active_count": 37,
+    "ai_sourced_count": 0,
+    "avoid_count": 4,
+    "basis": "AI can suggest actions, but BETA only treats metrics, imported inputs, proof reports, and work logs as evidence.",
+    "blocked_count": 1,
+    "priority_counts": {
+      "Avoid": 4,
+      "P0": 2,
+      "P1": 28,
+      "P2": 8,
+      "Risk": 7
+    },
+    "real_report_count": 0,
+    "risk_count": 7,
+    "schema": "beta.action_tracker.v1",
+    "source_counts": {
+      "avoid": 4,
+      "data-source": 8,
+      "manager-risk": 7,
+      "measurement-plan": 8,
+      "metric-backlog": 8,
+      "operating-plan": 7,
+      "work-guidance": 7
+    },
+    "status_counts": {
+      "active": 37,
+      "avoid": 4,
+      "blocked-by-real-data": 1,
+      "risk": 7
+    },
+    "summary": "Actions are built from deterministic BETA guidance, manager risks, measurement gaps, and advisory AI output. Statuses are gated by real evidence availability."
+  },
+  "ai": null,
+  "analysis_scope": {
+    "assigned_run_count": 0,
+    "discovered_run_count": 0,
+    "kind": "project",
+    "project_key": "cosnfx",
+    "project_name": "CosNFX",
+    "project_type": "software",
+    "quarantined_run_count": 0,
+    "workspace_project_count": 4
+  },
+  "app_version": "0.2.0",
+  "backlog": [],
+  "claim_coverage": [],
+  "claims": [],
+  "comparisons": [],
+  "data_authenticity": {
+    "accepted_count": 0,
+    "accepted_report_paths": [],
+    "classification_counts": {},
+    "excluded_count": 0,
+    "policy": "Only accepted real reports are used for metrics, graphs, claims, progress, and AI analysis. Synthetic/demo/local proof reports are quarantined.",
+    "quarantined_report_paths": [],
+    "real_count": 0,
+    "reason_counts": {},
+    "synthetic_count": 0,
+    "total_discovered_count": 0
+  },
+  "data_lineage": {
+    "all_report_paths": [],
+    "baseline_report": null,
+    "comparison_key": null,
+    "comparison_method": "The latest proof report is compared with the previous proof report that has the same scenario id, duration, and step size.",
+    "data_policy": "Only accepted real reports are used for metrics, graphs, claims, progress, and AI analysis. Synthetic/demo/local proof reports are quarantined.",
+    "latest_report": null,
+    "project_sources": [
+      {
+        "ai_available": false,
+        "ai_plan_path": null,
+        "blocked_todo_count": 0,
+        "input_count": 1,
+        "open_todo_count": 0,
+        "plan_path": null,
+        "profile_path": null,
+        "project_config_path": "C:\\Users\\jdcap\\Documents\\Projects\\BETA\\.beta\\projects\\cosnfx\\project.json",
+        "project_key": "cosnfx",
+        "project_name": "CosNFX",
+        "project_path": "C:\\Users\\jdcap\\Documents\\Projects\\BETA\\.beta\\projects\\cosnfx",
+        "todo_count": 0,
+        "work_session_count": 0
+      }
+    ],
+    "quarantined_report_paths": [],
+    "quarantined_run_count": 0,
+    "real_report_paths": [],
+    "real_run_count": 0,
+    "run_count": 0,
+    "total_discovered_count": 0,
+    "workspace": "C:\\Users\\jdcap\\Documents\\Projects\\BETA\\.beta"
+  },
+  "data_provenance": {
+    "ai": {
+      "available": false,
+      "contributes_to_metrics": false,
+      "generated_at": null,
+      "model": null,
+      "provider": "ollama",
+      "response_source": null,
+      "truth_policy": "AI was not used. Metrics and claims came from the deterministic BETA engine.",
+      "usable": false,
+      "used": false
+    },
+    "analysis": {
+      "baseline_run_id": null,
+      "engine": "deterministic",
+      "engine_version": "0.2.0",
+      "generated_at": "2026-06-22T21:24:40Z",
+      "latest_run_id": null,
+      "quarantined_report_count": 0,
+      "real_report_count": 0,
+      "run_count": 0,
+      "schema": "beta.analysis.v1",
+      "total_discovered_report_count": 0
+    },
+    "app": {
+      "name": "BETA",
+      "title": "Build Environment for Testing & Analytics",
+      "version": "0.2.0"
+    },
+    "content_hash": "c569740584e9a55d91db46f66ad91d9968cfbb7f06e7b15404c57a69853c41ca",
+    "dashboard": {
+      "schema": "beta.dashboard.v1"
+    },
+    "data_policy": "Only accepted real reports are used for metrics, graphs, claims, progress, and AI analysis. Synthetic/demo/local proof reports are quarantined.",
+    "data_version_id": "beta-2026-06-22t21-24-40z-c569740584",
+    "generated_at": "2026-06-22T21:24:40Z",
+    "generated_by": "BETA deterministic engine",
+    "projects": [
+      {
+        "ai_plan_available": false,
+        "ai_plan_generated_at": null,
+        "ai_plan_model": null,
+        "ai_plan_path": null,
+        "blocked_todo_count": 0,
+        "input_count": 1,
+        "open_todo_count": 0,
+        "plan_generated_at": null,
+        "plan_path": null,
+        "profile_generated_at": null,
+        "profile_path": null,
+        "project_config_generated_at": "2026-06-22T19:40:59Z",
+        "project_config_path": "C:\\Users\\jdcap\\Documents\\Projects\\BETA\\.beta\\projects\\cosnfx\\project.json",
+        "project_config_schema": "beta.project.v1",
+        "project_config_updated_at": null,
+        "project_config_version": 1,
+        "project_config_version_source": "explicit",
+        "project_key": "cosnfx",
+        "project_name": "CosNFX",
+        "project_path": "C:\\Users\\jdcap\\Documents\\Projects\\BETA\\.beta\\projects\\cosnfx",
+        "project_type": "software",
+        "todo_count": 0,
+        "work_session_count": 0
+      }
+    ],
+    "schema": "beta.data_provenance.v1",
+    "scope": {
+      "assigned_run_count": 0,
+      "discovered_run_count": 0,
+      "kind": "project",
+      "project_key": "cosnfx",
+      "project_name": "CosNFX",
+      "project_type": "software",
+      "quarantined_run_count": 0,
+      "workspace_project_count": 4
+    },
+    "workspace": "C:\\Users\\jdcap\\Documents\\Projects\\BETA\\.beta"
+  },
+  "data_quality": {
+    "checks": [
+      {
+        "detail": "Accepted real reports: 0; quarantined demo/synthetic reports: 0.",
+        "id": "real_report_available",
+        "label": "Real proof report is available",
+        "passed": false,
+        "weight": 15
+      },
+      {
+        "detail": "0 report(s) were excluded from metrics before scoring.",
+        "id": "synthetic_quarantine",
+        "label": "Synthetic/demo reports are quarantined",
+        "passed": true,
+        "weight": 0
+      }
+    ],
+    "gaps": [
+      "No accepted real proof reports are available for metrics, progress, claims, or AI analysis.",
+      "Run or import a real bench, field, CI, or project proof report that does not contain demo/synthetic/local-proof markers."
+    ],
+    "label": "needs-real-data",
+    "score": 0.0
+  },
+  "data_sources": [
+    {
+      "category": "evidence",
+      "id": "proof_reports",
+      "label": "Real Proof Reports",
+      "meaning": "Only accepted real run reports drive charts, regressions, findings, claims, and AI analysis.",
+      "next_step": "Import real bench, field, CI, hardware, or project proof reports with no demo/synthetic/local-proof markers.",
+      "status": "missing",
+      "value": 0
+    },
+    {
+      "category": "evidence",
+      "id": "quarantined_reports",
+      "label": "Quarantined Demo Reports",
+      "meaning": "Synthetic, demo, smoke, fixture, and local proof reports stay visible for audit but are excluded from metrics.",
+      "next_step": "Replace quarantined reports with real evidence or mark real reports explicitly with metadata.data_authenticity=real.",
+      "status": "clear",
+      "value": 0
+    },
+    {
+      "category": "evidence",
+      "id": "baseline",
+      "label": "Comparable Baseline",
+      "meaning": "A matching prior scenario separates real progress from one-off numbers.",
+      "next_step": "Repeat the same scenario after changes so every metric has a before/after comparison.",
+      "status": "missing",
+      "value": "none"
+    },
+    {
+      "category": "evidence",
+      "id": "repeatability",
+      "label": "Repeatability",
+      "meaning": "Multiple runs expose noise, flaky behavior, and repeated regressions.",
+      "next_step": "Run the same scenario several times before treating a change as proven.",
+      "status": "partial",
+      "value": 0
+    },
+    {
+      "category": "evidence",
+      "id": "scenario_diversity",
+      "label": "Scenario Diversity",
+      "meaning": "More scenarios reduce the risk of proving only one narrow demo path.",
+      "next_step": "Add at least one scale or field-like scenario beside the current coastal proof.",
+      "status": "partial",
+      "value": 0
+    },
+    {
+      "category": "evidence",
+      "id": "sample_scale",
+      "label": "Sample Scale",
+      "meaning": "Larger samples make performance, storage, and reliability claims harder to fake.",
+      "next_step": "Run proof scenarios at 100, 500, and 1000+ observations and compare the curves.",
+      "status": "partial",
+      "value": 0
+    },
+    {
+      "category": "ai",
+      "id": "ai_analyst",
+      "label": "AI Analyst",
+      "meaning": "Ollama reviews weak evidence, missing measurements, experiment ideas, and next actions.",
+      "next_step": "Use auto-strong for serious reviews; keep deterministic metrics as the source of truth.",
+      "status": "missing",
+      "value": "not run"
+    },
+    {
+      "category": "planning",
+      "id": "project_scan",
+      "label": "Project Scan",
+      "meaning": "Project profiles connect source, docs, tests, firmware, evidence, and planned metrics.",
+      "next_step": "Run plan-ai after major repo or hardware-documentation changes.",
+      "status": "connected",
+      "value": 1
+    },
+    {
+      "category": "planning",
+      "id": "repo_snapshot",
+      "label": "Local Repo Snapshots",
+      "meaning": "Repo snapshots capture Git state, file mix, test/doc/config signals, and local structure for project planning.",
+      "next_step": "Use Collect Project Snapshot on each project after important work or before a planning review.",
+      "status": "connected",
+      "value": 1
+    },
+    {
+      "category": "planning",
+      "id": "source_connection_plan",
+      "label": "Source Connection Plan",
+      "meaning": "Source connectors define which project inputs BETA should expect for issues, CI, docs, bench, field, metrics, and AI sessions.",
+      "next_step": "Register planned sources, then connect real files or folders as they become available.",
+      "status": "partial",
+      "value": "1/6"
+    },
+    {
+      "category": "field",
+      "id": "field_bench_logs",
+      "label": "Field And Bench Logs",
+      "meaning": "Power, thermal, calibration, endurance, and human acceptance data prove real-world readiness.",
+      "next_step": "Create a simple CSV or report.json path for bench and field validation evidence.",
+      "status": "missing",
+      "value": "not imported"
+    },
+    {
+      "category": "management",
+      "id": "project_todos",
+      "label": "Project Todo Ledger",
+      "meaning": "Project todos show planned work, active focus, blockers, due dates, and completion evidence.",
+      "next_step": "Add todos for the next project-management cycle, then mark work doing, blocked, done, or dropped as reality changes.",
+      "status": "missing",
+      "value": "not logged"
+    },
+    {
+      "category": "management",
+      "id": "work_logs",
+      "label": "Work Session Ledger",
+      "meaning": "Structured work sessions explain where time went, what produced evidence, and which blockers or rework consumed effort.",
+      "next_step": "Record work sessions after meaningful project work with category, minutes, outcome, evidence, blockers, and next step.",
+      "status": "missing",
+      "value": "not logged"
+    },
+    {
+      "category": "management",
+      "id": "issue_ci_history",
+      "label": "Issue And CI History",
+      "meaning": "Project-management evidence needs defects, milestones, build pass rate, coverage, and flaky-test history.",
+      "next_step": "Add a connector/importer for issues, milestones, CI status, coverage, and release notes.",
+      "status": "missing",
+      "value": "not imported"
+    },
+    {
+      "category": "ai",
+      "id": "ai_work_sessions",
+      "label": "AI Work Sessions",
+      "meaning": "AI session summaries show what an AI helped change, suggested, tested, or left uncertain.",
+      "next_step": "Import Codex/ChatGPT/session summaries as source_type=ai-session after meaningful project work.",
+      "status": "missing",
+      "value": "not imported"
+    }
+  ],
+  "effort_focus": {},
+  "evidence_brief": {
+    "active_measurements": 0,
+    "connected_sources": 2,
+    "data_quality_label": "needs-real-data",
+    "data_quality_score": 0.0,
+    "focus_metrics": [],
+    "headline": "No real proof data is driving this project yet.",
+    "health_label": "Needs data",
+    "missing_inputs": [
+      {
+        "label": "Repeatability",
+        "next_step": "Run the same scenario several times before treating a change as proven.",
+        "status": "partial"
+      },
+      {
+        "label": "Scenario Diversity",
+        "next_step": "Add at least one scale or field-like scenario beside the current coastal proof.",
+        "status": "partial"
+      },
+      {
+        "label": "Sample Scale",
+        "next_step": "Run proof scenarios at 100, 500, and 1000+ observations and compare the curves.",
+        "status": "partial"
+      },
+      {
+        "label": "Source Connection Plan",
+        "next_step": "Register planned sources, then connect real files or folders as they become available.",
+        "status": "partial"
+      },
+      {
+        "label": "Real Proof Reports",
+        "next_step": "Import real bench, field, CI, hardware, or project proof reports with no demo/synthetic/local-proof markers.",
+        "status": "missing"
+      }
+    ],
+    "missing_sources": 8,
+    "next_moves": [
+      {
+        "done_when": "Pass rate holds at the project target and regressions are linked to specific work.",
+        "metric": "unit_test_pass_rate",
+        "owner_role": "Software QA",
+        "priority": "P1",
+        "title": "Software Test Pass Rate"
+      },
+      {
+        "done_when": "Dashboard rebuild succeeds and the project page opens with the expected scoped data.",
+        "metric": "dashboard_render_success",
+        "owner_role": "Frontend QA",
+        "priority": "P1",
+        "title": "Dashboard Render Smoke"
+      },
+      {
+        "done_when": "Coverage rises when useful controls are added and browser-verified.",
+        "metric": "project_control_coverage",
+        "owner_role": "Product/project manager",
+        "priority": "P1",
+        "title": "Project Control Coverage"
+      },
+      {
+        "done_when": "High-value AI recommendations have a decision, owner, and result metric.",
+        "metric": "ai_recommendation_follow_through",
+        "owner_role": "AI/project manager",
+        "priority": "P1",
+        "title": "AI Recommendation Follow-Through"
+      }
+    ],
+    "partial_sources": 4,
+    "planned_measurements": 8,
+    "posture": "real-data-needed",
+    "reason": "0 discovered report(s) are quarantined as demo/synthetic/local proof data. Charts and claims will stay empty until real evidence is imported."
+  },
+  "evidence_capture": {
+    "capture_steps": [
+      {
+        "command": ".\\dev.ps1 evidence-template -ProjectKey cosnfx -ScenarioId bench-validation -CollectionType bench",
+        "detail": "Generate a non-imported template so the team can see the expected report shape.",
+        "step": "Create a template"
+      },
+      {
+        "command": "Do not mark the report real until values came from an actual measured run.",
+        "detail": "Run a real bench, field, CI, firmware, hardware, or operator check and keep the notes/logs.",
+        "step": "Collect measured values"
+      },
+      {
+        "command": ".\\dev.ps1 record-evidence -ProjectKey cosnfx -ScenarioId bench-validation -CollectionType bench -RequiredPassed -AdvisoryPassed -ObservationsAccepted 100",
+        "detail": "Use record-evidence with the measured values so BETA writes report.json in the project evidence folder.",
+        "step": "Record the report"
+      },
+      {
+        "command": ".\\dev.ps1 refresh",
+        "detail": "A second matching real run is what turns current-state evidence into improvement evidence.",
+        "step": "Repeat the same scenario"
+      }
+    ],
+    "metric_fields": [
+      {
+        "metric": "unit_test_pass_rate",
+        "owner_role": "Software QA",
+        "priority": "P1",
+        "report_field": "metrics.custom.unit_test_pass_rate",
+        "success_evidence": "Pass rate holds at the project target and regressions are linked to specific work.",
+        "title": "Software Test Pass Rate",
+        "why": "Proves BETA is still correct while project-management and AI features are added."
+      },
+      {
+        "metric": "code_coverage_percent",
+        "owner_role": "Software QA",
+        "priority": "P2",
+        "report_field": "metrics.custom.code_coverage_percent",
+        "success_evidence": "Coverage holds above the project floor and does not regress against the last import.",
+        "title": "Code Coverage",
+        "why": "Coverage shows how much of the code the passing tests actually exercise, so a green build is not hiding untested paths."
+      },
+      {
+        "metric": "test_failure_count",
+        "owner_role": "Software QA",
+        "priority": "P2",
+        "report_field": "metrics.custom.test_failure_count",
+        "success_evidence": "Test failures reach zero and any new failure is linked to a specific change.",
+        "title": "Open Test Failures",
+        "why": "Failing tests point directly at what is broken right now and block any honest claim of done."
+      },
+      {
+        "metric": "dashboard_render_success",
+        "owner_role": "Frontend QA",
+        "priority": "P1",
+        "report_field": "metrics.custom.dashboard_render_success",
+        "success_evidence": "Dashboard rebuild succeeds and the project page opens with the expected scoped data.",
+        "title": "Dashboard Render Smoke",
+        "why": "The app has to rebuild and load project pages after evidence changes."
+      },
+      {
+        "metric": "project_control_coverage",
+        "owner_role": "Product/project manager",
+        "priority": "P1",
+        "report_field": "metrics.custom.project_control_coverage",
+        "success_evidence": "Coverage rises when useful controls are added and browser-verified.",
+        "title": "Project Control Coverage",
+        "why": "BETA needs no-command controls for setup, todos, work, evidence, reports, and AI management."
+      },
+      {
+        "metric": "open_blocker_count",
+        "owner_role": "Project manager",
+        "priority": "P2",
+        "report_field": "metrics.custom.open_blocker_count",
+        "success_evidence": "Open blocker count trends down or each blocker has a named next action.",
+        "title": "Blocker And Todo Flow",
+        "why": "Open blockers explain what is behind schedule and what the project manager AI should focus on."
+      },
+      {
+        "metric": "ai_recommendation_follow_through",
+        "owner_role": "AI/project manager",
+        "priority": "P1",
+        "report_field": "metrics.custom.ai_recommendation_follow_through",
+        "success_evidence": "High-value AI recommendations have a decision, owner, and result metric.",
+        "title": "AI Recommendation Follow-Through",
+        "why": "AI advice should become tracked actions whose impact can be measured later."
+      },
+      {
+        "metric": "ci_failure_rate",
+        "owner_role": "Engineering lead",
+        "priority": "P2",
+        "report_field": "metrics.custom.ci_failure_rate",
+        "success_evidence": "Failure rate and stale issue load trend down over repeated project cycles.",
+        "title": "Issue And CI History",
+        "why": "Build failures, flaky tests, and unresolved issues are real workflow health signals."
+      }
+    ],
+    "project": {
+      "project_key": "cosnfx",
+      "project_name": "CosNFX",
+      "project_type": "software"
+    },
+    "quality_rules": [
+      "Templates, drafts, local-proof reports, and demo scenarios remain quarantined.",
+      "Use the same scenario id when you want BETA to judge progress against a baseline.",
+      "Record failed real runs too; failure history is useful project-management evidence.",
+      "Do not use AI advice as proof unless a real report, CI result, field note, or bench measurement supports it.",
+      "Firmware runs should include serial frame or operator evidence proving physical identity, board tag, MAC, temperature/battery health, and OLED state."
+    ],
+    "quarantined_count": 0,
+    "real_count": 0,
+    "required_fields": [
+      {
+        "field": "metadata.data_authenticity",
+        "value": "real",
+        "why": "Lets BETA accept the report as usable evidence instead of quarantining it."
+      },
+      {
+        "field": "metadata.collection_type",
+        "value": "bench | field | ci | firmware | hardware | operator | measured",
+        "why": "Tells BETA what kind of real-world source produced the measurement."
+      },
+      {
+        "field": "scenario.scenario_id",
+        "value": "stable scenario id",
+        "why": "Matching scenario ids allow before/after comparisons over time."
+      },
+      {
+        "field": "overall.required_passed",
+        "value": "true/false",
+        "why": "Correctness gates are the minimum proof before performance claims matter."
+      },
+      {
+        "field": "metrics.ingest.counts.observations.accepted",
+        "value": "integer",
+        "why": "Sample size affects confidence in throughput, storage, and latency claims."
+      },
+      {
+        "field": "analysis.evidence[].summary",
+        "value": "short measured source note",
+        "why": "Keeps the metric tied to the actual test, bench note, CI run, or field observation."
+      },
+      {
+        "field": "analysis.evidence[].source",
+        "value": "log/photo/serial/CI/bench source reference",
+        "why": "Lets a reviewer trace the metric back to the file, capture, or note that produced it."
+      }
+    ],
+    "starter_scenarios": [
+      {
+        "collection_type": "bench",
+        "done_when": "One measured report imports as real, required gates pass, and the dashboard shows one real run.",
+        "priority": "P0",
+        "record_command": ".\\dev.ps1 record-evidence -ProjectKey cosnfx -ScenarioId bench-validation -CollectionType bench -RequiredPassed -AdvisoryPassed -ObservationsAccepted 100",
+        "scenario_id": "bench-validation",
+        "template_command": ".\\dev.ps1 evidence-template -ProjectKey cosnfx -ScenarioId bench-validation -CollectionType bench",
+        "title": "Bench Validation Baseline",
+        "why": "Creates the first accepted real baseline so charts and claims stop being empty."
+      },
+      {
+        "collection_type": "field",
+        "done_when": "Portal payload and query p95 are recorded from a constrained or remote path.",
+        "priority": "P1",
+        "record_command": ".\\dev.ps1 record-evidence -ProjectKey cosnfx -ScenarioId field-link-load -CollectionType field -RequiredPassed -ObservationsAccepted 100 -PortalHtmlBytes 1 -QueryP95Ms 1",
+        "scenario_id": "field-link-load",
+        "template_command": ".\\dev.ps1 evidence-template -ProjectKey cosnfx -ScenarioId field-link-load -CollectionType field",
+        "title": "Field-Link Load Check",
+        "why": "Connects portal/API responsiveness to real network conditions instead of local-only timing."
+      },
+      {
+        "collection_type": "ci",
+        "done_when": "CI result evidence is attached and repeat failures trend down over time.",
+        "priority": "P1",
+        "record_command": ".\\dev.ps1 record-evidence -ProjectKey cosnfx -ScenarioId ci-regression -CollectionType ci -RequiredPassed -ObservationsAccepted 1",
+        "scenario_id": "ci-regression",
+        "template_command": ".\\dev.ps1 evidence-template -ProjectKey cosnfx -ScenarioId ci-regression -CollectionType ci",
+        "title": "CI Regression Evidence",
+        "why": "Adds build/test pass history so project progress is not inferred only from proof runs."
+      }
+    ],
+    "status": "needs-real-data",
+    "summary": "CosNFX needs its first accepted real report before metrics can prove progress."
+  },
+  "excluded_runs": [],
+  "findings": [],
+  "generated_at": "2026-06-22T21:24:40Z",
+  "health": {
+    "backlog_health_percent": 0.0,
+    "evidence_coverage": {
+      "available": 0,
+      "percent": 0.0,
+      "signals": [],
+      "total": 5
+    },
+    "label": "Needs data",
+    "overall": 0.0,
+    "progress_direction": "Needs real data",
+    "proof_score": {
+      "correctness": 0.0,
+      "effectiveness": 0.0,
+      "efficiency": 0.0,
+      "total": 0.0
+    },
+    "regression_score": 0.0
+  },
+  "latest": null,
+  "measurement_plan": [
+    {
+      "current": null,
+      "how_to_collect": "Run python -m unittest discover -s tests and record the pass percentage in a real project report.",
+      "id": "software_test_pass_rate",
+      "metric": "unit_test_pass_rate",
+      "owner_role": "Software QA",
+      "priority": "P1",
+      "status": "planned",
+      "success_evidence": "Pass rate holds at the project target and regressions are linked to specific work.",
+      "title": "Software Test Pass Rate",
+      "unit": "%",
+      "why": "Proves BETA is still correct while project-management and AI features are added."
+    },
+    {
+      "current": null,
+      "how_to_collect": "Import a coverage report (Cobertura XML or coverage.py JSON) with python -m beta import-tests and set a coverage floor.",
+      "id": "software_code_coverage",
+      "metric": "code_coverage_percent",
+      "owner_role": "Software QA",
+      "priority": "P2",
+      "status": "planned",
+      "success_evidence": "Coverage holds above the project floor and does not regress against the last import.",
+      "title": "Code Coverage",
+      "unit": "%",
+      "why": "Coverage shows how much of the code the passing tests actually exercise, so a green build is not hiding untested paths."
+    },
+    {
+      "current": null,
+      "how_to_collect": "Import the JUnit/pytest report with python -m beta import-tests and drive failures to zero before shipping.",
+      "id": "software_test_failures",
+      "metric": "test_failure_count",
+      "owner_role": "Software QA",
+      "priority": "P2",
+      "status": "planned",
+      "success_evidence": "Test failures reach zero and any new failure is linked to a specific change.",
+      "title": "Open Test Failures",
+      "unit": "count",
+      "why": "Failing tests point directly at what is broken right now and block any honest claim of done."
+    },
+    {
+      "current": null,
+      "how_to_collect": "Run dashboard generation, open the BETA and OMEGA project pages, and record the render result.",
+      "id": "dashboard_render_smoke",
+      "metric": "dashboard_render_success",
+      "owner_role": "Frontend QA",
+      "priority": "P1",
+      "status": "planned",
+      "success_evidence": "Dashboard rebuild succeeds and the project page opens with the expected scoped data.",
+      "title": "Dashboard Render Smoke",
+      "unit": "",
+      "why": "The app has to rebuild and load project pages after evidence changes."
+    },
+    {
+      "current": null,
+      "how_to_collect": "Review the project page controls and record how many intended project-management workflows are covered.",
+      "id": "project_control_coverage",
+      "metric": "project_control_coverage",
+      "owner_role": "Product/project manager",
+      "priority": "P1",
+      "status": "planned",
+      "success_evidence": "Coverage rises when useful controls are added and browser-verified.",
+      "title": "Project Control Coverage",
+      "unit": "%",
+      "why": "BETA needs no-command controls for setup, todos, work, evidence, reports, and AI management."
+    },
+    {
+      "current": null,
+      "how_to_collect": "Keep todos current and record blocked items, owner, reason, and completion evidence.",
+      "id": "blocker_flow",
+      "metric": "open_blocker_count",
+      "owner_role": "Project manager",
+      "priority": "P2",
+      "status": "planned",
+      "success_evidence": "Open blocker count trends down or each blocker has a named next action.",
+      "title": "Blocker And Todo Flow",
+      "unit": "count",
+      "why": "Open blockers explain what is behind schedule and what the project manager AI should focus on."
+    },
+    {
+      "current": null,
+      "how_to_collect": "Record AI recommendations, mark which ones were tried, and connect them to metric movement.",
+      "id": "ai_recommendation_follow_through",
+      "metric": "ai_recommendation_follow_through",
+      "owner_role": "AI/project manager",
+      "priority": "P1",
+      "status": "planned",
+      "success_evidence": "High-value AI recommendations have a decision, owner, and result metric.",
+      "title": "AI Recommendation Follow-Through",
+      "unit": "",
+      "why": "AI advice should become tracked actions whose impact can be measured later."
+    },
+    {
+      "current": null,
+      "how_to_collect": "Import CI runs, test results, issue status, and repeated failure reasons.",
+      "id": "issue_ci_history",
+      "metric": "ci_failure_rate",
+      "owner_role": "Engineering lead",
+      "priority": "P2",
+      "status": "planned",
+      "success_evidence": "Failure rate and stale issue load trend down over repeated project cycles.",
+      "title": "Issue And CI History",
+      "unit": "",
+      "why": "Build failures, flaky tests, and unresolved issues are real workflow health signals."
+    }
+  ],
+  "metric_definitions": [],
+  "metric_intelligence": [],
+  "metric_playbook": {
+    "current_posture": "needs-real-baseline",
+    "groups": [
+      {
+        "examples": [
+          "real_report_available",
+          "required_passed",
+          "repeatability",
+          "scenario_diversity"
+        ],
+        "group": "Proof Quality",
+        "planning_use": "Do this first when real_count is zero or reports are quarantined.",
+        "purpose": "Separates real evidence from templates, demos, and unsupported claims."
+      },
+      {
+        "examples": [
+          "observations_accepted",
+          "station_features",
+          "mesh_routes",
+          "firmware_identity_fields_present"
+        ],
+        "group": "Effectiveness",
+        "planning_use": "Use this when deciding whether the core workflow is ready for broader testing.",
+        "purpose": "Shows whether the build does the thing it claims to do."
+      },
+      {
+        "examples": [
+          "observation_throughput_per_s",
+          "query_p95_ms",
+          "db_bytes_per_observation",
+          "portal_html_bytes"
+        ],
+        "group": "Efficiency",
+        "planning_use": "Use this after correctness is credible, or when field constraints are tight.",
+        "purpose": "Shows whether the build does the work fast enough and cheaply enough."
+      },
+      {
+        "examples": [
+          "failure_rate",
+          "test_pass_rate",
+          "firmware_boot_success_rate",
+          "repeat_depth"
+        ],
+        "group": "Reliability",
+        "planning_use": "Use this before calling an improvement durable or release-ready.",
+        "purpose": "Shows whether good results repeat instead of appearing once."
+      },
+      {
+        "examples": [
+          "work evidence percent",
+          "blocked/rework time",
+          "connected sources",
+          "planned measurements"
+        ],
+        "group": "Project Management",
+        "planning_use": "Use this to decide what to focus on, stop doing, connect, or delegate.",
+        "purpose": "Shows whether the work loop is producing useful evidence or wasting time."
+      }
+    ],
+    "how_to_use_for_planning": [
+      "Start by collecting one accepted real report; until then BETA is planning from project context, not proving improvement.",
+      "Pick one project goal or claim.",
+      "Choose the metric that would prove movement toward that goal.",
+      "Collect one real baseline report or source input.",
+      "Make one focused change or run one focused bench/field/test cycle.",
+      "Repeat the same scenario and compare the metric to the baseline.",
+      "Use the Manager screen to turn the result into the next priority, risk, or stop-doing item."
+    ],
+    "metrics": [
+      {
+        "done_when": "Pass rate holds at the project target and regressions are linked to specific work.",
+        "evidence_to_collect": "Run python -m unittest discover -s tests and record the pass percentage in a real project report.",
+        "healthy_direction": "Define the target direction and threshold in the project configuration.",
+        "metric": "unit_test_pass_rate",
+        "owner_role": "Software QA",
+        "planning_use": "Use it to decide whether the next step is testing, fixing, scaling, or stopping.",
+        "priority": "P1",
+        "question": "What does Software Test Pass Rate prove for this project?",
+        "status": "planned",
+        "title": "Software Test Pass Rate",
+        "why": "Proves BETA is still correct while project-management and AI features are added."
+      },
+      {
+        "done_when": "Coverage holds above the project floor and does not regress against the last import.",
+        "evidence_to_collect": "Import a coverage report (Cobertura XML or coverage.py JSON) with python -m beta import-tests and set a coverage floor.",
+        "healthy_direction": "Define the target direction and threshold in the project configuration.",
+        "metric": "code_coverage_percent",
+        "owner_role": "Software QA",
+        "planning_use": "Use it to decide whether the next step is testing, fixing, scaling, or stopping.",
+        "priority": "P2",
+        "question": "What does Code Coverage prove for this project?",
+        "status": "planned",
+        "title": "Code Coverage",
+        "why": "Coverage shows how much of the code the passing tests actually exercise, so a green build is not hiding untested paths."
+      },
+      {
+        "done_when": "Test failures reach zero and any new failure is linked to a specific change.",
+        "evidence_to_collect": "Import the JUnit/pytest report with python -m beta import-tests and drive failures to zero before shipping.",
+        "healthy_direction": "Define the target direction and threshold in the project configuration.",
+        "metric": "test_failure_count",
+        "owner_role": "Software QA",
+        "planning_use": "Use it to decide whether the next step is testing, fixing, scaling, or stopping.",
+        "priority": "P2",
+        "question": "What does Open Test Failures prove for this project?",
+        "status": "planned",
+        "title": "Open Test Failures",
+        "why": "Failing tests point directly at what is broken right now and block any honest claim of done."
+      },
+      {
+        "done_when": "Dashboard rebuild succeeds and the project page opens with the expected scoped data.",
+        "evidence_to_collect": "Run dashboard generation, open the BETA and OMEGA project pages, and record the render result.",
+        "healthy_direction": "Define the target direction and threshold in the project configuration.",
+        "metric": "dashboard_render_success",
+        "owner_role": "Frontend QA",
+        "planning_use": "Use it to decide whether the next step is testing, fixing, scaling, or stopping.",
+        "priority": "P1",
+        "question": "What does Dashboard Render Smoke prove for this project?",
+        "status": "planned",
+        "title": "Dashboard Render Smoke",
+        "why": "The app has to rebuild and load project pages after evidence changes."
+      },
+      {
+        "done_when": "Coverage rises when useful controls are added and browser-verified.",
+        "evidence_to_collect": "Review the project page controls and record how many intended project-management workflows are covered.",
+        "healthy_direction": "Define the target direction and threshold in the project configuration.",
+        "metric": "project_control_coverage",
+        "owner_role": "Product/project manager",
+        "planning_use": "Use it to decide whether the next step is testing, fixing, scaling, or stopping.",
+        "priority": "P1",
+        "question": "What does Project Control Coverage prove for this project?",
+        "status": "planned",
+        "title": "Project Control Coverage",
+        "why": "BETA needs no-command controls for setup, todos, work, evidence, reports, and AI management."
+      },
+      {
+        "done_when": "Open blocker count trends down or each blocker has a named next action.",
+        "evidence_to_collect": "Keep todos current and record blocked items, owner, reason, and completion evidence.",
+        "healthy_direction": "Define the target direction and threshold in the project configuration.",
+        "metric": "open_blocker_count",
+        "owner_role": "Project manager",
+        "planning_use": "Use it to decide whether the next step is testing, fixing, scaling, or stopping.",
+        "priority": "P2",
+        "question": "What does Blocker And Todo Flow prove for this project?",
+        "status": "planned",
+        "title": "Blocker And Todo Flow",
+        "why": "Open blockers explain what is behind schedule and what the project manager AI should focus on."
+      },
+      {
+        "done_when": "High-value AI recommendations have a decision, owner, and result metric.",
+        "evidence_to_collect": "Record AI recommendations, mark which ones were tried, and connect them to metric movement.",
+        "healthy_direction": "Define the target direction and threshold in the project configuration.",
+        "metric": "ai_recommendation_follow_through",
+        "owner_role": "AI/project manager",
+        "planning_use": "Use it to decide whether the next step is testing, fixing, scaling, or stopping.",
+        "priority": "P1",
+        "question": "What does AI Recommendation Follow-Through prove for this project?",
+        "status": "planned",
+        "title": "AI Recommendation Follow-Through",
+        "why": "AI advice should become tracked actions whose impact can be measured later."
+      },
+      {
+        "done_when": "Failure rate and stale issue load trend down over repeated project cycles.",
+        "evidence_to_collect": "Import CI runs, test results, issue status, and repeated failure reasons.",
+        "healthy_direction": "Define the target direction and threshold in the project configuration.",
+        "metric": "ci_failure_rate",
+        "owner_role": "Engineering lead",
+        "planning_use": "Use it to decide whether the next step is testing, fixing, scaling, or stopping.",
+        "priority": "P2",
+        "question": "What does Issue And CI History prove for this project?",
+        "status": "planned",
+        "title": "Issue And CI History",
+        "why": "Build failures, flaky tests, and unresolved issues are real workflow health signals."
+      }
+    ],
+    "project_goals": [],
+    "real_report_count": 0,
+    "summary": "BETA uses metrics for three jobs: prove the project works, prove it is improving, and decide what work deserves attention next."
+  },
+  "metric_profile": {
+    "id": "software",
+    "label": "Software And Project Management",
+    "project_type": "software"
+  },
+  "next_actions": [],
+  "operating_plan": {
+    "decision_rules": [
+      "If a critical metric regresses, stabilize it before adding new features.",
+      "If a claim is thin, collect missing evidence before advertising improvement.",
+      "If a metric improves, add a regression guard before moving on.",
+      "If effort looks wasted, verify with issue, CI, or time-log data before changing priorities."
+    ],
+    "later": [
+      {
+        "confidence": "thin",
+        "effort": "medium",
+        "evidence_to_collect": "A fresh matching proof report plus before/after metric comparison.",
+        "impact": "high",
+        "metric": "ai_recommendation_follow_through",
+        "objective": "AI Recommendation Follow-Through",
+        "owner_role": "Engineering",
+        "priority": "P1",
+        "source": "measurement plan",
+        "steps": [
+          "Run the same scenario used by the comparable baseline.",
+          "Capture report.json and import it into BETA.",
+          "Check whether the target metric improved, stabilized, or regressed again.",
+          "If it regresses again, profile the owning code path before adding new features."
+        ],
+        "stop_condition": "Do not move this to done until the metric is stable or improving across repeated comparable runs.",
+        "success_metric": "High-value AI recommendations have a decision, owner, and result metric.",
+        "why_now": "AI advice should become tracked actions whose impact can be measured later."
+      },
+      {
+        "confidence": "thin",
+        "effort": "medium",
+        "evidence_to_collect": "A fresh matching proof report plus before/after metric comparison.",
+        "impact": "high",
+        "metric": "project_todo_count",
+        "objective": "Create a real project todo list",
+        "owner_role": "Engineering",
+        "priority": "P1",
+        "source": "project todo ledger",
+        "steps": [
+          "Run the same scenario used by the comparable baseline.",
+          "Capture report.json and import it into BETA.",
+          "Check whether the target metric improved, stabilized, or regressed again.",
+          "If it regresses again, profile the owning code path before adding new features."
+        ],
+        "stop_condition": "Do not move this to done until the metric is stable or improving across repeated comparable runs.",
+        "success_metric": "at least three project todos with priority and status",
+        "why_now": "1 project(s) are tracked, but there are no persistent todos for planned work, blockers, or completion evidence."
+      },
+      {
+        "confidence": "thin",
+        "effort": "medium",
+        "evidence_to_collect": "A fresh matching proof report plus before/after metric comparison.",
+        "impact": "high",
+        "metric": "work_evidence_percent",
+        "objective": "Tie work to evidence",
+        "owner_role": "Engineering",
+        "priority": "P1",
+        "source": "work session ledger",
+        "steps": [
+          "Run the same scenario used by the comparable baseline.",
+          "Capture report.json and import it into BETA.",
+          "Check whether the target metric improved, stabilized, or regressed again.",
+          "If it regresses again, profile the owning code path before adding new features."
+        ],
+        "stop_condition": "Do not move this to done until the metric is stable or improving across repeated comparable runs.",
+        "success_metric": "work evidence percent above 50%",
+        "why_now": "Only 0.0% of tracked work currently references evidence, tests, or validation."
+      }
+    ],
+    "north_star": "Every important claim should have a metric, a baseline, a trend, and a next experiment.",
+    "review_questions": [
+      "What is the single highest leverage test to run next?",
+      "Which metric regression most weakens the claims?",
+      "What should we stop doing until the evidence improves?",
+      "What data source would most improve confidence?"
+    ],
+    "stop_doing": [
+      {
+        "better_option": "Use real project runs and keep the quarantined list as an audit trail.",
+        "reason": "Quarantined local/demo reports can be useful for UI testing, but they cannot prove project progress.",
+        "title": "Do not use demo data as proof"
+      },
+      {
+        "better_option": "Repeat the same scenario after each meaningful change and compare against the matching baseline.",
+        "reason": "A single run can be noise; the dashboard needs repeated comparable runs before calling progress real.",
+        "title": "Do not chase one-off numbers"
+      },
+      {
+        "better_option": "Record work-log sessions before making hard claims about wasted or well-spent time.",
+        "reason": "Time-spend and project-management claims are currently inferred, not directly imported.",
+        "title": "Do not optimize unmeasured work"
+      },
+      {
+        "better_option": "Create persistent todos with priority, owner, blocker, due date, and success evidence.",
+        "reason": "Generated actions are useful, but they are not the same as your committed todo list.",
+        "title": "Do not manage the project only from generated suggestions"
+      }
+    ],
+    "summary": "Use the current proof data to choose the next narrow improvement loop.",
+    "this_week": [
+      {
+        "confidence": "thin",
+        "effort": "medium",
+        "evidence_to_collect": "A fresh matching proof report plus before/after metric comparison.",
+        "impact": "high",
+        "metric": "real_report_available",
+        "objective": "Collect real evidence before optimizing",
+        "owner_role": "Engineering",
+        "priority": "P0",
+        "source": "data authenticity gate",
+        "steps": [
+          "Run the same scenario used by the comparable baseline.",
+          "Capture report.json and import it into BETA.",
+          "Check whether the target metric improved, stabilized, or regressed again.",
+          "If it regresses again, profile the owning code path before adding new features."
+        ],
+        "stop_condition": "Do not move this to done until the metric is stable or improving across repeated comparable runs.",
+        "success_metric": "accepted real report count",
+        "why_now": "The current imported reports are not accepted as real proof data, so progress and improvement claims would be misleading."
+      },
+      {
+        "confidence": "thin",
+        "effort": "medium",
+        "evidence_to_collect": "A fresh matching proof report plus before/after metric comparison.",
+        "impact": "high",
+        "metric": "unit_test_pass_rate",
+        "objective": "Software Test Pass Rate",
+        "owner_role": "Engineering",
+        "priority": "P1",
+        "source": "measurement plan",
+        "steps": [
+          "Run the same scenario used by the comparable baseline.",
+          "Capture report.json and import it into BETA.",
+          "Check whether the target metric improved, stabilized, or regressed again.",
+          "If it regresses again, profile the owning code path before adding new features."
+        ],
+        "stop_condition": "Do not move this to done until the metric is stable or improving across repeated comparable runs.",
+        "success_metric": "Pass rate holds at the project target and regressions are linked to specific work.",
+        "why_now": "Proves BETA is still correct while project-management and AI features are added."
+      },
+      {
+        "confidence": "thin",
+        "effort": "medium",
+        "evidence_to_collect": "A fresh matching proof report plus before/after metric comparison.",
+        "impact": "high",
+        "metric": "dashboard_render_success",
+        "objective": "Dashboard Render Smoke",
+        "owner_role": "Engineering",
+        "priority": "P1",
+        "source": "measurement plan",
+        "steps": [
+          "Run the same scenario used by the comparable baseline.",
+          "Capture report.json and import it into BETA.",
+          "Check whether the target metric improved, stabilized, or regressed again.",
+          "If it regresses again, profile the owning code path before adding new features."
+        ],
+        "stop_condition": "Do not move this to done until the metric is stable or improving across repeated comparable runs.",
+        "success_metric": "Dashboard rebuild succeeds and the project page opens with the expected scoped data.",
+        "why_now": "The app has to rebuild and load project pages after evidence changes."
+      },
+      {
+        "confidence": "thin",
+        "effort": "medium",
+        "evidence_to_collect": "A fresh matching proof report plus before/after metric comparison.",
+        "impact": "high",
+        "metric": "project_control_coverage",
+        "objective": "Project Control Coverage",
+        "owner_role": "Engineering",
+        "priority": "P1",
+        "source": "measurement plan",
+        "steps": [
+          "Run the same scenario used by the comparable baseline.",
+          "Capture report.json and import it into BETA.",
+          "Check whether the target metric improved, stabilized, or regressed again.",
+          "If it regresses again, profile the owning code path before adding new features."
+        ],
+        "stop_condition": "Do not move this to done until the metric is stable or improving across repeated comparable runs.",
+        "success_metric": "Coverage rises when useful controls are added and browser-verified.",
+        "why_now": "BETA needs no-command controls for setup, todos, work, evidence, reports, and AI management."
+      }
+    ]
+  },
+  "progress_diagnostics": {},
+  "project_intelligence": {
+    "domain_counts": {},
+    "project_count": 1,
+    "projects": [
+      {
+        "blocked_todo_count": 0,
+        "detected_project_type": {},
+        "doc_files": 0,
+        "evidence_files": 0,
+        "evidence_gap_count": 0,
+        "files_scanned": 0,
+        "input_count": 1,
+        "input_source_counts": {
+          "repo": 1
+        },
+        "next_step": "Add executable tests for the core workflow before expanding features.",
+        "open_todo_count": 0,
+        "project_key": "cosnfx",
+        "project_name": "CosNFX",
+        "source_files": 0,
+        "test_files": 0,
+        "test_to_source_percent": 0.0,
+        "todo_count": 0,
+        "todo_progress_percent": 0.0,
+        "top_metric_terms": [],
+        "worklog_count": 0,
+        "worklog_evidence_percent": 0.0,
+        "worklog_hours": 0.0,
+        "worklog_waste_percent": 0.0
+      }
+    ],
+    "role_counts": {},
+    "summary": "Project scan is connected across 1 project(s), with strongest signals in general.",
+    "top_metric_terms": {}
+  },
+  "project_links": [
+    {
+      "href": "beta.html",
+      "project_key": "beta",
+      "project_name": "BETA"
+    },
+    {
+      "href": "cosnfx.html",
+      "project_key": "cosnfx",
+      "project_name": "CosNFX"
+    },
+    {
+      "href": "cosnfx-ios.html",
+      "project_key": "cosnfx-ios",
+      "project_name": "CosNFX iOS"
+    },
+    {
+      "href": "omega.html",
+      "project_key": "omega",
+      "project_name": "OMEGA"
+    }
+  ],
+  "project_management": {
+    "active_measurement_count": 0,
+    "active_scenario": null,
+    "backlog_health_percent": 0.0,
+    "baseline_run_id": null,
+    "blocked_action_count": 1,
+    "blocked_todo_count": 0,
+    "compared_metric_count": 0,
+    "connected_source_count": 2,
+    "doing_todo_count": 0,
+    "done_todo_count": 0,
+    "evidence_coverage_percent": 0.0,
+    "finding_counts": {},
+    "first_run_at": null,
+    "improved_metric_count": 0,
+    "latest_run_at": null,
+    "missing_source_count": 8,
+    "open_backlog_items": 0,
+    "open_todo_count": 0,
+    "operating_action_count": 4,
+    "overdue_todo_count": 0,
+    "planned_measurement_count": 8,
+    "planned_project_count": 1,
+    "priority_counts": {},
+    "progress_direction": "Needs real data",
+    "regressed_metric_count": 0,
+    "report_count": 0,
+    "scenario_count": 0,
+    "todo_count": 0,
+    "todo_progress_percent": 0.0,
+    "tracked_action_count": 49,
+    "unchanged_metric_count": 0,
+    "work_evidence_percent": 0.0,
+    "work_session_count": 0,
+    "work_total_hours": 0.0,
+    "work_waste_percent": 0.0
+  },
+  "project_manager": {
+    "ai_collaboration": {
+      "contract": [
+        "AI suggestions are hypotheses until a test, source, or metric supports them.",
+        "Useful AI work should leave a saved summary, decision, or next experiment.",
+        "Repeated AI advice should become a measurement, risk, or project-control rule."
+      ],
+      "how_to_use": [
+        "Save AI session summaries as source_type=ai-session inputs.",
+        "Ask BETA which AI suggestions have measurable evidence.",
+        "Promote repeated AI recommendations into metrics, tests, or risks."
+      ],
+      "status": "planned",
+      "tracked_ai_session_inputs": 0
+    },
+    "current_priorities": [
+      {
+        "confidence": "thin",
+        "effort": "medium",
+        "evidence_to_collect": "A fresh matching proof report plus before/after metric comparison.",
+        "impact": "high",
+        "metric": "real_report_available",
+        "objective": "Collect real evidence before optimizing",
+        "owner_role": "Engineering",
+        "priority": "P0",
+        "source": "data authenticity gate",
+        "steps": [
+          "Run the same scenario used by the comparable baseline.",
+          "Capture report.json and import it into BETA.",
+          "Check whether the target metric improved, stabilized, or regressed again.",
+          "If it regresses again, profile the owning code path before adding new features."
+        ],
+        "stop_condition": "Do not move this to done until the metric is stable or improving across repeated comparable runs.",
+        "success_metric": "accepted real report count",
+        "why_now": "The current imported reports are not accepted as real proof data, so progress and improvement claims would be misleading."
+      },
+      {
+        "confidence": "thin",
+        "effort": "medium",
+        "evidence_to_collect": "A fresh matching proof report plus before/after metric comparison.",
+        "impact": "high",
+        "metric": "unit_test_pass_rate",
+        "objective": "Software Test Pass Rate",
+        "owner_role": "Engineering",
+        "priority": "P1",
+        "source": "measurement plan",
+        "steps": [
+          "Run the same scenario used by the comparable baseline.",
+          "Capture report.json and import it into BETA.",
+          "Check whether the target metric improved, stabilized, or regressed again.",
+          "If it regresses again, profile the owning code path before adding new features."
+        ],
+        "stop_condition": "Do not move this to done until the metric is stable or improving across repeated comparable runs.",
+        "success_metric": "Pass rate holds at the project target and regressions are linked to specific work.",
+        "why_now": "Proves BETA is still correct while project-management and AI features are added."
+      },
+      {
+        "confidence": "thin",
+        "effort": "medium",
+        "evidence_to_collect": "A fresh matching proof report plus before/after metric comparison.",
+        "impact": "high",
+        "metric": "dashboard_render_success",
+        "objective": "Dashboard Render Smoke",
+        "owner_role": "Engineering",
+        "priority": "P1",
+        "source": "measurement plan",
+        "steps": [
+          "Run the same scenario used by the comparable baseline.",
+          "Capture report.json and import it into BETA.",
+          "Check whether the target metric improved, stabilized, or regressed again.",
+          "If it regresses again, profile the owning code path before adding new features."
+        ],
+        "stop_condition": "Do not move this to done until the metric is stable or improving across repeated comparable runs.",
+        "success_metric": "Dashboard rebuild succeeds and the project page opens with the expected scoped data.",
+        "why_now": "The app has to rebuild and load project pages after evidence changes."
+      },
+      {
+        "confidence": "thin",
+        "effort": "medium",
+        "evidence_to_collect": "A fresh matching proof report plus before/after metric comparison.",
+        "impact": "high",
+        "metric": "project_control_coverage",
+        "objective": "Project Control Coverage",
+        "owner_role": "Engineering",
+        "priority": "P1",
+        "source": "measurement plan",
+        "steps": [
+          "Run the same scenario used by the comparable baseline.",
+          "Capture report.json and import it into BETA.",
+          "Check whether the target metric improved, stabilized, or regressed again.",
+          "If it regresses again, profile the owning code path before adding new features."
+        ],
+        "stop_condition": "Do not move this to done until the metric is stable or improving across repeated comparable runs.",
+        "success_metric": "Coverage rises when useful controls are added and browser-verified.",
+        "why_now": "BETA needs no-command controls for setup, todos, work, evidence, reports, and AI management."
+      },
+      {
+        "next_step": "Commit, stash, or record a work session explaining the active changes before treating metrics as stable.",
+        "owner_role": "Project manager",
+        "priority": "P2",
+        "source": "snapshot",
+        "title": "CosNFX: Resolve or explain dirty repo state",
+        "why": "1 scanned repo(s) have uncommitted or untracked changes."
+      },
+      {
+        "next_step": "Add a CI workflow, import CI logs, or record repeatable local test evidence after each major change.",
+        "owner_role": "Project manager",
+        "priority": "P2",
+        "source": "snapshot",
+        "title": "CosNFX: Connect CI or repeatable test history",
+        "why": "No CI workflow files were detected, so BETA cannot tell whether checks stay green over time."
+      },
+      {
+        "next_step": "Add tests around the riskiest project-management and data-ingestion workflows first.",
+        "owner_role": "Project manager",
+        "priority": "P1",
+        "source": "snapshot",
+        "title": "CosNFX: Increase test coverage for source-heavy areas",
+        "why": "The snapshot found 0 test file(s) for 10 source file(s)."
+      }
+    ],
+    "data_to_connect": [
+      {
+        "category": "evidence",
+        "next_step": "Import real bench, field, CI, hardware, or project proof reports with no demo/synthetic/local-proof markers.",
+        "source": "Real Proof Reports",
+        "why": "Only accepted real run reports drive charts, regressions, findings, claims, and AI analysis."
+      },
+      {
+        "category": "evidence",
+        "next_step": "Replace quarantined reports with real evidence or mark real reports explicitly with metadata.data_authenticity=real.",
+        "source": "Quarantined Demo Reports",
+        "why": "Synthetic, demo, smoke, fixture, and local proof reports stay visible for audit but are excluded from metrics."
+      },
+      {
+        "category": "evidence",
+        "next_step": "Repeat the same scenario after changes so every metric has a before/after comparison.",
+        "source": "Comparable Baseline",
+        "why": "A matching prior scenario separates real progress from one-off numbers."
+      },
+      {
+        "category": "evidence",
+        "next_step": "Run the same scenario several times before treating a change as proven.",
+        "source": "Repeatability",
+        "why": "Multiple runs expose noise, flaky behavior, and repeated regressions."
+      },
+      {
+        "category": "evidence",
+        "next_step": "Add at least one scale or field-like scenario beside the current coastal proof.",
+        "source": "Scenario Diversity",
+        "why": "More scenarios reduce the risk of proving only one narrow demo path."
+      },
+      {
+        "category": "evidence",
+        "next_step": "Run proof scenarios at 100, 500, and 1000+ observations and compare the curves.",
+        "source": "Sample Scale",
+        "why": "Larger samples make performance, storage, and reliability claims harder to fake."
+      },
+      {
+        "category": "ai",
+        "next_step": "Use auto-strong for serious reviews; keep deterministic metrics as the source of truth.",
+        "source": "AI Analyst",
+        "why": "Ollama reviews weak evidence, missing measurements, experiment ideas, and next actions."
+      },
+      {
+        "category": "planning",
+        "next_step": "Register planned sources, then connect real files or folders as they become available.",
+        "source": "Source Connection Plan",
+        "why": "Source connectors define which project inputs BETA should expect for issues, CI, docs, bench, field, metrics, and AI sessions."
+      }
+    ],
+    "generated_at": "2026-06-22T21:24:40Z",
+    "input_source_counts": {
+      "repo": 1
+    },
+    "manager_posture": "build",
+    "metric_backlog": [
+      {
+        "metric": "unit_test_pass_rate",
+        "owner_role": "Software QA",
+        "priority": "P1",
+        "success_evidence": "Pass rate holds at the project target and regressions are linked to specific work.",
+        "title": "Software Test Pass Rate"
+      },
+      {
+        "metric": "code_coverage_percent",
+        "owner_role": "Software QA",
+        "priority": "P2",
+        "success_evidence": "Coverage holds above the project floor and does not regress against the last import.",
+        "title": "Code Coverage"
+      },
+      {
+        "metric": "test_failure_count",
+        "owner_role": "Software QA",
+        "priority": "P2",
+        "success_evidence": "Test failures reach zero and any new failure is linked to a specific change.",
+        "title": "Open Test Failures"
+      },
+      {
+        "metric": "dashboard_render_success",
+        "owner_role": "Frontend QA",
+        "priority": "P1",
+        "success_evidence": "Dashboard rebuild succeeds and the project page opens with the expected scoped data.",
+        "title": "Dashboard Render Smoke"
+      },
+      {
+        "metric": "project_control_coverage",
+        "owner_role": "Product/project manager",
+        "priority": "P1",
+        "success_evidence": "Coverage rises when useful controls are added and browser-verified.",
+        "title": "Project Control Coverage"
+      },
+      {
+        "metric": "open_blocker_count",
+        "owner_role": "Project manager",
+        "priority": "P2",
+        "success_evidence": "Open blocker count trends down or each blocker has a named next action.",
+        "title": "Blocker And Todo Flow"
+      },
+      {
+        "metric": "ai_recommendation_follow_through",
+        "owner_role": "AI/project manager",
+        "priority": "P1",
+        "success_evidence": "High-value AI recommendations have a decision, owner, and result metric.",
+        "title": "AI Recommendation Follow-Through"
+      },
+      {
+        "metric": "ci_failure_rate",
+        "owner_role": "Engineering lead",
+        "priority": "P2",
+        "success_evidence": "Failure rate and stale issue load trend down over repeated project cycles.",
+        "title": "Issue And CI History"
+      }
+    ],
+    "next_checkpoints": [
+      "Run or schedule the next comparable scenario.",
+      "Update project inputs after meaningful AI, issue, CI, bench, or field work.",
+      "Review metric intelligence and close one P0/P1 action.",
+      "Export a report before changing direction."
+    ],
+    "operating_metrics": [
+      {
+        "metric": "Project profiles",
+        "value": 1,
+        "why": "Each tracked build needs a setup profile, goals, source paths, and project type."
+      },
+      {
+        "metric": "Project goals",
+        "value": 0,
+        "why": "Goals tell BETA what outcomes the metrics are supposed to support."
+      },
+      {
+        "metric": "Connected data sources",
+        "value": "2 / 15",
+        "why": "Connected sources make the manager brief factual instead of guessy."
+      },
+      {
+        "metric": "Project inputs",
+        "value": 1,
+        "why": "Issues, CI, AI sessions, docs, bench logs, and field logs explain why metrics moved."
+      },
+      {
+        "metric": "Local repo snapshots",
+        "value": 1,
+        "why": "Snapshots show Git state, source/test/doc balance, CI presence, and project structure."
+      },
+      {
+        "metric": "Snapshot source files",
+        "value": 10,
+        "why": "Source volume helps size the project and compare testing/documentation balance."
+      },
+      {
+        "metric": "Snapshot test files",
+        "value": 0,
+        "why": "Test volume is an early signal for regression protection and QA maturity."
+      },
+      {
+        "metric": "Dirty repos",
+        "value": 1,
+        "why": "Dirty worktrees can make evidence hard to reproduce unless changes are explained."
+      },
+      {
+        "metric": "Project todos",
+        "value": 0,
+        "why": "Todos are the committed project-management plan: what is planned, doing, blocked, done, or dropped."
+      },
+      {
+        "metric": "Open todos",
+        "value": 0,
+        "why": "Open todos show the remaining committed work BETA should help steer."
+      },
+      {
+        "metric": "Blocked todos",
+        "value": 0,
+        "why": "Blocked todos explain why progress may stall even when evidence metrics are quiet."
+      },
+      {
+        "metric": "Todo completion",
+        "value": "0.0%",
+        "why": "Completion rate shows plan progress, but completed todos should include evidence."
+      },
+      {
+        "metric": "Work sessions",
+        "value": 0,
+        "why": "Structured work logs show where effort went, what produced evidence, and what got blocked."
+      },
+      {
+        "metric": "Evidence-producing work",
+        "value": "0.0%",
+        "why": "Higher means more time is tied to tests, reports, decisions, or validation evidence."
+      },
+      {
+        "metric": "Blocked/rework time",
+        "value": "0.0%",
+        "why": "High values reveal time sinks that should be removed or made explicit risks."
+      },
+      {
+        "metric": "Planned measurements",
+        "value": 8,
+        "why": "Planned measurements convert claims into tests and acceptance evidence."
+      },
+      {
+        "metric": "Open manager risks",
+        "value": 7,
+        "why": "Risks mark the places most likely to waste time or weaken proof."
+      }
+    ],
+    "project_controls": [
+      {
+        "control": "Project intake",
+        "evidence": "1 project profile(s)",
+        "next_step": "Keep project goals, paths, type, and claim list current.",
+        "status": "active"
+      },
+      {
+        "control": "Evidence intake",
+        "evidence": "1 ingested project input(s)",
+        "next_step": "Import the source that explains the latest work or blocker.",
+        "status": "active"
+      },
+      {
+        "control": "Measurement backlog",
+        "evidence": "8 planned measurement(s)",
+        "next_step": "Attach every major claim to a repeatable metric and test method.",
+        "status": "active"
+      },
+      {
+        "control": "Snapshot intelligence",
+        "evidence": "1 snapshot(s), 10 source file(s), 0 test file(s)",
+        "next_step": "Collect snapshots after meaningful repo changes and review dirty repo, CI, test, and doc signals.",
+        "status": "active"
+      },
+      {
+        "control": "Todo ledger",
+        "evidence": "0 todo item(s), 0 open, 0 blocked",
+        "next_step": "Keep active todos current and close done work with evidence.",
+        "status": "missing"
+      },
+      {
+        "control": "Work ledger",
+        "evidence": "0 logged work session(s)",
+        "next_step": "Record minutes, category, outcome, evidence, blocker, and next step after meaningful work.",
+        "status": "missing"
+      },
+      {
+        "control": "AI collaboration",
+        "evidence": "0 AI session input(s)",
+        "next_step": "Capture AI decisions, discarded ideas, and tested recommendations.",
+        "status": "planned"
+      }
+    ],
+    "project_goals": [],
+    "project_type_mix": {
+      "software": 1
+    },
+    "project_understanding": "Project scan is connected across 1 project(s), with strongest signals in general.",
+    "readiness_label": "needs setup",
+    "readiness_score": 0.0,
+    "review_agenda": [
+      "What metric changed since the last comparable run, and what caused it?",
+      "Which current priority has the clearest success metric and evidence source?",
+      "Which missing data source would most improve the next decision?",
+      "What AI recommendation is worth testing, and what evidence would prove it helped?",
+      "Which recent work sessions produced evidence, and which ones were blocked or unclear?",
+      "What work should be stopped because it is not tied to a metric, risk, or milestone?"
+    ],
+    "risks": [
+      {
+        "mitigation": "Use auto-strong for serious reviews; keep deterministic metrics as the source of truth.",
+        "owner_role": "Project manager",
+        "risk": "Missing AI Analyst",
+        "why": "Ollama reviews weak evidence, missing measurements, experiment ideas, and next actions."
+      },
+      {
+        "mitigation": "Create a simple CSV or report.json path for bench and field validation evidence.",
+        "owner_role": "Project manager",
+        "risk": "Missing Field And Bench Logs",
+        "why": "Power, thermal, calibration, endurance, and human acceptance data prove real-world readiness."
+      },
+      {
+        "mitigation": "Add todos for the next project-management cycle, then mark work doing, blocked, done, or dropped as reality changes.",
+        "owner_role": "Project manager",
+        "risk": "Missing Project Todo Ledger",
+        "why": "Project todos show planned work, active focus, blockers, due dates, and completion evidence."
+      },
+      {
+        "mitigation": "Record work sessions after meaningful project work with category, minutes, outcome, evidence, blockers, and next step.",
+        "owner_role": "Project manager",
+        "risk": "Missing Work Session Ledger",
+        "why": "Structured work sessions explain where time went, what produced evidence, and which blockers or rework consumed effort."
+      },
+      {
+        "mitigation": "Add a connector/importer for issues, milestones, CI status, coverage, and release notes.",
+        "owner_role": "Project manager",
+        "risk": "Missing Issue And CI History",
+        "why": "Project-management evidence needs defects, milestones, build pass rate, coverage, and flaky-test history."
+      },
+      {
+        "mitigation": "Import Codex/ChatGPT/session summaries as source_type=ai-session after meaningful project work.",
+        "owner_role": "Project manager",
+        "risk": "Missing AI Work Sessions",
+        "why": "AI session summaries show what an AI helped change, suggested, tested, or left uncertain."
+      },
+      {
+        "mitigation": "Add tests around the riskiest project-management and data-ingestion workflows first.",
+        "owner_role": "Project manager",
+        "risk": "CosNFX: Increase test coverage for source-heavy areas",
+        "why": "The snapshot found 0 test file(s) for 10 source file(s)."
+      }
+    ],
+    "setup_next_steps": [
+      "Add project goals so priorities can be ranked against intent instead of only generic metrics.",
+      "Add project todos so BETA can track planned work, active focus, blockers, due dates, and done evidence.",
+      "Record work sessions so BETA can analyze effort quality, blockers, rework, and evidence-producing time.",
+      "CosNFX: Commit, stash, or record a work session explaining the active changes before treating metrics as stable.",
+      "CosNFX: Add a CI workflow, import CI logs, or record repeatable local test evidence after each major change.",
+      "CosNFX: Add tests around the riskiest project-management and data-ingestion workflows first.",
+      "Save useful AI work summaries with source_type=ai-session so BETA can connect suggestions to evidence."
+    ],
+    "snapshot_intelligence": {
+      "projects": [
+        {
+          "ci_workflow_file_count": 0,
+          "config_file_count": 1,
+          "dirty_repo_count": 1,
+          "doc_file_count": 7,
+          "docs_to_source_ratio": 0.7,
+          "generated_at": "2026-06-22T19:41:00Z",
+          "label": "thin",
+          "planning_notes": [
+            "No test files were detected in the scanned path.",
+            "No CI workflow files were detected in the scanned path.",
+            "Tests are thin compared with source file count.",
+            "Git worktree has uncommitted or untracked changes."
+          ],
+          "project_key": "cosnfx",
+          "project_name": "CosNFX",
+          "score": 50.0,
+          "source_file_count": 10,
+          "test_file_count": 0,
+          "test_to_source_ratio": 0.0,
+          "trend": []
+        }
+      ],
+      "recommendations": [
+        {
+          "next_step": "Commit, stash, or record a work session explaining the active changes before treating metrics as stable.",
+          "project_key": "cosnfx",
+          "project_name": "CosNFX",
+          "severity": "medium",
+          "title": "Resolve or explain dirty repo state",
+          "why": "1 scanned repo(s) have uncommitted or untracked changes."
+        },
+        {
+          "next_step": "Add a CI workflow, import CI logs, or record repeatable local test evidence after each major change.",
+          "project_key": "cosnfx",
+          "project_name": "CosNFX",
+          "severity": "medium",
+          "title": "Connect CI or repeatable test history",
+          "why": "No CI workflow files were detected, so BETA cannot tell whether checks stay green over time."
+        },
+        {
+          "next_step": "Add tests around the riskiest project-management and data-ingestion workflows first.",
+          "project_key": "cosnfx",
+          "project_name": "CosNFX",
+          "severity": "high",
+          "title": "Increase test coverage for source-heavy areas",
+          "why": "The snapshot found 0 test file(s) for 10 source file(s)."
+        }
+      ],
+      "snapshot_count": 1,
+      "status": "connected",
+      "totals": {
+        "ci_workflow_file_count": 0,
+        "config_file_count": 1,
+        "dirty_repo_count": 1,
+        "doc_file_count": 7,
+        "missing_path_count": 0,
+        "scanned_path_count": 1,
+        "source_file_count": 10,
+        "test_file_count": 0
+      }
+    },
+    "source_coverage_score": 13.3,
+    "summary": "Use the current proof data to choose the next narrow improvement loop.",
+    "todo_tracking": {
+      "blocked_count": 0,
+      "doing_count": 0,
+      "done_count": 0,
+      "entry_count": 0,
+      "open_count": 0,
+      "overdue_count": 0,
+      "progress_percent": 0.0,
+      "recommendations": [
+        "Create project todos so BETA can manage planned work instead of only inferring actions."
+      ],
+      "status": "missing",
+      "summary": "No project todos are recorded yet, so BETA cannot track planned work, blockers, or completion from direct data."
+    },
+    "work_tracking": {
+      "entry_count": 0,
+      "evidence_percent": 0.0,
+      "recommendations": [
+        "Record work sessions after meaningful project work so BETA can judge effort quality from real data."
+      ],
+      "status": "missing",
+      "summary": "No structured work sessions are logged yet, so BETA cannot judge time use from direct evidence.",
+      "total_hours": 0.0,
+      "waste_percent": 0.0
+    },
+    "workflow_levers": [
+      "Increase repeat depth to at least three matching runs per important scenario.",
+      "Connect issue/CI, bench, field, or work-log sources so project-management claims stop being inferred.",
+      "Promote planned metrics into active report fields.",
+      "Close data-quality gaps before treating improvements as durable.",
+      "Start a work-session ledger so time-use and blocker analysis is based on real project behavior.",
+      "Create a todo ledger so project progress, blockers, and completion are tracked directly.",
+      "Run a local AI review after deterministic analysis has current data."
+    ]
+  },
+  "project_setup": {
+    "commands": [
+      {
+        "command": ".\\dev.ps1 init-project -ProjectPath C:\\path\\to\\build -ProjectName \"Bench Prototype\" -ProjectType hardware -Goal \"Prove stable bench operation\"",
+        "title": "Create a separated project",
+        "why": "Creates a project page, project.json, scan profile, verification plan, and project-scoped dashboard data."
+      },
+      {
+        "command": ".\\dev.ps1 configure-project -ProjectKey cosnfx -Goal \"Make field setup repeatable\" -Metric \"setup_success_rate|%|Tracks whether setup succeeds without manual rescue\" -Claim \"Operators can identify a node and trust its status\"",
+        "title": "Add goals, claims, or custom metrics",
+        "why": "Custom goals and metrics become planning inputs, manager context, and measurement backlog."
+      },
+      {
+        "command": ".\\dev.ps1 ingest-info -ProjectKey cosnfx -InfoPath C:\\path\\to\\issues-or-notes.csv -SourceType issues -Note \"current backlog\"",
+        "title": "Connect real project context",
+        "why": "Issues, CI, bench logs, field notes, docs, and AI sessions explain why a metric moved."
+      },
+      {
+        "command": ".\\dev.ps1 record-work -ProjectKey cosnfx -WorkTitle \"Validation pass\" -WorkMinutes 45 -WorkStatus tested -WorkEvidence \"report.json\"",
+        "title": "Record work and evidence",
+        "why": "Work logs tell the manager where time is productive, blocked, rework, or evidence-producing."
+      },
+      {
+        "command": ".\\dev.ps1 refresh; .\\dev.ps1 manage-ai -Model gemma4:latest",
+        "title": "Run the manager loop",
+        "why": "Refreshes deterministic analysis, then asks the local AI to turn it into actionable project guidance."
+      }
+    ],
+    "config_path": "C:\\Users\\jdcap\\Documents\\Projects\\BETA\\.beta\\projects\\cosnfx\\project.json",
+    "custom_claims": [],
+    "custom_metrics": [],
+    "customizable_fields": [
+      {
+        "current": 0,
+        "field": "goals",
+        "meaning": "What the project is trying to improve or prove."
+      },
+      {
+        "current": 0,
+        "field": "custom_claims",
+        "meaning": "Statements BETA should try to connect to evidence."
+      },
+      {
+        "current": 0,
+        "field": "custom_metrics",
+        "meaning": "Project-specific measurements that should appear in the planning backlog."
+      },
+      {
+        "current": 6,
+        "field": "evidence_sources",
+        "meaning": "Where useful proof can come from: CI, bench, field, docs, issues, AI sessions."
+      },
+      {
+        "current": 5,
+        "field": "test_tools",
+        "meaning": "Tools or workflows that can produce proof."
+      },
+      {
+        "current": 1,
+        "field": "paths",
+        "meaning": "Repo, hardware folder, docs folder, or build path BETA should scan."
+      }
+    ],
+    "goals": [],
+    "planning_loop": [
+      "Goal: decide what outcome matters.",
+      "Claim: write the thing you want to be able to say is true.",
+      "Metric: define the number, pass/fail, or evidence signal that would prove it.",
+      "Scenario: run the same test or validation path repeatedly.",
+      "Evidence: import the report, CI result, bench log, field note, or operator signoff.",
+      "Manager decision: focus, stop, protect, or connect a missing source."
+    ],
+    "project_key": "cosnfx",
+    "project_name": "CosNFX",
+    "project_type": "software",
+    "summary": "Use this setup guide to turn BETA from a dashboard into a project manager: goals define intent, metrics define proof, and evidence changes the plan."
+  },
+  "projects": [
+    {
+      "ai": {
+        "available": false,
+        "milestones": [],
+        "model": null,
+        "next_steps": [],
+        "risk_register": [],
+        "summary": null
+      },
+      "ai_plan_generated_at": null,
+      "ai_plan_path": null,
+      "blueprint": {
+        "ai_collaboration_contract": [
+          "Save important AI sessions or summaries as project inputs.",
+          "Link AI suggestions to metrics, tests, or evidence gaps.",
+          "Do not count AI claims as proof unless a test or source supports them.",
+          "Track which AI recommendations were tried and whether later metrics improved."
+        ],
+        "data_ingestion_targets": [
+          {
+            "examples": [
+              "local Git repository",
+              "source tree snapshot",
+              "build folder scan"
+            ],
+            "source_type": "repo"
+          },
+          {
+            "examples": [
+              "GitHub issues export",
+              "Jira CSV",
+              "manual backlog CSV"
+            ],
+            "source_type": "issues"
+          },
+          {
+            "examples": [
+              "test results JSON",
+              "coverage XML/JSON",
+              "build logs"
+            ],
+            "source_type": "ci"
+          },
+          {
+            "examples": [
+              "AI chat transcript",
+              "Codex summary",
+              "agent work log"
+            ],
+            "source_type": "ai-session"
+          },
+          {
+            "examples": [
+              "bench CSV",
+              "field log",
+              "calibration sheet"
+            ],
+            "source_type": "bench"
+          },
+          {
+            "examples": [
+              "requirements",
+              "design notes",
+              "acceptance criteria"
+            ],
+            "source_type": "docs"
+          }
+        ],
+        "description": "",
+        "evidence_sources": [
+          "repo scan",
+          "test reports",
+          "CI history",
+          "issue tracker",
+          "release notes",
+          "AI work logs"
+        ],
+        "generated_at": "2026-06-22T19:40:59Z",
+        "goals": [],
+        "management_cadence": {
+          "daily": [
+            "Review current blocker",
+            "Run or schedule the smallest useful evidence check"
+          ],
+          "milestone": [
+            "Re-scan project",
+            "Refresh claims/metrics",
+            "Run AI manager review",
+            "Archive decision log"
+          ],
+          "weekly": [
+            "Review operating plan",
+            "Close stale risks",
+            "Pick next measurements",
+            "Export report"
+          ]
+        },
+        "manager_ai_role": "Project manager AI that turns evidence into priorities, risks, checkpoints, and better workflow.",
+        "metric_families": [
+          "test_pass_rate",
+          "workflow_success_rate",
+          "p95_latency",
+          "defect_escape_rate",
+          "deployment_frequency"
+        ],
+        "paths": [
+          "C:\\Users\\jdcap\\AndroidStudioProjects\\wear_gadget"
+        ],
+        "project_config_version": 1,
+        "project_key": "cosnfx",
+        "project_name": "CosNFX",
+        "project_type": "software",
+        "schema": "beta.project.v1",
+        "setup_checklist": [
+          "Define the project claims and acceptance criteria.",
+          "Choose the first repeatable scenario or workflow to test.",
+          "Add machine-readable reports for every meaningful run.",
+          "Connect source, test, issue, CI, AI-work, and bench/field evidence where available.",
+          "Review the operating plan weekly and after every major run."
+        ],
+        "test_commands": [
+          {
+            "args": [
+              "python",
+              "-m",
+              "pytest",
+              "-q",
+              "--junitxml",
+              "{report}"
+            ],
+            "format": "junit",
+            "label": "Python tests (pytest, JUnit XML)",
+            "name": "pytest",
+            "report": "pytest-junit.xml",
+            "why": "Runs the project's pytest/unittest suite and records pass rate and failures as real CI evidence."
+          }
+        ],
+        "test_tools": [
+          "unit tests",
+          "integration tests",
+          "smoke tests",
+          "load tests",
+          "coverage reports"
+        ]
+      },
+      "claims_to_verify": [],
+      "description": "",
+      "detected_project_type": {},
+      "domain_signals": {},
+      "evidence_gaps": [],
+      "files_scanned": 0,
+      "files_seen": 0,
+      "generated_at": null,
+      "goals": [],
+      "inputs": {
+        "entries": [
+          {
+            "bytes": 3610,
+            "extension": ".json",
+            "imported_at": "2026-06-22T19:41:00Z",
+            "json_type": "dict",
+            "keys": [
+              "configured_path_count",
+              "generated_at",
+              "metrics",
+              "missing_path_count",
+              "paths",
+              "project_key",
+              "project_name",
+              "project_type",
+              "scanned_path_count",
+              "schema"
+            ],
+            "name": "project-snapshot.json",
+            "note": "Automatic local project snapshot from configured project paths.",
+            "path": "C:\\Users\\jdcap\\Documents\\Projects\\BETA\\.beta\\projects\\cosnfx\\inputs\\generated\\project-snapshot.json",
+            "source_type": "repo"
+          }
+        ],
+        "entry_count": 1,
+        "last_import": {
+          "error_count": 0,
+          "imported_count": 1,
+          "note": "Automatic local project snapshot from configured project paths.",
+          "source_type": "repo"
+        },
+        "source_counts": {
+          "repo": 1
+        }
+      },
+      "issues": {
+        "blocked_issue_count": 0,
+        "burndown": [],
+        "issue_cycle_time_days": 0.0,
+        "milestones": [],
+        "open_issue_count": 0,
+        "status": "missing",
+        "total_issue_count": 0
+      },
+      "metric_catalog": [],
+      "metric_terms": {},
+      "plan_generated_at": null,
+      "plan_path": null,
+      "profile_generated_at": null,
+      "profile_path": null,
+      "project_config_path": "C:\\Users\\jdcap\\Documents\\Projects\\BETA\\.beta\\projects\\cosnfx\\project.json",
+      "project_config_version": 1,
+      "project_config_version_source": "explicit",
+      "project_key": "cosnfx",
+      "project_name": "CosNFX",
+      "project_path": "C:\\Users\\jdcap\\Documents\\Projects\\BETA\\.beta\\projects\\cosnfx",
+      "project_schema": "beta.project.v1",
+      "project_type": "software",
+      "recommended_next_artifacts": [],
+      "role_counts": {},
+      "snapshot": {
+        "generated_at": "2026-06-22T19:41:00Z",
+        "label": "thin",
+        "metrics": {
+          "ci_workflow_file_count": 0,
+          "config_file_count": 1,
+          "configured_path_count": 1,
+          "dirty_repo_count": 1,
+          "doc_file_count": 7,
+          "files_seen": 240,
+          "missing_path_count": 0,
+          "scanned_path_count": 1,
+          "source_file_count": 10,
+          "test_file_count": 0
+        },
+        "paths": [
+          {
+            "ci_workflow_file_count": 0,
+            "config_file_count": 1,
+            "doc_file_count": 7,
+            "docs_to_source_ratio": 0.7,
+            "exists": true,
+            "files_seen": 240,
+            "git": {
+              "ahead_count": 0,
+              "behind_count": 0,
+              "branch": "main",
+              "dirty_file_count": 6,
+              "head": "d497870",
+              "is_git_repo": true,
+              "modified_file_count": 0,
+              "untracked_file_count": 6,
+              "upstream": "origin/main"
+            },
+            "path": "C:\\Users\\jdcap\\AndroidStudioProjects\\wear_gadget",
+            "planning_notes": [
+              "No test files were detected in the scanned path.",
+              "No CI workflow files were detected in the scanned path.",
+              "Tests are thin compared with source file count.",
+              "Git worktree has uncommitted or untracked changes."
+            ],
+            "source_file_count": 10,
+            "test_file_count": 0,
+            "test_to_source_ratio": 0.0,
+            "tool_signals": []
+          }
+        ],
+        "planning_notes": [
+          "No test files were detected in the scanned path.",
+          "No CI workflow files were detected in the scanned path.",
+          "Tests are thin compared with source file count.",
+          "Git worktree has uncommitted or untracked changes."
+        ],
+        "recommendations": [
+          {
+            "next_step": "Commit, stash, or record a work session explaining the active changes before treating metrics as stable.",
+            "severity": "medium",
+            "title": "Resolve or explain dirty repo state",
+            "why": "1 scanned repo(s) have uncommitted or untracked changes."
+          },
+          {
+            "next_step": "Add a CI workflow, import CI logs, or record repeatable local test evidence after each major change.",
+            "severity": "medium",
+            "title": "Connect CI or repeatable test history",
+            "why": "No CI workflow files were detected, so BETA cannot tell whether checks stay green over time."
+          },
+          {
+            "next_step": "Add tests around the riskiest project-management and data-ingestion workflows first.",
+            "severity": "high",
+            "title": "Increase test coverage for source-heavy areas",
+            "why": "The snapshot found 0 test file(s) for 10 source file(s)."
+          }
+        ],
+        "schema": "beta.project_snapshot.v1",
+        "score": 50.0,
+        "snapshot_history": [
+          {
+            "ci_workflow_file_count": 0,
+            "config_file_count": 1,
+            "dirty_repo_count": 1,
+            "doc_file_count": 7,
+            "docs_to_source_ratio": 0.7,
+            "generated_at": "2026-06-22T19:41:00Z",
+            "source_file_count": 10,
+            "test_file_count": 0,
+            "test_to_source_ratio": 0.0
+          }
+        ],
+        "snapshot_path": "C:\\Users\\jdcap\\Documents\\Projects\\BETA\\.beta\\projects\\cosnfx\\inputs\\generated\\project-snapshot.json",
+        "snapshot_trend": [],
+        "status": "connected",
+        "summary": {
+          "ci_workflow_file_count": 0,
+          "config_file_count": 1,
+          "configured_path_count": 1,
+          "dirty_repo_count": 1,
+          "doc_file_count": 7,
+          "docs_to_source_ratio": 0.7,
+          "missing_path_count": 0,
+          "scanned_path_count": 1,
+          "source_file_count": 10,
+          "test_file_count": 0,
+          "test_to_source_ratio": 0.0
+        }
+      },
+      "source_connections": {
+        "connected_count": 1,
+        "connection_count": 6,
+        "coverage_percent": 16.7,
+        "planned_count": 5,
+        "schema": "beta.project_connections.v1",
+        "sources": [
+          {
+            "created_at": "2026-06-22T19:41:00Z",
+            "id": "repo-local-project-snapshot-c-users-jdcap-androidstudioprojects-wear-gadget",
+            "imported_entry_count": 1,
+            "label": "Local Project Snapshot",
+            "last_error_count": 0,
+            "last_imported_count": 1,
+            "metric": "source_file_count, test_file_count, doc_file_count, dirty_repo_count",
+            "next_step": "Use Collect Project Snapshot after important work so BETA can compare source, test, docs, and Git-state changes.",
+            "note": "Automatic snapshot of Git state, file mix, test/doc/config signals, and project structure.",
+            "path": "C:\\Users\\jdcap\\AndroidStudioProjects\\wear_gadget",
+            "purpose": "Tracks repository state, file mix, test/doc/config signals, CI hints, and dirty worktree risk.",
+            "source_type": "repo",
+            "status": "connected",
+            "updated_at": "2026-06-22T19:41:00Z"
+          },
+          {
+            "id": "ai-session-ai-work-sessions",
+            "imported_entry_count": 0,
+            "label": "AI Work Sessions",
+            "metric": "ai_recommendation_follow_through, accepted_ai_actions",
+            "next_step": "Save useful AI summaries with recommendation, action, evidence, and result fields.",
+            "note": "",
+            "path": "",
+            "purpose": "Tracks what AI suggested, what was tried, and whether later metrics improved.",
+            "source_type": "ai-session",
+            "status": "planned"
+          },
+          {
+            "id": "bench-bench-evidence",
+            "imported_entry_count": 0,
+            "label": "Bench Evidence",
+            "metric": "bench_pass_rate, measured_failure_count, setup_time_minutes",
+            "next_step": "Attach bench CSVs, checklists, calibration logs, photos, or measured report.json files.",
+            "note": "",
+            "path": "",
+            "purpose": "Tracks measured setup, hardware, performance, calibration, and validation runs.",
+            "source_type": "bench",
+            "status": "planned"
+          },
+          {
+            "id": "ci-ci-and-test-history",
+            "imported_entry_count": 0,
+            "label": "CI And Test History",
+            "metric": "unit_test_pass_rate, code_coverage_percent, test_failure_count",
+            "next_step": "Use Import Test Results (beta import-tests) on a JUnit XML, pytest JSON, coverage report, or CI log after each meaningful build.",
+            "note": "",
+            "path": "",
+            "purpose": "Tracks build health, test pass rate, coverage, and failed checks.",
+            "source_type": "ci",
+            "status": "planned"
+          },
+          {
+            "id": "docs-requirements-and-design-docs",
+            "imported_entry_count": 0,
+            "label": "Requirements And Design Docs",
+            "metric": "claim_coverage, acceptance_criteria_coverage",
+            "next_step": "Attach requirements, design notes, test matrices, decision logs, and acceptance criteria.",
+            "note": "",
+            "path": "",
+            "purpose": "Connects project goals, claims, acceptance criteria, and design decisions to evidence.",
+            "source_type": "docs",
+            "status": "planned"
+          },
+          {
+            "id": "issues-issue-and-milestone-history",
+            "imported_entry_count": 0,
+            "label": "Issue And Milestone History",
+            "metric": "open_issue_count, blocked_issue_count, cycle_time_days",
+            "next_step": "Export GitHub/Jira issues or keep a simple CSV of issue status and milestone dates.",
+            "note": "",
+            "path": "",
+            "purpose": "Tracks planned work, stale work, blockers, cycle time, and release scope.",
+            "source_type": "issues",
+            "status": "planned"
+          }
+        ]
+      },
+      "test_matrix": [],
+      "todos": {
+        "blocked_count": 0,
+        "blocked_todos": [],
+        "doing_count": 0,
+        "done_count": 0,
+        "dropped_count": 0,
+        "due_count": 0,
+        "entry_count": 0,
+        "latest_todos": [],
+        "open_count": 0,
+        "open_todos": [],
+        "overdue_count": 0,
+        "pending_count": 0,
+        "priority_counts": {},
+        "progress_percent": 0.0,
+        "recommendations": [
+          "Create project todos so BETA can manage planned work instead of only inferring actions."
+        ],
+        "status": "missing",
+        "status_counts": {},
+        "summary": "No project todos are recorded yet."
+      },
+      "worklog": {
+        "category_hours": {},
+        "category_minutes": {},
+        "entry_count": 0,
+        "latest_sessions": [],
+        "recommendations": [
+          "Record work sessions after meaningful project work so BETA can judge effort quality from real data."
+        ],
+        "status": "missing",
+        "status_counts": {},
+        "total_hours": 0.0,
+        "total_minutes": 0,
+        "useful_patterns": [],
+        "waste_signals": [
+          "No structured work sessions have been logged for this project yet."
+        ]
+      }
+    }
+  ],
+  "qa_matrix": [],
+  "run_count": 0,
+  "schema": "beta.analysis.v1",
+  "series": [],
+  "summary": {
+    "active_measurement_count": 0,
+    "blocked_action_count": 1,
+    "blocked_todo_count": 0,
+    "connected_source_count": 2,
+    "data_quality_label": "needs-real-data",
+    "data_quality_score": 0.0,
+    "evidence_coverage_percent": 0.0,
+    "health_label": "Needs data",
+    "missing_source_count": 8,
+    "open_todo_count": 0,
+    "overall_health": 0.0,
+    "planned_measurement_count": 8,
+    "planned_project_count": 1,
+    "progress_direction": "Needs real data",
+    "quarantined_report_count": 0,
+    "real_report_count": 0,
+    "run_count": 0,
+    "todo_count": 0,
+    "todo_progress_percent": 0.0,
+    "total_discovered_report_count": 0,
+    "tracked_action_count": 49,
+    "work_session_count": 0
+  },
+  "todo_tracking": {
+    "blocked_count": 0,
+    "blocked_todos": [],
+    "doing_count": 0,
+    "done_count": 0,
+    "due_count": 0,
+    "entry_count": 0,
+    "latest_todos": [],
+    "open_count": 0,
+    "open_todos": [],
+    "overdue_count": 0,
+    "priority_counts": {},
+    "progress_percent": 0.0,
+    "project_count": 1,
+    "projects": [
+      {
+        "blocked_count": 0,
+        "doing_count": 0,
+        "done_count": 0,
+        "entry_count": 0,
+        "open_count": 0,
+        "overdue_count": 0,
+        "progress_percent": 0.0,
+        "project_key": "cosnfx",
+        "project_name": "CosNFX",
+        "recommendations": [
+          "Create project todos so BETA can manage planned work instead of only inferring actions."
+        ]
+      }
+    ],
+    "recommendations": [
+      "Create project todos so BETA can manage planned work instead of only inferring actions."
+    ],
+    "status": "missing",
+    "status_counts": {},
+    "summary": "No project todos are recorded yet, so BETA cannot track planned work, blockers, or completion from direct data."
+  },
+  "version_delta": {
+    "change_count": 0,
+    "changes": [],
+    "current_data_version_id": "beta-2026-06-22t21-24-40z-c569740584",
+    "current_recorded_at": "2026-06-22T21:24:40Z",
+    "previous_data_version_id": "beta-2026-06-22t20-02-03z-27b8f2d98f",
+    "previous_recorded_at": "2026-06-22T20:02:03Z",
+    "schema": "beta.version_delta.v1",
+    "status": "snapshot-only",
+    "summary": "A new data version was generated, but tracked evidence/model/project-config fields did not materially change."
+  },
+  "version_history": [
+    {
+      "ai_available": false,
+      "ai_model": null,
+      "ai_usable": false,
+      "ai_used": false,
+      "analysis_schema": "beta.analysis.v1",
+      "app_version": "0.2.0",
+      "baseline_run_id": null,
+      "content_hash": "c569740584e9a55d91db46f66ad91d9968cfbb7f06e7b15404c57a69853c41ca",
+      "data_version_id": "beta-2026-06-22t21-24-40z-c569740584",
+      "generated_at": "2026-06-22T21:24:40Z",
+      "generated_by": "BETA deterministic engine",
+      "latest_run_id": null,
+      "project_versions": [
+        {
+          "ai_plan_model": null,
+          "project_config_schema": "beta.project.v1",
+          "project_config_version": 1,
+          "project_config_version_source": "explicit",
+          "project_key": "cosnfx",
+          "project_name": "CosNFX"
+        }
+      ],
+      "quarantined_report_count": 0,
+      "real_report_count": 0,
+      "recorded_at": "2026-06-22T21:24:40Z",
+      "schema": "beta.version_record.v1",
+      "scope": {
+        "assigned_run_count": 0,
+        "discovered_run_count": 0,
+        "kind": "project",
+        "project_key": "cosnfx",
+        "project_name": "CosNFX",
+        "project_type": "software",
+        "quarantined_run_count": 0,
+        "workspace_project_count": 4
+      },
+      "scope_key": "project:cosnfx"
+    },
+    {
+      "ai_available": false,
+      "ai_model": null,
+      "ai_usable": false,
+      "ai_used": false,
+      "analysis_schema": "beta.analysis.v1",
+      "app_version": "0.2.0",
+      "baseline_run_id": null,
+      "content_hash": "27b8f2d98f5ae2ad6b251a673783ecca88b59e5bedcb474926a490757f6c5fed",
+      "data_version_id": "beta-2026-06-22t20-02-03z-27b8f2d98f",
+      "generated_at": "2026-06-22T20:02:03Z",
+      "generated_by": "BETA deterministic engine",
+      "latest_run_id": null,
+      "project_versions": [
+        {
+          "ai_plan_model": null,
+          "project_config_schema": "beta.project.v1",
+          "project_config_version": 1,
+          "project_config_version_source": "explicit",
+          "project_key": "cosnfx",
+          "project_name": "CosNFX"
+        }
+      ],
+      "quarantined_report_count": 0,
+      "real_report_count": 0,
+      "recorded_at": "2026-06-22T20:02:03Z",
+      "schema": "beta.version_record.v1",
+      "scope": {
+        "assigned_run_count": 0,
+        "discovered_run_count": 0,
+        "kind": "project",
+        "project_key": "cosnfx",
+        "project_name": "CosNFX",
+        "project_type": "software",
+        "quarantined_run_count": 0,
+        "workspace_project_count": 4
+      },
+      "scope_key": "project:cosnfx"
+    },
+    {
+      "ai_available": false,
+      "ai_model": null,
+      "ai_usable": false,
+      "ai_used": false,
+      "analysis_schema": "beta.analysis.v1",
+      "app_version": "0.2.0",
+      "baseline_run_id": null,
+      "content_hash": "eccf2f02fbe81ee521265e5006e365e499adc4f11890e073bb311c77a8120085",
+      "data_version_id": "beta-2026-06-22t19-52-58z-eccf2f02fb",
+      "generated_at": "2026-06-22T19:52:58Z",
+      "generated_by": "BETA deterministic engine",
+      "latest_run_id": null,
+      "project_versions": [
+        {
+          "ai_plan_model": null,
+          "project_config_schema": "beta.project.v1",
+          "project_config_version": 1,
+          "project_config_version_source": "explicit",
+          "project_key": "cosnfx",
+          "project_name": "CosNFX"
+        }
+      ],
+      "quarantined_report_count": 0,
+      "real_report_count": 0,
+      "recorded_at": "2026-06-22T19:52:58Z",
+      "schema": "beta.version_record.v1",
+      "scope": {
+        "assigned_run_count": 0,
+        "discovered_run_count": 0,
+        "kind": "project",
+        "project_key": "cosnfx",
+        "project_name": "CosNFX",
+        "project_type": "software",
+        "quarantined_run_count": 0,
+        "workspace_project_count": 4
+      },
+      "scope_key": "project:cosnfx"
+    },
+    {
+      "ai_available": false,
+      "ai_model": null,
+      "ai_usable": false,
+      "ai_used": false,
+      "analysis_schema": "beta.analysis.v1",
+      "app_version": "0.2.0",
+      "baseline_run_id": null,
+      "content_hash": "e002da3bc448cb606f67fef00d0e5615480d8048d0baca7c9f29910a373b3d6e",
+      "data_version_id": "beta-2026-06-22t19-51-17z-e002da3bc4",
+      "generated_at": "2026-06-22T19:51:17Z",
+      "generated_by": "BETA deterministic engine",
+      "latest_run_id": null,
+      "project_versions": [
+        {
+          "ai_plan_model": null,
+          "project_config_schema": "beta.project.v1",
+          "project_config_version": 1,
+          "project_config_version_source": "explicit",
+          "project_key": "cosnfx",
+          "project_name": "CosNFX"
+        }
+      ],
+      "quarantined_report_count": 0,
+      "real_report_count": 0,
+      "recorded_at": "2026-06-22T19:51:17Z",
+      "schema": "beta.version_record.v1",
+      "scope": {
+        "assigned_run_count": 0,
+        "discovered_run_count": 0,
+        "kind": "project",
+        "project_key": "cosnfx",
+        "project_name": "CosNFX",
+        "project_type": "software",
+        "quarantined_run_count": 0,
+        "workspace_project_count": 4
+      },
+      "scope_key": "project:cosnfx"
+    },
+    {
+      "ai_available": false,
+      "ai_model": null,
+      "ai_usable": false,
+      "ai_used": false,
+      "analysis_schema": "beta.analysis.v1",
+      "app_version": "0.2.0",
+      "baseline_run_id": null,
+      "content_hash": "22b941044450efac790ef16d0e97d9fdbe249b321d265f8745ae0b691bd3f809",
+      "data_version_id": "beta-2026-06-22t19-51-16z-22b9410444",
+      "generated_at": "2026-06-22T19:51:16Z",
+      "generated_by": "BETA deterministic engine",
+      "latest_run_id": null,
+      "project_versions": [
+        {
+          "ai_plan_model": null,
+          "project_config_schema": "beta.project.v1",
+          "project_config_version": 1,
+          "project_config_version_source": "explicit",
+          "project_key": "cosnfx",
+          "project_name": "CosNFX"
+        }
+      ],
+      "quarantined_report_count": 0,
+      "real_report_count": 0,
+      "recorded_at": "2026-06-22T19:51:16Z",
+      "schema": "beta.version_record.v1",
+      "scope": {
+        "assigned_run_count": 0,
+        "discovered_run_count": 0,
+        "kind": "project",
+        "project_key": "cosnfx",
+        "project_name": "CosNFX",
+        "project_type": "software",
+        "quarantined_run_count": 0,
+        "workspace_project_count": 4
+      },
+      "scope_key": "project:cosnfx"
+    },
+    {
+      "ai_available": false,
+      "ai_model": null,
+      "ai_usable": false,
+      "ai_used": false,
+      "analysis_schema": "beta.analysis.v1",
+      "app_version": "0.2.0",
+      "baseline_run_id": null,
+      "content_hash": "d852820bf2306b5fd1f8676822b4e810bbd3f33bd1d36db8130cd07f0f086592",
+      "data_version_id": "beta-2026-06-22t19-41-01z-d852820bf2",
+      "generated_at": "2026-06-22T19:41:01Z",
+      "generated_by": "BETA deterministic engine",
+      "latest_run_id": null,
+      "project_versions": [
+        {
+          "ai_plan_model": null,
+          "project_config_schema": "beta.project.v1",
+          "project_config_version": 1,
+          "project_config_version_source": "explicit",
+          "project_key": "cosnfx",
+          "project_name": "CosNFX"
+        }
+      ],
+      "quarantined_report_count": 0,
+      "real_report_count": 0,
+      "recorded_at": "2026-06-22T19:41:01Z",
+      "schema": "beta.version_record.v1",
+      "scope": {
+        "assigned_run_count": 0,
+        "discovered_run_count": 0,
+        "kind": "project",
+        "project_key": "cosnfx",
+        "project_name": "CosNFX",
+        "project_type": "software",
+        "quarantined_run_count": 0,
+        "workspace_project_count": 3
+      },
+      "scope_key": "project:cosnfx"
+    },
+    {
+      "ai_available": false,
+      "ai_model": null,
+      "ai_usable": false,
+      "ai_used": false,
+      "analysis_schema": "beta.analysis.v1",
+      "app_version": "0.2.0",
+      "baseline_run_id": null,
+      "content_hash": "a5fe89efe2e7eb33c369cc3529a03191abc470bfe81269c99ff5ca4c5c45a7ab",
+      "data_version_id": "beta-2026-06-22t19-41-00z-a5fe89efe2",
+      "generated_at": "2026-06-22T19:41:00Z",
+      "generated_by": "BETA deterministic engine",
+      "latest_run_id": null,
+      "project_versions": [
+        {
+          "ai_plan_model": null,
+          "project_config_schema": "beta.project.v1",
+          "project_config_version": 1,
+          "project_config_version_source": "explicit",
+          "project_key": "cosnfx",
+          "project_name": "CosNFX"
+        }
+      ],
+      "quarantined_report_count": 0,
+      "real_report_count": 0,
+      "recorded_at": "2026-06-22T19:41:01Z",
+      "schema": "beta.version_record.v1",
+      "scope": {
+        "assigned_run_count": 0,
+        "discovered_run_count": 0,
+        "kind": "project",
+        "project_key": "cosnfx",
+        "project_name": "CosNFX",
+        "project_type": "software",
+        "quarantined_run_count": 0,
+        "workspace_project_count": 3
+      },
+      "scope_key": "project:cosnfx"
+    }
+  ],
+  "work_guidance": {
+    "avoid": [
+      {
+        "better_option": "Use real project runs and keep the quarantined list as an audit trail.",
+        "reason": "Quarantined local/demo reports can be useful for UI testing, but they cannot prove project progress.",
+        "title": "Do not use demo data as proof"
+      },
+      {
+        "better_option": "Repeat the same scenario after each meaningful change and compare against the matching baseline.",
+        "reason": "A single run can be noise; the dashboard needs repeated comparable runs before calling progress real.",
+        "title": "Do not chase one-off numbers"
+      },
+      {
+        "better_option": "Record work-log sessions before making hard claims about wasted or well-spent time.",
+        "reason": "Time-spend and project-management claims are currently inferred, not directly imported.",
+        "title": "Do not optimize unmeasured work"
+      },
+      {
+        "better_option": "Create persistent todos with priority, owner, blocker, due date, and success evidence.",
+        "reason": "Generated actions are useful, but they are not the same as your committed todo list.",
+        "title": "Do not manage the project only from generated suggestions"
+      }
+    ],
+    "basis": "Deterministic guidance from metric comparisons, QA matrix, effort focus, data-quality checks, and measurement plan.",
+    "decision_rules": [
+      "If a critical metric regresses, stabilize it before adding new features.",
+      "If a claim is thin, collect missing evidence before advertising improvement.",
+      "If a metric improves, add a regression guard before moving on.",
+      "If effort looks wasted, verify with issue, CI, or time-log data before changing priorities."
+    ],
+    "focus_now": [
+      {
+        "metric": "real_report_available",
+        "next_step": "Run a real bench, field, CI, or hardware validation and import its report.json into this project.",
+        "priority": "P0",
+        "reason": "The current imported reports are not accepted as real proof data, so progress and improvement claims would be misleading.",
+        "source": "data authenticity gate",
+        "success_metric": "accepted real report count",
+        "title": "Collect real evidence before optimizing"
+      },
+      {
+        "metric": "unit_test_pass_rate",
+        "next_step": "Run python -m unittest discover -s tests and record the pass percentage in a real project report.",
+        "priority": "P1",
+        "reason": "Proves BETA is still correct while project-management and AI features are added.",
+        "source": "measurement plan",
+        "success_metric": "Pass rate holds at the project target and regressions are linked to specific work.",
+        "title": "Software Test Pass Rate"
+      },
+      {
+        "metric": "dashboard_render_success",
+        "next_step": "Run dashboard generation, open the BETA and OMEGA project pages, and record the render result.",
+        "priority": "P1",
+        "reason": "The app has to rebuild and load project pages after evidence changes.",
+        "source": "measurement plan",
+        "success_metric": "Dashboard rebuild succeeds and the project page opens with the expected scoped data.",
+        "title": "Dashboard Render Smoke"
+      },
+      {
+        "metric": "project_control_coverage",
+        "next_step": "Review the project page controls and record how many intended project-management workflows are covered.",
+        "priority": "P1",
+        "reason": "BETA needs no-command controls for setup, todos, work, evidence, reports, and AI management.",
+        "source": "measurement plan",
+        "success_metric": "Coverage rises when useful controls are added and browser-verified.",
+        "title": "Project Control Coverage"
+      },
+      {
+        "metric": "ai_recommendation_follow_through",
+        "next_step": "Record AI recommendations, mark which ones were tried, and connect them to metric movement.",
+        "priority": "P1",
+        "reason": "AI advice should become tracked actions whose impact can be measured later.",
+        "source": "measurement plan",
+        "success_metric": "High-value AI recommendations have a decision, owner, and result metric.",
+        "title": "AI Recommendation Follow-Through"
+      },
+      {
+        "metric": "project_todo_count",
+        "next_step": "Add the top three project todos: one current focus, one measurement/evidence item, and one blocker or risk item.",
+        "priority": "P1",
+        "reason": "1 project(s) are tracked, but there are no persistent todos for planned work, blockers, or completion evidence.",
+        "source": "project todo ledger",
+        "success_metric": "at least three project todos with priority and status",
+        "title": "Create a real project todo list"
+      },
+      {
+        "metric": "work_evidence_percent",
+        "next_step": "For the next session, record the report, test, issue, decision, or artifact it produced.",
+        "priority": "P1",
+        "reason": "Only 0.0% of tracked work currently references evidence, tests, or validation.",
+        "source": "work session ledger",
+        "success_metric": "work evidence percent above 50%",
+        "title": "Tie work to evidence"
+      }
+    ],
+    "missing_direct_management_data": [],
+    "next_ai_questions": [
+      "What is the single highest leverage test to run next?",
+      "Which metric regression most weakens the claims?",
+      "What should we stop doing until the evidence improves?",
+      "What data source would most improve confidence?"
+    ],
+    "preserve": [],
+    "summary": "Use the current proof data to choose the next narrow improvement loop.",
+    "todo_tracking_summary": "No project todos are recorded yet, so BETA cannot track planned work, blockers, or completion from direct data.",
+    "work_better": [
+      {
+        "habit": "Plan one change, run one matching proof scenario, save the report, then review the regression and QA matrix.",
+        "title": "Use a tight evidence loop",
+        "why": "This makes progress attributable instead of mixing several changes into one unclear result."
+      },
+      {
+        "habit": "Add metrics as structured report fields instead of notes whenever possible.",
+        "title": "Keep proof reports small but complete",
+        "why": "Structured data feeds charts, AI review, reports, and trend analysis automatically."
+      },
+      {
+        "habit": "Use current values to prove presence, but use matching baselines and repeated runs to prove improvement.",
+        "title": "Separate current-state proof from improvement proof",
+        "why": "This prevents the tool from overstating progress when it only has a snapshot."
+      },
+      {
+        "habit": "Start with: Real proof report is available.",
+        "title": "Close data-quality gaps before polishing",
+        "why": "Accepted real reports: 0; quarantined demo/synthetic reports: 0."
+      },
+      {
+        "habit": "After meaningful work, run record-work with minutes, category, outcome, evidence, blocker, and next step.",
+        "title": "Start logging effort evidence",
+        "why": "BETA cannot know where time is useful or wasted until effort data exists."
+      },
+      {
+        "habit": "Use Add Todo for the next focus item, blocker, evidence task, and planning task.",
+        "title": "Turn the plan into todos",
+        "why": "BETA needs a committed task ledger to track project progress and explain why work is ahead or behind."
+      }
+    ],
+    "work_tracking_summary": "No structured work sessions are logged yet, so BETA cannot judge time use from direct evidence."
+  },
+  "work_tracking": {
+    "ai_hours": 0.0,
+    "ai_minutes": 0,
+    "blocked_minutes": 0,
+    "category_hours": {},
+    "category_minutes": {},
+    "entry_count": 0,
+    "evidence_minutes": 0,
+    "evidence_percent": 0.0,
+    "latest_sessions": [],
+    "productive_minutes": 0,
+    "productive_percent": 0.0,
+    "project_count": 1,
+    "projects": [
+      {
+        "entry_count": 0,
+        "evidence_percent": 0.0,
+        "productive_percent": 0.0,
+        "project_key": "cosnfx",
+        "project_name": "CosNFX",
+        "recommendations": [
+          "Record work sessions after meaningful project work so BETA can judge effort quality from real data."
+        ],
+        "top_categories": [],
+        "total_hours": 0.0,
+        "waste_percent": 0.0
+      }
+    ],
+    "recommendations": [
+      "Record work sessions after meaningful project work so BETA can judge effort quality from real data."
+    ],
+    "rework_minutes": 0,
+    "status": "missing",
+    "status_counts": {},
+    "summary": "No structured work sessions are logged yet, so BETA cannot judge time use from direct evidence.",
+    "total_hours": 0.0,
+    "total_minutes": 0,
+    "unclear_minutes": 0,
+    "useful_patterns": [],
+    "waste_percent": 0.0,
+    "waste_signals": [
+      "No structured work sessions have been logged for this project yet."
+    ],
+    "wasted_minutes": 0
+  },
+  "workflow_health": {
+    "active_measurement_percent": 0.0,
+    "ai_available": false,
+    "blocked_todo_count": 0,
+    "connected_source_percent": 13.3,
+    "doing_todo_count": 0,
+    "improvement_levers": [
+      "Increase repeat depth to at least three matching runs per important scenario.",
+      "Connect issue/CI, bench, field, or work-log sources so project-management claims stop being inferred.",
+      "Promote planned metrics into active report fields.",
+      "Close data-quality gaps before treating improvements as durable.",
+      "Start a work-session ledger so time-use and blocker analysis is based on real project behavior.",
+      "Create a todo ledger so project progress, blockers, and completion are tracked directly.",
+      "Run a local AI review after deterministic analysis has current data."
+    ],
+    "label": "thin",
+    "missing_operational_inputs": [
+      "Field And Bench Logs",
+      "Project Todo Ledger",
+      "Work Session Ledger",
+      "Issue And CI History"
+    ],
+    "open_todo_count": 0,
+    "overdue_todo_count": 0,
+    "repeat_depth": 0,
+    "runs_per_week": 0.0,
+    "score": 2.4,
+    "todo_count": 0,
+    "todo_health_percent": 0.0,
+    "todo_progress_percent": 0.0,
+    "work_evidence_percent": 0.0,
+    "work_session_count": 0,
+    "work_total_hours": 0.0,
+    "work_waste_percent": 0.0
+  },
+  "workspace_href": "../dashboard.html"
+}
