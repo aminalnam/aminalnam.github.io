@@ -650,13 +650,13 @@ def render_contours(xi, yi, zi, lons, lats, levels=12, output_path="map.png"):
             </div>
             
             <div class="section-visual" style="max-height: 800px; overflow-y: auto; margin-top: 1rem;"><span class="panel-kicker">bathymetry-sounding.example.json</span><pre><code class="language-json">{
-  "spec": "omega-wave.observation-envelope/1",
+  "spec": "omega.observation-envelope/1",
   "message_id": "bathymetry-example-0001",
   "message_type": "observation",
   "origin": {
-    "node_id": "urn:omega-wave:node:survey-a:vessel-01",
+    "node_id": "urn:omega:node:survey-a:vessel-01",
     "device_id": "multibeam-sonar-main",
-    "capability_ref": "https://example.invalid/omega-wave/things/survey-a-vessel-01-multibeam.td.json",
+    "capability_ref": "https://example.invalid/omega/things/survey-a-vessel-01-multibeam.td.json",
     "firmware_version": "0.2.0"
   },
   "routing": {
@@ -685,7 +685,7 @@ def render_contours(xi, yi, zi, lons, lats, levels=12, output_path="map.png"):
     "schema_ref": "urn:ietf:rfc:8428",
     "records": [
       {
-        "bn": "urn:omega-wave:thing:survey-a:vessel-01:multibeam/",
+        "bn": "urn:omega:thing:survey-a:vessel-01:multibeam/",
         "bt": 1776548400
       },
       {

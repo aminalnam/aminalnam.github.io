@@ -561,13 +561,13 @@ async def websocket_endpoint(websocket: WebSocket):
               
             </div>
             <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">observation-envelope.example.json</span><pre><code class="language-json">{
-  "spec": "omega-wave.observation-envelope/1",
+  "spec": "omega.observation-envelope/1",
   "message_id": "01HSJ9R2XW6T4Q3AP7D3R5K8NE",
   "message_type": "observation",
   "origin": {
-    "node_id": "urn:omega-wave:node:site-a:buoy-02",
+    "node_id": "urn:omega:node:site-a:buoy-02",
     "device_id": "water-quality-probe-main",
-    "capability_ref": "https://example.invalid/omega-wave/things/site-a-buoy-02-water-quality.td.json",
+    "capability_ref": "https://example.invalid/omega/things/site-a-buoy-02-water-quality.td.json",
     "firmware_version": "0.1.0"
   },
   "routing": {
@@ -596,7 +596,7 @@ async def websocket_endpoint(websocket: WebSocket):
     "schema_ref": "urn:ietf:rfc:8428",
     "records": [
       {
-        "bn": "urn:omega-wave:thing:site-a:buoy-02:water-quality/",
+        "bn": "urn:omega:thing:site-a:buoy-02:water-quality/",
         "bt": 1776537000
       },
       {
@@ -636,7 +636,7 @@ async def websocket_endpoint(websocket: WebSocket):
   "@context": [
     "https://www.w3.org/2022/wot/td/v1.1"
   ],
-  "id": "urn:omega-wave:thing:site-a:buoy-02:water-quality-probe",
+  "id": "urn:omega:thing:site-a:buoy-02:water-quality-probe",
   "title": "Buoy 02 Water Quality Probe",
   "description": "Gateway-hosted Thing Description for a water quality probe reachable through the mesh.",
   "version": {
@@ -765,8 +765,8 @@ async def websocket_endpoint(websocket: WebSocket):
             </div>
             <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">observation-envelope.schema.json</span><pre><code class="language-json">{
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://example.invalid/omega-wave/observation-envelope.schema.json",
-  "title": "OMEGA-wave Observation Envelope",
+  "$id": "https://example.invalid/omega/observation-envelope.schema.json",
+  "title": "OMEGA Observation Envelope",
   "description": "Canonical application-level envelope for sensor observations.",
   "type": "object",
   "additionalProperties": false,
