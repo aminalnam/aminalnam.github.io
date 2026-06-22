@@ -277,7 +277,7 @@
         "<BHHBBII", packet_bytes[:11]
     )
     
-    payload = {"origin": NODE_ID_REGISTRY.get(origin_id, "urn:omega:node:unknown"),
+    payload = {"origin": NODE_ID_REGISTRY.get(origin_id, "urn:OA:node:unknown"),
                "sequence": sequence, "hops": hops}
                
     # 2. Extract Phase 1-4 Binary TLVs
@@ -429,7 +429,7 @@
             class="panel-kicker">thalow_gateway_control/platformio.ini</span>
           <pre><code class="language-ini">[env:t_halow_ap_companion]
 build_flags =
-  -DOMEGA_NODE_ID="urn:omega:node:shore-gateway:thalow-ap"
+  -DOMEGA_NODE_ID="urn:OA:node:shore-gateway:thalow-ap"
   -DOMEGA_DEVICE_ID="t-halow-ap-companion"
   -DOMEGA_HALOW_ROLE="ap-root"
   -DOMEGA_HALOW_PEER_HINT="buoy-sta"</code></pre>
@@ -775,7 +775,7 @@ build_flags =
   "link_id": "buoy-02-acoustic",
   "message_type": "announce",
   "origin": {
-    "node_id": "urn:omega:node:site-a:buoy-02",
+    "node_id": "urn:OA:node:site-a:buoy-02",
     "device_id": "acoustic-bridge-main",
     "role": "surface-gateway"
   },

@@ -565,7 +565,7 @@ async def websocket_endpoint(websocket: WebSocket):
   "message_id": "01HSJ9R2XW6T4Q3AP7D3R5K8NE",
   "message_type": "observation",
   "origin": {
-    "node_id": "urn:omega:node:site-a:buoy-02",
+    "node_id": "urn:OA:node:site-a:buoy-02",
     "device_id": "water-quality-probe-main",
     "capability_ref": "https://example.invalid/omega/things/site-a-buoy-02-water-quality.td.json",
     "firmware_version": "0.1.0"
@@ -596,7 +596,7 @@ async def websocket_endpoint(websocket: WebSocket):
     "schema_ref": "urn:ietf:rfc:8428",
     "records": [
       {
-        "bn": "urn:omega:thing:site-a:buoy-02:water-quality/",
+        "bn": "urn:OA:thing:site-a:buoy-02:water-quality/",
         "bt": 1776537000
       },
       {
@@ -636,7 +636,7 @@ async def websocket_endpoint(websocket: WebSocket):
   "@context": [
     "https://www.w3.org/2022/wot/td/v1.1"
   ],
-  "id": "urn:omega:thing:site-a:buoy-02:water-quality-probe",
+  "id": "urn:OA:thing:site-a:buoy-02:water-quality-probe",
   "title": "Buoy 02 Water Quality Probe",
   "description": "Gateway-hosted Thing Description for a water quality probe reachable through the mesh.",
   "version": {
@@ -913,7 +913,7 @@ async def websocket_endpoint(websocket: WebSocket):
               <div class="panel" style="padding: 1.5rem;">
                 <span class="status-label status-implemented">/v1/science/calibration-drift</span>
                 <h3 style="font-size: 1.2rem;">Calibration-Drift Fit</h3>
-                <p style="font-size: 0.85rem;">Pairs a sensor with a co-located reference (nearest-in-time), then least-squares-fits the residual drift over time. It returns the offset, the drift per day, an r² for the fit, and the linear correction to apply — so a slowly biasing probe can be caught and corrected rather than silently trusted.</p>
+                <p style="font-size: 0.85rem;">Pairs a sensor with a co-located reference (nearest-in-time), then least-squares-fits the residual drift over time. It returns the offset, the drift per day, an r² for the fit, and the linear correction to apply — so a slowly biasing probe can be caught and corrected rather than silently trusted. A fitted correction can then be <strong>persisted against the station and applied to incoming readings</strong>, with an <strong>audit trail</strong> recording each correction and when it took effect, so calibration changes stay reviewable instead of silently rewriting the data.</p>
               </div>
               <div class="panel" style="padding: 1.5rem;">
                 <span class="status-label status-implemented">/v1/science/coherence</span>
