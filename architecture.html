@@ -478,40 +478,7 @@ function TelemetryMap({ data }) {
       <section class="section section-block" style="background: rgba(0,0,0,0.4); margin-top: 2rem;">
         <span class="section-kicker" style="color: var(--accent);">Engineering Reality / Readiness</span>
         <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Where the Stack Actually Stands.</h2>
-        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">A self-run, 13-agent internal audit scores the current stack <strong>63/100</strong>. The protocol and gateway core are the strongest parts; the bearers and unflashed firmware are the weakest. The numbers below are an honest self-assessment, not an external certification.</p>
-
-        <div class="grid-3" style="margin-bottom: 2rem;">
-          <div class="panel" style="padding: 1.5rem;">
-            <span class="status-label status-implemented">Protocol 76</span>
-            <h3 style="font-size: 1.2rem;">Envelope &amp; Protocol</h3>
-            <p style="font-size: 0.85rem;">The bearer-agnostic envelope, float-free signing, and federation handshake score highest &mdash; the core contract is solid.</p>
-          </div>
-          <div class="panel" style="padding: 1.5rem;">
-            <span class="status-label status-implemented">Library 68 &middot; Gateway 68</span>
-            <h3 style="font-size: 1.2rem;">Library &amp; Gateway</h3>
-            <p style="font-size: 0.85rem;">The shared protocol library and the FastAPI gateway are well-developed and carry real field evidence.</p>
-          </div>
-          <div class="panel" style="padding: 1.5rem;">
-            <span class="status-label status-implemented">Field Toolchain 68</span>
-            <h3 style="font-size: 1.2rem;">Field Toolchain</h3>
-            <p style="font-size: 0.85rem;">Provisioning and operator tooling are usable, scoring in line with the gateway core.</p>
-          </div>
-          <div class="panel" style="padding: 1.5rem;">
-            <span class="status-label" style="background: rgba(154,162,177,0.15); color: var(--ink-soft);">Firmware 65</span>
-            <h3 style="font-size: 1.2rem;">Firmware (Written, Unflashed)</h3>
-            <p style="font-size: 0.85rem;">Field-hardening for the edge firmware is <strong>written but not yet flashed</strong> to hardware in the field, so its real-world resilience is unproven.</p>
-          </div>
-          <div class="panel" style="padding: 1.5rem;">
-            <span class="status-label" style="background: rgba(154,162,177,0.15); color: var(--ink-soft);">Bearers 45</span>
-            <h3 style="font-size: 1.2rem;">Bearers (Lowest)</h3>
-            <p style="font-size: 0.85rem;">The alternate bearers &mdash; including the experimental acoustic / JANUS interop transport &mdash; are the least mature part of the stack.</p>
-          </div>
-          <div class="panel" style="padding: 1.5rem;">
-            <span class="status-label" style="background: rgba(154,162,177,0.15); color: var(--ink-soft);">In-Flight</span>
-            <h3 style="font-size: 1.2rem;">3D Digital Twin</h3>
-            <p style="font-size: 0.85rem;">The DTO v3 spatial twin is partial and still in development, with slow first-load times.</p>
-          </div>
-        </div>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">An honest read of where the stack is strong and where it isn't: the protocol, gateway, and portal carry real field evidence; the alternate bearers and the edge firmware's field-hardening are the least mature parts.</p>
 
         <div class="callout"><strong>Honest Gaps</strong>
           <p>Multi-hop mesh <strong>routing</strong> is implemented but <strong>not yet field-demonstrated</strong>; cross-family RF interop is a working ~50% link rather than a solved problem; firmware field-hardening is written but unflashed; and the 3D twin is partial. The single-hop LoRa link, the gateway, and the portal are where the real field evidence lives.</p>
