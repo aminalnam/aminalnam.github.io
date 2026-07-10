@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <title>Jonathan Capone — Planetaria Manual</title>
+
+  <meta name="description" content="Planetaria owner's manual: first-time setup, Wi-Fi captive portal (including enterprise 802.1X), web settings, world selection, and troubleshooting for the ESP32-S3 round AMOLED desk globe." />
+  <meta property="og:title" content="Jonathan Capone — Planetaria Manual" />
+  <meta property="og:description" content="Planetaria owner's manual: first-time setup, Wi-Fi captive portal (including enterprise 802.1X), web settings, world selection, and troubleshooting for the ESP32-S3 round AMOLED desk globe." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://jonathancapone.com/planetaria-manual.html" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Jonathan Capone — Planetaria Manual" />
+  <meta name="twitter:description" content="Planetaria owner's manual: first-time setup, Wi-Fi captive portal (including enterprise 802.1X), web settings, world selection, and troubleshooting for the ESP32-S3 round AMOLED desk globe." />
+
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌍</text></svg>">
+
+  <link rel="stylesheet" href="style.css">
+  <meta property="og:image" content="https://jonathancapone.com/images/overview/project-documentation_overview.png" />
+  <link rel="canonical" href="https://jonathancapone.com/planetaria-manual.html" />
+</head>
+
+<body>
+  <a href="#main" class="skip-link">Skip to content</a>
+  <header class="topbar">
+    <div class="wrap topbar-inner">
+      <a class="brand" href="index.html"
+        style="display: flex; align-items: center; gap: 0.75rem; text-decoration: none;">
+        <div>
+          <span class="brand-title"
+            style="letter-spacing: 0.1em; color: var(--white); display: block; font-family: var(--font-serif); font-size: 1.5rem;">JONATHAN
+            CAPONE</span>
+          <span class="brand-sub"
+            style="display: block; font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent); font-family: var(--font-mono); opacity: 0.9;">Systems
+            Architecture Portfolio</span>
+        </div>
+      </a>
+            <nav class="nav" aria-label="Main Navigation">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <div class="dropdown">
+          <button class="dropbtn" style="background: none; border: none; color: #fff; font-family: inherit; font-size: inherit; cursor: pointer;" aria-expanded="false" aria-haspopup="true">OMEGA &#9662;</button>
+          <div class="dropdown-content">
+            <a href="architecture.html">Architecture</a>
+            <a href="hardware.html">Hardware & Mesh</a>
+            <a href="gateway.html">Backend Gateway</a>
+            <a href="mission-portal.html">Mission Portal</a>
+          </div>
+        </div>
+        <a href="bathymetry.html">OMEGA-bath</a>
+        <a href="beta-overview.html">BETA</a>
+        <a href="cosnfx.html">CosNFX</a>
+        <a href="planetaria.html">Planetaria</a>
+        <a href="visual-timer.html">Visual Timer</a>
+        <a href="thruster.html">T-Thruster</a>
+        <a href="engineering-journal.html">Journal</a>
+        
+        <div style="display: flex; align-items: center; margin-left: 0.5rem; border-left: 1px solid rgba(255,255,255,0.15); padding-left: 1.5rem;">
+          <a href="https://jonathancapone.art" target="_blank" style="font-weight: 600; color: var(--ink-soft);">Art Portfolio</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero wrap">
+    <span class="eyebrow">Documentation</span>
+    <h1>Owner's Manual.</h1>
+    <p>A little window onto the living Earth. Complete feature guide and setup instructions for Planetaria.</p>
+    <div class="hero-actions">
+        <a class="btn btn-secondary" href="planetaria.html">Back to Project</a>
+    </div>
+  </section>
+
+  <main class="main-shell wrap" role="main" id="main">
+    <div class="main-inner" style="max-width: 800px; margin: 0 auto;">
+
+      <section class="section" style="margin-bottom: 2rem;">
+        <h2 style="font-family: var(--font-serif); font-size: 2rem; margin-bottom: 1rem;">1. Quick Start (first-time setup)</h2>
+        <p style="color: var(--ink-soft); line-height: 1.7; margin-bottom: 1rem;"><strong>You'll need:</strong> the globe, its USB-C cable, and your home WiFi name + password.</p>
+        <ol style="color: var(--ink-soft); line-height: 1.7; margin-bottom: 1.5rem; padding-left: 1.5rem;">
+          <li style="margin-bottom: 0.5rem;"><strong>Power it on.</strong> Plug the USB-C cable into the globe and any USB power source (a phone charger or computer port is fine). After a few seconds you'll see a short start-up sequence, then a "Set up WiFi" screen.</li>
+          <li style="margin-bottom: 0.5rem;"><strong>Join the globe's setup hotspot.</strong> On your phone or laptop, open WiFi settings and connect to the network named <code>Planetaria-Setup</code> (no password).</li>
+          <li style="margin-bottom: 0.5rem;"><strong>A setup page opens automatically.</strong> If it doesn't pop up on its own, open a browser and go to <code>192.168.4.1</code>. You'll see the Planetaria Setup page.</li>
+          <li style="margin-bottom: 0.5rem;"><strong>Enter your home WiFi</strong> in the WiFi network and WiFi password boxes, then tap <em>Save & Restart</em>. On a school or work network (enterprise 802.1X), the page detects it and reveals a <strong>Username</strong> field &mdash; fill that in too. For a hidden enterprise network, tick <em>"This network needs a username (enterprise)"</em> to reveal it.</li>
+          <li style="margin-bottom: 0.5rem;"><strong>Done.</strong> The globe reboots, joins your network, syncs the time, and within a minute or two begins showing the live Earth. The first cloud image is downloaded in the background and appears shortly after.</li>
+        </ol>
+        <p style="color: var(--ink-soft); line-height: 1.7; margin-bottom: 1rem;">That's it — you won't need to repeat this unless you move the globe to a new network.</p>
+        <div style="background: rgba(255,255,255,0.05); padding: 1rem; border-left: 3px solid var(--accent); border-radius: 0 4px 4px 0; margin-bottom: 2rem;">
+          <p style="color: var(--ink-soft); margin: 0; font-size: 0.9rem;"><strong>Tip:</strong> After setup, the globe shows its web address (an IP like 192.168.1.42) briefly on screen during boot. Type that into a browser on the same WiFi any time to reopen the settings page.</p>
+        </div>
+      </section>
+
+      <section class="section" style="margin-bottom: 2rem;">
+        <h2 style="font-family: var(--font-serif); font-size: 2rem; margin-bottom: 1rem;">2. What you're looking at</h2>
+        
+        <h3 style="font-size: 1.3rem; margin-bottom: 0.5rem; color: var(--white);">The living Earth (the default view)</h3>
+        <ul style="color: var(--ink-soft); line-height: 1.7; margin-bottom: 1.5rem; padding-left: 1.5rem;">
+          <li style="margin-bottom: 0.5rem;"><strong>Real day & night:</strong> The globe is sun-synchronous: the sunlit half and the shadowed half are placed using the real position of the Sun for the current date and time, with a soft, natural twilight band along the day/night line. As the hours pass, the Earth turns beneath the light just as the real planet does.</li>
+          <li style="margin-bottom: 0.5rem;"><strong>Live clouds:</strong> Cloud cover is pulled from NASA's VIIRS satellites and draped over the globe, refreshed in the background every few hours, so the weather systems you see are real and current.</li>
+          <li style="margin-bottom: 0.5rem;"><strong>City lights:</strong> After dusk, the night side lights up with the glow of the world's cities (NASA "Black Marble" night-lights).</li>
+        </ul>
+
+        <h3 style="font-size: 1.3rem; margin-bottom: 0.5rem; color: var(--white);">The other worlds</h3>
+        <p style="color: var(--ink-soft); line-height: 1.7; margin-bottom: 1rem;">Your globe isn't limited to Earth. From the settings page you can switch it to any of ten bodies, in this order: Earth · Mercury · Venus · Mars · Jupiter · Saturn · Uranus · Neptune · Moon · Sun.</p>
+        <p style="color: var(--ink-soft); line-height: 1.7; margin-bottom: 1.5rem;">Each is rendered from real imagery with the same sunlight-and-shadow treatment, so Mars or the Moon shows a true day/night line too. (The Sun is shown glowing on its own, with no shadow side.) Live clouds and city lights are Earth-only features — the other worlds use fixed surface imagery.</p>
+
+        <h3 style="font-size: 1.3rem; margin-bottom: 0.5rem; color: var(--white);">The time + weather card</h3>
+        <p style="color: var(--ink-soft); line-height: 1.7; margin-bottom: 1rem;">On a cadence you choose, the globe briefly switches to a clean, full-screen card showing the local time (12-hour, with AM/PM) and the day + date, your city, the current temperature and what it feels like, humidity and wind speed.</p>
+        <p style="color: var(--ink-soft); line-height: 1.7; margin-bottom: 1.5rem;">It uses your approximate location (derived from your internet connection) to fetch local weather, then returns to the globe automatically after about 25 seconds (the first showing after power-on is a shorter ~8-second hello). Out of the box the card appears <strong>every 30 minutes</strong>; on the settings page you can change the schedule — hourly, every 2 hours, every 3 hours — or turn it off entirely.</p>
+      </section>
+
+      <section class="section" style="margin-bottom: 2rem;">
+        <h2 style="font-family: var(--font-serif); font-size: 2rem; margin-bottom: 1rem;">3. Features at a glance</h2>
+        <ul style="color: var(--ink-soft); line-height: 1.7; padding-left: 1.5rem; list-style-type: disc;">
+          <li>🌍 Sun-synchronous live day/night Earth with a soft twilight terminator</li>
+          <li>☁️ Live NASA VIIRS cloud cover, refreshed automatically every few hours</li>
+          <li>🌃 City lights on the night side</li>
+          <li>🪐 10 selectable worlds — Earth, Mercury → Neptune, the Moon, and the Sun</li>
+          <li>🕒 Optional time + local weather card on a schedule you set</li>
+          <li>🔆 Adjustable brightness, motion speed, camera tilt, and shadow framing</li>
+          <li>🔁 Display rotation (0/90/180/270°) for however you stand it</li>
+          <li>⚡ Performance mode for extra-smooth motion</li>
+          <li>📶 Remembers up to 3 WiFi networks; simple captive-portal setup</li>
+          <li>🔑 No app, no account, no API keys — everything runs on the device</li>
+        </ul>
+      </section>
+
+      <section class="section" style="margin-bottom: 2rem;">
+        <h2 style="font-family: var(--font-serif); font-size: 2rem; margin-bottom: 1rem;">4. The settings page</h2>
+        <p style="color: var(--ink-soft); line-height: 1.7; margin-bottom: 1.5rem;">Open a browser on the same WiFi as the globe and go to the address shown on the globe at boot (e.g. <code>http://192.168.1.42</code>). During first-time setup the address is <code>192.168.4.1</code>. The page is titled 🌐 Globe Setup. Change whatever you like and tap Save & Restart at the bottom. Some settings take effect instantly; others restart the globe to apply (it comes right back).</p>
+        
+        <div style="overflow-x: auto; margin-bottom: 1.5rem;">
+          <table style="width: 100%; border-collapse: collapse; color: var(--ink-soft); font-size: 0.9rem; text-align: left;">
+            <thead>
+              <tr style="border-bottom: 1px solid var(--line); color: var(--white);">
+                <th style="padding: 0.75rem;">Setting</th>
+                <th style="padding: 0.75rem;">Choices</th>
+                <th style="padding: 0.75rem;">Default</th>
+                <th style="padding: 0.75rem;">What it does</th>
+                <th style="padding: 0.75rem;">Takes effect</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                <td style="padding: 0.75rem;">Body to display</td>
+                <td style="padding: 0.75rem;">Earth, Mercury, Venus, Mars, Jupiter, Saturn, Uranus, Neptune, Moon, Sun</td>
+                <td style="padding: 0.75rem;">Earth</td>
+                <td style="padding: 0.75rem;">Which world is shown</td>
+                <td style="padding: 0.75rem;">Restart</td>
+              </tr>
+              <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                <td style="padding: 0.75rem;">WiFi network / password</td>
+                <td style="padding: 0.75rem;">Your network name + password</td>
+                <td style="padding: 0.75rem;">—</td>
+                <td style="padding: 0.75rem;">Connects to your WiFi; remembers up to 3 networks. Leave password blank to keep saved one.</td>
+                <td style="padding: 0.75rem;">Restart</td>
+              </tr>
+              <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                <td style="padding: 0.75rem;">Motion</td>
+                <td style="padding: 0.75rem;">Real Earth (true speed), Timelapse slow (~5 min/turn), medium (~2 min/turn), fast (~1 min/turn)</td>
+                <td style="padding: 0.75rem;">Real Earth</td>
+                <td style="padding: 0.75rem;">How fast the globe spins</td>
+                <td style="padding: 0.75rem;">Instant</td>
+              </tr>
+              <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                <td style="padding: 0.75rem;">Brightness</td>
+                <td style="padding: 0.75rem;">Low, Medium, High</td>
+                <td style="padding: 0.75rem;">High</td>
+                <td style="padding: 0.75rem;">Screen brightness</td>
+                <td style="padding: 0.75rem;">Restart</td>
+              </tr>
+              <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                <td style="padding: 0.75rem;">Northern view (tilt)</td>
+                <td style="padding: 0.75rem;">Straight on, Tilted, High tilt</td>
+                <td style="padding: 0.75rem;">Tilted</td>
+                <td style="padding: 0.75rem;">Tilts the view toward the north pole so you see more of the top</td>
+                <td style="padding: 0.75rem;">Restart</td>
+              </tr>
+              <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                <td style="padding: 0.75rem;">Display rotation</td>
+                <td style="padding: 0.75rem;">0°, 90°, 180°, 270°</td>
+                <td style="padding: 0.75rem;">0°</td>
+                <td style="padding: 0.75rem;">Rotates the whole image — handy for how the globe sits on your desk</td>
+                <td style="padding: 0.75rem;">Restart</td>
+              </tr>
+              <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                <td style="padding: 0.75rem;">Shadow amount</td>
+                <td style="padding: 0.75rem;">Less, Medium, More</td>
+                <td style="padding: 0.75rem;">Medium</td>
+                <td style="padding: 0.75rem;">Nudges how the day/night line is framed on screen</td>
+                <td style="padding: 0.75rem;">Instant</td>
+              </tr>
+              <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                <td style="padding: 0.75rem;">Earth clouds (live)</td>
+                <td style="padding: 0.75rem;">On, Off</td>
+                <td style="padding: 0.75rem;">On</td>
+                <td style="padding: 0.75rem;">Live satellite clouds (Earth only)</td>
+                <td style="padding: 0.75rem;">Restart</td>
+              </tr>
+              <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                <td style="padding: 0.75rem;">Earth city lights</td>
+                <td style="padding: 0.75rem;">On, Off</td>
+                <td style="padding: 0.75rem;">On</td>
+                <td style="padding: 0.75rem;">Night-side city glow (Earth only)</td>
+                <td style="padding: 0.75rem;">Restart</td>
+              </tr>
+              <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                <td style="padding: 0.75rem;">Time & Weather</td>
+                <td style="padding: 0.75rem;">Off, Every 30 min, Every hour, Every 2 hours, Every 3 hours</td>
+                <td style="padding: 0.75rem;">Off</td>
+                <td style="padding: 0.75rem;">How often the time + weather card appears</td>
+                <td style="padding: 0.75rem;">Restart to turn on; instant to change schedule or turn off</td>
+              </tr>
+              <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                <td style="padding: 0.75rem;">Performance mode</td>
+                <td style="padding: 0.75rem;">Off (best image), On (faster, softer)</td>
+                <td style="padding: 0.75rem;">Off</td>
+                <td style="padding: 0.75rem;">Trades a little sharpness for higher frame rate / extra-smooth motion</td>
+                <td style="padding: 0.75rem;">Instant</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p style="color: var(--ink-soft); line-height: 1.7; margin-bottom: 1rem;">About "Motion": at Real Earth speed the globe turns once every 24 hours — true to life, but far too slow to see moving. Pick a Timelapse option to watch it spin. The motion is designed to be perfectly smooth at any speed.</p>
+        <p style="color: var(--ink-soft); line-height: 1.7; margin-bottom: 1.5rem;">The Save button is labelled Save & Restart, but the globe only actually restarts when a change requires it (anything in the "Restart" rows above). If you only touched instant settings, the page just saves and returns.</p>
+      </section>
+
+      <section class="section" style="margin-bottom: 2rem;">
+        <h2 style="font-family: var(--font-serif); font-size: 2rem; margin-bottom: 1rem;">5. Buttons & resetting WiFi</h2>
+        <p style="color: var(--ink-soft); line-height: 1.7; margin-bottom: 1rem;">The globe has one physical button — <strong>BOOT</strong> — and no power switch (it runs whenever it's plugged in). You can reconnect it to a different WiFi network in any of four ways &mdash; and the first needs no button at all:</p>
+        <ul style="color: var(--ink-soft); line-height: 1.7; margin-bottom: 1.5rem; padding-left: 1.5rem;">
+          <li><strong>Power-cycle it 3 times (no button needed).</strong> Switch the power off and on three times in a row, leaving it on only a second or two each time. On the third power-on, the Planetaria-Setup screen reappears. This is the easiest way to switch networks on a globe in a sealed case, and it <em>keeps</em> your saved networks &mdash; so an accidental triple power-cycle simply reconnects on its own after a few minutes.</li>
+          <li><strong>Hold the BOOT button for ~3 seconds.</strong> The globe forgets all saved networks and reopens the Planetaria-Setup hotspot so you can set it up again.</li>
+          <li><strong>Use the web page.</strong> On the settings page, tap "Forget WiFi & reopen setup" at the bottom and confirm.</li>
+          <li><strong>Automatic.</strong> If the globe has no saved networks (brand new, or just reset) &mdash; or a saved network has vanished &mdash; it reopens the Planetaria-Setup hotspot on its own. It remembers up to three networks, so it reconnects automatically if you return to one.</li>
+        </ul>
+      </section>
+
+      <section class="section" style="margin-bottom: 2rem;">
+        <h2 style="font-family: var(--font-serif); font-size: 2rem; margin-bottom: 1rem;">6. What happens automatically</h2>
+        <p style="color: var(--ink-soft); line-height: 1.7; margin-bottom: 1rem;">Once it's online, the globe takes care of itself:</p>
+        <ul style="color: var(--ink-soft); line-height: 1.7; margin-bottom: 1.5rem; padding-left: 1.5rem;">
+          <li>Clouds refresh in the background roughly every 3 hours (and retry within ~10 minutes if a download fails). NASA's daily worldwide image is assembled swath by swath, so a fresh day is often patchy; the globe checks how complete each day is and, if too many gaps remain, automatically steps back day by day (up to a week) to the most recent fully-assembled image. Any small leftover gaps are filled from a base Earth map so you never see a blank patch.</li>
+          <li>Weather updates about every 30 minutes; your location is checked periodically too.</li>
+          <li>The clock stays accurate via internet time sync, so the day/night line and the card are always right. Temperature units pick themselves — °F in the United States, °C elsewhere.</li>
+          <li>If the internet drops, the globe keeps right on spinning with the last clouds it downloaded; it simply resumes live updates when the connection returns. It also watches the connection and reconnects on its own if your router blips.</li>
+        </ul>
+      </section>
+
+      <section class="section" style="margin-bottom: 2rem;">
+        <h2 style="font-family: var(--font-serif); font-size: 2rem; margin-bottom: 1rem;">7. Troubleshooting</h2>
+        <ul style="color: var(--ink-soft); line-height: 1.7; margin-bottom: 1.5rem; padding-left: 1.5rem;">
+          <li style="margin-bottom: 0.5rem;"><strong>The screen is blank / nothing happens:</strong> Make sure the USB-C cable is firmly seated and the power source supplies enough current (a wall charger is more reliable than a keyboard/hub port). Try a different cable or adapter.</li>
+          <li style="margin-bottom: 0.5rem;"><strong>I don't see the Planetaria-Setup network:</strong> Give it ~15 seconds after power-on. If it still doesn't appear, hold the BOOT button ~3 seconds to force the setup hotspot, then look again.</li>
+          <li style="margin-bottom: 0.5rem;"><strong>The setup page didn't open by itself:</strong> Once you've joined Planetaria-Setup, open a browser to <code>192.168.4.1</code> manually.</li>
+          <li style="margin-bottom: 0.5rem;"><strong>It says it connected, but the globe looks dim or the day/night line seems off at first:</strong> On first power-up it needs a moment to sync the clock over the internet; the lighting corrects itself within a minute. If it persists, your WiFi may be blocking time sync — try a different network.</li>
+          <li style="margin-bottom: 0.5rem;"><strong>The clouds look plain / there are no clouds:</strong> The first satellite image downloads a little after boot — give it a few minutes. Clouds only appear on Earth with the Earth clouds setting On, and require an internet connection.</li>
+          <li style="margin-bottom: 0.5rem;"><strong>No city lights:</strong> City lights only show on Earth, on the night side, with Earth city lights On. The daytime hemisphere never shows them.</li>
+          <li style="margin-bottom: 0.5rem;"><strong>The time/weather card never appears:</strong> Check that Time & Weather isn't set to Off on the settings page — out of the box it shows every 30 minutes. It also needs the internet (for time, location, and weather) to show.</li>
+          <li style="margin-bottom: 0.5rem;"><strong>The motion looks choppy:</strong> Make sure you're on current firmware; you can also turn on Performance mode for a higher frame rate. (Smooth motion at all time-lapse speeds is expected behavior.)</li>
+          <li style="margin-bottom: 0.5rem;"><strong>I moved it to a new house / new WiFi:</strong> Hold BOOT ~3 seconds (or use Forget WiFi) and run setup again. The globe keeps up to three networks, so it'll also reconnect automatically if you bring it back.</li>
+        </ul>
+      </section>
+
+      <section class="section" style="margin-bottom: 2rem;">
+        <h2 style="font-family: var(--font-serif); font-size: 2rem; margin-bottom: 1rem;">8. Technical specifications</h2>
+        <ul style="color: var(--ink-soft); line-height: 1.7; margin-bottom: 1.5rem; padding-left: 1.5rem;">
+          <li><strong>Display:</strong> 1.75" round AMOLED, 466 × 466 px (LilyGo T-Display-S3 AMOLED, CO5300 QSPI)</li>
+          <li><strong>Processor:</strong> Espressif ESP32-S3 (dual-core 240 MHz)</li>
+          <li><strong>Memory:</strong> 8 MB PSRAM · 16 MB flash</li>
+          <li><strong>Connectivity:</strong> WiFi 802.11 b/g/n (2.4 GHz)</li>
+          <li><strong>Power:</strong> USB-C, 5 V</li>
+          <li><strong>Controls:</strong> BOOT button (hold ~3 s to reset WiFi)</li>
+          <li><strong>Data sources:</strong> NASA GIBS / VIIRS (clouds & base map), geojs.io (approx. location), MET Norway (weather), NTP (time) — all free, no API keys or accounts</li>
+        </ul>
+
+        <h3 style="font-size: 1.3rem; margin-bottom: 0.5rem; color: var(--white);">A note on privacy</h3>
+        <p style="color: var(--ink-soft); line-height: 1.7; margin-bottom: 1.5rem;">To show local weather, the globe asks geojs.io for your approximate city based on your internet address, then sends those coordinates to MET Norway for the forecast. It contacts NASA for cloud imagery and a time server for the clock. It does not create an account, require a login, or send any personal data, and nothing is stored in the cloud. If you'd rather it stay fully local, set Time & Weather to Off (the live Earth itself still needs internet only for clouds).</p>
+
+        <h3 style="font-size: 1.3rem; margin-bottom: 0.5rem; color: var(--white);">Appendix — For the maker (build, flash & assets)</h3>
+        <p style="color: var(--ink-soft); line-height: 1.7; margin-bottom: 1rem;">This globe is a custom ESP32-S3 / PlatformIO firmware project. The whole device program is a single file, <code>firmware/src/main.cpp</code>; host-side Python tools that generate textures and verify visuals live in <code>backend/</code>.</p>
+        <p style="color: var(--ink-soft); line-height: 1.7; margin-bottom: 0.5rem;"><strong>Build & flash:</strong></p>
+        <pre style="background: rgba(0,0,0,0.5); padding: 1rem; border-radius: 4px; overflow-x: auto; color: var(--accent); margin-bottom: 1rem;"><code>cd firmware
+pio run -e lilygo-t-display-s3-amoled -t upload      # firmware
+pio run -e lilygo-t-display-s3-amoled -t uploadfs    # LittleFS assets in data/ (~11.6 MB across 12 binaries, slow)</code></pre>
+        <p style="color: var(--ink-soft); line-height: 1.7; margin-bottom: 1rem;"><strong>Serial monitor:</strong> 115200 baud over USB-C (USB-CDC). A boot heartbeat prints the frame rate, time-lapse scale, and active cloud buffer.</p>
+        <p style="color: var(--ink-soft); line-height: 1.7; margin-bottom: 1rem;"><strong>Regenerating image assets:</strong> the planet textures, night lights, and the card font/icon atlas are produced by the <code>backend/</code> generators (e.g. <code>python backend/gen_planets.py</code>, <code>python backend/gen_card_assets.py</code>). After regenerating, run <code>uploadfs</code> and reflash so the firmware and assets stay in sync — flashing one without the other will corrupt the card. Because the device screen can't be captured, every visual change is validated against the Python replicas in <code>backend/</code> (<code>simulate_realtime.py</code> for the globe, <code>verify_assets.py</code> for the card) before flashing.</p>
+      </section>
+
+    </div>
+  </main>
+
+<footer class="footer wrap">
+    <span>© Jonathan Capone — Technical Portfolio. OMEGA. | <a href="about.html" style="color: var(--accent);">About</a> | <a href="mailto:hello@jonathancapone.com" style="color: var(--accent);">hello@jonathancapone.com</a></span>
+  </footer>
+  <script src="main.js"></script>
+</body>
+</html>
