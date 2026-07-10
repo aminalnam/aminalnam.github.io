@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <title>Jonathan Capone — Past Time</title>
+
+  <meta name="description" content="Past Time — a glanceable e-ink timer that tells time as 101 animated 1-bit story scenes, built with a host-side render mirror and a per-face design-and-audit pipeline." />
+  <meta property="og:title" content="Jonathan Capone — Past Time" />
+  <meta property="og:description" content="Past Time — a glanceable e-ink timer that tells time as 101 animated 1-bit story scenes, built with a host-side render mirror and a per-face design-and-audit pipeline." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://jonathancapone.com/past-time.html" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Jonathan Capone — Past Time" />
+  <meta name="twitter:description" content="Past Time — a glanceable e-ink timer that tells time as 101 animated 1-bit story scenes, built with a host-side render mirror and a per-face design-and-audit pipeline." />
+
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⏳</text></svg>">
+
+  <link rel="stylesheet" href="style.css">
+  <meta property="og:image" content="https://jonathancapone.com/images/overview/project-documentation_overview.png" />
+  <link rel="canonical" href="https://jonathancapone.com/past-time.html" />
+</head>
+
+<body>
+  <a href="#main" class="skip-link">Skip to content</a>
+  <header class="topbar">
+    <div class="wrap topbar-inner">
+      <a class="brand" href="index.html"
+        style="display: flex; align-items: center; gap: 0.75rem; text-decoration: none;">
+        <div>
+          <span class="brand-title"
+            style="letter-spacing: 0.1em; color: var(--white); display: block; font-family: var(--font-serif); font-size: 1.5rem;">JONATHAN
+            CAPONE</span>
+          <span class="brand-sub"
+            style="display: block; font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent); font-family: var(--font-mono); opacity: 0.9;">Systems
+            Architecture Portfolio</span>
+        </div>
+      </a>
+            <nav class="nav" aria-label="Main Navigation">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <div class="dropdown">
+          <button class="dropbtn" style="background: none; border: none; color: #fff; font-family: inherit; font-size: inherit; cursor: pointer;" aria-expanded="false" aria-haspopup="true">OMEGA &#9662;</button>
+          <div class="dropdown-content">
+            <a href="/omega/">Architecture</a>
+            <a href="hardware.html">Hardware & Mesh</a>
+            <a href="gateway.html">Backend Gateway</a>
+            <a href="mission-portal.html">Mission Portal</a>
+          </div>
+        </div>
+        <a href="bathymetry.html">OMEGA-bath</a>
+        <a href="beta-overview.html">BETA</a>
+        <a href="cosnfx.html">CosNFX</a>
+        <a href="planetaria.html">Planetaria</a>
+        <a href="past-time.html">Past Time</a>
+        <a href="thruster.html">T-Thruster</a>
+        <a href="engineering-journal.html">Journal</a>
+        
+        <div style="display: flex; align-items: center; margin-left: 0.5rem; border-left: 1px solid rgba(255,255,255,0.15); padding-left: 1.5rem;">
+          <a href="https://jonathancapone.art" target="_blank" style="font-weight: 600; color: var(--ink-soft);">Art Portfolio</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero wrap">
+    <span class="eyebrow">Embedded UI & Automation</span>
+    <h1>Past Time.</h1>
+    <p>A configurable, glanceable e‑ink timer that tells time as 101 tiny animated story scenes.</p>
+    <div class="hero-actions">
+        <a class="btn btn-secondary" href="https://jonathancapone.art" target="_blank">Art Portfolio</a>
+    </div>
+  </section>
+
+  <main class="main-shell wrap" role="main" id="main">
+    <div class="main-inner">
+
+      <section class="section" style="margin-bottom: 2rem;">
+        <div class="section-content">
+          <span class="section-kicker">Overview</span>
+          <h2>Past Time.</h2>
+          <p>Past Time is a configurable, glanceable desk timer built on a high-contrast e-ink display. Rather than displaying digits counting down to zero, it tells time through art: it ships with 101 distinct animated story-scene faces, each one a full-screen 1-bit scene whose subject embodies the countdown — a tower crane building a high-rise floor by floor, a piggy bank filling with coins, a kite climbing its string, a retro boss whose HP bar drains, a wrecking ball levelling a tower.</p>
+          <p>The subject itself reaches its climax exactly as the timer hits zero, with many faces playing a bespoke "time's-up" finale. Its stark 1-bit aesthetic keeps it distraction-free on the desk. The firmware runs four timer modes (Countdown, Pomodoro, Stopwatch, Interval/HIIT), an on-device settings menu, a soft power button, an aquarium screensaver, optional Wi-Fi clock and weather, and deep-sleep standby. It is at v1.0 — shipped.</p>
+        </div>
+      </section>
+
+
+      <section class="section section-block" style="background: rgba(0,0,0,0.4);">
+        <span class="section-kicker">At A Glance</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Scaling Embedded Content</h2>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">Past Time runs on the Elecrow CrowPanel ESP32‑S3 2.13" E‑Paper HMI (122×250, SSD1680). The interesting problem was not the firmware but the scale: 101 distinct full-screen C++ animations. The project builds a <strong>host-side render mirror and a multi-agent design-and-audit pipeline</strong> so that each face can be drawn, rendered, critiqued, and integrated without flashing hardware on every iteration.</p>
+
+        <div class="grid-3" style="margin-bottom: 2rem;">
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">Visuals</span>
+            <h3 style="font-size: 1.2rem;">101 Animated Stories</h3>
+            <p style="font-size: 0.85rem;">Each face is one orientation-aware function that lays out proportional to the panel size and draws a 1-bit scene — a crane raising a high-rise, a kite climbing, a submarine diving to a treasure chest, a lighthouse beam guiding a boat to dock. The edit→compile→flash loop is impractical at 101 faces, so the work is iterated on a desktop render mirror first, then ported.</p>
+          </div>
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">Pipeline</span>
+            <h3 style="font-size: 1.2rem;">1-Bit Render Mirror</h3>
+            <p style="font-size: 0.85rem;">A Python/Pillow shim re-implements the ESP32 GFX primitives so a face's draw code renders pixel-faithfully on the desktop at 250×122, 1-bit, anti-aliasing off. The pipeline writes C++, renders a verification strip, and tests the output against a strict rendering contract.</p>
+          </div>
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">Quality Gate</span>
+            <h3 style="font-size: 1.2rem;">Per-Face Audit Fleet</h3>
+            <p style="font-size: 0.85rem;">One reviewer agent per face grades its strip against the contract — recognizable, embodied, sensible, dynamic, legible — and returns a ranked fix list. The first pass scored 84/101; the 17 flagged faces were redesigned and re-audited until no face scored below 4/5.</p>
+          </div>
+        </div>
+
+
+
+        
+          <div style="margin-top: 2rem; border-radius: 8px; overflow: hidden; border: 1px solid var(--line); display: flex; justify-content: center; background: #111;">
+            <img loading="lazy" src="images/visual-timer/aquarium.gif" alt="Animated Aquarium Timer rendering" style="max-width: 100%; display: block; border-radius: 8px;">
+          </div>
+
+</section>
+
+      <section class="section">
+        <div class="section-content">
+          <span class="section-kicker">Deterministic Workflows</span>
+          <h2>Deterministic Integration.</h2>
+          <p>Giving the pipeline the ability to render and critique its own output is what makes the scale tractable. Each face is built by an autonomous agent that renders a 3-row verification strip — Row A is the scene swept across the countdown in landscape, Row B the same sweep in portrait, and Row C samples per-second motion to check the scene keeps moving — then critiques it against the contract and iterates.</p>
+          <p>Once a scene passes, deterministic, idempotent Python integration scripts splice the verified C++ into the firmware: adding the enum id, name, scene function, finale, and dispatcher case. They validate before applying and are safe to re-run on partial batches — the place where hand-splicing dozens of functions into a 38k-line codebase would otherwise introduce silent errors.</p>
+        
+        <div id="slideshow-wrapper" style="margin-top: 2rem; position: relative; border-radius: 8px; border: 1px solid var(--line); overflow: hidden; background: #111;">
+          <div id="slideshow-container" style="position: relative; width: 100%; aspect-ratio: 750 / 366; display: flex; align-items: center; justify-content: center;">
+            <img id="timer-slide" src="images/visual-timer/timers/001_Lemmings.png" alt="Past Time animated story-scene countdown face" style="width: 100%; height: 100%; object-fit: contain;">
+          </div>
+          <div style="position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%); display: flex; gap: 10px; z-index: 10;">
+            <button onclick="changeTimerSlide(-1)" style="background: rgba(0,0,0,0.8); color: white; border: 1px solid rgba(255,255,255,0.4); border-radius: 4px; padding: 6px 16px; cursor: pointer; font-family: var(--font-mono); font-size: 0.9rem; transition: background 0.2s;">PREV</button>
+            <button onclick="changeTimerSlide(1)" style="background: rgba(0,0,0,0.8); color: white; border: 1px solid rgba(255,255,255,0.4); border-radius: 4px; padding: 6px 16px; cursor: pointer; font-family: var(--font-mono); font-size: 0.9rem; transition: background 0.2s;">NEXT</button>
+          </div>
+        </div>
+        <script>
+          document.addEventListener('DOMContentLoaded', () => {
+            const images = [
+                '001_Lemmings.png',
+                '002_Race.png',
+                '003_Machine.png',
+                '004_Letters.png',
+                '005_Hatch.png',
+                '006_Roadtrip.png',
+                '007_Fuse.png',
+                '008_Rocket.png',
+                '009_Candle.png',
+                '010_Web.png',
+                '011_Bloom.png',
+                '012_Toast.png',
+                '013_Fireflies.png',
+                '014_Lighthouse.png',
+                '015_Skyline.png',
+                '016_Submarine.png',
+                '017_Sheep.png',
+                '018_Summit.png',
+                '019_Melt.png',
+                '020_Train.png',
+                '021_Balloon.png',
+                '022_Mug.png',
+                '023_Orbit.png',
+                '024_Clocktower.png',
+                '025_Conveyor.png',
+                '026_Hourglass.png',
+                '027_Elevator.png',
+                '028_Battery.png',
+                '029_Popcorn.png',
+                '030_Sandcastle.png',
+                '031_Butterfly.png',
+                '032_Ferris.png',
+                '033_Bathtub.png',
+                '034_Honeycomb.png',
+                '035_Crane.png',
+                '036_Volcano.png',
+                '037_Plane.png',
+                '038_Pancakes.png',
+                '039_Piggy.png',
+                '040_Sailboat.png',
+                '041_Fishing.png',
+                '042_Campfire.png',
+                '043_Meteor.png',
+                '044_Kite.png',
+                '045_Crossing.png',
+                '046_Soda.png',
+                '047_Snowglobe.png',
+                '048_Stacker.png',
+                '049_Vending.png',
+                '050_Whale.png',
+                '051_Robot.png',
+                '052_Jack-box.png',
+                '053_Coaster.png',
+                '054_Kettle.png',
+                '055_Hoops.png',
+                '056_Snake.png',
+                '057_Invaders.png',
+                '058_Frogger.png',
+                '059_Breakout.png',
+                '060_Dino.png',
+                '061_Flappy.png',
+                '062_Pong.png',
+                '063_Boss.png',
+                '064_Loading.png',
+                '065_Platform.png',
+                '066_Climb.png',
+                '067_Sokoban.png',
+                '068_Minesweep.png',
+                '069_Pinball.png',
+                '070_Slots.png',
+                '071_Whack.png',
+                '072_Bowling.png',
+                '073_Golf.png',
+                '074_Jigsaw.png',
+                '075_Rubik.png',
+                '076_Knitting.png',
+                '077_Washer.png',
+                '078_Microwave.png',
+                '079_Roomba.png',
+                '080_Wreck.png',
+                '081_Chute.png',
+                '082_UFO.png',
+                '083_Cuckoo.png',
+                '084_Avalanche.png',
+                '085_Press.png',
+                '086_Beaver.png',
+                '087_Rings.png',
+                '088_Nesting.png',
+                '089_Origami.png',
+                '090_Brush.png',
+                '091_Gumball.png',
+                '092_Cake.png',
+                '093_Tornado.png',
+                '094_Claw.png',
+                '095_Ski.png',
+                '096_Igloo.png',
+                '097_Catapult.png',
+                '098_Treasure.png',
+                '099_Drumroll.png',
+                '100_Hanoi.png',
+                '101_Pinata.png'
+            ];
+            let currentIdx = 0;
+            const slideImg = document.getElementById('timer-slide');
+            let timerInterval;
+
+            window.changeTimerSlide = function(direction) {
+              currentIdx = (currentIdx + direction + images.length) % images.length;
+              slideImg.src = 'images/visual-timer/timers/' + images[currentIdx];
+              
+              clearInterval(timerInterval);
+              timerInterval = setInterval(() => changeTimerSlide(1), 1500);
+            };
+
+            timerInterval = setInterval(() => changeTimerSlide(1), 1500);
+          });
+        </script>
+      </div>
+      </section>
+
+      <section class="section section-block" style="background: rgba(0,0,0,0.4); margin-top: 2rem;">
+        <span class="section-kicker">Animation Model</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">One Face, 30 s to 90 min</h2>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">A single progress value looks frozen on a 90-minute timer and starved on a one-minute one. Every face is instead driven by three independent inputs — a "two-clock" model — so the same scene reads well across the whole range.</p>
+
+        <div class="grid-3" style="margin-bottom: 2rem;">
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">frac</span>
+            <h3 style="font-size: 1.2rem;">What finishes at zero</h3>
+            <p style="font-size: 0.85rem;">The remaining fraction (1→0) drives the one thing that must complete exactly at zero — the crane's roof flag, the kite reaching the top, the boat docking.</p>
+          </div>
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">elapsedSec</span>
+            <h3 style="font-size: 1.2rem;">What keeps moving</h3>
+            <p style="font-size: 0.85rem;">Free-running elapsed seconds drive continuous motion at a constant, watchable pace regardless of the total duration, so the scene never looks frozen between the things that matter.</p>
+          </div>
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">totalSec</span>
+            <h3 style="font-size: 1.2rem;">How much content</h3>
+            <p style="font-size: 0.85rem;">The total duration scales the <em>amount</em> of stuff in the scene. Splitting "what finishes" from "what moves" from "how much" is what lets one face work from 30 s to 90 min.</p>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">Finales</span>
+            <h3 style="font-size: 1.2rem;">61 Bespoke Time's-Up Animations</h3>
+            <p style="font-size: 0.85rem;">"Time's up" deserves a payoff. 61 of the 101 faces have a custom finale, dispatched per-face from <code>Finale.cpp</code> via <code>runFaceFinale()</code>; faces without one fall back to a chosen generic alarm animation (Flash, Rings, Checker, Text, Wipe, or Border).</p>
+          </div>
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">Scale</span>
+            <h3 style="font-size: 1.2rem;">Code &amp; Flash Footprint</h3>
+            <p style="font-size: 0.85rem;">~38k lines of firmware across the sketch, with the 101-face library and finales dominating. The app image is ≈ 2.08 MB — roughly 58% of one ~3.6 MB OTA slot — on a custom 8 MB dual-OTA partition that keeps rollback. Panel is 250×122, 1-bit.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-block" style="background: rgba(0,0,0,0.4); margin-top: 2rem;">
+        <span class="section-kicker">Power Engineering</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">The E-Ink Lifecycle</h2>
+        
+        <div class="grid-2" style="margin-bottom: 2rem;">
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">Graceful Sleep</span>
+            <h3 style="font-size: 1.2rem;">Deep-Sleep Park</h3>
+            <p style="font-size: 0.85rem;">When idle, paused, finished, or soft-powered-off (hold EXIT ~1.5 s), the ESP32-S3 enters true deep sleep and any of the 5 buttons wakes it via EXT1. The bistable e-paper holds its last frame with no power, so aggressive sleep is free. The board has no battery-sense calibration, so no measured standby current is claimed — soft-off standby is weeks, not months, because the USB-serial chip and regulator still draw; a hardware switch on the battery lead is the path to true zero-drain.</p>
+          </div>
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">Hardware Quirks</span>
+            <h3 style="font-size: 1.2rem;">Driver Profiling</h3>
+            <p style="font-size: 0.85rem;">Identical part numbers don't guarantee identical glass. On a replacement board the SSD1680 panel ghosted on the original GxEPD2 profile. The fix was a one-line controller-class swap to <code>GxEPD2_213_GDEY0213B74</code> — same 250×122 SSD1680 controller, different waveform — a reminder to confirm driver waveforms against the actual glass batch.</p>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+  <footer class="footer wrap">
+    <span>© Jonathan Capone — Technical Portfolio. OMEGA. | <a href="about.html" style="color: var(--accent);">About</a> | <a href="mailto:hello@jonathancapone.com" style="color: var(--accent);">hello@jonathancapone.com</a></span>
+  </footer>
+  <script src="main.js"></script>
+</body>
+</html>
