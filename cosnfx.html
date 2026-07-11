@@ -19,7 +19,7 @@
     href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⌚</text></svg>">
 
   <link rel="stylesheet" href="style.css">
-  <meta property="og:image" content="https://jonathancapone.com/images/overview/project-documentation_overview.png" />
+  <meta property="og:image" content="https://jonathancapone.com/images/cosnfx/cosnfx-hud-live.webp" />
   <link rel="canonical" href="https://jonathancapone.com/cosnfx.html" />
 </head>
 
@@ -82,9 +82,12 @@
         <div class="section-content">
           <span class="section-kicker">Overview</span>
           <h2>Bring Your Character to Life.</h2>
+          <img src="images/cosnfx/cosnfx-hud-live.webp" width="640" height="640"
+               alt="The CosNFX watch HUD mid-gesture — the armed ring around 7 numbered gesture nodes, firing a burst effect"
+               style="float: right; width: min(250px, 38%); height: auto; border-radius: 50%; margin: 0 0 1rem 1.5rem; box-shadow: 0 0 40px rgba(255,106,61,0.25), 0 18px 50px rgba(0,0,0,0.5);" />
           <p>CosNFX brings cosplay, LARP, and stage-magic characters to life: natural arm movements — a punch, a wrist flick, an overhead raise — fire high-fidelity sound effects and elemental energy bursts straight from the wrist. It runs as a <strong>standalone Wear OS app</strong> (no phone required to perform), tested on a Galaxy Watch 7.</p>
-          <p>Each character is an <strong>identity</strong> with its own colour, sound kit, energy field, and cinematic backdrop — <strong>30 built-ins</strong> (heroes, monsters, and mages: Superhero, Cyborg, Pyromancer, Vampire, Reaper, Werewolf, Robot, and more) plus your own. From a phone browser you assign gestures, upload your own <code>.wav</code>/<code>.mp3</code>, chain gestures into combos, and route audio — with nothing to install on the phone. A lightweight phone <strong>companion</strong> app is optional, mainly so testers without a watch can still try the gestures.</p>
-          <p><span class="status-label status-implemented">Active beta</span> &nbsp; Kotlin + Jetpack Compose (Wear Material 3) · ~10,000 lines of Kotlin across the watch app and a phone companion · <code>com.jdcap.cosnfx</code> v2.8.0. Free to install, with an optional one-time <strong>Pro</strong> in-app purchase.</p>
+          <p>Each character is an <strong>identity</strong> with its own colour, sound kit, energy field, and cinematic backdrop — <strong>30 built-ins</strong> (heroes, monsters, and mages: Superhero, Cyborg, Pyromancer, Vampire, Reaper, Werewolf, Robot, and more) plus your own. From a phone browser you assign gestures, upload your own <code>.wav</code>/<code>.mp3</code>, chain gestures into combos, and route audio — with nothing to install on the phone. The phone <strong>companion</strong> app mirrors that whole control surface natively over the Bluetooth data layer, so a venue with no Wi-Fi changes nothing.</p>
+          <p><span class="status-label status-implemented">Active beta</span> &nbsp; Kotlin + Jetpack Compose (Wear Material 3) · ~10,000 lines of Kotlin across the watch app and a phone companion · <code>com.jdcap.cosnfx</code> v2.10.0. Free to install, with an optional one-time <strong>Pro</strong> in-app purchase.</p>
         </div>
       </section>
 
@@ -103,7 +106,7 @@
           <div class="panel" style="padding: 1.5rem;">
             <span class="status-label status-implemented">Phone</span>
             <h3 style="font-size: 1.2rem;">Mission Control (8 tabs)</h3>
-            <p style="font-size: 0.85rem;">The watch runs an embedded Ktor server on :8080; any phone browser on the same Wi-Fi opens an 8-tab panel — Gestures, Combos, Look, Combat, Library, Props, Calibrate, System — over REST + a WebSocket event stream, gated by a 6-digit pairing PIN shown on the watch. Nothing to install on the phone.</p>
+            <p style="font-size: 0.85rem;">The watch runs an embedded Ktor server on :8080; any phone browser on the same Wi-Fi opens an 8-tab panel — Profile, Gestures, Looks, Combat, Library, Props, Calibrate, Settings — over REST + a WebSocket event stream, gated by a 6-digit pairing PIN shown on the watch. Nothing to install on the phone — and the companion app mirrors the same tabs natively over Bluetooth, proxied through a deny-by-default endpoint allowlist.</p>
           </div>
           <div class="panel" style="padding: 1.5rem;">
             <span class="status-label status-implemented">Visuals</span>
@@ -117,7 +120,7 @@
         <div class="section-content">
           <span class="section-kicker">Audio Engineering</span>
           <h2>Low-Latency by Design.</h2>
-          <p>Standard Android media players add 40–100 ms of round-trip latency — unacceptable for a sound triggered by a physical wrist snap. CosNFX bypasses them and streams raw 16-bit PCM straight into a hardware <code>AudioTrack</code> on a <code>MAX_PRIORITY</code> thread, requesting <code>PERFORMANCE_MODE_LOW_LATENCY</code> (the fast HAL path, with a fallback build for devices that reject it).</p>
+          <p>Standard Android media players add 40–100 ms of round-trip latency — unacceptable for a sound triggered by a physical wrist flick. CosNFX bypasses them and streams raw 16-bit PCM straight into a hardware <code>AudioTrack</code> on a <code>MAX_PRIORITY</code> thread, requesting <code>PERFORMANCE_MODE_LOW_LATENCY</code> (the fast HAL path, with a fallback build for devices that reject it).</p>
           <p>The engine is <strong>self-healing</strong>: build, play, and render are wrapped in a retry loop that releases and rebuilds the track after a Bluetooth/audio-focus change (which used to throw uncaught and kill the process). Writes use 256-sample chunks (~6 ms — latency negligible, far fewer underruns). To save power the track pauses when idle, but that pause is <strong>arm-gated</strong>: it stays warm (~2.5 s) while armed so every gesture in a performance fires instantly, and pauses fast (250 ms) when disarmed.</p>
         </div>
       </section>
@@ -131,7 +134,7 @@
           <div class="panel" style="padding: 1.5rem;">
             <span class="status-label status-implemented">Measured axes</span>
             <h3 style="font-size: 1.2rem;">One Axis Per Gesture</h3>
-            <p style="font-size: 0.85rem;"><strong>Gravity X</strong> is the arm up/down axis (gravity Y stays ~0 in every pose), gating the armed state and the overhead Raise. The two wrist flicks (Underhand / Overhand) read <strong>gyro X</strong>; the thrust and impulse moves — a forward <strong>Strike</strong>, a superhero-landing <strong>down-punch</strong>, a <strong>hip thrust</strong>, and a finger <strong>Snap</strong> — each key off the accel axis they actually drive, picked by which signal dominates so they can't trip each other.</p>
+            <p style="font-size: 0.85rem;"><strong>Gravity X</strong> is the arm up/down axis (gravity Y stays ~0 in every pose), gating the armed state and the overhead Raise. The two wrist flicks (Underhand / Overhand) read <strong>gyro X</strong>; the thrust and impulse moves — a forward <strong>Strike</strong>, a superhero-landing <strong>down-punch</strong>, a <strong>hip thrust</strong>, and a <strong>Fist</strong> clench — each key off the accel axis they actually drive, picked by which signal dominates so they can't trip each other. (The fist clench replaced a finger-snap detector after on-watch measurement proved a real snap's impulse sits <em>below</em> ordinary arm movement at the 100&#8202;Hz sensor ceiling — the data said no, so the gesture changed.)</p>
           </div>
           <div class="panel" style="padding: 1.5rem;">
             <span class="status-label status-implemented">Anti-cross-talk</span>
