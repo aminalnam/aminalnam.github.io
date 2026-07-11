@@ -6,14 +6,14 @@
   <meta content="width=device-width, initial-scale=1" name="viewport" />
   <title>Jonathan Capone — Planetaria</title>
 
-  <meta name="description" content="Planetaria — a desktop digital twin of Earth on a 1.75″ round AMOLED: live NASA VIIRS clouds, a real day/night terminator, city lights, and ten selectable worlds." />
+  <meta name="description" content="Planetaria — a desktop digital twin of Earth on a 1.75″ round AMOLED: real day/night, NASA VIIRS clouds, city lights, the night sky above you, tonight's Moon phase, and the ISS overhead." />
   <meta property="og:title" content="Jonathan Capone — Planetaria" />
-  <meta property="og:description" content="Planetaria — a desktop digital twin of Earth on a 1.75″ round AMOLED: live NASA VIIRS clouds, a real day/night terminator, city lights, and ten selectable worlds." />
+  <meta property="og:description" content="Planetaria — a desktop digital twin of Earth on a 1.75″ round AMOLED: real day/night, NASA VIIRS clouds, city lights, the night sky above you, tonight's Moon phase, and the ISS overhead." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://jonathancapone.com/planetaria.html" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Jonathan Capone — Planetaria" />
-  <meta name="twitter:description" content="Planetaria — a desktop digital twin of Earth on a 1.75″ round AMOLED: live NASA VIIRS clouds, a real day/night terminator, city lights, and ten selectable worlds." />
+  <meta name="twitter:description" content="Planetaria — a desktop digital twin of Earth on a 1.75″ round AMOLED: real day/night, NASA VIIRS clouds, city lights, the night sky above you, tonight's Moon phase, and the ISS overhead." />
 
   <link rel="icon"
     href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌍</text></svg>">
@@ -57,7 +57,7 @@
         <a href="past-time.html">Past Time</a>
         <a href="thruster.html">T-Thruster</a>
         <a href="engineering-journal.html">Journal</a>
-        
+
         <div style="display: flex; align-items: center; margin-left: 0.5rem; border-left: 1px solid rgba(255,255,255,0.15); padding-left: 1.5rem;">
           <a href="https://jonathancapone.art" target="_blank" style="font-weight: 600; color: var(--ink-soft);">Art Portfolio</a>
         </div>
@@ -66,9 +66,9 @@
   </header>
 
   <section class="hero wrap">
-    <span class="eyebrow">ESP32 Firmware</span>
+    <span class="eyebrow">ESP32 Firmware · Shipping Product</span>
     <h1>Planetaria.</h1>
-    <p>A desktop digital twin of Earth — the real planet, live, on your desk. Sun-synchronous day/night, NASA VIIRS clouds, and city lights on a 1.75" round AMOLED.</p>
+    <p>A desktop digital twin of Earth — the real day/night line, NASA satellite clouds, city lights, the night sky above your location, tonight's actual Moon phase, and the ISS overhead — on a 1.75" round AMOLED.</p>
     <div class="hero-actions">
         <a class="btn btn-primary" href="https://cosnfx.store/planetaria/" target="_blank" rel="noopener">🌍 cosnfx.store/planetaria</a>
         <a class="btn btn-secondary" href="https://jonathancapone.art" target="_blank">Art Portfolio</a>
@@ -78,12 +78,17 @@
         <div class="section-content">
           <span class="section-kicker">Visuals</span>
           <h2>Device Output.</h2>
-<div style="margin-bottom: 2rem; margin-top: 1rem; text-align: center;">
-  <img src="images/weather-globe/overlay-clouds-night.png" alt="Planetaria: live cloud overlay with night-side city lights" style="max-width: 300px; border-radius: 50%; box-shadow: 0 4px 15px rgba(0,0,0,0.5);">
+<div style="margin-bottom: 1rem; margin-top: 1rem; text-align: center;">
+  <video src="https://cosnfx.store/planetaria/assets/planetaria-demo.mp4"
+         autoplay muted loop playsinline
+         poster="images/weather-globe/overlay-clouds-night.png"
+         aria-label="Planetaria demo: live Earth with clouds and the ISS, every planet, a full cycle of Moon phases, the Sun, and the wheeling night sky"
+         style="max-width: 460px; width: 100%; border-radius: 50%; box-shadow: 0 4px 15px rgba(0,0,0,0.5);"></video>
+  <p style="font-size: 0.8rem; color: var(--ink-soft); margin-top: 0.75rem;">Not an animation: all 1,380 frames of this loop were rendered by the device itself, pulled over a debug endpoint that draws any requested simulation time.</p>
 </div>
 
-          <div style="margin-top: 1.5rem;">
-            <img src="images/weather-globe/weather-globe_05_selectable-planets.png" alt="Planetaria: the ten selectable worlds — Earth, Mercury through Neptune, the Moon, and the Sun" style="width: 100%; border-radius: 8px; border: 1px solid var(--line);">
+          <div style="margin-top: 1.5rem; text-align: center;">
+            <img src="images/weather-globe/weather-globe_05_selectable-planets.png" alt="Planetaria: selectable worlds — Earth, Mercury through Neptune, the Moon, and the Sun" style="max-width: 540px; width: 100%; border-radius: 8px; border: 1px solid var(--line);">
           </div>
 
 
@@ -98,10 +103,10 @@
         <div class="section-content">
           <span class="section-kicker">Overview</span>
           <h2>Planetaria.</h2>
-          <p>Planetaria is a standalone, internet-connected desk display built on an ESP32-S3 microcontroller. Utilizing a 1.75" round AMOLED screen, the device acts as a live window onto Earth and the solar system. Its primary feature is a real-time, sun-synchronous rendering of Earth, complete with accurate day/night shadow lines, live cloud cover pulled from NASA VIIRS satellites and refreshed in the background, and illuminated city lights on the night side.</p>
-          <p>Operating entirely on the device without the need for companion mobile apps or cloud accounts, it features a built-in captive portal for WiFi configuration &mdash; including enterprise (802.1X) school and work networks &mdash; and a web-based settings dashboard. It now ships as a product through the CosNFX store.</p>
+          <p>Planetaria is a standalone, internet-connected desk display built on an ESP32-S3 microcontroller. On its 1.75" round AMOLED it renders a live, sun-synchronous Earth: the true day/night terminator computed each frame, daily cloud cover composited from two NASA VIIRS satellites, and city lights that come on only where night has actually fallen. A settings-page tap switches it to any of eleven views — nine more worlds, the Moon with tonight's real phase, or a live planisphere of the stars and constellations above your location, with the ISS tracked across the globe.</p>
+          <p>It operates entirely on the device — no companion app, no cloud account, no API keys. Setup is a built-in captive portal (including enterprise 802.1X school and work networks), configuration is a web dashboard, and a sealed case can always be returned to setup by switching the power off and on three times. Every data source is keyless and licensed for commercial use. It ships as a product through the CosNFX store.</p>
     <div class="hero-actions" style="margin-top: 1rem;">
-        <a class="btn btn-secondary" href="planetaria-manual.html" style="background: rgba(255,255,255,0.1); border-color: transparent;">📖 Read the Owner's Manual</a>
+        <a class="btn btn-secondary" href="https://cosnfx.store/planetaria/manual.html" target="_blank" rel="noopener" style="background: rgba(255,255,255,0.1); border-color: transparent;">📖 Read the Owner's Manual</a>
         <a class="btn btn-secondary" href="https://cosnfx.store/planetaria/" target="_blank" rel="noopener" style="background: rgba(255,255,255,0.1); border-color: transparent;">🌍 Product Page</a>
     </div>
 
@@ -117,24 +122,32 @@
             <p style="font-size: 0.85rem; color: var(--ink-soft);">Calculates the real-time position of the sun to accurately drape a soft twilight terminator (day/night line) across the globe.</p>
           </div>
           <div class="panel" style="padding: 1.5rem;">
-            <h3 style="font-size: 1.2rem; color: var(--accent);">Real-Time Satellite Data</h3>
-            <p style="font-size: 0.85rem; color: var(--ink-soft);">Automatically fetches and maps live cloud cover from NASA's VIIRS satellites, layering it over the base map.</p>
+            <h3 style="font-size: 1.2rem; color: var(--accent);">Dual-Satellite Cloud Cover</h3>
+            <p style="font-size: 0.85rem; color: var(--ink-soft);">Composites daily imagery from NASA's NOAA-20 and Suomi-NPP VIIRS satellites, destripes swath-edge artifacts, and gap-fills from the previous day's mosaic — storms are real, current, and continuous.</p>
           </div>
           <div class="panel" style="padding: 1.5rem;">
             <h3 style="font-size: 1.2rem; color: var(--accent);">Dynamic Night Lights</h3>
             <p style="font-size: 0.85rem; color: var(--ink-soft);">Renders NASA "Black Marble" city lights exclusively on the shadowed hemisphere of the Earth.</p>
           </div>
           <div class="panel" style="padding: 1.5rem;">
-            <h3 style="font-size: 1.2rem; color: var(--accent);">Multi-Planetary Exploration</h3>
-            <p style="font-size: 0.85rem; color: var(--ink-soft);">Allows users to switch the view to any of 10 celestial bodies: Earth, Mercury, Venus, Mars, Jupiter, Saturn, Uranus, Neptune, the Moon, and the Sun.</p>
+            <h3 style="font-size: 1.2rem; color: var(--accent);">Eleven Views</h3>
+            <p style="font-size: 0.85rem; color: var(--ink-soft);">Earth, Mercury through Neptune, the Moon, the Sun, and a live Night Sky — switched live from the settings page, no restart. The Moon is tidally locked like the real one, and its terminator is tonight's actual phase.</p>
+          </div>
+          <div class="panel" style="padding: 1.5rem;">
+            <h3 style="font-size: 1.2rem; color: var(--accent);">Night Sky Planisphere</h3>
+            <p style="font-size: 0.85rem; color: var(--ink-soft);">The stars and constellations above <em>your</em> location right now (Yale Bright Star Catalogue + d3-celestial figures), with the Moon drawn phase-correct at its true position. The whole sky wheels with the clock — or with the time-lapse.</p>
+          </div>
+          <div class="panel" style="padding: 1.5rem;">
+            <h3 style="font-size: 1.2rem; color: var(--accent);">The Space Station, Live</h3>
+            <p style="font-size: 0.85rem; color: var(--ink-soft);">A marker rides the globe at the ISS's real position, propagated on-device from CelesTrak orbital elements (two-body + J2). In time-lapse it visibly orbits, the ground track corkscrewing westward pass after pass.</p>
           </div>
           <div class="panel" style="padding: 1.5rem;">
             <h3 style="font-size: 1.2rem; color: var(--accent);">Local Time & Weather Card</h3>
-            <p style="font-size: 0.85rem; color: var(--ink-soft);">Every 30 minutes by default &mdash; configurable to off, hourly, 2-hourly, or 3-hourly &mdash; the globe smoothly transitions to a full-screen card showing local time, date, temperature, "feels like" temperature, humidity, and wind speed. Weather itself refreshes about every 30 minutes.</p>
+            <p style="font-size: 0.85rem; color: var(--ink-soft);">On a user-defined schedule (every 30 minutes out of the box), the globe transitions to a full-screen card with local time, date, temperature, "feels like," humidity, and wind — then returns to orbit.</p>
           </div>
           <div class="panel" style="padding: 1.5rem;">
-            <h3 style="font-size: 1.2rem; color: var(--accent);">Web Settings Portal</h3>
-            <p style="font-size: 0.85rem; color: var(--ink-soft);">Hosts a local web server (accessible via the device's IP) to adjust motion speed (true 24-hour rotation vs. smooth time-lapse), brightness, camera tilt, screen rotation, weather-card cadence, and performance mode &mdash; on by default, trading a little sharpness for smoother motion. Frame rate is measured on-device, never targeted or capped.</p>
+            <h3 style="font-size: 1.2rem; color: var(--accent);">Web Settings & Demo Tour</h3>
+            <p style="font-size: 0.85rem; color: var(--ink-soft);">A local web dashboard adjusts motion (true 24-hour rotation to fast time-lapse), brightness with optional auto-dim after local sunset, tilt, rotation, and more — plus a one-tap two-minute demo tour through every view that restores your settings when it's done.</p>
           </div>
         </div>
       </section>
@@ -148,7 +161,7 @@
               <li><strong>Display:</strong> 1.75" round AMOLED, 466 × 466 pixel resolution (CO5300 QSPI driver).</li>
               <li><strong>Microcontroller:</strong> LilyGo T-Display-S3 (Espressif ESP32-S3, dual-core 240 MHz).</li>
               <li><strong>Memory:</strong> 8 MB PSRAM / 16 MB Flash.</li>
-              <li><strong>Connectivity:</strong> WiFi 802.11 b/g/n (2.4 GHz) &mdash; WPA2 Personal and Enterprise (802.1X); remembers up to 3 networks.</li>
+              <li><strong>Connectivity:</strong> WiFi 802.11 b/g/n (2.4 GHz), WPA2-Personal and Enterprise (802.1X).</li>
               <li><strong>Power:</strong> 5V via USB-C.</li>
             </ul>
           </div>
@@ -156,11 +169,12 @@
             <span class="section-kicker">Software</span>
             <h2>Architecture.</h2>
             <ul style="color: var(--ink-soft); font-size: 0.95rem; line-height: 1.8;">
-              <li><strong>Firmware:</strong> Written in C++ using PlatformIO and the Arduino framework.</li>
-              <li><strong>Multi-Threading:</strong> Utilizes FreeRTOS to divide labor across the ESP32-S3's two cores. Core 1 runs the render loop uninterrupted for smooth, drift-free globe rotation, while Core 0 manages the cloudTask and infoTask with atomic texture and weather buffer swaps to prevent visual stutter during network calls.</li>
-              <li><strong>Data APIs:</strong> Entirely free, no-key public sources (all cleared for commercial use): NASA GIBS/VIIRS (clouds/maps), geojs.io (IP-based rough geolocation), MET Norway (local weather), and NTP (time synchronization). Clouds re-fetch roughly every 3 hours, retrying about 10 minutes after a failure.</li>
-              <li><strong>Offline Resilience:</strong> If the network drops, the globe seamlessly continues its rotation using the most recently cached time and cloud assets, automatically resuming background updates when the connection is restored.</li>
-              <li><strong>Host-Side Tooling:</strong> Includes a Python backend suite for generating planet textures, night-light maps, and font/icon atlases. Because the physical SPI screen cannot be easily captured, the backend includes visual verification scripts to preview and test visual changes locally before flashing.</li>
+              <li><strong>Firmware:</strong> ~2,800 lines of C++ in a single file, built with PlatformIO on the Arduino framework.</li>
+              <li><strong>Multi-Threading:</strong> FreeRTOS across both cores — Core 1 runs the render loop uninterrupted while Core 0's tasks own all texture and weather mutations, publishing by atomic pointer swap so a network fetch can never stutter or tear a frame.</li>
+              <li><strong>Data APIs:</strong> Entirely free, keyless, and commercial-use-licensed: NASA GIBS/VIIRS (clouds and maps), MET Norway (weather), geojs.io (geolocation and timezone), CelesTrak (ISS orbital elements), and NTP.</li>
+              <li><strong>On-Device Astronomy:</strong> No astronomy APIs — the NOAA solar position, an Astronomical Almanac lunar series (validated against JPL Horizons to 0.17°), a two-body + J2 satellite propagator, and a sidereal-time star chart are all computed on the microcontroller.</li>
+              <li><strong>Offline Resilience:</strong> If the network drops, the globe continues on cached time and cloud assets and resumes background updates when the connection returns.</li>
+              <li><strong>Host-Side Tooling:</strong> ~3,700 lines of Python: texture and atlas generators, host replicas of the renderer, and validation sims that check the firmware's math against external ground truth (JPL Horizons for the Moon, a live reference for the ISS, Sirius calibration for the star catalog).</li>
             </ul>
           </div>
         </div>
@@ -170,28 +184,28 @@
       <section class="section section-block" style="background: rgba(0,0,0,0.4);">
         <span class="section-kicker">At A Glance</span>
         <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Embedded Precision</h2>
-        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">Most "Earth globe" gadgets use static textures spinning on a timer. This project calculates the true subsolar point (NOAA solar position) for the current UTC, downloads NASA VIIRS daily cloud mosaics, and additively blends NASA Black Marble city lights on the night side.</p>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">Most "Earth globe" gadgets use static textures spinning on a timer. This project calculates the true subsolar point (NOAA solar position) for the current UTC, composites NASA VIIRS daily cloud mosaics from two satellites, and additively blends NASA Black Marble city lights on the night side.</p>
 
         <div class="grid-3" style="margin-bottom: 2rem;">
           <div class="panel" style="padding: 1.5rem;">
             <span class="status-label status-implemented">Rendering</span>
             <h3 style="font-size: 1.2rem;">Spherized Math</h3>
-            <p style="font-size: 0.85rem;">A precomputed lookup table maps every pixel on the round display to a geographic normal. The rendering thread shades day to night using a smootherstep terminator with 8×8 Bayer dithering to prevent RGB565 color banding.</p>
+            <p style="font-size: 0.85rem;">A precomputed lookup table maps every pixel on the round display to a geographic normal. True bilinear sampling rides in the LUT's padding byte — the quality feature costs zero extra memory bandwidth — with 8×8 Bayer dithering to prevent RGB565 banding.</p>
           </div>
           <div class="panel" style="padding: 1.5rem;">
             <span class="status-label status-implemented">Pipelines</span>
             <h3 style="font-size: 1.2rem;">NASA Cloud Ingest</h3>
-            <p style="font-size: 0.85rem;">A dedicated RTOS task fetches a NASA VIIRS true-color snapshot from the EarthData WVS snapshot API, decodes the JPEG in memory into a 1024×512 buffer, feathers the dateline seam, and publishes the new texture atomically via pointer-swap. It re-fetches roughly every 3 hours once online (and retries within ~10 minutes after a failed download).</p>
+            <p style="font-size: 0.85rem;">A dedicated RTOS task fetches the daily dual-satellite VIIRS snapshot at 2048×1024 and decodes at half scale — 4:1 supersampling into the working texture — then destripes swath-edge haze, feathers the dateline seam, and publishes atomically via pointer swap.</p>
           </div>
           <div class="panel" style="padding: 1.5rem;">
             <span class="status-label status-implemented">Verification</span>
-            <h3 style="font-size: 1.2rem;">Host Replicas</h3>
-            <p style="font-size: 0.85rem;">Because AMOLED screens can't easily be screenshotted, the firmware rendering engine has a Python replica on the desktop. Visual changes are previewed against the replica before being flashed.</p>
+            <h3 style="font-size: 1.2rem;">Host Replicas & Frame Capture</h3>
+            <p style="font-size: 0.85rem;">The renderer has Python replicas on the desktop, and the firmware exposes a deterministic capture endpoint that renders any requested simulation time on demand. The product video is 1,080 frames pulled this way — marketing material that doubles as a frame-exact test rig.</p>
           </div>
           <div class="panel" style="padding: 1.5rem;">
             <span class="status-label status-implemented">Robustness</span>
             <h3 style="font-size: 1.2rem;">Cloud Completeness</h3>
-            <p style="font-size: 0.85rem;">The fiddliest piece. A freshly-built daily mosaic has missing satellite swaths, so the firmware judges completeness by counting no-data pixels only in the mid-latitude band (≈±45°) — polar night is legitimately black and must not count as a gap. If that band exceeds ~5% missing the day is rejected and the task steps back day-by-day (up to 7 days) to the most recent fully-assembled mosaic. Any remaining no-data pixels are filled from a Blue Marble base image, so the globe never shows a black void — or an invented cloud — as it spins.</p>
+            <p style="font-size: 0.85rem;">A freshly-built daily mosaic has missing satellite swaths, so completeness is judged by no-data pixels in the mid-latitude band only (polar night is legitimately black). Incomplete days are rejected back up to 7 days, and remaining gaps are filled from the <em>previous</em> mosaic — colour-matched, so clouds continue across the seam instead of vanishing.</p>
           </div>
         </div>
       </section>
@@ -199,19 +213,19 @@
       <section class="section section-block" style="background: rgba(0,0,0,0.4); margin-bottom: 2rem;">
         <span class="section-kicker">By The Numbers</span>
         <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Scope</h2>
-        <p style="color: var(--ink-soft); font-size: 1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">Honest figures, read straight from the repository — a small, single-purpose firmware plus the host tooling that feeds it.</p>
+        <p style="color: var(--ink-soft); font-size: 1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">Honest figures, read straight from the repository — a single-purpose firmware plus the host tooling that feeds and verifies it.</p>
         <div class="grid-3" style="gap: 1rem;">
           <div class="panel" style="padding: 1.5rem;">
-            <h3 style="font-size: 1.6rem; color: var(--accent); margin: 0;">~1,460 lines</h3>
-            <p style="font-size: 0.85rem; margin-top: 0.4rem;">The entire device program in one file, <code>firmware/src/main.cpp</code> (C++ / Arduino), backed by ~3,500 lines of Python host tooling in <code>backend/</code>.</p>
+            <h3 style="font-size: 1.6rem; color: var(--accent); margin: 0;">~2,800 lines</h3>
+            <p style="font-size: 0.85rem; margin-top: 0.4rem;">The entire device program in one file, <code>firmware/src/main.cpp</code> (C++ / Arduino), backed by ~3,700 lines of Python host tooling in <code>backend/</code>.</p>
           </div>
           <div class="panel" style="padding: 1.5rem;">
-            <h3 style="font-size: 1.6rem; color: var(--accent); margin: 0;">~11.6 MB assets</h3>
-            <p style="font-size: 0.85rem; margin-top: 0.4rem;">12 LittleFS binaries — eleven 1 MB RGB565 body textures plus a packed font/icon atlas — in a ~14 MB filesystem partition on the 16 MB flash.</p>
+            <h3 style="font-size: 1.6rem; color: var(--accent); margin: 0;">~11 MB assets</h3>
+            <p style="font-size: 0.85rem; margin-top: 0.4rem;">12 LittleFS binaries — ten 1 MB RGB565 body textures, the Black Marble night-lights layer, and a packed font/icon atlas — plus an 11 KB compiled-in star catalog: 1,010 stars and 743 constellation segments.</p>
           </div>
           <div class="panel" style="padding: 1.5rem;">
-            <h3 style="font-size: 1.6rem; color: var(--accent); margin: 0;">10 bodies</h3>
-            <p style="font-size: 0.85rem; margin-top: 0.4rem;">Earth plus the eight other planets, the Moon and the Sun, all sun-shaded; targeting the LilyGo T-Display-S3 AMOLED (ESP32-S3, 8 MB PSRAM) via PlatformIO.</p>
+            <h3 style="font-size: 1.6rem; color: var(--accent); margin: 0;">11 views</h3>
+            <p style="font-size: 0.85rem; margin-top: 0.4rem;">Ten sun-shaded worlds plus the live Night Sky planisphere, with the ISS tracked over Earth; targeting the LilyGo T-Display-S3 AMOLED (ESP32-S3, 8 MB PSRAM) via PlatformIO.</p>
           </div>
         </div>
       </section>
@@ -220,8 +234,8 @@
         <div class="section-content">
           <span class="section-kicker">Deep-Dive Diagnostics</span>
           <h2>Engineering the Edge Cases.</h2>
-          <p>The real story of embedded systems lies in the hardware edge cases. Here are three critical bugs resolved during field-testing:</p>
-          
+          <p>The real story of embedded systems lies in the hardware edge cases. Here are four critical bugs — and one non-bug — resolved during field-testing:</p>
+
           <div class="grid-2" style="margin-top: 2rem; gap: 1rem;">
               <div class="panel" style="padding: 1.5rem;">
                 <h3 style="font-size: 1.2rem; color: var(--accent);">1. The Odd-Aligned CO5300 AMOLED</h3>
@@ -229,11 +243,15 @@
               </div>
               <div class="panel" style="padding: 1.5rem;">
                 <h3 style="font-size: 1.2rem; color: var(--accent);">2. Sub-Second NTP Judder</h3>
-                <p style="font-size: 0.85rem;">During time-lapse animations, the globe would hold still for 30 frames then awkwardly lurch forward. The underlying NTP clock was bound to <code>time(nullptr)</code>, which is whole-second granular. The fix derived a sub-second fractional offset using <code>millis()</code>, re-anchoring on every RTC tick to prevent wrapping, so the spin advances smoothly between whole-second clock ticks. (The render loop is unbounded — it yields once per frame and simply runs as fast as the panel allows; frame rate is measured in the serial heartbeat, not capped at a target.)</p>
+                <p style="font-size: 0.85rem;">During time-lapse animations, the globe would hold still for 30 frames then awkwardly lurch forward. The underlying NTP clock was bound to <code>time(nullptr)</code>, which is whole-second granular. The fix derived a sub-second fractional offset using <code>millis()</code>, re-anchoring on every RTC tick, so the spin advances smoothly between clock ticks.</p>
               </div>
               <div class="panel" style="padding: 1.5rem;">
                 <h3 style="font-size: 1.2rem; color: var(--accent);">3. The Phantom Station Hotspot</h3>
                 <p style="font-size: 0.85rem;">When the globe was moved to a new house, the captive portal refused to load on <code>192.168.4.1</code>. The ESP32's SoftAP channel strictly follows the Station radio. The radio kept hunting for the old home network saved deep in the driver, dragging the hotspot off-channel. The fix: explicitly wipe the persistent driver credentials and serve the portal in pure <code>WIFI_AP</code> mode.</p>
+              </div>
+              <div class="panel" style="padding: 1.5rem;">
+                <h3 style="font-size: 1.2rem; color: var(--accent);">4. The Satellite That Wouldn't Move</h3>
+                <p style="font-size: 0.85rem;">Two ISS lessons. First, a real bug: the time-lapse clock races ~30 days per real hour, and a staleness guard comparing it against the orbital-element epoch silently expired after 19 minutes — staleness checks must always use the real clock. Second, a non-bug that survived a frame-by-frame audit of 432 captured frames: in the sun-locked view the marker retraces the <em>same screen arc</em> every orbit. Correct physics — a sun-fixed camera is nearly inertial, so the orbit ring holds still and it's Earth that slides beneath it.</p>
               </div>
           </div>
         </div>
