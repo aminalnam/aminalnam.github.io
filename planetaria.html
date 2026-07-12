@@ -84,7 +84,7 @@
          poster="images/weather-globe/overlay-clouds-night.png"
          aria-label="Planetaria demo: live Earth with clouds and the ISS, every planet, a full cycle of Moon phases, the Sun, and the wheeling night sky"
          style="max-width: 460px; width: 100%; border-radius: 50%; box-shadow: 0 4px 15px rgba(0,0,0,0.5);"></video>
-  <p style="font-size: 0.8rem; color: var(--ink-soft); margin-top: 0.75rem;">Not an animation: all 1,380 frames of this loop were rendered by the device itself, pulled over a debug endpoint that draws any requested simulation time.</p>
+  <p style="font-size: 0.8rem; color: var(--ink-soft); margin-top: 0.75rem;">Not an animation: all 1,476 frames of this loop were rendered by the device itself, pulled over a debug endpoint that draws any requested simulation time.</p>
 </div>
 
           <div style="margin-top: 1.5rem; text-align: center;">
@@ -130,12 +130,20 @@
             <p style="font-size: 0.85rem; color: var(--ink-soft);">Renders NASA "Black Marble" city lights exclusively on the shadowed hemisphere of the Earth.</p>
           </div>
           <div class="panel" style="padding: 1.5rem;">
-            <h3 style="font-size: 1.2rem; color: var(--accent);">Eleven Views</h3>
-            <p style="font-size: 0.85rem; color: var(--ink-soft);">Earth, Mercury through Neptune, the Moon, the Sun, and a live Night Sky — switched live from the settings page, no restart. The Moon is tidally locked like the real one, and its terminator is tonight's actual phase.</p>
+            <h3 style="font-size: 1.2rem; color: var(--accent);">Twelve Views</h3>
+            <p style="font-size: 0.85rem; color: var(--ink-soft);">Earth, Mercury through Neptune, the Moon, the Sun, a live Night Sky, and a live Tide dial — switched live from the settings page, no restart. The Moon is tidally locked like the real one, and its terminator is tonight's actual phase.</p>
           </div>
           <div class="panel" style="padding: 1.5rem;">
             <h3 style="font-size: 1.2rem; color: var(--accent);">Night Sky Planisphere</h3>
-            <p style="font-size: 0.85rem; color: var(--ink-soft);">The stars and constellations above <em>your</em> location right now (Yale Bright Star Catalogue + d3-celestial figures), with the Moon drawn phase-correct at its true position. The whole sky wheels with the clock — or with the time-lapse.</p>
+            <p style="font-size: 0.85rem; color: var(--ink-soft);">The stars and constellations above <em>your</em> location right now (Yale Bright Star Catalogue + d3-celestial figures), the Moon drawn phase-correct at its true position, and the five naked-eye planets as colour-coded dots — from an on-device Keplerian ephemeris validated against JPL Horizons to 0.077°. The whole sky wheels with the clock — or with the time-lapse.</p>
+          </div>
+          <div class="panel" style="padding: 1.5rem;">
+            <h3 style="font-size: 1.2rem; color: var(--accent);">Live Tide Dial (US coasts)</h3>
+            <p style="font-size: 0.85rem; color: var(--ink-soft);">The nearest NOAA station's water level right now — rising or falling — with today's true curve (hourly NOAA predictions, not an approximation), the next high and low, and the Moon that drives it all.</p>
+          </div>
+          <div class="panel" style="padding: 1.5rem;">
+            <h3 style="font-size: 1.2rem; color: var(--accent);">Earth Pulse — Live Earthquakes</h3>
+            <p style="font-size: 0.85rem; color: var(--ink-soft);">Recent USGS earthquakes (M4.5+, past day) pulse on the globe at their real epicentres — larger for stronger quakes, fading as they age. The Pacific Ring of Fire, visible from your desk.</p>
           </div>
           <div class="panel" style="padding: 1.5rem;">
             <h3 style="font-size: 1.2rem; color: var(--accent);">The Space Station, Live</h3>
@@ -169,12 +177,12 @@
             <span class="section-kicker">Software</span>
             <h2>Architecture.</h2>
             <ul style="color: var(--ink-soft); font-size: 0.95rem; line-height: 1.8;">
-              <li><strong>Firmware:</strong> ~2,800 lines of C++ in a single file, built with PlatformIO on the Arduino framework.</li>
+              <li><strong>Firmware:</strong> ~3,400 lines of C++ in a single file, built with PlatformIO on the Arduino framework.</li>
               <li><strong>Multi-Threading:</strong> FreeRTOS across both cores — Core 1 runs the render loop uninterrupted while Core 0's tasks own all texture and weather mutations, publishing by atomic pointer swap so a network fetch can never stutter or tear a frame.</li>
               <li><strong>Data APIs:</strong> Entirely free, keyless, and commercial-use-licensed: NASA GIBS/VIIRS (clouds and maps), MET Norway (weather), geojs.io (geolocation and timezone), CelesTrak (ISS orbital elements), and NTP.</li>
               <li><strong>On-Device Astronomy:</strong> No astronomy APIs — the NOAA solar position, an Astronomical Almanac lunar series (validated against JPL Horizons to 0.17°), a two-body + J2 satellite propagator, and a sidereal-time star chart are all computed on the microcontroller.</li>
               <li><strong>Offline Resilience:</strong> If the network drops, the globe continues on cached time and cloud assets and resumes background updates when the connection returns.</li>
-              <li><strong>Host-Side Tooling:</strong> ~3,700 lines of Python: texture and atlas generators, host replicas of the renderer, and validation sims that check the firmware's math against external ground truth (JPL Horizons for the Moon, a live reference for the ISS, Sirius calibration for the star catalog).</li>
+              <li><strong>Host-Side Tooling:</strong> ~3,800 lines of Python: texture and atlas generators, host replicas of the renderer, and validation sims that check the firmware's math against external ground truth (JPL Horizons for the Moon and planets, a live reference for the ISS, Sirius calibration for the star catalog, NOAA's own curve for the tide dial).</li>
             </ul>
           </div>
         </div>
@@ -216,16 +224,16 @@
         <p style="color: var(--ink-soft); font-size: 1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">Honest figures, read straight from the repository — a single-purpose firmware plus the host tooling that feeds and verifies it.</p>
         <div class="grid-3" style="gap: 1rem;">
           <div class="panel" style="padding: 1.5rem;">
-            <h3 style="font-size: 1.6rem; color: var(--accent); margin: 0;">~2,800 lines</h3>
-            <p style="font-size: 0.85rem; margin-top: 0.4rem;">The entire device program in one file, <code>firmware/src/main.cpp</code> (C++ / Arduino), backed by ~3,700 lines of Python host tooling in <code>backend/</code>.</p>
+            <h3 style="font-size: 1.6rem; color: var(--accent); margin: 0;">~3,400 lines</h3>
+            <p style="font-size: 0.85rem; margin-top: 0.4rem;">The entire device program in one file, <code>firmware/src/main.cpp</code> (C++ / Arduino), backed by ~3,800 lines of Python host tooling in <code>backend/</code>.</p>
           </div>
           <div class="panel" style="padding: 1.5rem;">
             <h3 style="font-size: 1.6rem; color: var(--accent); margin: 0;">~11 MB assets</h3>
             <p style="font-size: 0.85rem; margin-top: 0.4rem;">12 LittleFS binaries — ten 1 MB RGB565 body textures, the Black Marble night-lights layer, and a packed font/icon atlas — plus an 11 KB compiled-in star catalog: 1,010 stars and 743 constellation segments.</p>
           </div>
           <div class="panel" style="padding: 1.5rem;">
-            <h3 style="font-size: 1.6rem; color: var(--accent); margin: 0;">11 views</h3>
-            <p style="font-size: 0.85rem; margin-top: 0.4rem;">Ten sun-shaded worlds plus the live Night Sky planisphere, with the ISS tracked over Earth; targeting the LilyGo T-Display-S3 AMOLED (ESP32-S3, 8 MB PSRAM) via PlatformIO.</p>
+            <h3 style="font-size: 1.6rem; color: var(--accent); margin: 0;">12 views</h3>
+            <p style="font-size: 0.85rem; margin-top: 0.4rem;">Ten sun-shaded worlds, the live Night Sky planisphere (with the naked-eye planets), and a live NOAA tide dial — with the ISS and USGS earthquakes tracked over Earth; targeting the LilyGo T-Display-S3 AMOLED (ESP32-S3, 8 MB PSRAM) via PlatformIO.</p>
           </div>
         </div>
       </section>
