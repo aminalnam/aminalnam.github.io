@@ -153,12 +153,12 @@
 
       <section class="section section-block" id="core-axiom" style="background: rgba(0,0,0,0.4);">
         <span class="section-kicker">The Core Axiom</span>
-        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Bearer-Agnostic Observation Protocol.</h2>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">A Reading Means the Same Thing, However It Arrives.</h2>
         <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">
 <strong>The one idea everything else hangs on:</strong> a reading should mean the same thing no matter how it reached you &mdash; by radio, by cable, or over the internet. In the program's words, "the standard is the protocol, not the box." The data's meaning (its <em>envelope</em>) is kept separate from the exact format it happens to travel in (its <em>wire form</em>).
         </p>
         <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">
-          This design decision is what allowed an SX1302 concentrator, SignalK marine bridges, and TTN (The Things Network) adapters to all join the mesh with absolutely zero protocol changes. The envelope standardizes identity, time, location, and payload, while the wire format seamlessly transitions from an ultra-dense 84-byte binary TLV over LoRa, to JSON over HTTP, to Semtech-UDP for concentrators.
+          This design decision is what allowed an SX1302 concentrator, SignalK marine bridges, and TTN (The Things Network) adapters to all join the mesh with absolutely zero protocol changes. The envelope standardizes identity, time, location, and payload, while the exact format it travels in changes to fit each link &mdash; a dense 84-byte packet over radio, plain JSON over the internet, and other formats for specialized receivers.
         </p>
       </section>
 
@@ -236,7 +236,7 @@
 <section class="section section-block" style="background: rgba(0,0,0,0.4);">
         <span class="section-kicker">Network Topology</span>
         <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">The 4-Layer Stack.</h2>
-        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">OMEGA is built upon a rigid, decoupled 4-layer architecture. From extreme physical environments at the edge to high-performance data visualization in the cloud, every component strictly enforces an architectural boundary.</p>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">OMEGA is built upon a rigid, decoupled 4-layer architecture. From extreme physical environments at the edge to high-performance data visualization in the cloud, each layer sticks to one job and hands off cleanly to the next.</p>
         
         <div class="section-visual" style="margin-bottom: 3rem;">
           <div class="mermaid">
@@ -289,7 +289,7 @@
           <div class="panel" style="padding: 1.5rem;">
             <span class="status-label status-implemented">Layer 4</span>
             <h3 style="font-size: 1.2rem;">Spatial Digital Twin</h3>
-            <p style="font-size: 0.85rem;">High-performance 3D WebGL environment operating on a 4D temporal and Z-axis engine, presenting a decoupled Glass Bridge UI.</p>
+            <p style="font-size: 0.85rem;">The 3D globe where operators explore the fleet's data, plotting each reading by location, depth, and time. It runs independently of the hardware, so the two never take each other down.</p>
           </div>
         </div>
       </section>
@@ -306,7 +306,7 @@
       <section class="section">
         <div class="section-content">
           <span class="section-kicker">Layer 2: Transport</span>
-          <h2>The Bidirectional DTN &amp; Bearer Arbitrage.</h2>
+          <h2>Two-Way Messaging, and Choosing the Right Radio.</h2>
           <p>Standard IoT relies on persistent MQTT or HTTP connections. Over the ocean, those connections do not exist. OMEGA operates a <strong>Delay Tolerant Network (DTN)</strong> utilizing a Custom Binary TLV Protocol that crushes a 283B JSON payload into a highly dense 84B frame.</p>
           <p><strong>Picking the right radio for the moment:</strong> a node often has more than one way to phone home &mdash; LoRa, Wi-Fi HaLow, cellular. Rather than hard-wiring one, OMEGA chooses based on urgency: a critical alarm goes out instantly over whatever's fastest, while routine bulk readings wait for the cheap, low-power LoRa link.</p>
           <p><strong>Foreign-Mesh Last Resort:</strong> When OMEGA's native bearers fail, the network can route envelopes over foreign open meshes (like Meshtastic). To ensure legal compliance and protect shared airtime, a strict, firmware-enforced duty-cycle guardrail governs exactly how much traffic is permitted over these external channels.</p>
@@ -316,10 +316,10 @@
       <section class="section">
         <div class="section-content">
           <span class="section-kicker">Layer 3: Gateway</span>
-          <h2>The Federated Data Broker &amp; Universal Contract.</h2>
+          <h2>The Shore Gateway, Defined by a Format, Not a Box.</h2>
           <p>The OMEGA Gateway acts as the translation boundary between the physical RF mesh and the 3D Digital Twin. Crucially, the gateway is defined by a <strong>protocol contract</strong>, not a physical hardware box. Any community member can safely deploy their own gateway that simply captures raw frames and forwards them via IP.</p>
           <p><strong>Universal Ingest:</strong> The network layer handles all deduplication and identity resolution centrally. The gateway accepts observations from an array of heterogeneous networks—including a native SignalK bridge for cruising vessels, TTN/LoRaWAN integrations, and the SX1302 concentrator. They all feed into the same unified <code>/v1/ingest/frame</code> contract, instantly turning boats and third-party meshes into first-class OMEGA stations.</p>
-          <p><strong>High-Throughput Caching & IO:</strong> To support a lag-free 3D WebGL globe, the broker caches macro-APIs as <strong>Cloud-Optimized GeoTIFFs (COG)</strong>. Furthermore, to prevent database locking when edge nodes are spamming telemetry, the backend enforces <strong>Write-Ahead Logging (WAL)</strong> on its SQLite storage, completely decoupling read/write locks.</p>
+          <p><strong>High-Throughput Caching & IO:</strong> To keep the 3D globe fast, the gateway pre-fetches heavy map and satellite imagery and stores it in a form built for quick loading. Furthermore, to prevent database locking when edge nodes are spamming telemetry, the backend enforces <strong>Write-Ahead Logging (WAL)</strong> on its SQLite storage, completely decoupling read/write locks.</p>
         </div>
       </section>
 
@@ -420,7 +420,7 @@ function TelemetryMap({ data }) {
 
       <section class="section section-block" style="background: rgba(0,0,0,0.4); margin-top: 2rem;">
         <span class="section-kicker">Trust Model</span>
-        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Absolute Data Purity &amp; Float-Free Signing.</h2>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Only Real Measurements, Each One Signed.</h2>
         <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">An ocean instrument that conflates a forecast with a measurement is scientifically useless. OMEGA enforces an "Absolute Data Purity" rule: the live map shows <strong>only</strong> real, deployed hardware and real measurements. Missing data renders as an honest gap, never quietly filled in with a forecast. And so nobody can slip fake readings into the network, each measurement is cryptographically <strong>signed</strong> at the source &mdash; a tamper-proof seal that travels with the data.</p>
         
         <div class="grid-2" style="margin-bottom: 2rem;">
@@ -432,7 +432,7 @@ function TelemetryMap({ data }) {
           <div class="panel" style="padding: 1.5rem;">
             <span class="status-label status-implemented">The Solution</span>
             <h3 style="font-size: 1.2rem;">Float-Free Ed25519 Envelopes</h3>
-            <p style="font-size: 0.85rem;">OMEGA utilizes Ed25519 signatures over a deterministic, <strong>float-free signing view</strong>. Measurements are converted to integer epoch seconds, microdegrees, and millimeters. The canonical serializer strictly rejects any floating-point numbers. This guarantees that signed bytes are 100% reproducible on a $30 microcontroller and a cloud server alike, securing the federation against spoofed readings.</p>
+            <p style="font-size: 0.85rem;">Each reading is signed at the source with a standard scheme (Ed25519) over a stripped-down text form that uses only whole numbers &mdash; time in whole seconds, position in millionths of a degree, depth in millimeters &mdash; and rejects any decimals outright. This guarantees that signed bytes are 100% reproducible on a $30 microcontroller and a cloud server alike, securing the federation against spoofed readings.</p>
           </div>
         </div>
       </section>
@@ -464,7 +464,7 @@ function TelemetryMap({ data }) {
 
       <section class="section section-block" style="background: rgba(0,0,0,0.4); margin-top: 2rem;">
         <span class="section-kicker">Operator Self-Service</span>
-        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">SafeFormula AST vs. eval().</h2>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Let Operators Add Their Own Formulas, Safely.</h2>
         <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">Operators frequently need custom derived metrics (e.g., dewpoint, heat index, density) calculated on the fly without writing backend code. The naive approach is running Python's <code>eval()</code> on the server, which is a massive code-injection vulnerability on a public gateway.</p>
         <p style="color: var(--ink-soft); font-size: 1rem; line-height: 1.6; max-width: 800px;">
           <strong>The Solution:</strong> The backend implements a custom Abstract Syntax Tree (AST) interpreter for derived metrics. It parses and validates mathematical formulas at <strong>definition time</strong>, explicitly allowing only numeric literals and a whitelisted set of math operations (<code>sqrt</code>, <code>sin</code>, <code>log</code>). It actively rejects attribute access, function calls, and import tricks at parse time. This provides operators full mathematical expressiveness while guaranteeing complete safety.

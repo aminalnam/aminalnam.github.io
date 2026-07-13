@@ -86,14 +86,14 @@
 
       <section class="section section-block" style="background: rgba(0,0,0,0.4);">
         <span class="section-kicker">Layer 1: Fleet Infrastructure</span>
-        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">The COTS Federation</h2>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">One Fleet, All Off-the-Shelf Parts</h2>
         <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">Instead of designing custom circuit boards (slow and expensive), OMEGA builds on <strong>off-the-shelf parts</strong> anyone can buy &mdash; the same ESP32 microcontrollers and LoRa radio boards hobbyists use (the T-Beam Supreme on an ESP32; the T3-S3 relay and the gateway on the newer ESP32-S3). The whole fleet runs one shared C++ firmware, so a fix written once works everywhere. Three roles do all the work:</p>
 
         <div class="grid-3" style="margin-bottom: 2rem;">
           <div class="panel" style="padding: 1.5rem;">
             <span class="status-label status-implemented">Shore Gateway</span>
             <h3 style="font-size: 1.2rem;">T-ETH-ELITE</h3>
-            <p style="font-size: 0.85rem;">The DTO v3.0 master ingestion point. A LilyGo T-ETH-ELITE baseboard stacked with a T-SX1302 8-channel concentrator shield. This headless device concurrently catches bursts of telemetry across 8 LoRa channels simultaneously, immediately wrapping the raw RF frames into Semtech UDP packets and forwarding them over high-speed Ethernet to the central Python Broker.</p>
+            <p style="font-size: 0.85rem;">The DTO v3.0 master ingestion point. A LilyGo T-ETH-ELITE baseboard stacked with a T-SX1302 8-channel concentrator shield. It runs with no screen attached and listens on all 8 LoRa channels at once, catching bursts of readings as they arrive and forwarding them over Ethernet to the central software that gathers the fleet's data.</p>
           </div>
           <div class="panel" style="padding: 1.5rem;">
             <span class="status-label status-implemented">Sensor Node</span>
@@ -103,7 +103,7 @@
           <div class="panel" style="padding: 1.5rem;">
             <span class="status-label status-implemented">Mesh Relay</span>
             <h3 style="font-size: 1.2rem;">T3-S3 LR1121</h3>
-            <p style="font-size: 0.85rem;">A sensor-less mesh router deployed on high-elevation coastal structures or moored buoys. It operates across multiple frequency bands (Sub-GHz and 2.4 GHz LoRa), bridging disconnected sensor clusters and executing high-bandwidth bulk-transfer handshakes to move delayed payloads efficiently to the nearest gateway.</p>
+            <p style="font-size: 0.85rem;">A sensor-less mesh router deployed on high-elevation coastal structures or moored buoys. It operates across multiple frequency bands (Sub-GHz and 2.4 GHz LoRa), bridging disconnected sensor clusters and moving batches of held-up readings to the nearest gateway in one efficient transfer.</p>
           </div>
         </div>
       </section>
@@ -114,7 +114,7 @@
           <h2>Lossless Predictive Batching.</h2>
           <p>Transmitting individual oceanographic measurements (e.g., a temperature reading every 3 seconds) across a low-bandwidth LoRa link introduces catastrophic overhead from packet headers, leading directly to regulatory duty-cycle violations and massive battery drain.</p>
           <p>The trick: <strong>send the change, not the whole number.</strong> Ocean readings drift slowly &mdash; the temperature a few seconds from now is very close to the last one. So the node collects a batch of readings, sends the first one in full, then sends only the tiny difference from each reading to the next (a few bits each instead of a full 32). The gateway adds the differences back up to rebuild the exact original series &mdash; nothing lost, but far fewer bytes over the air.</p>
-          <p><strong>Result:</strong> This guarantees a completely lossless reconstruction of the high-frequency telemetry array at the Shore Gateway, while multi-sample predictive batching collapses the per-reading overhead of sending each sample as its own packet.</p>
+          <p><strong>Result:</strong> The shore station rebuilds the exact original series of readings, nothing lost, while sending only a fraction of the bytes that one packet per reading would cost.</p>
         </div>
       </section>
 
@@ -122,7 +122,7 @@
         <div class="section-content">
           <span class="section-kicker">Mesh Resilience</span>
           <h2>Store & Forward Architecture.</h2>
-          <p>Oceanographic sensor buoys frequently drift into RF dead zones, pass behind massive waves, or suffer from atmospheric interference. If an edge node attempts to blindly transmit during a network blackout, the data is permanently lost. To guarantee <em>Absolute Data Purity</em>, the DTO v3.0 firmware utilizes an autonomous Store & Forward mechanism.</p>
+          <p>Oceanographic sensor buoys frequently drift into RF dead zones, pass behind massive waves, or suffer from atmospheric interference. If an edge node attempts to blindly transmit during a network blackout, the data is permanently lost. So that no reading is ever lost, the firmware uses an autonomous Store & Forward mechanism.</p>
           <p>Before transmitting, the node listens to make sure the channel is clear (the same "wait for a gap" courtesy your Wi-Fi uses). If the air is jammed, or a send goes unacknowledged, it doesn't just drop the reading &mdash; it writes it to an on-board SD card and holds on.</p>
           <p>The node can survive offline for weeks, quietly accumulating environmental history. Once a connection to the mesh is re-established (proven by receiving a network heartbeat from a passing LR1121 relay or the T-ETH-ELITE), the node flushes its SD-card buffer, sequentially replaying its queue and seamlessly reconstructing the historical timeline within the Federated Data Broker.</p>
         </div>
@@ -130,7 +130,7 @@
 
       <section class="section section-block" style="background: rgba(0,0,0,0.4); margin-top: 2rem;">
         <span class="section-kicker">Edge Operations</span>
-        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Power Management & Thermodynamics.</h2>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Living Within a Power Budget.</h2>
         <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">A remote sensor floating in the ocean cannot plug into a wall outlet. It must budget its own power. The documented power budget is roughly 60 mA average draw, which gives on the order of 50 hours of runtime on a single 18650 cell. Battery voltage is telemetered back to shore via the on-board ADC so operators can watch the budget in real time.</p>
 
         <div class="grid-2" style="margin-bottom: 2rem;">
@@ -178,7 +178,7 @@
 
           <div class="panel" style="margin-top: 1rem; border-left: 4px solid var(--accent);">
             <h3 style="margin: 0 0 0.5rem; color: #fff;">Physical-Layer Reception Evidence</h3>
-            <p style="font-size: 0.9rem; color: var(--ink-soft); margin: 0;">Live database querying confirms <strong>205 radio frames</strong> received by an SX1302 gateway from OMEGA nodes, logging physical RF metrics of <strong>RSSI -89 to -31 dBm (avg -38.7)</strong> and <strong>SNR -15 to +12.5 dB (avg +9.2)</strong>. These hardware-level signals cannot be fabricated by a UI.</p>
+            <p style="font-size: 0.9rem; color: var(--ink-soft); margin: 0;">Live database querying confirms <strong>205 radio frames</strong> received by an SX1302 gateway from OMEGA nodes, logging physical RF metrics of <strong>RSSI -89 to -31 dBm (avg -38.7)</strong> and <strong>SNR -15 to +12.5 dB (avg +9.2)</strong>. These are raw radio measurements recorded by the receiver as each frame lands, not numbers a dashboard could invent.</p>
 
             <img src="images/proofs/hardware-rssi.svg" loading="lazy" alt="Histogram of RSSI for real LoRa frames" style="max-width: 100%; border-radius: 8px; margin-top: 1rem; display: block;">
 
@@ -199,7 +199,7 @@
 
           <section class="section section-block" style="background: rgba(0,0,0,0.4);">
             <span class="section-kicker">Energy Physics</span>
-            <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Power Budgets & Insolation.</h2>
+            <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">The Node's Power Budget.</h2>
             <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">A remote node has to live within a tight energy budget. The current build runs at roughly 60 mA average draw, giving on the order of 50 hours on a single 18650 cell, with battery voltage reported back to shore over the air.</p>
 
             <div class="grid-3" style="margin-bottom: 2rem;">
@@ -226,7 +226,7 @@
               <span class="section-kicker">Network Resilience</span>
               <h2>Offline Survival & Store-and-Forward.</h2>
               <p>Oceanographic buoys frequently drift into RF dead zones or experience severe atmospheric interference. If an edge node cannot reach the gateway, it must not drop its critical telemetry.</p>
-<p><strong>Execution:</strong> To solve this, Phase 2 firmware implements an autonomous <strong>Store & Forward</strong> architecture. When a node detects that a transmission has failed (via missing LoRaWAN ACKs or CSMA-CA channel jamming), it seamlessly reroutes the compressed telemetry payload onto its on-board SD card buffer. The node can survive offline for weeks, quietly accumulating data. When connection to the mesh is re-established, the node automatically flushes its queue, seamlessly reconstructing the timeline in the central database.</p>
+<p><strong>Execution:</strong> To solve this, Phase 2 firmware implements an autonomous <strong>Store & Forward</strong> architecture. When a node detects that a transmission has failed (via missing LoRaWAN ACKs or CSMA-CA channel jamming), it saves the compressed reading to its on-board SD card buffer instead of dropping it. The node can survive offline for weeks, quietly accumulating data. When connection to the mesh is re-established, the node automatically flushes its queue, seamlessly reconstructing the timeline in the central database.</p>
             </div>
           </section>
 
@@ -261,12 +261,12 @@
 
 <section class="section">
         <div class="section-content">
-          <span class="section-kicker">Network Graph Theory</span>
+          <span class="section-kicker">Bandwidth &amp; Airtime</span>
           <h2>Delay Tolerant Networks (DTN).</h2>
           <p>Transmitting raw JSON over a 900MHz LoRa link is catastrophic. At 1200bps, a standard 283-byte JSON
             telemetry envelope would exceed the strict LoRa airtime regulations (duty cycle) and cause massive packet
             collisions across the fleet.</p>
-          <p><strong>The Mathematics of Compression:</strong> OMEGA replaces standard JSON-over-LoRa entirely with a custom
+          <p><strong>How the frame gets smaller:</strong> OMEGA replaces standard JSON-over-LoRa entirely with a custom
             versioned <strong>Mesh Binary TLV (Type-Length-Value) Protocol</strong> for the air interface. By utilizing bit-packed fields and
             custom scaling (e.g., deci-Celsius, milligees), a full Sensor + GPS + Health frame is crushed from 283 bytes
             down to just 84 bytes (a 70% savings). This outperforms even standard CBOR and Protobuf on the wire, ensuring massive Time-on-Air
@@ -404,7 +404,7 @@
       <section class="section">
         <div class="section-content">
           <span class="section-kicker">Dual-Layer Protocol</span>
-          <h2>The Envelope Protocol v1.0 vs Binary TLV.</h2>
+          <h2>One Format for the Air, Another for Shore.</h2>
           <p>A major design decision in OMEGA was determining how to balance <strong>massive hardware heterogeneity</strong> (satellites, cell modems, LoRa radios, acoustic modems) with <strong>extreme bandwidth constraints</strong>. The solution is a dual-layer protocol architecture.</p>
           <p><strong>The Air Interface (Layer 1):</strong> Over 900MHz LoRa, every byte is expensive. Standard formats like CBOR, MessagePack, and Cayenne LPP carry too much structural overhead (~150B per frame). So, OMEGA uses a <strong>Custom Mesh Binary TLV Protocol</strong>. This drops the payload to 84B, requires zero external firmware parsing libraries, and enables trivial relay paths where intermediary nodes simply bump a single <code>hop_count</code> byte without deserializing the payload.</p>
           <p><strong>The Federation Interface (Layer 2):</strong> When that 84B binary packet hits a gateway, it is instantly translated into the <strong>OMEGA Envelope Protocol v1.0</strong>. This is a self-describing, globally standard format (using <em>Canonical UTF-8 JSON</em> or <em>SenML CBOR</em> for constrained IP bearers). Because "identity and meaning travel with the data", external databases, web portals, and federated science platforms never need to know the raw binary structure of the mesh. The Envelope Protocol ensures that a reading from a LoRa node and a reading from a NATO JANUS acoustic buoy look exactly the same to the backend.</p>
