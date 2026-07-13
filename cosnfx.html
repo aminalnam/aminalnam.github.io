@@ -6,14 +6,14 @@
   <meta content="width=device-width, initial-scale=1" name="viewport" />
   <title>Jonathan Capone — CosNFX</title>
 
-  <meta name="description" content="CosNFX — a standalone Wear OS app that fires motion-triggered hero sound effects from your wrist: measured-axis gesture detection, gesture calibration, themed identities, and external prop (lights/devices) control." />
+  <meta name="description" content="CosNFX — a standalone Wear OS app that fires motion-triggered sound, on-screen effects, and real props from your wrist: 7 gestures plus custom gestures and combos, your own uploaded media, and prop control over HTTP, OSC, and DMX (Art-Net) for lights, smoke, and show-control rigs." />
   <meta property="og:title" content="Jonathan Capone — CosNFX" />
-  <meta property="og:description" content="CosNFX — a standalone Wear OS app that fires motion-triggered hero sound effects from your wrist: measured-axis gesture detection, gesture calibration, themed identities, and external prop (lights/devices) control." />
+  <meta property="og:description" content="CosNFX — a standalone Wear OS app that fires motion-triggered sound, on-screen effects, and real props from your wrist: 7 gestures plus custom gestures and combos, your own uploaded media, and prop control over HTTP, OSC, and DMX (Art-Net) for lights, smoke, and show-control rigs." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://jonathancapone.com/cosnfx.html" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Jonathan Capone — CosNFX" />
-  <meta name="twitter:description" content="CosNFX — a standalone Wear OS app that fires motion-triggered hero sound effects from your wrist: measured-axis gesture detection, gesture calibration, themed identities, and external prop (lights/devices) control." />
+  <meta name="twitter:description" content="CosNFX — a standalone Wear OS app that fires motion-triggered sound, on-screen effects, and real props from your wrist: 7 gestures plus custom gestures and combos, your own uploaded media, and prop control over HTTP, OSC, and DMX (Art-Net) for lights, smoke, and show-control rigs." />
 
   <link rel="icon"
     href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⌚</text></svg>">
@@ -104,8 +104,8 @@
         <div class="grid-3" style="margin-bottom: 2rem;">
           <div class="panel" style="padding: 1.5rem;">
             <span class="status-label status-implemented">Watch</span>
-            <h3 style="font-size: 1.2rem;">HeroService + HeroSynth</h3>
-            <p style="font-size: 0.85rem;">A foreground service hosts the self-healing <code>AudioTrack</code> engine, gravity/accel/gyro sensor fusion, and the measured-axis gesture detectors. The watch UI is one page — a <strong>Clean HUD</strong>: the identity name is the arm toggle, ringed by numbered 1–7 gesture nodes over a cinematic per-identity backdrop.</p>
+            <h3 style="font-size: 1.2rem;">One Always-On Service</h3>
+            <p style="font-size: 0.85rem;">A single background service (<code>HeroService</code>) hosts the self-healing <code>AudioTrack</code> engine, gravity/accel/gyro sensor fusion, and the measured-axis gesture detectors. The watch UI is one page — a <strong>Clean HUD</strong>: the identity name is the arm toggle, ringed by numbered 1–7 gesture nodes over a cinematic per-identity backdrop.</p>
           </div>
           <div class="panel" style="padding: 1.5rem;">
             <span class="status-label status-implemented">Phone</span>
@@ -166,12 +166,12 @@
           <div class="panel" style="padding: 1.5rem;">
             <span class="status-label status-implemented">Props</span>
             <h3 style="font-size: 1.2rem;">External Lights &amp; Devices</h3>
-            <p style="font-size: 0.85rem;">An opt-in per-gesture HTTP action (method + URL + body) fires alongside the sound — driving anything with a local web API: WLED strips, Philips Hue, Home Assistant (smoke machines, fans), DIY ESP32/Arduino, or IFTTT. Each row has a Test button. It's device-agnostic — you supply the URL — and scoped in code to private LAN addresses (anything public is forced to HTTPS).</p>
+            <p style="font-size: 0.85rem;">An opt-in per-gesture action fires alongside the sound. An <strong>HTTP</strong> call drives anything with a local web API — WLED strips, Philips Hue, Home Assistant (smoke machines, fans), DIY ESP32/Arduino — while <strong>OSC</strong> and <strong>DMX (Art-Net)</strong> reach lighting consoles and show-control rigs, so one move can flash a costume and cue a fog burst together. Each row has a Test button, and HTTP targets are scoped in code to private LAN addresses (anything public is forced to HTTPS).</p>
           </div>
           <div class="panel" style="padding: 1.5rem;">
             <span class="status-label status-implemented">Audio routing</span>
-            <h3 style="font-size: 1.2rem;">Three-Way Routing &amp; Combat Link</h3>
-            <p style="font-size: 0.85rem;">A main/support mix routes independently across three outputs — the <strong>watch</strong>, the phone <strong>companion</strong> app, and the <strong>Mission Control</strong> browser tab — so the main hit can hit a loud phone speaker while a support layer stays on the wrist (any mix, or silence either). An opt-in Combat Link relays strike / shield / damage events between two or more paired watches for versus play.</p>
+            <h3 style="font-size: 1.2rem;">Multi-Device Audio &amp; Battle Mode</h3>
+            <p style="font-size: 0.85rem;">A main/support mix routes independently across three outputs — the <strong>watch</strong>, the phone <strong>companion</strong> app, and the <strong>Mission Control</strong> browser tab — so the main hit lands on a loud phone speaker while a support layer stays on the wrist (any mix, or silence either), and a gesture can play across several devices at once. An opt-in <strong>Battle mode</strong> links two or more watches over Wi-Fi for versus play — a strike deals damage, a held Raise blocks, and health regenerates while disarmed.</p>
           </div>
         </div>
 
