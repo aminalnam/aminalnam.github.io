@@ -81,7 +81,7 @@
   <section class="hero wrap">
     <span class="eyebrow">Legacy</span>
     <h1>OMEGA-bath</h1>
-    <p>A legacy Arduino Mega platform that logs georeferenced depth from a moving ROV and reconstructs exploratory bathymetric maps in post-processing.</p>
+    <p>A legacy Arduino Mega platform that records depth readings tagged with GPS position from a moving ROV, then turns them into rough depth maps of the bottom (bathymetry) on a computer afterward.</p>
     <div class="hero-actions">
         <a class="btn btn-primary" href="https://github.com/aminalnam/OMEGA-bath" target="_blank">View Repository</a>
     </div>
@@ -103,7 +103,7 @@
               <li><strong>1. Capture:</strong> GPS, sonar, temperature, IMU, UTC time.</li>
               <li><strong>2. Validate:</strong> Fix quality, depth stability, motion, spacing.</li>
               <li><strong>3. Log:</strong> Full record plus accepted mapping dataset.</li>
-              <li><strong>4. Reconstruct:</strong> IDW surfaces, contours, KML, KMZ overlays.</li>
+              <li><strong>4. Reconstruct:</strong> depth surfaces, contour maps, and Google Earth overlays.</li>
             </ul>
           </div>
           <div class="panel" style="padding: 1.5rem;">
@@ -203,7 +203,7 @@
       <section class="section section-block" style="background: rgba(0,0,0,0.4); margin-top: 2rem;">
         <span class="section-kicker">Signal Conditioning</span>
         <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Cleaning the signal in the field.</h2>
-        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">Beyond the acceptance gates, the firmware does work on each reading before it is ever logged, so the recorded series is already conditioned by the time it reaches the Python scripts.</p>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">Beyond the acceptance gates, the firmware does work on each reading before it is ever logged, so the recorded data is already cleaned up by the time it reaches the Python scripts.</p>
 
         <div class="grid-2">
           <div class="panel" style="padding: 1.5rem;">
@@ -230,8 +230,8 @@
       </section>
 
       <section class="section section-block" style="background: rgba(0,0,0,0.4); margin-top: 2rem;">
-        <span class="section-kicker">Algorithm Implementation</span>
-        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Executing IDW Interpolation.</h2>
+        <span class="section-kicker">Interpolation</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Filling in the depth between measured points.</h2>
         <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">OMEGA uses inverse distance weighting to estimate values between measured points. The Python scripts build a grid over the survey area and estimate a depth for each grid cell. Nearby measured points receive more weight than distant ones.</p>
         
         <div class="section-visual" style="max-height: 800px; overflow-y: auto;">

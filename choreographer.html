@@ -104,7 +104,7 @@
         <div class="section-content">
           <span class="section-kicker">Overview</span>
           <h2>A Costume That Runs a Show.</h2>
-          <p>Each module is a bright round AMOLED screen that can show images, GIFs and video, text, colors, and procedural effects &mdash; on its own, or as one panel in a bigger performance spread across the whole costume. Snap several onto an outfit and they behave like a single, synchronized light show you drive from an app.</p>
+          <p>Each module is a bright round AMOLED screen that can show images, GIFs and video, text, colors, and built-in animated effects &mdash; on its own, or as one panel in a bigger performance spread across the whole costume. Snap several onto an outfit and they behave like a single, synchronized light show you drive from an app.</p>
           <p>One firmware image runs two roles &mdash; a <strong>Conductor</strong> (the brain: the master clock and the app's bridge to everything) and any number of <strong>Display</strong> modules that auto-discover the conductor and play their part on cue. Which role a unit plays is just a setting.</p>
         </div>
       </section>
@@ -116,12 +116,12 @@
 
         <div class="grid-2" style="margin-bottom: 1.5rem;">
           <div class="panel" style="padding: 1.5rem;">
-            <span class="status-label status-implemented">Media Plane &mdash; Local</span>
+            <span class="status-label status-implemented">Big Media &mdash; Local</span>
             <h3 style="font-size: 1.2rem;">Heavy Pixels Stay Home</h3>
             <p style="font-size: 0.85rem;">Every module keeps its own images and video on its own flash storage. The big data never travels wirelessly during the show &mdash; so the costume keeps performing <strong>even if your phone dies mid-event</strong>.</p>
           </div>
           <div class="panel" style="padding: 1.5rem;">
-            <span class="status-label status-implemented">Control Plane &mdash; ESP-NOW</span>
+            <span class="status-label status-implemented">Live Cues &mdash; ESP-NOW</span>
             <h3 style="font-size: 1.2rem;">Only Tiny Cues Fly</h3>
             <p style="font-size: 0.85rem;">Over the air go only small packets: a <strong>shared clock</strong>, cue triggers, and live color / text / brightness. Because every module locks to the same clock, effects ripple across the whole costume <strong>in millisecond lockstep</strong>.</p>
           </div>
@@ -174,7 +174,7 @@
           <div class="panel" style="padding: 1.5rem; border-left: 4px solid var(--accent);">
             <span class="status-label status-partial">In Development</span>
             <h3 style="font-size: 1.2rem;">Honest status</h3>
-            <p style="font-size: 0.85rem;">The foundation is built and running on real hardware: the node firmware, the ESP-NOW control plane, the media-upload path, the single-file control app, the conductor bridge, and the timeline that compiles to an on-device show. Multi-panel drivers are partway (several of the planned panels are driving). Reactive modes (sound / motion / gesture), whole-costume pixel mapping, and over-the-air updates are next.</p>
+            <p style="font-size: 0.85rem;">The foundation is built and running on real hardware: the node firmware, the wireless cue link over ESP-NOW, media upload, the browser control app, the conductor that ties them together, and the timeline that compiles to an on-device show. Multi-panel drivers are partway (several of the planned panels are driving). Reactive modes (sound / motion / gesture), whole-costume pixel mapping, and over-the-air updates are next.</p>
           </div>
         </div>
       </section>

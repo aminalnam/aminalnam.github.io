@@ -106,10 +106,10 @@
 
       <section class="section section-block" style="background: rgba(0,0,0,0.4);">
         <span class="section-kicker">The Architecture</span>
-        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Holistic Progress Tracking.
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Progress Tracking in One Place.
         </h2>
         <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">
-          Before BETA, proof generation, project documentation, and metrics lived in silos. BETA unifies them into a single, reliable pane of glass where real metrics drive decisions. It ingests <code>report.json</code> files from proof runs, scans codebases, manages SQLite histories, and acts as the nervous system for the OMEGA suite.
+          Before BETA, proof generation, project documentation, and metrics lived in silos. BETA unifies them into one dashboard where real metrics drive decisions. It ingests <code>report.json</code> files from proof runs, scans codebases, manages SQLite histories, and serves as the central progress tracker for the OMEGA suite.
         </p>
 
         <div class="grid-3" style="margin-bottom: 2rem;">
@@ -120,7 +120,7 @@
           </div>
           <div class="panel" style="padding: 1.5rem;">
             <span class="status-label status-implemented">Local Dashboard</span>
-            <h3 style="font-size: 1.2rem;">Stdlib HTTP Server</h3>
+            <h3 style="font-size: 1.2rem;">Runs on Plain Python</h3>
             <p style="font-size: 0.85rem;">A dependency-free Python server (built on <code>http.server</code> / <code>ThreadingTCPServer</code>) serves JSON data and generated HTML from local SQLite workspaces. No web framework, no external runtime dependencies.</p>
           </div>
           <div class="panel" style="padding: 1.5rem;">
@@ -204,7 +204,7 @@
           <div class="panel" style="padding: 1.5rem;">
             <span class="status-label status-implemented">Core OMEGA Metrics</span>
             <h3 style="font-size: 1.2rem;">Run Throughput</h3>
-            <p style="font-size: 0.85rem;">Ingest throughput, write p95, query p95, station coverage, bathymetry, mesh routes, portal payload, database bytes per observation, and wire savings — compared run-over-run against the same scenario.</p>
+            <p style="font-size: 0.85rem;">Ingest throughput, near-worst-case write and read times, station coverage, bathymetry, mesh routes, portal payload, database bytes per observation, and wire savings — compared run-over-run against the same scenario.</p>
           </div>
           <div class="panel" style="padding: 1.5rem;">
             <span class="status-label status-implemented">Workflow Health</span>
@@ -216,7 +216,7 @@
         <div class="panel" style="padding: 1.5rem;">
           <span class="status-label status-implemented">Action Tracker</span>
           <h3 style="font-size: 1.2rem;">Metrics &rarr; Prioritized Backlog</h3>
-          <p style="font-size: 0.85rem;">The Plan, Manager, and AI screens consolidate the operating plan, deterministic work guidance, measurement plan, manager risks, missing data sources, metric backlog, and advisory Ollama suggestions into statused action records. Each action carries a source, priority, metric, next step, success signal, and evidence requirement. Actions can be active, blocked by missing real data, gated by manager risks, or flagged as advisory AI items — AI can feed the tracker, but status stays gated by real project evidence.</p>
+          <p style="font-size: 0.85rem;">The Plan, Manager, and AI screens consolidate the operating plan, deterministic work guidance, measurement plan, manager risks, missing data sources, metric backlog, and advisory Ollama suggestions into tracked action items, each with a status. Each action carries a source, priority, metric, next step, success signal, and evidence requirement. Actions can be active, blocked by missing real data, gated by manager risks, or flagged as advisory AI items — AI can feed the tracker, but status stays gated by real project evidence.</p>
         </div>
       </section>
 
@@ -235,7 +235,7 @@
           </div>
           <div class="panel" style="padding: 1.5rem;">
             <span class="status-label status-implemented">Quarantine</span>
-            <h3 style="font-size: 1.2rem;">Marker Set</h3>
+            <h3 style="font-size: 1.2rem;">What Gets Quarantined</h3>
             <p style="font-size: 0.85rem;">Reports carrying demo, synthetic, simulated, fixture, mock, dummy, fake, example, placeholder, template, or draft markers — plus the OMEGA-specific <code>local-proof</code> and <code>coastal-demo</code> tags — are quarantined before metrics run. (<code>smoke</code> is treated as a soft marker.) They stay visible as audit inputs but never drive charts, scores, or AI analysis.</p>
           </div>
           <div class="panel" style="padding: 1.5rem;">

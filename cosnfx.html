@@ -113,7 +113,7 @@
           </video>
           <p>CosNFX brings cosplay, LARP, and stage-magic characters to life: natural arm movements — a punch, a wrist flick, an overhead raise — fire high-fidelity sound effects and elemental energy bursts straight from the wrist. It runs as a <strong>standalone Wear OS app</strong> (no phone required to perform), tested on a Galaxy Watch 7.</p>
           <p>Each character is an <strong>identity</strong> with its own colour, sound kit, energy field, and cinematic backdrop — <strong>30 built-ins</strong> (heroes, monsters, and mages: Superhero, Cyborg, Pyromancer, Vampire, Reaper, Werewolf, Robot, and more) plus your own. From a phone browser you assign gestures, upload your own <code>.wav</code>/<code>.mp3</code>, chain gestures into combos, and route audio — with nothing to install on the phone. The phone <strong>companion</strong> app mirrors that whole control surface natively over the Bluetooth data layer, so a venue with no Wi-Fi changes nothing.</p>
-          <p><span class="status-label status-implemented">Active beta</span> &nbsp; Kotlin + Jetpack Compose (Wear Material 3) · ~10,000 lines of Kotlin across the watch app and a phone companion · <code>com.jdcap.cosnfx</code> v2.10.0. Free to install, with an optional one-time <strong>Pro</strong> in-app purchase.</p>
+          <p><span class="status-label status-implemented">Active beta</span> &nbsp; Kotlin + Jetpack Compose (Wear Material 3) · built across a watch app and a phone companion · <code>com.jdcap.cosnfx</code> v2.10.0. Free to install, with an optional one-time <strong>Pro</strong> in-app purchase.</p>
         </div>
       </section>
 
@@ -127,17 +127,17 @@
           <div class="panel" style="padding: 1.5rem;">
             <span class="status-label status-implemented">Watch</span>
             <h3 style="font-size: 1.2rem;">One Always-On Service</h3>
-            <p style="font-size: 0.85rem;">A single background service (<code>HeroService</code>) hosts the self-healing <code>AudioTrack</code> engine, gravity/accel/gyro sensor fusion, and the measured-axis gesture detectors. The watch UI is one page — a <strong>Clean HUD</strong>: the identity name is the arm toggle, ringed by numbered 1–7 gesture nodes over a cinematic per-identity backdrop.</p>
+            <p style="font-size: 0.85rem;">A single background service (<code>HeroService</code>) hosts the self-healing <code>AudioTrack</code> engine, reads the watch's motion sensors, and detects your gestures. The watch UI is one page — a <strong>Clean HUD</strong>: the identity name is the arm toggle, ringed by numbered 1–7 gesture nodes over a cinematic per-identity backdrop.</p>
           </div>
           <div class="panel" style="padding: 1.5rem;">
             <span class="status-label status-implemented">Phone</span>
-            <h3 style="font-size: 1.2rem;">Mission Control (8 tabs)</h3>
-            <p style="font-size: 0.85rem;">The watch runs an embedded Ktor server on :8080; any phone browser on the same Wi-Fi opens an 8-tab panel — Profile, Gestures, Looks, Combat, Library, Props, Calibrate, Settings — over REST + a WebSocket event stream, gated by a 6-digit pairing PIN shown on the watch. Nothing to install on the phone — and the companion app mirrors the same tabs natively over Bluetooth, proxied through a deny-by-default endpoint allowlist.</p>
+            <h3 style="font-size: 1.2rem;">Mission Control in Your Browser</h3>
+            <p style="font-size: 0.85rem;">The watch runs an embedded Ktor server on :8080; any phone browser on the same Wi-Fi opens an 8-tab panel — Profile, Gestures, Looks, Combat, Library, Props, Calibrate, Settings — over REST + a WebSocket event stream, gated by a 6-digit pairing PIN shown on the watch. Nothing to install on the phone — and the companion app mirrors the same tabs natively over Bluetooth, and can only reach an approved set of commands.</p>
           </div>
           <div class="panel" style="padding: 1.5rem;">
             <span class="status-label status-implemented">Visuals</span>
             <h3 style="font-size: 1.2rem;">Per-Identity Energy Fields</h3>
-            <p style="font-size: 0.85rem;">Each identity renders a transparent particle energy field over its cinematic backdrop — a native Kotlin port of the web visualization engine (≈two dozen effects ported, 30 designed) running on a render-thread <code>SurfaceView</code> with additive bloom, frame-throttled so it pauses when the screen's off. (The old AGSL GPU shader and the earlier Compose-Canvas effects are retired.)</p>
+            <p style="font-size: 0.85rem;">Each identity renders a transparent particle energy field over its cinematic backdrop — a native Kotlin port of the web visualization engine (dozens of built-in effects) running on a render-thread <code>SurfaceView</code> with additive bloom, frame-throttled so it pauses when the screen's off. (The old AGSL GPU shader and the earlier Compose-Canvas effects are retired.)</p>
           </div>
         </div>
       </section>

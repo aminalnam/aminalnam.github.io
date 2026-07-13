@@ -198,12 +198,12 @@
             <span class="section-kicker">Software</span>
             <h2>Architecture.</h2>
             <ul style="color: var(--ink-soft); font-size: 0.95rem; line-height: 1.8;">
-              <li><strong>Firmware:</strong> ~3,400 lines of C++ in a single file, built with PlatformIO on the Arduino framework.</li>
+              <li><strong>Firmware:</strong> the entire device program is a single C++ file, built with PlatformIO on the Arduino framework.</li>
               <li><strong>Multi-Threading:</strong> FreeRTOS across both cores — Core 1 runs the render loop uninterrupted while Core 0's tasks own all texture and weather mutations, publishing by atomic pointer swap so a network fetch can never stutter or tear a frame.</li>
               <li><strong>Data APIs:</strong> Entirely free, keyless, and commercial-use-licensed: NASA GIBS/VIIRS (clouds and maps), MET Norway (weather), geojs.io (geolocation and timezone), CelesTrak (ISS orbital elements), and NTP.</li>
               <li><strong>On-Device Astronomy:</strong> No astronomy APIs — the NOAA solar position, an Astronomical Almanac lunar series (validated against JPL Horizons to 0.17°), a two-body + J2 satellite propagator, and a sidereal-time star chart are all computed on the microcontroller.</li>
               <li><strong>Offline Resilience:</strong> If the network drops, the globe continues on cached time and cloud assets and resumes background updates when the connection returns.</li>
-              <li><strong>Host-Side Tooling:</strong> ~3,800 lines of Python: texture and atlas generators, host replicas of the renderer, and validation sims that check the firmware's math against external ground truth (JPL Horizons for the Moon and planets, a live reference for the ISS, Sirius calibration for the star catalog, NOAA's own curve for the tide dial).</li>
+              <li><strong>Host-Side Tooling:</strong> a Python toolkit &mdash; texture and atlas generators, host replicas of the renderer, and validation sims that check the firmware's math against external ground truth (JPL Horizons for the Moon and planets, a live reference for the ISS, Sirius calibration for the star catalog, NOAA's own curve for the tide dial).</li>
             </ul>
           </div>
         </div>
@@ -212,24 +212,24 @@
 
       <section class="section section-block" style="background: rgba(0,0,0,0.4);">
         <span class="section-kicker">At A Glance</span>
-        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Embedded Precision</h2>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">More Than a Spinning Texture</h2>
         <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">Most "Earth globe" gadgets use static textures spinning on a timer. This project calculates the true subsolar point (NOAA solar position) for the current UTC, composites NASA VIIRS daily cloud mosaics from two satellites, and additively blends NASA Black Marble city lights on the night side.</p>
 
         <div class="grid-3" style="margin-bottom: 2rem;">
           <div class="panel" style="padding: 1.5rem;">
             <span class="status-label status-implemented">Rendering</span>
-            <h3 style="font-size: 1.2rem;">Spherized Math</h3>
-            <p style="font-size: 0.85rem;">A precomputed lookup table maps every pixel on the round display to a geographic normal. True bilinear sampling rides in the LUT's padding byte — the quality feature costs zero extra memory bandwidth — with 8×8 Bayer dithering to prevent RGB565 banding.</p>
+            <h3 style="font-size: 1.2rem;">Flat Maps onto a Round Screen</h3>
+            <p style="font-size: 0.85rem;">A precomputed table maps every pixel on the round screen to a point on Earth's surface. Neighbouring map pixels are blended as it samples, so the globe looks smooth instead of blocky — and that smoothing is tucked into spare space in the table, so it adds no memory cost. A fine dither pattern hides the colour banding the display's 16-bit colour would otherwise show.</p>
           </div>
           <div class="panel" style="padding: 1.5rem;">
             <span class="status-label status-implemented">Pipelines</span>
             <h3 style="font-size: 1.2rem;">NASA Cloud Ingest</h3>
-            <p style="font-size: 0.85rem;">A dedicated RTOS task fetches the daily dual-satellite VIIRS snapshot at 2048×1024 and decodes at half scale — 4:1 supersampling into the working texture — then destripes swath-edge haze, feathers the dateline seam, and publishes atomically via pointer swap.</p>
+            <p style="font-size: 0.85rem;">A background task fetches the daily two-satellite cloud image (2048×1024) and shrinks it into a working texture — averaging four source pixels into each one, which cleans up noise — then removes the stripe artifacts at the satellites' swath edges, smooths the seam at the dateline, and swaps the new clouds in without interrupting the display.</p>
           </div>
           <div class="panel" style="padding: 1.5rem;">
             <span class="status-label status-implemented">Verification</span>
             <h3 style="font-size: 1.2rem;">Host Replicas & Frame Capture</h3>
-            <p style="font-size: 0.85rem;">The renderer has Python replicas on the desktop, and the firmware exposes a deterministic capture endpoint that renders any requested simulation time on demand. The product video is 1,080 frames pulled this way — marketing material that doubles as a frame-exact test rig.</p>
+            <p style="font-size: 0.85rem;">The renderer has Python replicas on the desktop, and the firmware exposes a deterministic capture endpoint that renders any requested simulation time on demand. The product video is rendered frame-by-frame this way — marketing material that doubles as a frame-exact test rig.</p>
           </div>
           <div class="panel" style="padding: 1.5rem;">
             <span class="status-label status-implemented">Robustness</span>
@@ -245,12 +245,12 @@
         <p style="color: var(--ink-soft); font-size: 1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">Honest figures, read straight from the repository — a single-purpose firmware plus the host tooling that feeds and verifies it.</p>
         <div class="grid-3" style="gap: 1rem;">
           <div class="panel" style="padding: 1.5rem;">
-            <h3 style="font-size: 1.6rem; color: var(--accent); margin: 0;">~3,400 lines</h3>
-            <p style="font-size: 0.85rem; margin-top: 0.4rem;">The entire device program in one file, <code>firmware/src/main.cpp</code> (C++ / Arduino), backed by ~3,800 lines of Python host tooling in <code>backend/</code>.</p>
+            <h3 style="font-size: 1.6rem; color: var(--accent); margin: 0;">Single-file firmware</h3>
+            <p style="font-size: 0.85rem; margin-top: 0.4rem;">The entire device program in one file, <code>firmware/src/main.cpp</code> (C++ / Arduino), backed by a Python host-tooling suite in <code>backend/</code>.</p>
           </div>
           <div class="panel" style="padding: 1.5rem;">
-            <h3 style="font-size: 1.6rem; color: var(--accent); margin: 0;">~11 MB assets</h3>
-            <p style="font-size: 0.85rem; margin-top: 0.4rem;">12 LittleFS binaries — ten 1 MB RGB565 body textures, the Black Marble night-lights layer, and a packed font/icon atlas — plus an 11 KB compiled-in star catalog: 1,010 stars and 743 constellation segments.</p>
+            <h3 style="font-size: 1.6rem; color: var(--accent); margin: 0;">Ten worlds + a star map</h3>
+            <p style="font-size: 0.85rem; margin-top: 0.4rem;">Ten surface textures (one per world), NASA's Black Marble night-lights layer, a packed font/icon atlas, and a compiled-in star catalog of 1,010 stars and 743 constellation segments — all stored on the device.</p>
           </div>
           <div class="panel" style="padding: 1.5rem;">
             <h3 style="font-size: 1.6rem; color: var(--accent); margin: 0;">12 views</h3>

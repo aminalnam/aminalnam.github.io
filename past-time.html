@@ -111,7 +111,7 @@
       <section class="section section-block" style="background: rgba(0,0,0,0.4);">
         <span class="section-kicker">At A Glance</span>
         <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Scaling Embedded Content</h2>
-        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">Past Time runs on the Elecrow CrowPanel ESP32‑S3 2.13" E‑Paper HMI (122×250, SSD1680). The interesting problem was not the firmware but the scale: 101 distinct full-screen C++ animations. The project builds a <strong>host-side render mirror and a multi-agent design-and-audit pipeline</strong> so that each face can be drawn, rendered, critiqued, and integrated without flashing hardware on every iteration.</p>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">Past Time runs on the Elecrow CrowPanel ESP32‑S3 2.13" E‑Paper HMI (122×250, SSD1680). The interesting problem was not the firmware but the scale: 101 distinct full-screen C++ animations. The project builds a <strong>desktop preview of the e-ink screen and a pipeline of software agents that design and check faces</strong> so that each face can be drawn, rendered, critiqued, and integrated without flashing hardware on every iteration.</p>
 
         <div class="grid-3" style="margin-bottom: 2rem;">
           <div class="panel" style="padding: 1.5rem;">
@@ -142,10 +142,10 @@
 
       <section class="section">
         <div class="section-content">
-          <span class="section-kicker">Deterministic Workflows</span>
-          <h2>Deterministic Integration.</h2>
+          <span class="section-kicker">Reliable Workflows</span>
+          <h2>Safe, Repeatable Integration.</h2>
           <p>Giving the pipeline the ability to render and critique its own output is what makes the scale tractable. Each face is built by an autonomous agent that renders a 3-row verification strip — Row A is the scene swept across the countdown in landscape, Row B the same sweep in portrait, and Row C samples per-second motion to check the scene keeps moving — then critiques it against the contract and iterates.</p>
-          <p>Once a scene passes, deterministic, idempotent Python integration scripts splice the verified C++ into the firmware: adding the enum id, name, scene function, finale, and dispatcher case. They validate before applying and are safe to re-run on partial batches — the place where hand-splicing dozens of functions into a 38k-line codebase would otherwise introduce silent errors.</p>
+          <p>Once a scene passes, Python integration scripts splice the verified C++ into the firmware: adding the enum id, name, scene function, finale, and dispatcher case. They validate before applying and are safe to re-run on partial batches — the place where hand-splicing dozens of functions into a 38k-line codebase would otherwise introduce silent errors.</p>
         
         <div id="slideshow-wrapper" style="margin-top: 2rem; position: relative; border-radius: 8px; border: 1px solid var(--line); overflow: hidden; background: #111;">
           <div id="slideshow-container" style="position: relative; width: 100%; aspect-ratio: 750 / 366; display: flex; align-items: center; justify-content: center;">
@@ -282,7 +282,7 @@
       <section class="section section-block" style="background: rgba(0,0,0,0.4); margin-top: 2rem;">
         <span class="section-kicker">Animation Model</span>
         <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">One Face, 30 s to 90 min</h2>
-        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">A single progress value looks frozen on a 90-minute timer and starved on a one-minute one. Every face is instead driven by three independent inputs — a "two-clock" model — so the same scene reads well across the whole range.</p>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">A single progress value looks frozen on a 90-minute timer and starved on a one-minute one. Every face is instead driven by three independent inputs, so the same scene reads well across the whole range.</p>
 
         <div class="grid-3" style="margin-bottom: 2rem;">
           <div class="panel" style="padding: 1.5rem;">
@@ -310,8 +310,8 @@
           </div>
           <div class="panel" style="padding: 1.5rem;">
             <span class="status-label status-implemented">Scale</span>
-            <h3 style="font-size: 1.2rem;">Code &amp; Flash Footprint</h3>
-            <p style="font-size: 0.85rem;">~38k lines of firmware across the sketch, with the 101-face library and finales dominating. The app image is ≈ 2.08 MB — roughly 58% of one ~3.6 MB OTA slot — on a custom 8 MB dual-OTA partition that keeps rollback. Panel is 250×122, 1-bit.</p>
+            <h3 style="font-size: 1.2rem;">Over-the-Air Updates, With Rollback</h3>
+            <p style="font-size: 0.85rem;">The 101-face scene library and its finales make up the bulk of the firmware. The whole app fits inside a single over-the-air update slot with room to spare, on a two-slot layout so a failed update can roll back to the last working version. Panel is 250×122, 1-bit.</p>
           </div>
         </div>
       </section>

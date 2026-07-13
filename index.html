@@ -151,13 +151,13 @@
           <a href="beta-overview.html" class="panel" style="padding: 2rem; display: block; text-decoration: none;">
             <span class="status-label status-implemented">Evaluation</span>
             <h3 style="font-size: 1.6rem; color: #fff; margin-top: 1rem; margin-bottom: 0.5rem;">BETA Framework</h3>
-            <p style="font-size: 0.95rem; color: var(--ink-soft); margin-top: 0.5rem;">A centralized dashboard and analysis engine built in Python to track the holistic progress of the OMEGA ecosystem.</p>
+            <p style="font-size: 0.95rem; color: var(--ink-soft); margin-top: 0.5rem;">A Python dashboard that tracks how far along each part of the OMEGA project is.</p>
           </a>
           
           <a href="cosnfx.html" class="panel" style="padding: 2rem; display: block; text-decoration: none;">
             <span class="status-label status-implemented">Wear OS / Audio</span>
             <h3 style="font-size: 1.6rem; color: #fff; margin-top: 1rem; margin-bottom: 0.5rem;">CosNFX</h3>
-            <p style="font-size: 0.95rem; color: var(--ink-soft); margin-top: 0.5rem;">A standalone Wear OS app that fires motion-triggered hero SFX from your wrist — measured-axis gesture detection, gesture calibration, themed identities, and external prop (lights/devices) control.</p>
+            <p style="font-size: 0.95rem; color: var(--ink-soft); margin-top: 0.5rem;">A standalone Wear OS app that fires motion-triggered hero SFX from your wrist — it detects specific wrist gestures (which you can calibrate yourself), offers swappable themed profiles, and can control external props like lights.</p>
           </a>
 
           <a href="choreographer.html" class="panel" style="padding: 2rem; display: block; text-decoration: none;">
@@ -181,7 +181,7 @@
           <a href="past-time.html" class="panel" style="padding: 2rem; display: block; text-decoration: none;">
             <span class="status-label status-implemented">Utility App</span>
             <h3 style="font-size: 1.6rem; color: #fff; margin-top: 1rem; margin-bottom: 0.5rem;">Past Time</h3>
-            <p style="font-size: 0.95rem; color: var(--ink-soft); margin-top: 0.5rem;">An ESP32-S3 e-paper countdown timer with 101 hand-built animated story-scene faces (a kite climbing, a boss fight, a wrecking ball) — each scene IS the clock, hitting its climax exactly at zero; 61 faces have a bespoke time's-up finale, and the whole library was quality-gated by an autonomous 101-agent audit.</p>
+            <p style="font-size: 0.95rem; color: var(--ink-soft); margin-top: 0.5rem;">An ESP32-S3 e-paper countdown timer with 101 hand-built animated story-scene faces (a kite climbing, a boss fight, a wrecking ball) — each scene IS the clock, hitting its climax exactly at zero; 61 faces have a bespoke time's-up finale, and and every face was quality-checked before release.</p>
           </a>
 
           <a href="slime.html" class="panel" style="padding: 2rem; display: block; text-decoration: none;">
@@ -214,13 +214,13 @@
           <a href="/omega/" class="panel bento-item beta-panel-hover glitch-hover" style="grid-column: 1 / -1;">
             <div class="bento-icon">🔬</div>
             <h3 class="bento-title">Absolute Data Purity</h3>
-            <p class="bento-desc">The live map shows only real, deployed hardware. Synthetic data and forecasts are treated as overlays, never ground-truth. The simulation engine strictly purges fabricated rows to protect scientific integrity.</p>
+            <p class="bento-desc">The live map shows only real, deployed hardware. Synthetic data and forecasts are treated as overlays, never ground-truth. The simulation code keeps the synthetic records it generates out of the real dataset.</p>
           </a>
 
           <a href="/omega/" class="panel bento-item beta-panel-hover glitch-hover" style="grid-column: 1 / -1;">
             <div class="bento-icon">⚙️</div>
-            <h3 class="bento-title">Zero-Install Smoke Gate</h3>
-            <p class="bento-desc">A zero-install CI canary (Node/Playwright) that hits the live gateway read-only and asserts ~31/31 critical pages render and the map and overlays load — a cheap regression gate proving the portal loads without crashing.</p>
+            <h3 class="bento-title">Automated Site Health Check</h3>
+            <p class="bento-desc">An automated check that loads the live site's key pages and confirms the map and data overlays still render — a cheap early warning if a change breaks the site.</p>
           </a>
 
 
@@ -232,7 +232,7 @@
           Sensors.</h2>
         <p
           style="color: var(--ink-soft); font-size: 1.15rem; margin-bottom: 2.5rem; max-width: 800px; line-height: 1.7;">
-          A sophisticated repository for underwater geospatial workflows. Bridging the gap between raw physical
+          Turns raw underwater depth readings into seafloor maps you can view on the web or in Google Earth. Bridging the gap between raw physical
           oceanography and modern web mapping interfaces.
         </p>
 
@@ -247,8 +247,8 @@
                 Geospatial</span>
               <h3 style="font-size: 2rem;">Acoustic Bathymetric Mapping</h3>
               <p style="font-size: 1.1rem; max-width: 500px; line-height: 1.6;">
-                Advanced Python algorithms implementing Inverse Distance Weighting (IDW) interpolation. Converts sparse,
-                noisy acoustic pings into stunning, highly-accurate topographic depth contours and Google Earth KML
+                Python code that fills the gaps between scattered sonar readings using a method called inverse distance weighting (IDW). Converts sparse,
+                noisy depth pings into clean seafloor contour maps and Google Earth
                 overlays.
               </p>
             </div>
