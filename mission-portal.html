@@ -69,7 +69,7 @@
   <section class="hero wrap">
     <span class="eyebrow">Presentation Layer</span>
     <h1>Mission Portal & AI.</h1>
-    <p>The ~52,500 LOC Vanilla JS 3D digital twin and Honu, a read-only AI that runs fully offline on a local Ollama model or falls back to cloud (Anthropic).</p>
+    <p>The operator's cockpit: a live, explorable 3D globe of the entire network &mdash; scrub time, slice by depth, and just <em>ask</em> Honu, an AI copilot that runs right on the machine, about what you're seeing.</p>
     <div class="hero-actions">
 <a class="btn btn-secondary" href="https://jonathancapone.art" target="_blank">Art Portfolio</a>
     </div>
@@ -83,7 +83,7 @@
       
           <div class="panel" style="margin-top: 2rem; border-left: 4px solid var(--accent);">
             <h2 style="margin: 0 0 0.5rem; color: #fff; font-family: var(--font-serif); font-size: 1.65rem;">Engineering Reality: The Fiji &rarr; Hawaii Dateline Bug</h2>
-            <p style="font-size: 0.9rem; color: var(--ink-soft); margin: 0;">The global A* ocean router originally routed a 2,700-nm Pacific crossing 13,000 nm around the world. The fix required extending the cost landscape to a wrapped longitude space (replicating cells at L ± 360°) so the geodesically short path across the antimeridian became reachable. <a href="engineering-journal.html" style="color: var(--accent);">Read the full journal &rarr;</a></p>
+            <p style="font-size: 0.9rem; color: var(--ink-soft); margin: 0;">The route-planner once sent a boat from Fiji to Hawaii <em>the long way</em> &mdash; 13,000 nautical miles the wrong way around the planet, instead of the 2,700-mile hop right next door. The bug: it treated the edge of the map (the International Date Line) as a wall, when the left and right edges of a world map are really the same place. The fix was to let the search "wrap around" that edge, so the short path across it became reachable. <a href="engineering-journal.html" style="color: var(--accent);">Read the full story &rarr;</a></p>
           </div>
 
           <div class="panel" style="margin-top: 2rem; border-left: 4px solid var(--accent);">
@@ -96,7 +96,7 @@
           <span class="section-kicker">Spatial Computing</span>
           <h2>The Glass Bridge Interface.</h2>
           <p>The Mission Portal is a <strong>~52,500 LOC Vanilla JS</strong> workbench built for high-performance 3D visualization. It renders <strong>79 distinct layer profiles</strong> and <strong>10 animated 4D Copernicus fields</strong> over a shared design system. The base layer is a 3D WebGL globe (powered by Deck.gl/CesiumJS) that occupies 100% of the viewport. There are no permanent sidebars.</p>
-          <p>Instead of cluttered UI panels, OMEGA utilizes <strong>Contextual Progressive Disclosure</strong>. Tools and data panels live in floating "context drawers" that slide into the viewport only when a user selects a specific entity (like a buoy or a drawn polygon). Clicking the open ocean dismisses the drawer entirely.</p>
+          <p>The design keeps the map clean: no permanent menus clutter the edges. Instead, the relevant tools and data slide in only when you tap something &mdash; a buoy, a region you've drawn &mdash; and slide away again when you click back to open ocean. The globe <em>is</em> the interface.</p>
         </div>
       </section>
 
@@ -104,7 +104,7 @@
         <span class="section-kicker">Global State</span>
         <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">4D Temporal & Z-Axis Engine.</h2>
         <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">
-          The ocean is a 4D volume. The entire application operates on a single synchronized state across time, X, Y, and Z axes.
+          The ocean isn't a flat map &mdash; it's a moving, layered volume. So the whole portal stays locked to one shared "where and when": move the clock or the depth slider and every layer updates together, in step.
         </p>
 
         <div class="grid-2" style="margin-bottom: 2rem;">
@@ -126,7 +126,7 @@
           <span class="section-kicker">Visual Ontology</span>
           <h2>Absolute Data Purity.</h2>
           <p>The core prime directive of the DTO v3.0 interface is <strong>Absolute Data Purity</strong>. The system must NEVER use modeled API data to fill gaps in the physical hardware's dataset. Missing telemetry is rendered explicitly as a visual gap.</p>
-          <p>To enforce this, the UI employs a strict visual ontology: Ground Truth from the physical mesh is rendered as sharp, high-contrast, opaque 3D geometry (extruded columns and hard-edged pins). Modeled Data from APIs (like Copernicus winds and currents) are rendered using GPU particle shaders, dynamic colormaps, and semi-transparent volumetric layers.</p>
+          <p>You can always tell the two apart at a glance: <strong>real measurements</strong> from the hardware are drawn solid and sharp &mdash; hard-edged pins and bars you could almost reach out and touch. <strong>Forecasts and model data</strong> (like Copernicus winds and currents) are drawn as soft, semi-transparent, flowing particles. Solid means measured; wispy means predicted.</p>
         </div>
       </section>
 
