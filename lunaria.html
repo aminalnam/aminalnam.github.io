@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <title>Jonathan Capone — Lunaria</title>
+
+  <meta name="description" content="Lunaria — a desk display that computes and draws the real Moon as it hangs in your sky tonight: true phase, real libration, earthshine, and true apparent size, all on an ESP32-S3 round AMOLED with no cloud." />
+  <meta property="og:title" content="Jonathan Capone — Lunaria" />
+  <meta property="og:description" content="The actual Moon, tonight. An ESP32-S3 desk display that renders the real Moon on-device — true phase, libration, earthshine — validated against NASA data. Coming soon." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://jonathancapone.com/lunaria.html" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Jonathan Capone — Lunaria" />
+  <meta name="twitter:description" content="The actual Moon, tonight — an ESP32-S3 desk display that renders the real Moon on-device: true phase, libration, and earthshine, no app or cloud." />
+
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌙</text></svg>">
+
+  <link rel="stylesheet" href="style.css">
+  <meta property="og:image" content="https://jonathancapone.com/images/overview/project-documentation_overview.png" />
+  <link rel="canonical" href="https://jonathancapone.com/lunaria.html" />
+</head>
+
+<body>
+  <a href="#main" class="skip-link">Skip to content</a>
+  <header class="topbar">
+    <div class="wrap topbar-inner">
+      <a class="brand" href="index.html"
+        style="display: flex; align-items: center; gap: 0.75rem; text-decoration: none;">
+        <div>
+          <span class="brand-title"
+            style="letter-spacing: 0.1em; color: var(--white); display: block; font-family: var(--font-serif); font-size: 1.5rem;">JONATHAN
+            CAPONE</span>
+          <span class="brand-sub"
+            style="display: block; font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent); font-family: var(--font-mono); opacity: 0.9;">Systems
+            Architecture Portfolio</span>
+        </div>
+      </a>
+            <nav class="nav" aria-label="Main Navigation">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <div class="dropdown">
+          <button class="dropbtn" style="background: none; border: none; color: #fff; font-family: inherit; font-size: inherit; cursor: pointer;" aria-expanded="false" aria-haspopup="true">OMEGA &#9662;</button>
+          <div class="dropdown-content">
+            <a href="/omega/">Architecture</a>
+            <a href="hardware.html">Hardware & Mesh</a>
+            <a href="gateway.html">Backend Gateway</a>
+            <a href="mission-portal.html">Mission Portal</a>
+          </div>
+        </div>
+        <a href="bathymetry.html">OMEGA-bath</a>
+        <a href="beta-overview.html">BETA</a>
+        <a href="cosnfx.html">CosNFX</a>
+        <a href="choreographer.html">Choreographer</a>
+        <a href="planetaria.html">Planetaria</a>
+        <a href="lunaria.html">Lunaria</a>
+        <a href="past-time.html">Past Time</a>
+        <a href="slime.html">Slime</a>
+        <a href="thruster.html">T-Thruster</a>
+        <a href="engineering-journal.html">Journal</a>
+
+        <div style="display: flex; align-items: center; margin-left: 0.5rem; border-left: 1px solid rgba(255,255,255,0.15); padding-left: 1.5rem;">
+          <a href="https://jonathancapone.art" target="_blank" style="font-weight: 600; color: var(--ink-soft);">Art Portfolio</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero wrap">
+    <span class="eyebrow">ESP32 Firmware &middot; Coming Soon</span>
+    <h1>Lunaria.</h1>
+    <p>The actual Moon, <em>tonight.</em> A desk display that computes and draws the real Moon as it hangs in your sky right now &mdash; the true phase, its real wobble, and the faint Earth-glow on its dark edge &mdash; all worked out on the device itself.</p>
+    <div class="hero-actions">
+        <a class="btn btn-primary" href="https://cosnfx.store/lunaria/" target="_blank" rel="noopener">🌙 Join the waitlist</a>
+        <a class="btn btn-secondary" href="planetaria.html">See its sibling, Planetaria</a>
+    </div>
+  </section>
+
+  <main class="main-shell wrap" role="main" id="main">
+    <div class="main-inner">
+
+      <section class="section" style="margin-bottom: 2rem;">
+        <div class="section-content">
+          <span class="section-kicker">Overview</span>
+          <h2>Not a Moon Lamp.</h2>
+          <p>A decorative moon lamp shows the same frozen picture forever. Lunaria shows the <strong>real</strong> Moon &mdash; the exact phase, tilt, and size it has in the sky tonight &mdash; and it works all of that out on the device, from astronomical first principles, with no app, no account, and no cloud. Set it on a desk and it quietly tracks the real thing overhead.</p>
+          <p>It's the Moon-focused sibling of <a href="planetaria.html" style="color: var(--accent);">Planetaria</a>, built on the same little round-screen hardware.</p>
+        </div>
+      </section>
+
+      <section class="section section-block" style="background: rgba(0,0,0,0.4);">
+        <span class="section-kicker">How It Knows</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">The Real Moon, Not a Picture</h2>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">Most of what makes the Moon interesting is stuff a static image can't capture. Lunaria computes each of these live.</p>
+
+        <div class="grid-2" style="margin-bottom: 2rem;">
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">Phase</span>
+            <h3 style="font-size: 1.2rem;">Tonight's True Phase</h3>
+            <p style="font-size: 0.85rem;">Exactly how much of the Moon is lit right now, and from which side &mdash; computed on-device and checked against NASA's JPL Horizons ephemeris to within <strong>0.05&deg;</strong>.</p>
+          </div>
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">Libration</span>
+            <h3 style="font-size: 1.2rem;">The Moon's Wobble</h3>
+            <p style="font-size: 0.85rem;">The Moon slowly rocks side-to-side and nods up-and-down over a month (called <em>libration</em>), so you actually peek a little around each edge over time. Lunaria tilts its face to match &mdash; a detail a fixed picture can't show.</p>
+          </div>
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">Earthshine</span>
+            <h3 style="font-size: 1.2rem;">The Dark Side, Faintly Lit</h3>
+            <p style="font-size: 0.85rem;">On a crescent night you can just make out the whole disc &mdash; that's sunlight bouncing off Earth onto the Moon's dark part. Lunaria renders that soft glow (<em>earthshine</em>) on the unlit limb.</p>
+          </div>
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">Apparent Size</span>
+            <h3 style="font-size: 1.2rem;">The Disc Breathes</h3>
+            <p style="font-size: 0.85rem;">The Moon's orbit isn't a perfect circle, so it looks about <strong>14% bigger</strong> when it's closest (perigee) than when it's farthest (apogee). The disc grows and shrinks to match the real distance.</p>
+          </div>
+        </div>
+
+        <div class="panel" style="margin-top: 2rem; border-left: 4px solid var(--accent);">
+          <h3 style="margin: 0 0 0.5rem; color: #fff;">Moment Mode</h3>
+          <p style="font-size: 0.9rem; color: var(--ink-soft); margin: 0;">Freeze the display to <strong>any date from 1900 to 2099</strong> &mdash; the Moon exactly as it looked (or will look) on a birthday, an anniversary, the night someone was born. A keepsake of a specific sky.</p>
+        </div>
+      </section>
+
+      <section class="section section-block" style="background: rgba(0,0,0,0.4); margin-top: 2rem;">
+        <span class="section-kicker">Under the Hood</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">All On-Device</h2>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">There's no server doing the math and streaming down a picture &mdash; the little chip does it all.</p>
+
+        <div class="grid-2" style="margin-bottom: 2rem;">
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">The Math</span>
+            <h3 style="font-size: 1.2rem;">Textbook Astronomy, On a Chip</h3>
+            <p style="font-size: 0.85rem;">The phase, libration, and position come from standard astronomical algorithms (Meeus / the Astronomical Almanac) running on the device. The Moon's surface is NASA's Lunar Reconnaissance Orbiter global photo mosaic, lit from the correct angle for the moment.</p>
+          </div>
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">The Hardware</span>
+            <h3 style="font-size: 1.2rem;">A Round Screen &amp; a Small Chip</h3>
+            <p style="font-size: 0.85rem;">A 1.75&Prime; round AMOLED (466&times;466, deep blacks) driven by an ESP32-S3 (8&nbsp;MB PSRAM, 16&nbsp;MB flash), USB-C powered. Wi-Fi is used <em>only once</em>, to learn the time and your location; after that it works offline forever. No app, no account, no API keys.</p>
+          </div>
+        </div>
+
+        <div class="panel" style="margin-top: 2rem; border-left: 4px solid var(--accent);">
+          <h3 style="margin: 0 0 0.5rem; color: #fff;">Honest status</h3>
+          <p style="font-size: 0.9rem; color: var(--ink-soft); margin: 0;">Lunaria is <strong>coming soon</strong> &mdash; in pre-release with a <a href="https://cosnfx.store/lunaria/" target="_blank" rel="noopener" style="color: var(--accent);">waitlist</a> through the CosNFX store. It shares Planetaria's proven ESP32-S3 round-AMOLED platform.</p>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="footer wrap">
+    <span>© Jonathan Capone — Technical Portfolio. OMEGA. | <a href="about.html" style="color: var(--accent);">About</a> | <a href="mailto:hello@jonathancapone.com" style="color: var(--accent);">hello@jonathancapone.com</a></span>
+  </footer>
+  <script src="main.js"></script>
+</body>
+
+</html>
