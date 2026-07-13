@@ -72,7 +72,7 @@
   <section class="hero wrap">
     <span class="eyebrow">System Design</span>
     <h1>Architecture & Design.</h1>
-    <p>The Bearer-Agnostic observation protocol and 4-Layer architectural division.</p>
+    <p>OMEGA is an open network of low-cost floating sensors that watches the ocean and streams it to a 3D globe you can explore. This page follows a single reading from a wave to the screen &mdash; and the hard problems solved along the way.</p>
     <div class="hero-actions">
       <a class="btn btn-primary" href="#core-axiom">Read the System Manifesto</a>
 </div>
@@ -103,13 +103,12 @@
           <div class="panel" style="padding: 2rem;">
             <span class="status-label status-implemented">Compression</span>
             <h3 style="font-size: 1.4rem;">Binary TLV Frames</h3>
-            <p style="font-size: 0.95rem;">JSON is too heavy for the ocean. OMEGA crushes 283B payloads into highly dense 84B Custom Binary TLV frames (70% savings), and utilizes 4-Phase Advanced Encoding including predictive coding, FFT bins, and OTA ML loading.</p>
+            <p style="font-size: 0.95rem;">A radio link at sea trickles only a few hundred bits per second, so every byte counts. Each reading is packed into a tight 84-byte binary frame &mdash; down from 283 bytes as plain JSON, a 70% cut &mdash; and several readings are batched into a single transmission to save precious airtime.</p>
           </div>
           <div class="panel" style="padding: 2rem;">
             <span class="status-label status-implemented">Resilience</span>
             <h3 style="font-size: 1.4rem;">SQLite WAL Routing</h3>
-            <p style="font-size: 0.95rem;">The FastAPI backend writes asynchronously to a SQLite WAL database to prevent
-              total system lockups during massive RF data influxes from the physical mesh.</p>
+            <p style="font-size: 0.95rem;">When packets arrive in bursts, the gateway writes them to a single-file database in "write-ahead" mode, so reading and writing never block each other &mdash; no lockups under load, and the entire dataset is one file you can copy to back up.</p>
           </div>
         </div>
 
@@ -153,7 +152,7 @@
         <span class="section-kicker">The Core Axiom</span>
         <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Bearer-Agnostic Observation Protocol.</h2>
         <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">
-          The true intellectual through-line of the OMEGA program is the separation of envelope <em>semantics</em> from per-bearer <em>wire forms</em>. "The standard is the protocol, not the box."
+<strong>The one idea everything else hangs on:</strong> a reading should mean the same thing no matter how it reached you &mdash; by radio, by cable, or over the internet. In the program's words, "the standard is the protocol, not the box." The data's meaning (its <em>envelope</em>) is kept separate from the exact format it happens to travel in (its <em>wire form</em>).
         </p>
         <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">
           This design decision is what allowed an SX1302 concentrator, SignalK marine bridges, and TTN (The Things Network) adapters to all join the mesh with absolutely zero protocol changes. The envelope standardizes identity, time, location, and payload, while the wire format seamlessly transitions from an ultra-dense 84-byte binary TLV over LoRa, to JSON over HTTP, to Semtech-UDP for concentrators.
@@ -166,7 +165,7 @@
           <h2>The 4-Layer Architecture.</h2>
 
 
-          <p>To enforce fault tolerance and maintain rigid boundaries between hardware execution and human interaction, OMEGA is strictly divided into four distinct strata:</p>
+          <p>The clearest way to understand OMEGA is to follow one reading on its journey &mdash; from a probe bobbing in the water to a 3D globe on someone's laptop. It passes through four layers, each doing exactly one job and handing off cleanly to the next, so a failure in any one never takes down the others:</p>
           <p><strong>Layer 1: The Physical / Surface Mesh.</strong> Raw hardware—ESP32 microcontrollers, GPS trackers, and physical probes riding the waves. These devices acquire signals, execute edge ML, and communicate via the Delay Tolerant Network (DTN) over 900MHz LoRa. They have no concept of "the internet" or HTTP. This is the layer with real field evidence.</p>
           <p><strong>Layer 2: The Mesh Transport.</strong> The Delay Tolerant Network itself, carrying Custom Binary TLV frames with multi-sample batching and CSMA-CA collision avoidance over LoRa.</p>
           <p><strong>Layer 3: The Gateway Normalizers.</strong> Software routers acting as the vital bridge. They ingest disjointed, highly compressed binary formats (Binary TLV) from the edge and "inflate" them into the globally standard <strong>Envelope Protocol v1.0</strong> (JSON). The gateway normalizes these packets into unified, queryable SQLite WAL records.</p>
