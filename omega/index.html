@@ -221,14 +221,8 @@
             thermoclines bend and absorb acoustic communications, and salt aggressively corrodes IP67 seals. A brittle,
             tightly coupled architecture will inevitably collapse when a single critical node vanishes from the network.
           </p>
-          <p>OMEGA is fundamentally designed around the principle of <strong>Asynchronous Resiliency</strong> and Delay
-            Tolerant Networking (DTN). There are no blocking network calls in the core firmware that would freeze an
-            execution thread if an acknowledgment packet is lost in the noise floor.</p>
-          <p>Instead, data is stored locally in circular flash buffers and forwarded only when a viable physical
-            route—such as a passing edge node acting as a data mule, or an active satellite pass overhead—is
-            mathematically proven to exist. This "store-and-forward" resilience ensures that brief connectivity windows
-            are fully utilized to offload critical envelopes, while preserving battery life during extended blackout
-            periods.</p>
+          <p><strong>The fix is to never wait.</strong> A phone app assumes a reliable connection: send a request, wait for a reply. At sea that assumption is fatal &mdash; wait for an acknowledgment that never comes and the whole node hangs. So OMEGA's firmware makes <em>no</em> blocking network calls; nothing freezes just because a reply got lost in the radio noise. (This is the idea behind a <strong>Delay Tolerant Network</strong>, or DTN.)</p>
+          <p>Instead, each node saves its readings to on-board flash and sends them only when a real route actually appears &mdash; a passing node acting as a "data mule," or a satellite overhead. This <strong>store-and-forward</strong> approach makes the most of brief connectivity windows to offload the important data, while sipping battery through the long stretches with no signal at all.</p>
 
         </div>
 
@@ -287,7 +281,7 @@
           <div class="panel" style="padding: 1.5rem;">
             <span class="status-label status-implemented">Layer 3</span>
             <h3 style="font-size: 1.2rem;">Federated Data Broker</h3>
-            <p style="font-size: 0.85rem;">Python FastAPI ASGI Router running on embedded Linux. High-performance data brokerage layer caching macro-APIs as Cloud-Optimized GeoTIFFs (COG) behind a warm-cache scheduler, while persisting ground-truth via SQLite WAL.</p>
+            <p style="font-size: 0.85rem;">A Python service on a small Linux board (think Raspberry Pi) that catches the incoming frames, translates them into the standard envelope, and stores them in a single-file SQLite database. Heavy satellite and map data is pre-fetched and cached so the 3D globe stays snappy.</p>
           </div>
           <div class="panel" style="padding: 1.5rem;">
             <span class="status-label status-implemented">Layer 4</span>
@@ -301,7 +295,7 @@
         <div class="section-content">
           <span class="section-kicker">Layer 1: Physical</span>
           <h2>Cross-Family Hardware Interoperability.</h2>
-          <p>Deploying a mixed-fleet of edge nodes requires extreme RF coordination. OMEGA utilizes both Semtech SX1262 (for telemetry) and LR1121 (for routing/relaying) chips. Because the silicon drivers behave differently at the sub-GHz level, achieving cross-family interoperability was a massive engineering hurdle.</p>
+          <p><strong>The hard part:</strong> OMEGA's fleet mixes two different radio chips &mdash; the Semtech SX1262 (on the sensor buoys) and the LR1121 (on the relays). In theory they speak the same LoRa "language"; in practice the two chips default to subtly different settings, and getting them to actually hear each other was a genuine fight.</p>
           <p><strong>Execution:</strong> Out of the box, the SX1262 and LR1121 nodes could not hear each other at all &mdash; the cross-family link decoded 0% of frames because of mismatched sync-word, CRC, LDRO, and IQ-inversion settings. By enforcing a <code>PUBLIC 0x34</code> Sync Word, disabling Low Data Rate Optimization (<code>forceLDRO(false)</code>), and aligning CRC and IQ-inversion across both radio families, the link was raised from non-functional to a working link decoding roughly half of frames (~50% measured) in bench testing. Closing the remaining gap is ongoing work.</p>
         </div>
       </section>
@@ -311,7 +305,7 @@
           <span class="section-kicker">Layer 2: Transport</span>
           <h2>The Bidirectional DTN &amp; Bearer Arbitrage.</h2>
           <p>Standard IoT relies on persistent MQTT or HTTP connections. Over the ocean, those connections do not exist. OMEGA operates a <strong>Delay Tolerant Network (DTN)</strong> utilizing a Custom Binary TLV Protocol that crushes a 283B JSON payload into a highly dense 84B frame.</p>
-          <p><strong>Bearer Arbitrage & QoS:</strong> A single edge node might have LoRa, HaLow, and cellular radios available simultaneously. OMEGA dynamically routes packets by message priority (alarm vs. bulk) rather than fixed links. Critical alarms are routed instantly over cellular/low-latency bearers, while bulk telemetry utilizes LoRa store-and-forward.</p>
+          <p><strong>Picking the right radio for the moment:</strong> a node often has more than one way to phone home &mdash; LoRa, Wi-Fi HaLow, cellular. Rather than hard-wiring one, OMEGA chooses based on urgency: a critical alarm goes out instantly over whatever's fastest, while routine bulk readings wait for the cheap, low-power LoRa link.</p>
           <p><strong>Foreign-Mesh Last Resort:</strong> When OMEGA's native bearers fail, the network can route envelopes over foreign open meshes (like Meshtastic). To ensure legal compliance and protect shared airtime, a strict, firmware-enforced duty-cycle guardrail governs exactly how much traffic is permitted over these external channels.</p>
         </div>
       </section>
@@ -348,7 +342,7 @@
       <section class="section section-block" style="background: rgba(0,0,0,0.4); margin-top: 2rem;">
         <span class="section-kicker">Database Choice</span>
         <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Why SQLite over PostgreSQL?</h2>
-        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">A monolithic SQLite file is generally considered an anti-pattern in modern microservice architecture. Why didn't we use a containerized PostgreSQL instance?</p>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">Conventional wisdom says a serious backend needs a "real" database server (like PostgreSQL) running in its own container. OMEGA deliberately uses a single SQLite file instead &mdash; here's why that's the safer bet at sea.</p>
         <p style="color: var(--ink-soft); font-size: 1rem; line-height: 1.6; max-width: 800px;">
           <strong>The Constraint:</strong> The central Federated Data Broker is often deployed on an embedded Linux SBC (e.g., Raspberry Pi 5) operating on a constantly pitching vessel in a highly corrosive marine environment. Power is frequently lost without warning when waves crash over solar panels. SD cards in these environments are notorious for catastrophic sector corruption under heavy write loads or sudden power loss.
           <br><br>
@@ -359,7 +353,7 @@
       <section class="section section-block" style="background: rgba(0,0,0,0.4); margin-top: 2rem;">
         <span class="section-kicker">Frontend Choice</span>
         <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Why a 3D WebGL Digital Twin?</h2>
-        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">Standard mapping libraries like Leaflet.js manipulate the browser's Document Object Model (DOM). Once OMEGA begins plotting large numbers of historical readings or a dense bathymetry cloud, a DOM-based map bogs down. A GPU-backed renderer sidesteps that ceiling.</p>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">A normal web map (like Leaflet) draws every dot as its own little web-page element. That's fine for a handful of pins &mdash; but pile on thousands of historical readings and the browser grinds to a halt. The fix is to render the map the way a video game does: hand all the points to the graphics card (the GPU) at once.</p>
         
         <div class="section-visual" style="padding: 1.5rem;">
             <div class="mermaid">
@@ -424,7 +418,7 @@ function TelemetryMap({ data }) {
       <section class="section section-block" style="background: rgba(0,0,0,0.4); margin-top: 2rem;">
         <span class="section-kicker">Trust Model</span>
         <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Absolute Data Purity &amp; Float-Free Signing.</h2>
-        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">An ocean instrument that conflates a forecast with a measurement is scientifically useless. OMEGA enforces an "Absolute Data Purity" axiom: the live map shows <strong>only</strong> real, deployed hardware and real measurements. Missing data renders as an honest gap, never imputed.</p>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">An ocean instrument that conflates a forecast with a measurement is scientifically useless. OMEGA enforces an "Absolute Data Purity" rule: the live map shows <strong>only</strong> real, deployed hardware and real measurements. Missing data renders as an honest gap, never quietly filled in with a forecast. And so nobody can slip fake readings into the network, each measurement is cryptographically <strong>signed</strong> at the source &mdash; a tamper-proof seal that travels with the data.</p>
         
         <div class="grid-2" style="margin-bottom: 2rem;">
           <div class="panel" style="padding: 1.5rem;">
