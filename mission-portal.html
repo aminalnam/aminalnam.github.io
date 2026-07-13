@@ -98,14 +98,14 @@
         <div class="section-content">
           <span class="section-kicker">Spatial Computing</span>
           <h2>The Glass Bridge Interface.</h2>
-          <p>The Mission Portal is a <strong>~52,500 LOC Vanilla JS</strong> workbench built for high-performance 3D visualization. It renders <strong>79 distinct layer profiles</strong> and <strong>10 animated 4D Copernicus fields</strong> over a shared design system. The base layer is a 3D WebGL globe (powered by Deck.gl/CesiumJS) that occupies 100% of the viewport. There are no permanent sidebars.</p>
+          <p>The Mission Portal is a browser workbench, written in plain JavaScript, for 3D ocean visualization. It layers dozens of different data views &mdash; local sensor readings alongside ten animated Copernicus ocean fields like winds and currents &mdash; over one shared design system. The base layer is a 3D WebGL globe (powered by Deck.gl/CesiumJS) that occupies 100% of the viewport. There are no permanent sidebars.</p>
           <p>The design keeps the map clean: no permanent menus clutter the edges. Instead, the relevant tools and data slide in only when you tap something &mdash; a buoy, a region you've drawn &mdash; and slide away again when you click back to open ocean. The globe <em>is</em> the interface.</p>
         </div>
       </section>
 
       <section class="section section-block" style="background: rgba(0,0,0,0.4);">
         <span class="section-kicker">Global State</span>
-        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">4D Temporal & Z-Axis Engine.</h2>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">One Clock and One Depth, Shared by Every Layer.</h2>
         <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">
           The ocean isn't a flat map &mdash; it's a moving, layered volume. So the whole portal stays locked to one shared "where and when": move the clock or the depth slider and every layer updates together, in step.
         </p>
@@ -119,7 +119,7 @@
           <div class="panel" style="padding: 1.5rem;">
             <span class="status-label status-implemented">Depth</span>
             <h3 style="font-size: 1.2rem;">Z-Axis Slicer</h3>
-            <p style="font-size: 0.85rem;">A persistent depth slider allows operators to slice from 0m down to -2000m. Doing so dynamically updates colormaps and thermoclines on the 3D globe—treating the ocean as a true volumetric data cube.</p>
+            <p style="font-size: 0.85rem;">A persistent depth slider allows operators to slice from 0m down to -2000m. Doing so dynamically redraws the colors and temperature layers on the globe for that depth, so the ocean reads as a 3D volume instead of a flat surface.</p>
           </div>
         </div>
       </section>
@@ -128,7 +128,7 @@
         <div class="section-content">
           <span class="section-kicker">Visual Ontology</span>
           <h2>Absolute Data Purity.</h2>
-          <p>The core prime directive of the DTO v3.0 interface is <strong>Absolute Data Purity</strong>. The system must NEVER use modeled API data to fill gaps in the physical hardware's dataset. Missing telemetry is rendered explicitly as a visual gap.</p>
+          <p>The interface follows one hard rule: never use modeled or forecast data to fill gaps in the hardware's real measurements. Missing telemetry is rendered explicitly as a visual gap.</p>
           <p>You can always tell the two apart at a glance: <strong>real measurements</strong> from the hardware are drawn solid and sharp &mdash; hard-edged pins and bars you could almost reach out and touch. <strong>Forecasts and model data</strong> (like Copernicus winds and currents) are drawn as soft, semi-transparent, flowing particles. Solid means measured; wispy means predicted.</p>
         </div>
       </section>
@@ -144,7 +144,7 @@
           <div class="panel" style="padding: 1.5rem;">
             <span class="status-label status-implemented">/observe</span>
             <h3 style="font-size: 1.2rem;">Live Observatory</h3>
-            <p style="font-size: 0.85rem;">Features 3D particle physics powered by GPU shaders to animate wind and currents, a living mesh visualizer drawing topological links (LoRa/JANUS), and a contextual QARTOD lens for anomaly verification.</p>
+            <p style="font-size: 0.85rem;">Features 3D particle physics powered by GPU shaders to animate wind and currents, a live view of the mesh network showing which nodes can currently reach each other over their LoRa and JANUS links, and an overlay that flags readings that fail automated quality checks (QARTOD).</p>
           </div>
           <div class="panel" style="padding: 1.5rem;">
             <span class="status-label status-implemented">/plan</span>
@@ -313,7 +313,7 @@ export interface DigitalTwinCommand {
     
           <section class="section section-block" style="background: rgba(0,0,0,0.4);">
             <span class="section-kicker">Validated Spectral Analysis</span>
-            <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Welch Power Spectrum: The S2 Atmospheric Tide.</h2>
+            <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Recovering the Twice-Daily Atmospheric Tide.</h2>
             <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">A spectral analysis is only worth showing if it resolves a known physical signal. OMEGA runs a Welch power-spectrum estimate over its own barometer's pressure time-series and recovers the <strong>S2 semidiurnal atmospheric tide</strong> at a period of roughly <strong>11.99 hours</strong>—a real, textbook-predictable oscillation in surface pressure. Resolving it from the gateway's own data validates that the spectral pipeline is wired correctly end to end.</p>
 
             <div class="grid-3" style="margin-bottom: 2rem;">
@@ -337,8 +337,8 @@ export interface DigitalTwinCommand {
 
 <section class="section section-block" style="background: rgba(0,0,0,0.4);">
             <span class="section-kicker">AI Orchestration</span>
-            <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">The ~100-Tool Action Registry.</h2>
-            <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">The <code>gateway/copilot.py</code> module is a roughly ~265 KB orchestration loop. Small local LLMs (like Qwen2.5 7B) cannot reliably pick the correct tool if given a dump of ~100 different tools. Honu solves this by filtering the available tools down based on 16 Intent Groups.</p>
+            <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Why Honu Only Sees Some Tools at a Time.</h2>
+            <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">The <code>gateway/copilot.py</code> module decides what to do with each request. Small local LLMs (like Qwen2.5 7B) cannot reliably pick the correct tool if given a dump of ~100 different tools. Honu solves this by filtering the available tools down based on 16 Intent Groups.</p>
             
             <div class="grid-3" style="margin-bottom: 2rem;">
               <div class="panel" style="padding: 1.5rem;">
@@ -390,9 +390,9 @@ export interface DigitalTwinCommand {
             <div class="section-content">
               <span class="section-kicker">Safety Constraints</span>
               <h2>Absolute Read-Only Execution.</h2>
-              <p>AI hallucinations are dangerous, especially when dealing with physical hardware on a multimillion-dollar edge node. Honu is strictly read-only and analytical, and it runs fully offline on a local Ollama model or falls back to cloud (Anthropic). The prompt engine enforces absolute read-only constraints: it is physically impossible for the LLM to execute a mutating API call or alter remote fleet parameters.</p>
-<p><strong>The Physics of Confinement:</strong> Unlike standard chatbot implementations that just "ask" the AI not to break things, OMEGA physically isolates the AI execution environment. The ~100-tool registry exposed to the LLM explicitly does not contain functions that perform POST or PUT requests to the SQLite database. The AI is structurally blind to mutation endpoints.</p>
-<p><strong>Execution:</strong> The system prompt rigorously reinforces this architectural boundary. If the LLM attempts to hallucinate a command (e.g. `execute_format_nvram`), the orchestration loop detects the unregistered tool attempt and mathematically drops the execution thread, returning an explicit safety violation to the operator.</p>
+              <p>AI hallucinations are dangerous, especially when dealing with physical hardware on a deployed edge node. Honu is strictly read-only and analytical, and it runs fully offline on a local Ollama model or falls back to cloud (Anthropic). The prompt engine enforces absolute read-only constraints: it is physically impossible for the LLM to execute a mutating API call or alter remote fleet parameters.</p>
+<p><strong>The Physics of Confinement:</strong> Unlike standard chatbot implementations that just "ask" the AI not to break things, OMEGA physically isolates the AI execution environment. The ~100-tool registry exposed to the LLM explicitly does not contain functions that perform POST or PUT requests to the SQLite database. None of the tools Honu can reach are able to change anything &mdash; it can read from the system, but it has no way to write to it.</p>
+<p><strong>Execution:</strong> The system prompt rigorously reinforces this architectural boundary. If the LLM attempts to hallucinate a command (e.g. `execute_format_nvram`), the orchestration loop catches the unregistered tool call, refuses to run it, and returns an explicit safety warning to the operator.</p>
               
             </div>
             <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">gateway/copilot.py</span><pre><code class="language-python">SYSTEM_PROMPT = """You are Honu, the OMEGA Intelligence Engine.

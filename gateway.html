@@ -64,7 +64,7 @@
   <section class="hero wrap">
     <span class="eyebrow">Ingest Layer</span>
     <h1>Backend Gateway.</h1>
-    <p>The ~105,500 LOC Python FastAPI service, SQLite WAL provenance, and Ed25519 Security.</p>
+    <p>The Python service that ingests every sensor reading, records where each one came from, and verifies signatures from OMEGA's own hardware.</p>
     <div class="hero-actions">
 <a class="btn btn-secondary" href="https://jonathancapone.art" target="_blank">Art Portfolio</a>
     </div>
@@ -77,10 +77,10 @@
           <section class="section">
             <div class="section-content">
               <span class="section-kicker">Concurrency & IO Bound Limits</span>
-              <h2>FastAPI Async Event Loop.</h2>
-              <p>The OMEGA Gateway is a <strong>~105,500 LOC Python</strong> backend exposing <strong>~420 FastAPI routes</strong> — including OGC <strong>SensorThings API v1.1</strong> and ERDDAP-compatible read surfaces for standards-based interop. Designed to run on embedded Linux (e.g. Raspberry Pi 5) deployed directly at the coastal shore, it acts as the master ingestion point for the entire Delay Tolerant Network.</p>
+              <h2>Handling Many Readings at Once.</h2>
+              <p>The OMEGA Gateway is a large Python backend — including OGC <strong>SensorThings API v1.1</strong> and ERDDAP-compatible read surfaces for standards-based interop. Designed to run on embedded Linux (e.g. Raspberry Pi 5) deployed directly at the coastal shore, it acts as the master ingestion point for the entire Delay Tolerant Network.</p>
 <p><strong>Database Architecture:</strong> Telemetry arrives asynchronously via UDP and Serial ports at massive volumes. A standard SQLite configuration would instantly lock and crash under this concurrent write pressure. The Python backend physically rewrites the SQLite PRAGMA at boot, enforcing Write-Ahead Logging (<code>WAL</code>) mode and <code>NORMAL</code> synchronous behavior. This decouples the read/write locks, allowing the Mission Portal to execute massive <code>SELECT</code> queries over the historical arrays while the edge node bridges concurrently <code>INSERT</code> live TLV frames without blocking.</p>
-              <div class="callout"><strong>Background Tasks</strong><p>Heavy normalization operations are relegated to Starlette background tasks, ensuring the endpoint returns a 202 Accepted instantly.</p></div>
+              <div class="callout"><strong>Background Tasks</strong><p>Heavy normalization operations are pushed to a background job, so the sender gets an instant acknowledgement instead of waiting for the slow work to finish.</p></div>
             </div>
             <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">gateway/main.py</span><pre><code class="language-python">    @asynccontextmanager
     async def _lifespan(fastapi_app: FastAPI) -> AsyncIterator[None]:
@@ -130,7 +130,7 @@ PRAGMA cache_size=-64000;</code></pre></div>
           <section class="section section-block" style="background: rgba(0,0,0,0.4); margin-top: 2rem; margin-bottom: 2rem;">
             <span class="section-kicker">Tier 2 Proof</span>
             <h2>OMEGA Analysed It: Storm Regime-Shift.</h2>
-            <p>The Python gateway's statistical suite doesn't just collect data—it actively analyzes it. Below, OMEGA's Pettitt changepoint detector runs against ingested NOAA buoy 46013 wave data. The algorithm correctly identifies a significant regime shift (a -0.77 m drop at 2026-06-08) as a synoptic storm event subsides.</p>
+            <p>The Python gateway's statistical suite doesn't just collect data—it actively analyzes it. Below, OMEGA's own statistics ran over public NOAA buoy 46013 wave data to spot the moment the sea state shifted. The algorithm correctly identifies a significant regime shift (a -0.77 m drop at 2026-06-08) as a synoptic storm event subsides.</p>
             <p><strong>The Significance:</strong> This proves the system's ability to run advanced analysis tools to recognize large-scale weather events happening across the external buoys, which can then be cross-correlated and verified against the telemetry coming from OMEGA's own physical edge nodes.</p>
             <p><em>The honest line: OMEGA's algorithm detected the shift, but a human chose the example.</em></p>
             <img src="images/proofs/storm-changepoint.svg" loading="lazy" alt="Storm regime shift at NOAA buoy 46013 with OMEGA changepoint marker" style="max-width: 100%; border-radius: 8px; margin-top: 1rem; border: 1px solid rgba(255,255,255,0.1);">
@@ -150,14 +150,14 @@ PRAGMA cache_size=-64000;</code></pre></div>
             <h3 style="margin: 0 0 0.5rem; color: #fff;">Live Database Census & Test Coverage</h3>
             <p style="font-size: 0.9rem; color: var(--ink-soft); margin: 0; margin-bottom: 0.5rem;">The gateway SQLite database currently stores <strong>~989,207 measurements</strong> and <strong>44,549 observations</strong> over a 14.2-day span. Data purity is absolute: zero rows are simulated.</p>
             <p style="font-size: 0.9rem; color: var(--ink-soft); margin: 0; margin-bottom: 0.5rem;"><strong>Source Split:</strong> 53.5% from OMEGA mesh hardware vs 46.5% from real third-party networks (NOAA NDBC, Open-Meteo, NWS, CO-OPS).</p>
-            <p style="font-size: 0.9rem; color: var(--ink-soft); margin: 0;"><strong>Coverage:</strong> The Python gateway is backed by 65 test modules and ~1,082-1,093 test functions, providing end-to-end assertions against security, payload tamper, and protocol conformance vectors.</p>
+            <p style="font-size: 0.9rem; color: var(--ink-soft); margin: 0;"><strong>Coverage:</strong> The Python gateway is backed by an automated test suite, providing end-to-end assertions against security, payload tamper, and protocol conformance vectors.</p>
           </div>
 
 
           
           <div class="panel" style="margin-top: 2rem; border-left: 4px solid var(--accent);">
             <h3 style="margin: 0 0 0.5rem; color: #fff;">Engineering Reality: HTTP/1.1 Socket Starvation</h3>
-            <p style="font-size: 0.9rem; color: var(--ink-soft); margin: 0;">The portal initially hung over field connections. Debugging DevTools revealed exactly 6 ESTABLISHED sockets—HTTP/1.1's limit—eaten entirely by dual permanent Server-Sent-Events streams. Fixing it required lazy-loading the SSE streams to unblock the map fetches. <a href="engineering-journal.html" style="color: var(--accent);">Read the full journal &rarr;</a></p>
+            <p style="font-size: 0.9rem; color: var(--ink-soft); margin: 0;">The portal initially hung over field connections. Debugging in DevTools revealed the cause: a browser allows only six live connections to one server, and two always-open update streams were using all of them. Fixing it required lazy-loading the SSE streams to unblock the map fetches. <a href="engineering-journal.html" style="color: var(--accent);">Read the full journal &rarr;</a></p>
           </div>
 
       <section class="section section-block" style="background: rgba(0,0,0,0.4);">
@@ -350,7 +350,7 @@ async def websocket_endpoint(websocket: WebSocket):
           <section class="section">
             <div class="section-content">
               <span class="section-kicker">Zero Trust Security</span>
-              <h2>X-Forwarded-For Reverse Proxy Trust.</h2>
+              <h2>Knowing the Attacker's Real Address.</h2>
               <p>When a gateway is deployed behind a TLS-terminating reverse proxy (like Cloudflare or an Nginx ingress), naive applications see the proxy's IP for every incoming request. This destroys rate-limiting, as a single attacker will cause the proxy itself to be banned, locking out the entire legitimate team.</p><p><strong>Execution:</strong> OMEGA implements strict proxy-trust topology via <code>trusted_proxy_ips</code>. The Python backend extracts the leftmost <code>X-Forwarded-For</code> header <i>only</i> if the direct peer is a cryptographically trusted proxy. This ensures that a brute-force attacker is isolated and penalized by their true origin IP, preventing massive Denial of Service (DoS) cascades.</p>
               
             </div>
@@ -559,7 +559,7 @@ async def websocket_endpoint(websocket: WebSocket):
             <div class="section-content">
               <span class="section-kicker">Raw Data Structures</span>
               <h2>The Observation Envelope Payload.</h2>
-              <p>The <code>observation-envelope.json</code> is the fundamental atomic unit of the OMEGA network. This payload standardizes disparate sensor data into a strict schema. Notice the mathematical precision: it utilizes <strong>SenML (Sensor Measurement Lists)</strong> under the <code>payload.records</code> array to explicitly define physical units (e.g., `Cel` for Celsius, `m` for meters), guaranteeing that downstream data scientists never misinterpret a floating-point value.</p>
+              <p>The <code>observation-envelope.json</code> is the fundamental atomic unit of the OMEGA network. This payload standardizes disparate sensor data into a strict schema. It uses <strong>SenML (Sensor Measurement Lists)</strong> under the <code>payload.records</code> array to explicitly define physical units (e.g., `Cel` for Celsius, `m` for meters), guaranteeing that downstream data scientists never misinterpret a floating-point value.</p>
 <p>Furthermore, each measurement carries a ULID <code>message_id</code> — a lexicographically sortable identifier that prevents database collisions across thousands of edge nodes. The <code>ttl_s</code> (Time-To-Live in seconds) parameter is important for the DTN mesh — it dictates how long this packet should live inside a node's NVRAM buffer before being purged to save memory.</p>
               
             </div>
@@ -631,7 +631,7 @@ async def websocket_endpoint(websocket: WebSocket):
             <div class="section-content">
               <span class="section-kicker">Semantic APIs</span>
               <h2>W3C Web of Things.</h2>
-              <p>A major failure of modern marine technology is proprietary vendor lock-in. A YSI sonde cannot natively talk to a Teledyne acoustic modem. OMEGA shatters this paradigm by normalizing all fleet telemetry into <strong>W3C Semantic Web of Things (WoT) Thing Descriptions</strong>.</p>
+              <p>A major failure of modern marine technology is proprietary vendor lock-in. A YSI sonde cannot natively talk to a Teledyne acoustic modem. OMEGA avoids this by describing every sensor in one common, open format &mdash; <strong>W3C Semantic Web of Things (WoT) Thing Descriptions</strong>.</p>
 <p><strong>Relevance:</strong> This massive abstraction layer exposes every single physical edge node as a standardized RESTful or CoAP entity (e.g., <code>coap://gateway.local/things/buoy-02/properties/temperature</code>). Downstream analytical applications or university partners do not need to know if the temperature was measured by a $10,000 CTD or a $2 thermistor; they simply query the semantic property and receive the normalized SI metric.</p>
               
             </div>
@@ -762,7 +762,7 @@ async def websocket_endpoint(websocket: WebSocket):
             <div class="section-content">
               <span class="section-kicker">Strict Validation</span>
               <h2>JSON Schema Enforcement.</h2>
-              <p>To protect the core SQLite database from malformed, corrupt, or actively malicious payloads injected by rogue edge nodes, OMEGA relies on strict mathematical JSON schema validations located in the <code>schemas/</code> directory.</p>
+              <p>To protect the core SQLite database from malformed, corrupt, or actively malicious payloads injected by rogue edge nodes, OMEGA relies on strict JSON schema validation located in the <code>schemas/</code> directory.</p>
 <p><strong>Execution:</strong> Before a network packet is ever parsed by the Python backend, it is rapidly validated against the <code>observation-envelope.schema.json</code> definition using the <code>jsonschema</code> library. Any payload missing critical routing arrays, origin UUIDs, or containing the wrong data type is instantly dropped, ensuring database integrity is never compromised by field errors.</p>
               
             </div>
