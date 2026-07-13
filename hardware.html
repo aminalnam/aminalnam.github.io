@@ -72,7 +72,7 @@
   <section class="hero wrap">
     <span class="eyebrow">Physical Layer</span>
     <h1>Hardware & Mesh.</h1>
-    <p>Silicon constraints, cross-family LoRa interop, and Delay Tolerant Networking (DTN).</p>
+    <p>The physical layer: cheap, off-the-shelf radios turned into a rugged ocean sensor network &mdash; and the low-level fights it took to get there, from making two different radio chips understand each other to surviving weeks at sea with no signal.</p>
     <div class="hero-actions">
 <a class="btn btn-secondary" href="https://jonathancapone.art" target="_blank">Art Portfolio</a>
     </div>
@@ -84,7 +84,7 @@
       <section class="section section-block" style="background: rgba(0,0,0,0.4);">
         <span class="section-kicker">Layer 1: Fleet Infrastructure</span>
         <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">The COTS Federation</h2>
-        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">To achieve global scalability and rapid hardware iteration, the OMEGA physical layer leverages Commercial Off-The-Shelf (COTS) edge silicon rather than manufacturing custom PCBs. The fleet standardizes on Espressif ESP32 / ESP32-S3 microcontrollers (the T-Beam Supreme runs an ESP32; the T3-S3 relay and the gateway use the ESP32-S3), unified by a custom embedded C++ firmware stack.</p>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">Instead of designing custom circuit boards (slow and expensive), OMEGA builds on <strong>off-the-shelf parts</strong> anyone can buy &mdash; the same ESP32 microcontrollers and LoRa radio boards hobbyists use (the T-Beam Supreme on an ESP32; the T3-S3 relay and the gateway on the newer ESP32-S3). The whole fleet runs one shared C++ firmware, so a fix written once works everywhere. Three roles do all the work:</p>
 
         <div class="grid-3" style="margin-bottom: 2rem;">
           <div class="panel" style="padding: 1.5rem;">
@@ -110,7 +110,7 @@
           <span class="section-kicker">Data Pipeline</span>
           <h2>Lossless Predictive Batching.</h2>
           <p>Transmitting individual oceanographic measurements (e.g., a temperature reading every 3 seconds) across a low-bandwidth LoRa link introduces catastrophic overhead from packet headers, leading directly to regulatory duty-cycle violations and massive battery drain.</p>
-          <p>To solve this, the OMEGA edge firmware executes <strong>Phase 1 Predictive Batching</strong> entirely locally on the ESP32-S3. The node samples sensors into an internal RAM ring buffer. Once the buffer is full, the C++ engine applies a first-order predictive coding algorithm: it transmits the first baseline measurement as a full 32-bit integer, but encodes all subsequent readings as tightly packed 4-bit or 8-bit residuals (the delta from the previous reading).</p>
+          <p>The trick: <strong>send the change, not the whole number.</strong> Ocean readings drift slowly &mdash; the temperature a few seconds from now is very close to the last one. So the node collects a batch of readings, sends the first one in full, then sends only the tiny difference from each reading to the next (a few bits each instead of a full 32). The gateway adds the differences back up to rebuild the exact original series &mdash; nothing lost, but far fewer bytes over the air.</p>
           <p><strong>Result:</strong> This guarantees a completely lossless reconstruction of the high-frequency telemetry array at the Shore Gateway, while multi-sample predictive batching collapses the per-reading overhead of sending each sample as its own packet.</p>
         </div>
       </section>
@@ -120,7 +120,7 @@
           <span class="section-kicker">Mesh Resilience</span>
           <h2>Store & Forward Architecture.</h2>
           <p>Oceanographic sensor buoys frequently drift into RF dead zones, pass behind massive waves, or suffer from atmospheric interference. If an edge node attempts to blindly transmit during a network blackout, the data is permanently lost. To guarantee <em>Absolute Data Purity</em>, the DTO v3.0 firmware utilizes an autonomous Store & Forward mechanism.</p>
-          <p>When the firmware's CSMA-CA (Carrier-Sense Multiple Access) layer detects channel jamming, or the MAC layer fails to receive cryptographic LoRaWAN acknowledgments, the node instantly aborts transmission. The compressed telemetry payload is serialized and written to the on-board SD card store-and-forward buffer.</p>
+          <p>Before transmitting, the node listens to make sure the channel is clear (the same "wait for a gap" courtesy your Wi-Fi uses). If the air is jammed, or a send goes unacknowledged, it doesn't just drop the reading &mdash; it writes it to an on-board SD card and holds on.</p>
           <p>The node can survive offline for weeks, quietly accumulating environmental history. Once a connection to the mesh is re-established (proven by receiving a network heartbeat from a passing LR1121 relay or the T-ETH-ELITE), the node flushes its SD-card buffer, sequentially replaying its queue and seamlessly reconstructing the historical timeline within the Federated Data Broker.</p>
         </div>
       </section>
@@ -168,7 +168,7 @@
 
 <span class="section-kicker">Hardware Reality</span>
               <h2>Cross-Family LoRa Interop.</h2>
-              <p>Getting a true multi-hop mesh to work isn't about plugging in antennas; it's about making disparate silicon families talk to each other. The network bridges Semtech's SX1262 (T-Beam Supreme) and their newer LR1121 (T3-S3).</p>
+              <p><strong>The hard part wasn't the antennas &mdash; it was getting two different radio chips to understand each other.</strong> The sensor buoys use one LoRa chip (Semtech's SX1262) and the relays use a newer one (the LR1121). They ought to be compatible, but each ships with slightly different default settings, and any mismatch means total silence.</p>
               <p><strong>Execution:</strong> To achieve seamless interop, the firmware had to manually settle sync-word mismatches (enforcing the `0x34` public sync), explicitly declare bandwidth and spreading factor settings that libraries usually abstract away, and implement aggressive polling-based RX with full-chain IRQ mapping. This allowed concurrent sensing, relaying, and USB-forwarding across completely different chipset architectures.</p>
             </div>
           </section>
