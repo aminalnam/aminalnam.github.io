@@ -84,69 +84,39 @@
     <h1>Backend Gateway.</h1>
     <p>The Python service that ingests every sensor reading, records where each one came from, and verifies signatures from OMEGA's own hardware.</p>
     <div class="hero-actions">
-<a class="btn btn-secondary" href="https://jonathancapone.art" target="_blank">Art Portfolio</a>
+      <a class="btn btn-primary" href="#how-it-works">How It Works</a>
+      <a class="btn btn-secondary" href="#hard-problems">The Hard Problems</a>
+      <a class="btn btn-secondary" href="https://jonathancapone.art" target="_blank">Art Portfolio</a>
     </div>
   </section>
 
   <main class="main-shell wrap" role="main" id="main">
     <div class="main-inner">
-    
 
-          <section class="section">
-            <div class="section-content">
-              <span class="section-kicker">Concurrency & IO Bound Limits</span>
-              <h2>Handling Many Readings at Once.</h2>
-              <p>The OMEGA Gateway is a large Python backend — including OGC <strong>SensorThings API v1.1</strong> and ERDDAP-compatible read surfaces for standards-based interop. Designed to run on embedded Linux (e.g. Raspberry Pi 5) deployed directly at the coastal shore, it acts as the master ingestion point for the entire Delay Tolerant Network.</p>
-<p><strong>Database Architecture:</strong> Telemetry arrives asynchronously via UDP and Serial ports at massive volumes. A standard SQLite configuration would instantly lock and crash under this concurrent write pressure. The Python backend physically rewrites the SQLite PRAGMA at boot, enforcing Write-Ahead Logging (<code>WAL</code>) mode and <code>NORMAL</code> synchronous behavior. This decouples the read/write locks, allowing the Mission Portal to execute massive <code>SELECT</code> queries over the historical arrays while the edge node bridges concurrently <code>INSERT</code> live TLV frames without blocking.</p>
-              <div class="callout"><strong>Background Tasks</strong><p>Heavy normalization operations are pushed to a background job, so the sender gets an instant acknowledgement instead of waiting for the slow work to finish.</p></div>
+          <section class="section section-block" id="receipts" style="padding-top: 0; padding-bottom: 2rem;">
+            <span class="section-kicker" style="color: var(--accent);">The Receipts</span>
+            <h2 style="font-family: var(--font-serif); font-size: 2.2rem; margin: 0 0 1.5rem;">What This Service Has Actually Done.</h2>
+            <p style="color: var(--ink-soft); font-size: 1.15rem; margin-bottom: 2.5rem; max-width: 850px; line-height: 1.7;">
+              This is the densest page on the site, so the evidence comes first: what the gateway's database held at its last census, where that data comes from, and what its own analysis code has caught in the wild. Every frame from OMEGA's own hardware also carries a cryptographic signature the gateway verifies &mdash; step 2 of the walkthrough below shows how.
+            </p>
+            <div class="grid-2" style="margin-bottom: 2rem;">
+              <div class="panel" style="padding: 2rem;">
+                <span class="status-label status-implemented">Live Data</span>
+                <h3 style="font-size: 1.4rem;">Live Database Census &amp; Test Coverage</h3>
+            <p style="font-size: 0.9rem; color: var(--ink-soft); margin: 0; margin-bottom: 0.5rem;">The gateway SQLite database currently stores <strong>~989,207 measurements</strong> and <strong>44,549 observations</strong> over a 14.2-day span. Data purity is absolute: zero rows are simulated.</p>
+            <p style="font-size: 0.9rem; color: var(--ink-soft); margin: 0; margin-bottom: 0.5rem;"><strong>Source Split:</strong> 53.5% from OMEGA mesh hardware vs 46.5% from real third-party networks (NOAA NDBC, Open-Meteo, NWS, CO-OPS).</p>
+            <p style="font-size: 0.9rem; color: var(--ink-soft); margin: 0;"><strong>Coverage:</strong> The Python gateway is backed by an automated test suite, providing end-to-end assertions against security, payload tamper, and protocol conformance vectors.</p>
+              </div>
+              <div class="panel" style="padding: 2rem;">
+                <span class="status-label status-implemented">Public + Private</span>
+                <h3 style="font-size: 1.4rem;">One Envelope, Every Source</h3>
+                <p style="font-size: 0.9rem; color: var(--ink-soft); margin: 0;">Public sources &mdash; NOAA NDBC buoys, CO-OPS tide gauges, Open-Meteo marine models &mdash; are normalized into the exact same Observation Envelope (the common format every reading is converted to on arrival) as OMEGA's own hardware. Nearly half the database is real third-party data sitting beside the mesh's own readings, queryable identically. <a href="#step-3-envelope" style="color: var(--accent);">See the envelope &rarr;</a></p>
+              </div>
             </div>
-            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">gateway/main.py</span><pre><code class="language-python">    @asynccontextmanager
-    async def _lifespan(fastapi_app: FastAPI) -> AsyncIterator[None]:
-        scheduler = getattr(fastapi_app.state, "scheduler", None)
-        notif_bus = getattr(fastapi_app.state, "notification_bus", None)
-        
-        # Attach internal NotificationBus to the async loop
-        if notif_bus is not None:
-            notif_bus.attach_loop(asyncio.get_running_loop())
-            
-        # Start periodic tasks (e.g. evaluating active watches)
-        if scheduler is not None:
-            await scheduler.start()
-            
-        try:
-            yield
-        finally:
-            if scheduler is not None:
-                await scheduler.stop()
-            if notif_bus is not None:
-                notif_bus.detach_loop()
+          </section>
 
-    app = FastAPI(
-        title="OMEGA Gateway",
-        description="Gateway API for a mixed-bearer environmental sensor mesh.",
-        lifespan=_lifespan,
-    )</code></pre>            </div>
-          </section>
-    
-          <section class="section">
-            <div class="section-content">
-              <span class="section-kicker">Database Engineering</span>
-              <h2>SQLite Normalization & WAL.</h2>
-              <p>A distributed mesh generates continuous, erratic, write-heavy load. The gateway utilizes a SQLite store specifically designed for mesh provenance (multi-gateway sightings, dedup on `(origin, sequence)`, idempotent ingest). Traditional SQLite configurations use database-level locks; when a write occurs, the entire file is locked, which causes `database is locked` exceptions for any dashboard attempting to read the data concurrently.</p>
-<p>To eliminate this bottleneck, the OMEGA gateway configures its SQLite engine in <strong>Write-Ahead Logging (WAL)</strong> mode using explicit PRAGMA statements on startup. Instead of locking the main database file during a write, changes are appended extremely fast to a separate `.wal` file.</p>
-<p><strong>Relevance:</strong> This allows readers (the Mission Portal fetching historical graphs) to concurrently access the database without ever being blocked by writers (the continuous telemetry ingest). Furthermore, `PRAGMA synchronous=NORMAL` relaxes the rigid sync constraints, vastly increasing write throughput on the SD cards of Raspberry Pi gateways without risking catastrophic corruption.</p>
-              
-            </div>
-            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">SQLite Configuration</span><pre><code class="language-sql">PRAGMA journal_mode=WAL;
-PRAGMA synchronous=NORMAL;
-PRAGMA cache_size=-64000;</code></pre></div>
-          </section>
-    
-          <section class="section">
-            <div class="section-content">
-              
           <section class="section section-block" style="background: rgba(0,0,0,0.4); margin-top: 2rem; margin-bottom: 2rem;">
-            <span class="section-kicker">Tier 2 Proof</span>
+            <span class="section-kicker">The Receipts &mdash; Detection</span>
             <h2>OMEGA Analysed It: Storm Regime-Shift.</h2>
             <p>The Python gateway's statistical suite doesn't just collect data—it actively analyzes it. Below, OMEGA's own statistics ran over public NOAA buoy 46013 wave data to spot the moment the sea state shifted. The algorithm correctly identifies a significant regime shift (a -0.77 m drop at 2026-06-08) as a synoptic storm event subsides.</p>
             <p><strong>The Significance:</strong> This proves the system's ability to run advanced analysis tools to recognize large-scale weather events happening across the external buoys, which can then be cross-correlated and verified against the telemetry coming from OMEGA's own physical edge nodes.</p>
@@ -154,32 +124,15 @@ PRAGMA cache_size=-64000;</code></pre></div>
             <img src="images/proofs/storm-changepoint.svg" loading="lazy" alt="Storm regime shift at NOAA buoy 46013 with OMEGA changepoint marker" style="max-width: 100%; border-radius: 8px; margin-top: 1rem; border: 1px solid rgba(255,255,255,0.1);">
           </section>
 
-<span class="section-kicker">Data Structures</span>
-              <h2>The Observation Envelope.</h2>
-              <p>Disparate marine sensors natively produce chaotic, proprietary data formats—a YSI sonde outputs ASCII strings, while a BlueRobotics pressure sensor outputs raw hex. OMEGA standardizes all incoming telemetry into a strict <strong>Observation Envelope</strong> schema.</p>
-<p>This schema is the common currency of the OMEGA network. Every measurement entering the system carries a ULID <code>message_id</code>, an ISO-8601 timestamp, explicit SI units, and spatial coordinates (Latitude/Longitude/Depth); the boundary layer enforces spatial bounding-box constraints on those coordinates.</p>
-<p><strong>How it works:</strong> By enforcing this envelope at the boundary layer via Pydantic models, downstream systems—such as bathymetry processors, machine learning models, or QARTOD Quality Control algorithms—do not need to write custom parsers for different manufacturer formats. They simply ingest the normalized Envelope, process the payload, and output a new Envelope. This strict data contract enables massive interoperability across the fleet.</p>
-            </div>
-            
-
+          <section class="section section-block" id="how-it-works" style="background: rgba(0,0,0,0.4);">
+            <span class="section-kicker">How It Works</span>
+            <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">The Life of a Frame.</h2>
+            <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">The OMEGA Gateway is a large Python backend — including OGC <strong>SensorThings API v1.1</strong> and ERDDAP-compatible read surfaces for standards-based interop. Designed to run on embedded Linux (e.g. Raspberry Pi 5) deployed directly at the coastal shore, it acts as the master ingestion point for the entire Delay Tolerant Network.</p>
+            <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 0; max-width: 800px; line-height: 1.7;">(The Delay Tolerant Network is OMEGA's offshore radio mesh, built on the assumption that links appear and vanish without warning.) The clearest way to see what the gateway does with that traffic is to follow a single frame ashore, in six steps: it arrives, proves who sent it, is normalized into a common envelope, passes quality control, lands in the database, and is served back out live.</p>
           </section>
 
-          <div class="panel" style="margin-top: 2rem; border-left: 4px solid var(--accent);">
-            <h3 style="margin: 0 0 0.5rem; color: #fff;">Live Database Census & Test Coverage</h3>
-            <p style="font-size: 0.9rem; color: var(--ink-soft); margin: 0; margin-bottom: 0.5rem;">The gateway SQLite database currently stores <strong>~989,207 measurements</strong> and <strong>44,549 observations</strong> over a 14.2-day span. Data purity is absolute: zero rows are simulated.</p>
-            <p style="font-size: 0.9rem; color: var(--ink-soft); margin: 0; margin-bottom: 0.5rem;"><strong>Source Split:</strong> 53.5% from OMEGA mesh hardware vs 46.5% from real third-party networks (NOAA NDBC, Open-Meteo, NWS, CO-OPS).</p>
-            <p style="font-size: 0.9rem; color: var(--ink-soft); margin: 0;"><strong>Coverage:</strong> The Python gateway is backed by an automated test suite, providing end-to-end assertions against security, payload tamper, and protocol conformance vectors.</p>
-          </div>
-
-
-          
-          <div class="panel" style="margin-top: 2rem; border-left: 4px solid var(--accent);">
-            <h3 style="margin: 0 0 0.5rem; color: #fff;">Engineering Reality: HTTP/1.1 Socket Starvation</h3>
-            <p style="font-size: 0.9rem; color: var(--ink-soft); margin: 0;">The portal initially hung over field connections. Debugging in DevTools revealed the cause: a browser allows only six live connections to one server, and two always-open update streams were using all of them. Fixing it required lazy-loading the SSE streams to unblock the map fetches. <a href="engineering-journal.html" style="color: var(--accent);">Read the full journal &rarr;</a></p>
-          </div>
-
-      <section class="section section-block" style="background: rgba(0,0,0,0.4);">
-            <span class="section-kicker">Hardware Interfacing</span>
+      <section class="section section-block" id="step-1-ingest" style="background: rgba(0,0,0,0.4);">
+            <span class="section-kicker">Life of a Frame &mdash; Step 1: A Frame Arrives</span>
             <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">T-ETH-ELITE & The Ingest Contract.</h2>
             <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">
               While Phase 1 relied on a single USB-tethered relay node, the OMEGA federated network now operates via specialized, headless edge gateways. These gateways are entirely "dumb pipes"—they do not decrypt or decode payloads, allowing any community member to safely operate a gateway node.</p>
@@ -202,235 +155,9 @@ PRAGMA cache_size=-64000;</code></pre></div>
               </div>
             </div>
           </section>
-          
-          <section class="section">
-            <div class="section-content">
-              <span class="section-kicker">Resilient Downlink</span>
-              <h2>Coverage-Aware Outbox Leases (CALM).</h2>
-              <p>In a heterogeneous federation with hundreds of overlapping gateways, determining <em>which</em> gateway should transmit a downlink command to a distant buoy is incredibly difficult. If all gateways transmit simultaneously, the RF collisions will destroy the packet. If only a single master gateway transmits, you introduce a catastrophic single point of failure.</p>
-              <p><strong>Execution:</strong> OMEGA solves this via <strong>CALM (Coverage-Aware Outbox Leases)</strong>. Every time a gateway ingests an uplink frame, the DB logs its <code>gateway_id</code> and the signal strength (RSSI/SNR). When an operator issues a downlink command, the backend calculates a routing lease. It queries the <code>gateway_sightings</code> provenance table, identifies the single gateway that "hears" the target node the best, and grants that specific gateway a temporary, exclusive lease to transmit the command. If the transmission isn't acknowledged, the lease expires and falls back to the next-best gateway automatically.</p>
-            </div>
-          </section>
-    
-          <section class="section">
-            <div class="section-content">
-              <span class="section-kicker">Data Science Workflows</span>
-              <h2>The Honu AI Copilot.</h2>
-              <p>The Mission Portal is too complex for a human operator to constantly navigate nested menus during a critical mission event. To solve this, the Python gateway includes <strong>Honu</strong>, an in-portal AI copilot that runs fully offline on a local model (Ollama) or falls back to the cloud (Anthropic). It holds no built-in knowledge — every fact comes from a tool call. The module intercepts natural language queries from the operator and dynamically routes them across ~100 internal tools.</p>
-<p><strong>Execution:</strong> Because the LLM holds no built-in knowledge of the specific marine deployment, the system uses a strict foundational prompt. It acts as an analytical and navigational bridge, using live tool calls to query the SQLite database, filter nodes by geographic bounds, and summarize observation arrays. Instead of clicking 10 buttons to find out why Buoy 4 went offline, the operator simply asks Honu, and the copilot executes the diagnostic trace.</p>
-              
-            </div>
-            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">copilot.py</span><pre><code class="language-python">SYSTEM_PROMPT = """You are Honu, the OMEGA Intelligence Engine — an expert research assistant, data analyst, and interface navigator embedded in the OMEGA open-source marine research portal.
-1. READ-ONLY OPERATIONS: You are strictly an analytical and navigational tool.
-   - You must NEVER send outbound telemetry or execute hardware controls.
-2. DATA PURITY: You hold ZERO built-in knowledge of this deployment.
-   - Every fact must come from a tool call against the gateway's live API.
-3. AMNESIA PREVENTION: You cannot "see" the user's screen.
-   - Before each message, you receive a [PORTAL CONTEXT] block showing the user's current view."""</code></pre></div>
-          </section>
 
-          <section class="section section-block" style="background: rgba(0,0,0,0.4);">
-            <span class="section-kicker">Architectural Theory</span>
-            <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Clean Architecture Principles.</h2>
-            <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">A monolithic Python script quickly becomes an unmaintainable nightmare. The OMEGA gateway strictly enforces a 3-tier architectural separation of concerns.</p>
-            
-            <div class="grid-3" style="margin-bottom: 2rem;">
-              <div class="panel" style="padding: 1.5rem;">
-                <span class="status-label status-implemented">Layer 1</span>
-                <h3 style="font-size: 1.2rem;">The Routers</h3>
-                <p style="font-size: 0.85rem;">Routers handle exactly one thing: HTTP mechanics. They parse the JSON payload, check the API tokens, and immediately pass the data down. They contain ZERO business logic.</p>
-              </div>
-              <div class="panel" style="padding: 1.5rem;">
-                <span class="status-label status-implemented">Layer 2</span>
-                <h3 style="font-size: 1.2rem;">The Services</h3>
-                <p style="font-size: 0.85rem;">The pure business logic layer. Services calculate bounding boxes, execute algorithms, and transform arrays. They do not know what an HTTP request is, nor do they know what a database is.</p>
-              </div>
-              <div class="panel" style="padding: 1.5rem;">
-                <span class="status-label status-implemented">Layer 3</span>
-                <h3 style="font-size: 1.2rem;">The Repositories</h3>
-                <p style="font-size: 0.85rem;">The only place in the codebase where SQL exists. If we ever swap SQLite for PostgreSQL, we only rewrite the Repository layer. The Routers and Services remain completely untouched.</p>
-              </div>
-            </div>
-          </section>
-    
-    
-
-<section class="section">
-            <div class="section-content">
-              <span class="section-kicker">Asynchronous Loop</span>
-              <h2>The Gateway Scheduler.</h2>
-              <p>The <code>gateway/scheduler.py</code> module manages a strict Python `asyncio` event loop. This cron-like engine dictates when the gateway should pull satellite ephemeris data, when it should poll NOAA for weather updates, and when it should execute the QARTOD compliance engine across the massive historical SQLite database.</p>
-              
-            </div>
-            
-          </section>
-    
-          <section class="section">
-            <div class="section-content">
-              <span class="section-kicker">System Watchdogs</span>
-              <h2>Automated Fleet Watches.</h2>
-              <p>The <code>gateway/watches.py</code> module is an active monitoring service. It constantly evaluates the timestamp of the last received ping from every edge node in the mesh. If a buoy goes completely silent and misses its Delay Tolerant Network heartbeat window, the Watchdog automatically generates a critical "Node Offline" alarm on the Notification Bus.</p>
-              
-            </div>
-            
-          </section>
-
-          <section class="section section-block" style="background: rgba(0,0,0,0.4);">
-            <span class="section-kicker">Architectural Theory</span>
-            <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">The Pub/Sub Pattern.</h2>
-            <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">A monolithic architecture is incredibly fragile. If the Python script receiving radio packets directly calls the database <code>insert()</code> function, a slow SD card write will physically block the processor from receiving the next radio packet, dropping critical telemetry.</p>
-            
-            <div class="grid-2" style="margin-bottom: 2rem;">
-              <div class="panel" style="padding: 1.5rem;">
-                <span class="status-label status-implemented">Producers (Publishers)</span>
-                <h3 style="font-size: 1.2rem;">The Radio Receiver</h3>
-                <p style="font-size: 0.85rem;">The receiver script does exactly one thing: it parses raw bytes from the UART serial bus. Once verified, it blindly fires an <code>emit("telemetry.received", payload)</code> event onto the memory bus and immediately returns to listening for the next radio packet.</p>
-              </div>
-              <div class="panel" style="padding: 1.5rem;">
-                <span class="status-label status-implemented">Consumers (Subscribers)</span>
-                <h3 style="font-size: 1.2rem;">The Database Writer</h3>
-                <p style="font-size: 0.85rem;">Completely decoupled from the radio, the database writer script runs in an infinite <code>asyncio</code> loop, pulling payloads off the memory bus at its own speed and writing them to SQLite. If the database locks up, the memory queue simply grows, but no live RF packets are ever dropped.</p>
-              </div>
-            </div>
-            
-            <div class="grid-2" style="margin-top: 2rem;">
-              <div class="section-visual" style="max-height: 800px; overflow-y: auto;">
-                <span class="panel-kicker">gateway/notifications.py (NotificationBus)</span>
-                <pre><code class="language-python">class NotificationBus:
-    """In-memory asyncio bus attached to the running event loop."""
-    def attach_loop(self, loop: asyncio.AbstractEventLoop) -> None:
-        self._loop = loop
-
-    def publish(self, event: dict) -> None:
-        # Called on INSERT; fan out to every connected client queue.
-        for queue in self._subscribers:
-            self._loop.call_soon_threadsafe(queue.put_nowait, event)</code></pre>
-              </div>
-
-              <div class="section-visual" style="max-height: 800px; overflow-y: auto;">
-                <span class="panel-kicker">gateway/routers/websockets.py</span>
-                <pre><code class="language-python">@router.websocket("/ws/live")
-async def websocket_endpoint(websocket: WebSocket):
-    await manager.connect(websocket)
-    try:
-        while True:
-            # The client just holds the TCP socket open.
-            # We push JSON from the NotificationBus directly to the
-            # browser client (the vanilla-JS portal).
-            data = await websocket.receive_text()
-    except WebSocketDisconnect:
-        manager.disconnect(websocket)</code></pre>
-              </div>
-            </div>
-          </section>
-
-<section class="section">
-            <div class="section-content">
-              <span class="section-kicker">Authentication Engine</span>
-              <h2>Role-Based Access Control (RBAC).</h2>
-              <p>OMEGA's gateway is an open, internet-exposed federated service that anyone in the community can stand up and reach, so it needs real access control rather than a single shared password. The gateway features a multi-user authentication engine with Role-Based Access Control (RBAC) and three roles: <code>admin</code> users have global mutating privileges, <code>operator</code> users can execute waypoint missions, and <code>viewer</code> users are restricted to read-only telemetry analysis.</p>
-<p><strong>Sessions:</strong> When a user logs in, the FastAPI backend issues an opaque server-side session token (32 bytes of random data, stored and revocable server-side). It is delivered in an <code>HttpOnly</code> + <code>SameSite=Lax</code> cookie with a 14-day TTL and an 8-hour idle timeout, so sessions can be invalidated centrally rather than relying on a self-contained token.</p>
-<p><strong>Execution:</strong> Every mutating API endpoint (e.g. <code>/v1/control/commands</code>) is guarded by FastAPI dependency injection (<code>_require_operator</code>). If an unauthorized researcher attempts to wipe the database, the API rejects the request with an HTTP 403, preventing accidental fleet commands.</p>
-              
-            </div>
-            
-            <div class="grid-2" style="margin-top: 2rem;">
-              <div class="section-visual" style="max-height: 800px; overflow-y: auto;">
-                <span class="panel-kicker">Server-side session record</span>
-                <pre><code class="language-json">{
-  "username": "jcapone",
-  "role": "admin",
-  "token": "&lt;32-byte random, hashed at rest&gt;",
-  "created_at": "2026-06-21T08:00:00Z",
-  "expires_at": "2026-07-05T08:00:00Z",
-  "idle_timeout_s": 28800,
-  "revoked": false
-}</code></pre>
-              </div>
-              <div class="section-visual" style="max-height: 800px; overflow-y: auto;">
-                <span class="panel-kicker">gateway/auth_sessions.py</span>
-                <pre><code class="language-python">async def _require_operator(
-    session_token: str = Depends(cookie_scheme),
-    db: Session = Depends(get_db)
-):
-    session = resolve_session(db, session_token)
-    role = session.role
-
-    # Reject unauthorized mutating operations
-    if role not in ["operator", "admin"]:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Insufficient RBAC clearance for fleet mutation."
-        )
-    return session</code></pre></div>
-          </section>
-    
-          <section class="section">
-            <div class="section-content">
-              <span class="section-kicker">Zero Trust Security</span>
-              <h2>Knowing the Attacker's Real Address.</h2>
-              <p>When a gateway is deployed behind a TLS-terminating reverse proxy (like Cloudflare or an Nginx ingress), naive applications see the proxy's IP for every incoming request. This destroys rate-limiting, as a single attacker will cause the proxy itself to be banned, locking out the entire legitimate team.</p><p><strong>Execution:</strong> OMEGA implements strict proxy-trust topology via <code>trusted_proxy_ips</code>. The Python backend extracts the leftmost <code>X-Forwarded-For</code> header <i>only</i> if the direct peer is a cryptographically trusted proxy. This ensures that a brute-force attacker is isolated and penalized by their true origin IP, preventing massive Denial of Service (DoS) cascades.</p>
-              
-            </div>
-            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">gateway/middleware.py</span><pre><code class="language-python">class ProxyTrustMiddleware(BaseHTTPMiddleware):
-    async def dispatch(self, request: Request, call_next):
-        client_ip = request.client.host
-        
-        # Only parse X-Forwarded-For if the direct connection is from a trusted proxy
-        if client_ip in TRUSTED_PROXIES:
-            x_forwarded = request.headers.get("X-Forwarded-For")
-            if x_forwarded:
-                # The true client is the leftmost IP in the chain
-                real_ip = x_forwarded.split(",")[0].strip()
-                request.state.real_ip = real_ip
-        else:
-            # Direct connection (no proxy), or untrusted proxy (spoofing attempt)
-            request.state.real_ip = client_ip
-            
-        return await call_next(request)</code></pre></div>
-          </section>
-    
-          <section class="section">
-            <div class="section-content">
-              <span class="section-kicker">Penalty Box</span>
-              <h2>Dynamic IP Rate Limiting.</h2>
-              <p>Marine gateways are often deployed on static public IPs with minimal perimeter defenses, making them massive targets for automated SSH and HTTP brute-force bots.</p><p><strong>Execution:</strong> The authentication engine tracks failed login vectors in memory. After 5 sequential failures against a single username within a 10-minute sliding window, the source IP is dynamically parked in a cooldown penalty box. This completely halts dictionary attacks while allowing legitimate admins to utilize the new Settings panel to manually clear the blocklist and restore access.</p>
-              
-            </div>
-            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">gateway/auth.py</span><pre><code class="language-python">def record_failed_login(ip_address: str, username: str):
-    # Retrieve existing failures from fast memory cache
-    failures = cache.get(f"auth_fail:{ip_address}") or 0
-    failures += 1
-    
-    # 5-Strike Sliding Window Penalty
-    if failures >= 5:
-        logger.warning(f"PENALTY BOX: Locking IP {ip_address} for 10 minutes.")
-        cache.set(f"lockout:{ip_address}", True, expire=600)
-        
-        # Log immutable security event
-        db_session.add(SecurityEvent(
-            type="rate_limit_enforced",
-            target_ip=ip_address,
-            description="Exceeded 5 failed authentication attempts."
-        ))
-        db_session.commit()
-    else:
-        # Increment failure count with a 60-second sliding window
-        cache.set(f"auth_fail:{ip_address}", failures, expire=60)</code></pre></div>
-          </section>
-    
-          <section class="section">
-            <div class="section-content">
-              <span class="section-kicker">Total Accountability</span>
-              <h2>Immutable Audit Trails.</h2>
-              <p>When a stationary node executes a dangerous maneuver, "who sent the command?" is the most important question. The OMEGA backend now logs a completely immutable, chronological audit trail for every single mutating admin action.</p><p><strong>Execution:</strong> If an administrator resets a user's password or clears a rate-limited IP, the system generates a <code>system</code>-kind notification with a unique <code>source_id</code>. Operators can use the Honu AI Copilot to query this database in natural language (e.g., <i>"Who cleared the rate limit yesterday?"</i>), providing complete post-incident forensic capabilities.</p>
-              
-            </div>
-            
-          </section>
-    
-          <section class="section section-block" style="background: rgba(0,0,0,0.4);">
-            <span class="section-kicker">Mathematical Cryptography</span>
+          <section class="section section-block" id="step-2-verify" style="background: rgba(0,0,0,0.4);">
+            <span class="section-kicker">Life of a Frame &mdash; Step 2: Prove Who Sent It</span>
             <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Elliptic Curve Cryptography (ECC).</h2>
             <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">Standard web security relies on RSA (Rivest–Shamir–Adleman). RSA requires 2048-bit keys, which mathematically translates to 256 bytes of pure cryptographic overhead per packet. Over a 50-byte LoRa constraint, RSA is physically impossible.</p>
             
@@ -468,8 +195,6 @@ async def websocket_endpoint(websocket: WebSocket):
             </div>
           </section>
 
-          
-
           <section class="section">
             <div class="section-content">
               <span class="section-kicker">Hardware Identity</span>
@@ -479,100 +204,21 @@ async def websocket_endpoint(websocket: WebSocket):
             </div>
           </section>
 
-<section class="section">
+          <div class="panel" style="margin-top: 2rem; border-left: 4px solid var(--accent);">
+            <h3 style="margin: 0 0 0.5rem; color: #fff;">Honesty Note: Signature Verification</h3>
+            <p style="font-size: 0.9rem; color: var(--ink-soft); margin: 0;">The signing pipeline is proven on the real code path in test databases, but the external publisher feeds (NOAA/NDBC, Open-Meteo) are unsigned — so live signature verification against third-party traffic isn't demonstrated yet.</p>
+          </div>
+
+          <section class="section" id="step-3-envelope">
             <div class="section-content">
-              <span class="section-kicker">Oceanographic Formats</span>
-              <h2>ERDDAP & NetCDF Structures.</h2>
-              <p>Marine research requires massive contextual data. A surface temperature reading from a remote sensor is useless unless it is federated with regional satellite data. OMEGA integrates heavily with institutional ERDDAP (Environmental Research Division Data Access Program) servers.</p>
-<p><strong>Execution:</strong> The <code>erddap.py</code> ingestor runs as a background <code>asyncio</code> task. It queries massive tabular datasets (like NOAA buoy arrays or the Copernicus Marine Service) using the ERDDAP REST API. Because returning full NetCDF arrays over HTTP is slow, OMEGA enforces spatial bounding-box constraints (Lat/Lon/Time) derived from its active edge nodes before making the HTTP GET request, only downloading the bytes relevant to the current fleet operation.</p>
-              
-            </div>
-            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">gateway/erddap.py</span><pre><code class="language-python">async def fetch_regional_sst(lat_min: float, lat_max: float, lon_min: float, lon_max: float):
-    # Poll NOAA ERDDAP for Sea Surface Temperature within the edge node bounding box.
-    base_url = "https://coastwatch.pfeg.noaa.gov/erddap/griddap/jplMURSST41.csv"
-    
-    # Construct strict spatial constraints to avoid downloading the entire ocean
-    query = f"?analysed_sst[(last)][({lat_min}):({lat_max})][({lon_min}):({lon_max})]"
-    
-    async with httpx.AsyncClient() as client:
-        response = await client.get(base_url + query, timeout=30.0)
-        response.raise_for_status()
-        
-        return _parse_erddap_csv(response.text)</code></pre></div>
-          </section>
-    
-          <section class="section">
-            <div class="section-content">
-              <span class="section-kicker">Satellite Physics</span>
-              <h2>Global Map Fusion.</h2>
-              <p>To measure global Sea Surface Temperature (SST), satellites use advanced radiometers to detect thermal infrared radiation emitted by the ocean's skin layer. To model ocean currents and wave heights, they use <strong>radar altimetry</strong>—bouncing precise microwave pulses off the ocean surface to measure minute differences in sea surface height.</p>
-<p>Fetching this massive amount of real-time planetary data requires interacting with complex, rate-limited APIs from Copernicus, NASA, and NOAA. The OMEGA Gateway acts as a highly optimized caching proxy for these external endpoints.</p>
-<p><strong>Operational Use:</strong> By storing recent satellite tiles and JSON payloads in local Redis or SQLite memory caches, the gateway prevents the Mission Portal from exhausting strict global API rate limits when multiple operators are rapidly zooming and panning across the map interface.</p>
-              
-            </div>
-            
-          </section>
-    
-          <section class="section">
-            <div class="section-content">
-              <span class="section-kicker">Fisheries & Security</span>
-              <h2>Global Fishing Watch (GFW).</h2>
-              <p>OMEGA integrates directly with the <strong>Global Fishing Watch 4Wings API</strong>. It pulls real-time heatmap MVT overlays for apparent fishing effort, AIS vessel presence, and Synthetic Aperture Radar (SAR) detections of "dark targets" (vessels not transmitting AIS).</p>
-              <p>Furthermore, the gateway pulls vessel risk and IUU (Illegal, Unreported, and Unregulated) insights, matching detected AIS tracks against global registries to flag vessels fishing within no-take Marine Protected Areas (MPAs).</p>
-            </div>
-            
-            <div class="section-visual" style="max-height: 800px; overflow-y: auto; margin-top: 2rem;">
-              <span class="panel-kicker">gateway/gfw_api.py</span>
-              <pre><code class="language-python">async def check_iuu_risk(mmsi: str) -> float:
-    # Query the Global Fishing Watch 4Wings API for vessel risk
-    headers = {"Authorization": f"Bearer {GFW_TOKEN}"}
-    
-    async with httpx.AsyncClient() as client:
-        # Fetch vessel profile using its Maritime Mobile Service Identity (MMSI)
-        res = await client.get(f"https://gateway.api.globalfishingwatch.org/v2/vessels/search?query=mmsi:{mmsi}", headers=headers)
-        res.raise_for_status()
-        
-        data = res.json()
-        if not data["entries"]: return 0.0
-        
-        # Calculate IUU probability based on dark-target SAR anomalies
-        vessel = data["entries"][0]
-        risk_score = vessel.get("implied_risk_score", 0.0)
-        
-        return risk_score</code></pre>
+  <span class="section-kicker">Life of a Frame &mdash; Step 3: Normalize It</span>
+                <h2>The Observation Envelope.</h2>
+                <p>Disparate marine sensors natively produce chaotic, proprietary data formats—a YSI sonde outputs ASCII strings, while a BlueRobotics pressure sensor outputs raw hex. OMEGA standardizes all incoming telemetry into a strict <strong>Observation Envelope</strong> schema.</p>
+  <p>This schema is the common currency of the OMEGA network. Every measurement entering the system carries a ULID <code>message_id</code>, an ISO-8601 timestamp, explicit SI units, and spatial coordinates (Latitude/Longitude/Depth); the boundary layer enforces spatial bounding-box constraints on those coordinates.</p>
+  <p><strong>How it works:</strong> By enforcing this envelope at the boundary layer via Pydantic models, downstream systems—such as bathymetry processors, machine learning models, or QARTOD Quality Control algorithms—do not need to write custom parsers for different manufacturer formats. They simply ingest the normalized Envelope, process the payload, and output a new Envelope. This strict data contract enables massive interoperability across the fleet.</p>
             </div>
           </section>
-    
-          <section class="section">
-            <div class="section-content">
-              <span class="section-kicker">Maritime Traffic</span>
-              <h2>Live Commercial AIS & MarineCadastre.</h2>
-              <p>For live tactical awareness, the gateway ingests commercial AIS streams (via AISStream), tracking thousands of live vessels and superimposing them onto the OMEGA Map Portal in real-time.</p><p>For historical context, the portal registers U.S. <strong>MarineCadastre</strong> transit-count overlays. These are cached ArcGIS tiles displaying annual vessel-density heatmaps (2019-2025), allowing operators to plan stationary deployment locations that actively avoid historical high-traffic shipping lanes.</p>
-              
-            </div>
-            
-          </section>
-    
-          <section class="section">
-            <div class="section-content">
-              <span class="section-kicker">Climate Models</span>
-              <h2>NASA EarthData & Copernicus.</h2>
-              <p>The gateway integrates NASA EarthData CMR-STAC endpoints and the Copernicus Marine catalog. This allows OMEGA to query multi-petabyte federated cloud datasets, pulling specific climate variables (like Chlorophyll-a concentrations from Sentinel-3) to compare against real-time, local water-quality buoy data.</p>
-              
-            </div>
-            
-          </section>
-    
-          <section class="section">
-            <div class="section-content">
-              <span class="section-kicker">Public Ingestion</span>
-              <h2>NOAA NDBC & CO-OPS Public Loader.</h2>
-              <p>Rather than relying strictly on proprietary hardware, OMEGA utilizes a Public Loader daemon. It actively scrapes NOAA National Data Buoy Center (NDBC) buoys, CO-OPS tide/met products, and Open-Meteo marine models.</p><p>Crucially, it normalizes these diverse public sources into the exact same <strong>Observation Envelope</strong> schema used by OMEGA hardware, allowing the frontend to render public buoys interchangeably with private fleet assets.</p>
-              
-            </div>
-            
-          </section>
-    
+
           <section class="section">
             <div class="section-content">
               <span class="section-kicker">Raw Data Structures</span>
@@ -644,7 +290,236 @@ async def websocket_endpoint(websocket: WebSocket):
   }
 }</code></pre></div>
           </section>
+
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">Strict Validation</span>
+              <h2>JSON Schema Enforcement.</h2>
+              <p>To protect the core SQLite database from malformed, corrupt, or actively malicious payloads injected by rogue edge nodes, OMEGA relies on strict JSON schema validation located in the <code>schemas/</code> directory.</p>
+<p><strong>Execution:</strong> Before a network packet is ever parsed by the Python backend, it is rapidly validated against the <code>observation-envelope.schema.json</code> definition using the <code>jsonschema</code> library. Any payload missing critical routing arrays, origin UUIDs, or containing the wrong data type is instantly dropped, ensuring database integrity is never compromised by field errors.</p>
+              
+            </div>
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">observation-envelope.schema.json</span><pre><code class="language-json">{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/omega/observation-envelope.schema.json",
+  "title": "OMEGA Observation Envelope",
+  "description": "Canonical application-level envelope for sensor observations.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "spec",
+    "message_id",
+    "message_type",
+    "origin",
+    "routing",
+    "sample",
+    "payload"
+  ]
+}</code></pre></div>
+          </section>
+
+          <section class="section" id="step-4-qc">
+            <div class="section-content">
+              <span class="section-kicker">Life of a Frame &mdash; Step 4: Quality Control</span>
+              <h2>Automated Quality Control.</h2>
+              <p>As covered in earlier sections, raw marine data is scientifically useless until it is vetted. Before a sensor measurement is allowed to enter the normalized SQLite database, it must pass through the Gateway's strict <strong>IOOS QARTOD</strong> compliance engine.</p>
+<p><strong>Execution:</strong> The Python backend (<code>gateway/qc.py</code>) uses the Median Absolute Deviation (MAD) to calculate a <i>Robust Sigma</i> over the trailing time-series window. This sigma flags incoming measurements for spikes, sensor flat-lines (indicating a fouled probe), or gross-range biological violations, appending a 1-4 quality flag to the Observation Envelope. A separate spatial buddy-check (<code>gateway/buddy_check.py</code>) compares each station against its neighbours.</p>
+              
+            </div>
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">gateway/qc.py</span><pre><code class="language-python">def _threshold_bundle(values: list[float]) -> dict[str, float] | None:
+    center = median(values)
+    sigma = _robust_sigma(values)
+    return {
+        "center": center,
+        "sigma": sigma,
+        "gross_range_suspect_min": center - sigma * 3,
+        "gross_range_suspect_max": center + sigma * 3,
+        "gross_range_fail_min": center - sigma * 6,
+        "gross_range_fail_max": center + sigma * 6,
+        "rate_of_change_suspect": sigma * 3,
+        "rate_of_change_fail": sigma * 6,
+        "spike_suspect": sigma * 3,
+        "spike_fail": sigma * 6,
+    }</code></pre></div>
+          </section>
+
+          <section class="section" id="step-5-store">
+            <div class="section-content">
+              <span class="section-kicker">Life of a Frame &mdash; Step 5: Store It</span>
+              <h2>Handling Many Readings at Once.</h2>
+<p><strong>Database Architecture:</strong> Telemetry arrives asynchronously via UDP and Serial ports at massive volumes. A standard SQLite configuration would instantly lock and crash under this concurrent write pressure. The Python backend physically rewrites the SQLite PRAGMA at boot, enforcing Write-Ahead Logging (<code>WAL</code>) mode and <code>NORMAL</code> synchronous behavior. This decouples the read/write locks, allowing the Mission Portal to execute massive <code>SELECT</code> queries over the historical arrays while the edge node bridges concurrently <code>INSERT</code> live TLV frames without blocking.</p>
+              <div class="callout"><strong>Background Tasks</strong><p>Heavy normalization operations are pushed to a background job, so the sender gets an instant acknowledgement instead of waiting for the slow work to finish.</p></div>
+            </div>
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">gateway/main.py</span><pre><code class="language-python">    @asynccontextmanager
+    async def _lifespan(fastapi_app: FastAPI) -> AsyncIterator[None]:
+        scheduler = getattr(fastapi_app.state, "scheduler", None)
+        notif_bus = getattr(fastapi_app.state, "notification_bus", None)
+        
+        # Attach internal NotificationBus to the async loop
+        if notif_bus is not None:
+            notif_bus.attach_loop(asyncio.get_running_loop())
+            
+        # Start periodic tasks (e.g. evaluating active watches)
+        if scheduler is not None:
+            await scheduler.start()
+            
+        try:
+            yield
+        finally:
+            if scheduler is not None:
+                await scheduler.stop()
+            if notif_bus is not None:
+                notif_bus.detach_loop()
+
+    app = FastAPI(
+        title="OMEGA Gateway",
+        description="Gateway API for a mixed-bearer environmental sensor mesh.",
+        lifespan=_lifespan,
+    )</code></pre>            </div>
+          </section>
+
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">Database Engineering</span>
+              <h2>SQLite Normalization & WAL.</h2>
+              <p>A distributed mesh generates continuous, erratic, write-heavy load. The gateway utilizes a SQLite store specifically designed for mesh provenance (multi-gateway sightings, dedup on `(origin, sequence)`, idempotent ingest). Traditional SQLite configurations use database-level locks; when a write occurs, the entire file is locked, which causes `database is locked` exceptions for any dashboard attempting to read the data concurrently.</p>
+<p>To eliminate this bottleneck, the OMEGA gateway configures its SQLite engine in <strong>Write-Ahead Logging (WAL)</strong> mode using explicit PRAGMA statements on startup. Instead of locking the main database file during a write, changes are appended extremely fast to a separate `.wal` file.</p>
+<p><strong>Relevance:</strong> This allows readers (the Mission Portal fetching historical graphs) to concurrently access the database without ever being blocked by writers (the continuous telemetry ingest). Furthermore, `PRAGMA synchronous=NORMAL` relaxes the rigid sync constraints, vastly increasing write throughput on the SD cards of Raspberry Pi gateways without risking catastrophic corruption.</p>
+              
+            </div>
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">SQLite Configuration</span><pre><code class="language-sql">PRAGMA journal_mode=WAL;
+PRAGMA synchronous=NORMAL;
+PRAGMA cache_size=-64000;</code></pre></div>
+          </section>
+
+          <section class="section section-block" id="step-6-serve" style="background: rgba(0,0,0,0.4);">
+            <span class="section-kicker">Life of a Frame &mdash; Step 6: Serve It Out</span>
+            <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">The Pub/Sub Pattern.</h2>
+            <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">The same bus that protects ingest is how a stored reading leaves: on insert, the NotificationBus fans the event out to every connected WebSocket client, while REST queries &mdash; and the SensorThings v1.1 and ERDDAP-compatible read surfaces noted above &mdash; serve the stored history. Why a bus at all? Because direct calls are fragile:</p>
+            <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">A monolithic architecture is incredibly fragile. If the Python script receiving radio packets directly calls the database <code>insert()</code> function, a slow SD card write will physically block the processor from receiving the next radio packet, dropping critical telemetry.</p>
+            
+            <div class="grid-2" style="margin-bottom: 2rem;">
+              <div class="panel" style="padding: 1.5rem;">
+                <span class="status-label status-implemented">Producers (Publishers)</span>
+                <h3 style="font-size: 1.2rem;">The Radio Receiver</h3>
+                <p style="font-size: 0.85rem;">The receiver script does exactly one thing: it parses raw bytes from the UART serial bus. Once verified, it blindly fires an <code>emit("telemetry.received", payload)</code> event onto the memory bus and immediately returns to listening for the next radio packet.</p>
+              </div>
+              <div class="panel" style="padding: 1.5rem;">
+                <span class="status-label status-implemented">Consumers (Subscribers)</span>
+                <h3 style="font-size: 1.2rem;">The Database Writer</h3>
+                <p style="font-size: 0.85rem;">Completely decoupled from the radio, the database writer script runs in an infinite <code>asyncio</code> loop, pulling payloads off the memory bus at its own speed and writing them to SQLite. If the database locks up, the memory queue simply grows, but no live RF packets are ever dropped.</p>
+              </div>
+            </div>
+            
+            <div class="grid-2" style="margin-top: 2rem;">
+              <div class="section-visual" style="max-height: 800px; overflow-y: auto;">
+                <span class="panel-kicker">gateway/notifications.py (NotificationBus)</span>
+                <pre><code class="language-python">class NotificationBus:
+    """In-memory asyncio bus attached to the running event loop."""
+    def attach_loop(self, loop: asyncio.AbstractEventLoop) -> None:
+        self._loop = loop
+
+    def publish(self, event: dict) -> None:
+        # Called on INSERT; fan out to every connected client queue.
+        for queue in self._subscribers:
+            self._loop.call_soon_threadsafe(queue.put_nowait, event)</code></pre>
+              </div>
+
+              <div class="section-visual" style="max-height: 800px; overflow-y: auto;">
+                <span class="panel-kicker">gateway/routers/websockets.py</span>
+                <pre><code class="language-python">@router.websocket("/ws/live")
+async def websocket_endpoint(websocket: WebSocket):
+    await manager.connect(websocket)
+    try:
+        while True:
+            # The client just holds the TCP socket open.
+            # We push JSON from the NotificationBus directly to the
+            # browser client (the vanilla-JS portal).
+            data = await websocket.receive_text()
+    except WebSocketDisconnect:
+        manager.disconnect(websocket)</code></pre>
+              </div>
+            </div>
+          </section>
+
+          <section class="section section-block" id="hard-problems" style="background: rgba(0,0,0,0.4);">
+            <span class="section-kicker" style="color: var(--accent);">The Hard Problems</span>
+            <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">What Actually Made This Difficult.</h2>
+            <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 820px; line-height: 1.7;">A pipeline diagram never shows the fights. These are the problems that shaped this service &mdash; each one real, each with the fix that shipped. Two more &mdash; knowing an attacker's real address behind a proxy, and stopping password-guessing bots &mdash; get their full write-ups, code included, just below.</p>
+            <div class="grid-2" style="margin-bottom: 2rem;">
+              <div class="panel" style="padding: 1.5rem;">
+                <span class="status-label status-implemented">Field Incident</span>
+                <h3 style="font-size: 1.2rem;">HTTP/1.1 Socket Starvation</h3>
+                <p style="font-size: 0.85rem;">The portal initially hung over field connections. Debugging in DevTools revealed the cause: a browser allows only six live connections to one server, and two always-open update streams were using all of them. Fixing it required lazy-loading the SSE streams (SSE: Server-Sent Events, those always-open update streams) to unblock the map fetches. <a href="engineering-journal.html" style="color: var(--accent);">Read the full journal &rarr;</a></p>
+              </div>
+              <div class="panel" style="padding: 1.5rem;">
+                <span class="status-label status-implemented">Throughput</span>
+                <h3 style="font-size: 1.2rem;">Surviving Telemetry Bursts</h3>
+                <p style="font-size: 0.85rem;"><strong>The problem:</strong> telemetry arrives asynchronously over UDP and serial at massive volumes; a standard SQLite configuration would instantly lock and crash under that concurrent write pressure, and a slow SD-card write can physically block the processor from receiving the next radio packet. <strong>The fix:</strong> decouple everything. The radio receiver just fires an event onto an in-memory bus and returns to listening; heavy normalization is pushed to a background job so the sender gets an instant acknowledgement; and the database runs in Write-Ahead Logging mode so readers never block writers. If the database locks up, the memory queue simply grows &mdash; no live RF packets are dropped. <a href="#step-5-store" style="color: var(--accent);">See the storage step &rarr;</a></p>
+              </div>
+            </div>
+          </section>
+
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">Zero Trust Security</span>
+              <h2>Knowing the Attacker's Real Address.</h2>
+              <p>When a gateway is deployed behind a TLS-terminating reverse proxy (like Cloudflare or an Nginx ingress), naive applications see the proxy's IP for every incoming request. This destroys rate-limiting, as a single attacker will cause the proxy itself to be banned, locking out the entire legitimate team.</p><p><strong>Execution:</strong> OMEGA implements strict proxy-trust topology via <code>trusted_proxy_ips</code>. The Python backend extracts the leftmost <code>X-Forwarded-For</code> header <i>only</i> if the direct peer is a cryptographically trusted proxy. This ensures that a brute-force attacker is isolated and penalized by their true origin IP, preventing massive Denial of Service (DoS) cascades.</p>
+              
+            </div>
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">gateway/middleware.py</span><pre><code class="language-python">class ProxyTrustMiddleware(BaseHTTPMiddleware):
+    async def dispatch(self, request: Request, call_next):
+        client_ip = request.client.host
+        
+        # Only parse X-Forwarded-For if the direct connection is from a trusted proxy
+        if client_ip in TRUSTED_PROXIES:
+            x_forwarded = request.headers.get("X-Forwarded-For")
+            if x_forwarded:
+                # The true client is the leftmost IP in the chain
+                real_ip = x_forwarded.split(",")[0].strip()
+                request.state.real_ip = real_ip
+        else:
+            # Direct connection (no proxy), or untrusted proxy (spoofing attempt)
+            request.state.real_ip = client_ip
+            
+        return await call_next(request)</code></pre></div>
+          </section>
+
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">Penalty Box</span>
+              <h2>Dynamic IP Rate Limiting.</h2>
+              <p>Marine gateways are often deployed on static public IPs with minimal perimeter defenses, making them massive targets for automated SSH and HTTP brute-force bots.</p><p><strong>Execution:</strong> The authentication engine tracks failed login vectors in memory. After 5 sequential failures against a single username within a 10-minute sliding window, the source IP is dynamically parked in a cooldown penalty box. This completely halts dictionary attacks while allowing legitimate admins to utilize the new Settings panel to manually clear the blocklist and restore access.</p>
+              
+            </div>
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">gateway/auth.py</span><pre><code class="language-python">def record_failed_login(ip_address: str, username: str):
+    # Retrieve existing failures from fast memory cache
+    failures = cache.get(f"auth_fail:{ip_address}") or 0
+    failures += 1
     
+    # 5-Strike Sliding Window Penalty
+    if failures >= 5:
+        logger.warning(f"PENALTY BOX: Locking IP {ip_address} for 10 minutes.")
+        cache.set(f"lockout:{ip_address}", True, expire=600)
+        
+        # Log immutable security event
+        db_session.add(SecurityEvent(
+            type="rate_limit_enforced",
+            target_ip=ip_address,
+            description="Exceeded 5 failed authentication attempts."
+        ))
+        db_session.commit()
+    else:
+        # Increment failure count with a 60-second sliding window
+        cache.set(f"auth_fail:{ip_address}", failures, expire=60)</code></pre></div>
+          </section>
+
+          <section class="section section-block" style="background: rgba(0,0,0,0.4); margin-top: 2rem;">
+            <span class="section-kicker">The Rest of the Service</span>
+            <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Beyond the Pipeline.</h2>
+            <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 0; max-width: 800px; line-height: 1.7;">The rest of the gateway, grouped: the open-standards surface it exposes to other software, the public ocean data it fuses in beside OMEGA's own hardware, the analysis that runs on top, day-to-day fleet operations, who is allowed to do what, and how the whole service is structured and deployed.</p>
+          </section>
+
           <section class="section">
             <div class="section-content">
               <span class="section-kicker">Semantic APIs</span>
@@ -775,45 +650,61 @@ async def websocket_endpoint(websocket: WebSocket):
   }
 }</code></pre></div>
           </section>
-    
+
           <section class="section">
             <div class="section-content">
-              <span class="section-kicker">Strict Validation</span>
-              <h2>JSON Schema Enforcement.</h2>
-              <p>To protect the core SQLite database from malformed, corrupt, or actively malicious payloads injected by rogue edge nodes, OMEGA relies on strict JSON schema validation located in the <code>schemas/</code> directory.</p>
-<p><strong>Execution:</strong> Before a network packet is ever parsed by the Python backend, it is rapidly validated against the <code>observation-envelope.schema.json</code> definition using the <code>jsonschema</code> library. Any payload missing critical routing arrays, origin UUIDs, or containing the wrong data type is instantly dropped, ensuring database integrity is never compromised by field errors.</p>
-              
-            </div>
-            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">observation-envelope.schema.json</span><pre><code class="language-json">{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://example.invalid/omega/observation-envelope.schema.json",
-  "title": "OMEGA Observation Envelope",
-  "description": "Canonical application-level envelope for sensor observations.",
-  "type": "object",
-  "additionalProperties": false,
-  "required": [
-    "spec",
-    "message_id",
-    "message_type",
-    "origin",
-    "routing",
-    "sample",
-    "payload"
-  ]
-}</code></pre></div>
-          </section>
-    
-          <section class="section">
-            <div class="section-content">
-              <span class="section-kicker">Maritime Awareness</span>
-              <h2>Live AIS Data Layers & Active Guard.</h2>
-              <p>Navigating a small, solar-powered buoy near a busy commercial shipping lane is risky. The gateway ingests live AIS vessel positions and exposes them as a data layer on the portal, alongside the historical MarineCadastre transit-density overlays, so operators can see commercial traffic around a deployment.</p>
-<p><strong>What it actually does:</strong> The gateway's event-driven <strong>Active Guard</strong> geofence watches a tracked node's <em>own</em> reported position. When a node breaches an operator-defined zone, Active Guard fires on ingest and auto-queues a response <code>COMMAND</code> (with a cooldown to prevent repeated firing). There is no AIS collision-avoidance logic here — no CPA/TCPA closest-point-of-approach computation against vessel tracks — and AIS is presented as situational-awareness data, not an automated maneuver trigger.</p>
+              <span class="section-kicker">Public Ingestion</span>
+              <h2>NOAA NDBC & CO-OPS Public Loader.</h2>
+              <p>Rather than relying strictly on proprietary hardware, OMEGA utilizes a Public Loader daemon. It actively scrapes NOAA National Data Buoy Center (NDBC) buoys, CO-OPS tide/met products, and Open-Meteo marine models.</p><p>Crucially, it normalizes these diverse public sources into the exact same <strong>Observation Envelope</strong> schema used by OMEGA hardware, allowing the frontend to render public buoys interchangeably with private fleet assets.</p>
               
             </div>
             
           </section>
+
+<section class="section">
+            <div class="section-content">
+              <span class="section-kicker">Oceanographic Formats</span>
+              <h2>ERDDAP & NetCDF Structures.</h2>
+              <p>Marine research requires massive contextual data. A surface temperature reading from a remote sensor is useless unless it is federated with regional satellite data. OMEGA integrates heavily with institutional ERDDAP (Environmental Research Division Data Access Program) servers.</p>
+<p><strong>Execution:</strong> The <code>erddap.py</code> ingestor runs as a background <code>asyncio</code> task. It queries massive tabular datasets (like NOAA buoy arrays or the Copernicus Marine Service) using the ERDDAP REST API. Because returning full NetCDF arrays over HTTP is slow, OMEGA enforces spatial bounding-box constraints (Lat/Lon/Time) derived from its active edge nodes before making the HTTP GET request, only downloading the bytes relevant to the current fleet operation.</p>
+              
+            </div>
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">gateway/erddap.py</span><pre><code class="language-python">async def fetch_regional_sst(lat_min: float, lat_max: float, lon_min: float, lon_max: float):
+    # Poll NOAA ERDDAP for Sea Surface Temperature within the edge node bounding box.
+    base_url = "https://coastwatch.pfeg.noaa.gov/erddap/griddap/jplMURSST41.csv"
     
+    # Construct strict spatial constraints to avoid downloading the entire ocean
+    query = f"?analysed_sst[(last)][({lat_min}):({lat_max})][({lon_min}):({lon_max})]"
+    
+    async with httpx.AsyncClient() as client:
+        response = await client.get(base_url + query, timeout=30.0)
+        response.raise_for_status()
+        
+        return _parse_erddap_csv(response.text)</code></pre></div>
+          </section>
+
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">Climate Models</span>
+              <h2>NASA EarthData & Copernicus.</h2>
+              <p>The gateway integrates NASA EarthData CMR-STAC endpoints and the Copernicus Marine catalog. This allows OMEGA to query multi-petabyte federated cloud datasets, pulling specific climate variables (like Chlorophyll-a concentrations from Sentinel-3) to compare against real-time, local water-quality buoy data.</p>
+              
+            </div>
+            
+          </section>
+
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">Satellite Physics</span>
+              <h2>Global Map Fusion.</h2>
+              <p>To measure global Sea Surface Temperature (SST), satellites use advanced radiometers to detect thermal infrared radiation emitted by the ocean's skin layer. To model ocean currents and wave heights, they use <strong>radar altimetry</strong>—bouncing precise microwave pulses off the ocean surface to measure minute differences in sea surface height.</p>
+<p>Fetching this massive amount of real-time planetary data requires interacting with complex, rate-limited APIs from Copernicus, NASA, and NOAA. The OMEGA Gateway acts as a highly optimized caching proxy for these external endpoints.</p>
+<p><strong>Operational Use:</strong> By storing recent satellite tiles and JSON payloads in local Redis or SQLite memory caches, the gateway prevents the Mission Portal from exhausting strict global API rate limits when multiple operators are rapidly zooming and panning across the map interface.</p>
+              
+            </div>
+            
+          </section>
+
           <section class="section section-block" style="background: rgba(0,0,0,0.4);">
             <span class="section-kicker">Subsurface Profiles</span>
             <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Argo Float Economics.</h2>
@@ -855,18 +746,7 @@ async def websocket_endpoint(websocket: WebSocket):
             
             <p style="margin-top: 2rem;"><strong>Execution:</strong> Instead of building its own $20k floats, OMEGA pulls live, open-source Argo CTD (Conductivity, Temperature, Depth) casts via ERDDAP. The gateway cross-references these deep-ocean profiles against the cheap $200 surface buoys as an independent calibration reference.</p>
           </section>
-    
-          <section class="section">
-            <div class="section-content">
-              <span class="section-kicker">Ecological Monitoring</span>
-              <h2>NOAA Coral Reef Watch.</h2>
-              <p>Coral bleaching events happen rapidly and often in unmonitored remote atolls. By integrating the <code>coral_reef_watch.py</code> adapter, the OMEGA gateway ingests NOAA Coral Reef Watch 5km satellite virtual stations to monitor Degree Heating Weeks (DHW) across global reefs.</p>
-<p><strong>Operational Use:</strong> Coral Reef Watch is presented as a data layer: operators can see marine-heatwave stress (e.g. Alert Level 2) overlaid on the map next to the fleet. There is no automatic coral-to-waypoint redirect — the gateway does not break a node out of its mission on a bleaching alert. Any ASV waypoint mission toward an affected reef is operator-review-gated, so a human decides whether to redeploy a node to capture acoustic bathymetry and dissolved-oxygen samples during the event.</p>
-              
-            </div>
-            
-          </section>
-    
+
           <section class="section">
             <div class="section-content">
               <span class="section-kicker">Hydrodynamics</span>
@@ -877,18 +757,7 @@ async def websocket_endpoint(websocket: WebSocket):
             </div>
             
           </section>
-    
-          <section class="section">
-            <div class="section-content">
-              <span class="section-kicker">Biodiversity</span>
-              <h2>OBIS Marine Species Tracking.</h2>
-              <p>The Ocean Biodiversity Information System (<code>obis.py</code>) integration allows the gateway to pull historical and real-time acoustic tag detections for endangered marine life. This data is critical for minimizing the ecological impact of robotic deployments.</p>
-<p><strong>Execution:</strong> When the OMEGA fleet operates in known biological migration corridors (e.g., Great White Shark breeding grounds or Right Whale transit zones), the gateway automatically establishes an exclusion zone or lowers the sensor polling rate of the edge node to reduce acoustic cavitation signatures, minimizing ecological disturbance to sensitive species.</p>
-              
-            </div>
-            
-          </section>
-    
+
           <section class="section">
             <div class="section-content">
               <span class="section-kicker">Emergency Egress</span>
@@ -899,30 +768,78 @@ async def websocket_endpoint(websocket: WebSocket):
             </div>
             
           </section>
-    
+
           <section class="section">
             <div class="section-content">
-              <span class="section-kicker">QARTOD Compliance</span>
-              <h2>Automated Quality Control.</h2>
-              <p>As covered in earlier sections, raw marine data is scientifically useless until it is vetted. Before a sensor measurement is allowed to enter the normalized SQLite database, it must pass through the Gateway's strict <strong>IOOS QARTOD</strong> compliance engine.</p>
-<p><strong>Execution:</strong> The Python backend (<code>gateway/qc.py</code>) uses the Median Absolute Deviation (MAD) to calculate a <i>Robust Sigma</i> over the trailing time-series window. This sigma flags incoming measurements for spikes, sensor flat-lines (indicating a fouled probe), or gross-range biological violations, appending a 1-4 quality flag to the Observation Envelope. A separate spatial buddy-check (<code>gateway/buddy_check.py</code>) compares each station against its neighbours.</p>
+              <span class="section-kicker">Ecological Monitoring</span>
+              <h2>NOAA Coral Reef Watch.</h2>
+              <p>Coral bleaching events happen rapidly and often in unmonitored remote atolls. By integrating the <code>coral_reef_watch.py</code> adapter, the OMEGA gateway ingests NOAA Coral Reef Watch 5km satellite virtual stations to monitor Degree Heating Weeks (DHW) across global reefs.</p>
+<p><strong>Operational Use:</strong> Coral Reef Watch is presented as a data layer: operators can see marine-heatwave stress (e.g. Alert Level 2) overlaid on the map next to the fleet. There is no automatic coral-to-waypoint redirect — the gateway does not break a node out of its mission on a bleaching alert. Any ASV waypoint mission toward an affected reef is operator-review-gated, so a human decides whether to redeploy a node to capture acoustic bathymetry and dissolved-oxygen samples during the event.</p>
               
             </div>
-            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">gateway/qc.py</span><pre><code class="language-python">def _threshold_bundle(values: list[float]) -> dict[str, float] | None:
-    center = median(values)
-    sigma = _robust_sigma(values)
-    return {
-        "center": center,
-        "sigma": sigma,
-        "gross_range_suspect_min": center - sigma * 3,
-        "gross_range_suspect_max": center + sigma * 3,
-        "gross_range_fail_min": center - sigma * 6,
-        "gross_range_fail_max": center + sigma * 6,
-        "rate_of_change_suspect": sigma * 3,
-        "rate_of_change_fail": sigma * 6,
-        "spike_suspect": sigma * 3,
-        "spike_fail": sigma * 6,
-    }</code></pre></div>
+            
+          </section>
+
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">Biodiversity</span>
+              <h2>OBIS Marine Species Tracking.</h2>
+              <p>The Ocean Biodiversity Information System (<code>obis.py</code>) integration allows the gateway to pull historical and real-time acoustic tag detections for endangered marine life. This data is critical for minimizing the ecological impact of robotic deployments.</p>
+<p><strong>Execution:</strong> When the OMEGA fleet operates in known biological migration corridors (e.g., Great White Shark breeding grounds or Right Whale transit zones), the gateway automatically establishes an exclusion zone or lowers the sensor polling rate of the edge node to reduce acoustic cavitation signatures, minimizing ecological disturbance to sensitive species.</p>
+              
+            </div>
+            
+          </section>
+
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">Fisheries & Security</span>
+              <h2>Global Fishing Watch (GFW).</h2>
+              <p>OMEGA integrates directly with the <strong>Global Fishing Watch 4Wings API</strong>. It pulls real-time heatmap MVT overlays for apparent fishing effort, AIS vessel presence, and Synthetic Aperture Radar (SAR) detections of "dark targets" (vessels not transmitting AIS).</p>
+              <p>Furthermore, the gateway pulls vessel risk and IUU (Illegal, Unreported, and Unregulated) insights, matching detected AIS tracks against global registries to flag vessels fishing within no-take Marine Protected Areas (MPAs).</p>
+            </div>
+            
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto; margin-top: 2rem;">
+              <span class="panel-kicker">gateway/gfw_api.py</span>
+              <pre><code class="language-python">async def check_iuu_risk(mmsi: str) -> float:
+    # Query the Global Fishing Watch 4Wings API for vessel risk
+    headers = {"Authorization": f"Bearer {GFW_TOKEN}"}
+    
+    async with httpx.AsyncClient() as client:
+        # Fetch vessel profile using its Maritime Mobile Service Identity (MMSI)
+        res = await client.get(f"https://gateway.api.globalfishingwatch.org/v2/vessels/search?query=mmsi:{mmsi}", headers=headers)
+        res.raise_for_status()
+        
+        data = res.json()
+        if not data["entries"]: return 0.0
+        
+        # Calculate IUU probability based on dark-target SAR anomalies
+        vessel = data["entries"][0]
+        risk_score = vessel.get("implied_risk_score", 0.0)
+        
+        return risk_score</code></pre>
+            </div>
+          </section>
+
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">Maritime Traffic</span>
+              <h2>Live Commercial AIS & MarineCadastre.</h2>
+              <p>For live tactical awareness, the gateway ingests commercial AIS streams (via AISStream), tracking thousands of live vessels and superimposing them onto the OMEGA Map Portal in real-time.</p><p>For historical context, the portal registers U.S. <strong>MarineCadastre</strong> transit-count overlays. These are cached ArcGIS tiles displaying annual vessel-density heatmaps (2019-2025), allowing operators to plan stationary deployment locations that actively avoid historical high-traffic shipping lanes.</p>
+              
+            </div>
+            
+          </section>
+
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">Maritime Awareness</span>
+              <h2>Live AIS Data Layers & Active Guard.</h2>
+              <p>Navigating a small, solar-powered buoy near a busy commercial shipping lane is risky. The gateway ingests live AIS vessel positions and exposes them as a data layer on the portal, alongside the historical MarineCadastre transit-density overlays, so operators can see commercial traffic around a deployment.</p>
+<p><strong>What it actually does:</strong> The gateway's event-driven <strong>Active Guard</strong> geofence watches a tracked node's <em>own</em> reported position. When a node breaches an operator-defined zone, Active Guard fires on ingest and auto-queues a response <code>COMMAND</code> (with a cooldown to prevent repeated firing). There is no AIS collision-avoidance logic here — no CPA/TCPA closest-point-of-approach computation against vessel tracks — and AIS is presented as situational-awareness data, not an automated maneuver trigger.</p>
+              
+            </div>
+            
           </section>
 
           <section class="section section-block" style="background: rgba(0,0,0,0.4);">
@@ -946,10 +863,132 @@ async def websocket_endpoint(websocket: WebSocket):
 
           <section class="section">
             <div class="section-content">
+              <span class="section-kicker">Data Science Workflows</span>
+              <h2>The Honu AI Copilot.</h2>
+              <p>The Mission Portal is too complex for a human operator to constantly navigate nested menus during a critical mission event. To solve this, the Python gateway includes <strong>Honu</strong>, an in-portal AI copilot that runs fully offline on a local model (Ollama) or falls back to the cloud (Anthropic). It holds no built-in knowledge — every fact comes from a tool call. The module intercepts natural language queries from the operator and dynamically routes them across ~100 internal tools.</p>
+<p><strong>Execution:</strong> Because the LLM holds no built-in knowledge of the specific marine deployment, the system uses a strict foundational prompt. It acts as an analytical and navigational bridge, using live tool calls to query the SQLite database, filter nodes by geographic bounds, and summarize observation arrays. Instead of clicking 10 buttons to find out why Buoy 4 went offline, the operator simply asks Honu, and the copilot executes the diagnostic trace.</p>
+              
+            </div>
+            <div class="section-visual" style="max-height: 800px; overflow-y: auto;"><span class="panel-kicker">copilot.py</span><pre><code class="language-python">SYSTEM_PROMPT = """You are Honu, the OMEGA Intelligence Engine — an expert research assistant, data analyst, and interface navigator embedded in the OMEGA open-source marine research portal.
+1. READ-ONLY OPERATIONS: You are strictly an analytical and navigational tool.
+   - You must NEVER send outbound telemetry or execute hardware controls.
+2. DATA PURITY: You hold ZERO built-in knowledge of this deployment.
+   - Every fact must come from a tool call against the gateway's live API.
+3. AMNESIA PREVENTION: You cannot "see" the user's screen.
+   - Before each message, you receive a [PORTAL CONTEXT] block showing the user's current view."""</code></pre></div>
+          </section>
+
+          <section class="section">
+            <div class="section-content">
               <span class="section-kicker">Autonomous Behavior</span>
               <h2>Honu's Anomaly Patrol.</h2>
               <p>The real autonomous behavior on the gateway is a daily scheduled task in <code>gateway/scheduler.py</code> that runs Honu's anomaly patrol. It buddy-checks each station against its spatial neighbours across the core metrics, ranks the outliers, and emits <strong>one</strong> proactive briefing notification naming the specific stations a human should check.</p>
               <p><strong>Honest scope:</strong> On a clean sweep it stays silent — it does not generate noise when nothing is wrong, and it does not take any control action. It surfaces a single ranked briefing; the operator decides what to do next.</p>
+            </div>
+          </section>
+
+<section class="section">
+            <div class="section-content">
+              <span class="section-kicker">Asynchronous Loop</span>
+              <h2>The Gateway Scheduler.</h2>
+              <p>The <code>gateway/scheduler.py</code> module manages a strict Python `asyncio` event loop. This cron-like engine dictates when the gateway should pull satellite ephemeris data, when it should poll NOAA for weather updates, and when it should execute the QARTOD compliance engine across the massive historical SQLite database.</p>
+              
+            </div>
+            
+          </section>
+
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">System Watchdogs</span>
+              <h2>Automated Fleet Watches.</h2>
+              <p>The <code>gateway/watches.py</code> module is an active monitoring service. It constantly evaluates the timestamp of the last received ping from every edge node in the mesh. If a buoy goes completely silent and misses its Delay Tolerant Network heartbeat window, the Watchdog automatically generates a critical "Node Offline" alarm on the Notification Bus.</p>
+              
+            </div>
+            
+          </section>
+
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">Resilient Downlink</span>
+              <h2>Coverage-Aware Outbox Leases (CALM).</h2>
+              <p>In a heterogeneous federation with hundreds of overlapping gateways, determining <em>which</em> gateway should transmit a downlink command to a distant buoy is incredibly difficult. If all gateways transmit simultaneously, the RF collisions will destroy the packet. If only a single master gateway transmits, you introduce a catastrophic single point of failure.</p>
+              <p><strong>Execution:</strong> OMEGA solves this via <strong>CALM (Coverage-Aware Outbox Leases)</strong>. Every time a gateway ingests an uplink frame, the DB logs its <code>gateway_id</code> and the signal strength (RSSI/SNR). When an operator issues a downlink command, the backend calculates a routing lease. It queries the <code>gateway_sightings</code> provenance table, identifies the single gateway that "hears" the target node the best, and grants that specific gateway a temporary, exclusive lease to transmit the command. If the transmission isn't acknowledged, the lease expires and falls back to the next-best gateway automatically.</p>
+            </div>
+          </section>
+
+<section class="section">
+            <div class="section-content">
+              <span class="section-kicker">Authentication Engine</span>
+              <h2>Role-Based Access Control (RBAC).</h2>
+              <p>OMEGA's gateway is an open, internet-exposed federated service that anyone in the community can stand up and reach, so it needs real access control rather than a single shared password. The gateway features a multi-user authentication engine with Role-Based Access Control (RBAC) and three roles: <code>admin</code> users have global mutating privileges, <code>operator</code> users can execute waypoint missions, and <code>viewer</code> users are restricted to read-only telemetry analysis.</p>
+<p><strong>Sessions:</strong> When a user logs in, the FastAPI backend issues an opaque server-side session token (32 bytes of random data, stored and revocable server-side). It is delivered in an <code>HttpOnly</code> + <code>SameSite=Lax</code> cookie with a 14-day TTL and an 8-hour idle timeout, so sessions can be invalidated centrally rather than relying on a self-contained token.</p>
+<p><strong>Execution:</strong> Every mutating API endpoint (e.g. <code>/v1/control/commands</code>) is guarded by FastAPI dependency injection (<code>_require_operator</code>). If an unauthorized researcher attempts to wipe the database, the API rejects the request with an HTTP 403, preventing accidental fleet commands.</p>
+              
+            </div>
+            
+            <div class="grid-2" style="margin-top: 2rem;">
+              <div class="section-visual" style="max-height: 800px; overflow-y: auto;">
+                <span class="panel-kicker">Server-side session record</span>
+                <pre><code class="language-json">{
+  "username": "jcapone",
+  "role": "admin",
+  "token": "&lt;32-byte random, hashed at rest&gt;",
+  "created_at": "2026-06-21T08:00:00Z",
+  "expires_at": "2026-07-05T08:00:00Z",
+  "idle_timeout_s": 28800,
+  "revoked": false
+}</code></pre>
+              </div>
+              <div class="section-visual" style="max-height: 800px; overflow-y: auto;">
+                <span class="panel-kicker">gateway/auth_sessions.py</span>
+                <pre><code class="language-python">async def _require_operator(
+    session_token: str = Depends(cookie_scheme),
+    db: Session = Depends(get_db)
+):
+    session = resolve_session(db, session_token)
+    role = session.role
+
+    # Reject unauthorized mutating operations
+    if role not in ["operator", "admin"]:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Insufficient RBAC clearance for fleet mutation."
+        )
+    return session</code></pre></div>
+            </div>
+          </section>
+
+          <section class="section">
+            <div class="section-content">
+              <span class="section-kicker">Total Accountability</span>
+              <h2>Immutable Audit Trails.</h2>
+              <p>When a stationary node executes a dangerous maneuver, "who sent the command?" is the most important question. The OMEGA backend now logs a completely immutable, chronological audit trail for every single mutating admin action.</p><p><strong>Execution:</strong> If an administrator resets a user's password or clears a rate-limited IP, the system generates a <code>system</code>-kind notification with a unique <code>source_id</code>. Operators can use the Honu AI Copilot to query this database in natural language (e.g., <i>"Who cleared the rate limit yesterday?"</i>), providing complete post-incident forensic capabilities.</p>
+              
+            </div>
+            
+          </section>
+
+          <section class="section section-block" style="background: rgba(0,0,0,0.4);">
+            <span class="section-kicker">Architectural Theory</span>
+            <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Clean Architecture Principles.</h2>
+            <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">A monolithic Python script quickly becomes an unmaintainable nightmare. The OMEGA gateway strictly enforces a 3-tier architectural separation of concerns.</p>
+            
+            <div class="grid-3" style="margin-bottom: 2rem;">
+              <div class="panel" style="padding: 1.5rem;">
+                <span class="status-label status-implemented">Layer 1</span>
+                <h3 style="font-size: 1.2rem;">The Routers</h3>
+                <p style="font-size: 0.85rem;">Routers handle exactly one thing: HTTP mechanics. They parse the JSON payload, check the API tokens, and immediately pass the data down. They contain ZERO business logic.</p>
+              </div>
+              <div class="panel" style="padding: 1.5rem;">
+                <span class="status-label status-implemented">Layer 2</span>
+                <h3 style="font-size: 1.2rem;">The Services</h3>
+                <p style="font-size: 0.85rem;">The pure business logic layer. Services calculate bounding boxes, execute algorithms, and transform arrays. They do not know what an HTTP request is, nor do they know what a database is.</p>
+              </div>
+              <div class="panel" style="padding: 1.5rem;">
+                <span class="status-label status-implemented">Layer 3</span>
+                <h3 style="font-size: 1.2rem;">The Repositories</h3>
+                <p style="font-size: 0.85rem;">The only place in the codebase where SQL exists. If we ever swap SQLite for PostgreSQL, we only rewrite the Repository layer. The Routers and Services remain completely untouched.</p>
+              </div>
             </div>
           </section>
 
@@ -979,12 +1018,12 @@ async def websocket_endpoint(websocket: WebSocket):
                 <p style="font-size: 0.85rem;">The <code>docker-compose</code> stack pins the service, persists the SQLite volume, and gates startup on a health check, so a community member without a Python toolchain can bring up a working node.</p>
               </div>
             </div>
-          </section>
 
-          <div class="panel" style="margin-top: 2rem; border-left: 4px solid var(--accent);">
-            <h3 style="margin: 0 0 0.5rem; color: #fff;">Honesty Note: Signature Verification</h3>
-            <p style="font-size: 0.9rem; color: var(--ink-soft); margin: 0;">The signing pipeline is proven on the real code path in test databases, but the external publisher feeds (NOAA/NDBC, Open-Meteo) are unsigned — so live signature verification against third-party traffic isn't demonstrated yet.</p>
-          </div>
+            <div class="hero-actions" style="margin-top: 2rem;">
+              <a class="btn btn-primary" href="mission-portal.html">Next: The Mission Portal &rarr;</a>
+              <a class="btn btn-secondary" href="engineering-journal.html">Read the Engineering Journal</a>
+            </div>
+          </section>
 </div>
   </main>
 

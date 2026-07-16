@@ -93,17 +93,41 @@
   <section class="hero wrap">
     <span class="eyebrow">Physical Layer</span>
     <h1>Hardware & Mesh.</h1>
-    <p>The physical layer: cheap, off-the-shelf radios turned into a rugged ocean sensor network &mdash; and the low-level fights it took to get there, from making two different radio chips understand each other to surviving weeks at sea with no signal.</p>
+        <p>A rugged ocean radio fleet built entirely from off-the-shelf hobbyist parts &mdash; the same ESP32 boards and LoRa radios anyone can buy. The proof is real: 205 radio frames caught out of the air with their signal strength measured as they landed, and a planet-scale atmospheric tide resolved by a $50 barometer. Below: the receipts first, then how a reading travels ashore, then the fights that made it work &mdash; a relay that transmitted but never received, two radio chip families that wouldn't speak, and a power budget measured in milliamps.</p>
     <div class="hero-actions">
-<a class="btn btn-secondary" href="https://jonathancapone.art" target="_blank">Art Portfolio</a>
+      <a class="btn btn-primary" href="#receipts">See the Proof</a>
+      <a class="btn btn-secondary" href="#hard-problems">The Hard Problems</a>
+      <a class="btn btn-secondary" href="https://jonathancapone.art" target="_blank">Art Portfolio</a>
     </div>
   </section>
 
   <main class="main-shell wrap" role="main" id="main">
     <div class="main-inner">
 
-      <section class="section section-block" style="background: rgba(0,0,0,0.4);">
-        <span class="section-kicker">Layer 1: Fleet Infrastructure</span>
+      <section class="section section-block" id="receipts" style="padding-top: 0; padding-bottom: 2rem;">
+        <span class="section-kicker" style="color: var(--accent);">The Receipts</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.2rem; margin: 0 0 1.5rem;">This Hardware Really Received This.</h2>
+        <p style="color: var(--ink-soft); font-size: 1.15rem; margin-bottom: 2.5rem; max-width: 850px; line-height: 1.7;">
+          A radio mesh is easy to describe and hard to prove. So before any tour of boards and protocols, here is the physical evidence &mdash; measurements this hardware actually made, logged by the receiver at the moment they happened.
+        </p>
+
+        <div class="panel" style="border-left: 4px solid var(--accent); margin-bottom: 2rem;">
+          <h3 style="margin: 0 0 0.5rem; color: #fff;">205 Real Radio Frames, Caught Out of the Air</h3>
+          <p style="font-size: 0.9rem; color: var(--ink-soft); margin: 0;">Live database querying confirms <strong>205 radio frames</strong> received by an SX1302 gateway from OMEGA nodes, logging physical RF metrics of <strong>RSSI -89 to -31 dBm (avg -38.7)</strong> and <strong>SNR -15 to +12.5 dB (avg +9.2)</strong>. RSSI is the raw strength of each incoming signal; SNR is how far it stood above the background noise. These are raw radio measurements recorded by the receiver as each frame lands, not numbers a dashboard could invent.</p>
+
+            <img src="images/proofs/hardware-rssi.svg" loading="lazy" alt="Histogram of RSSI for real LoRa frames" style="max-width: 100%; border-radius: 8px; margin-top: 1rem; display: block;">
+
+          </div>
+
+        <div class="panel" style="border-left: 4px solid var(--accent);">
+          <h3 style="margin: 0 0 0.5rem; color: #fff;">A $50 Barometer Resolved a Planet-Scale Tide</h3>
+          <p style="font-size: 0.9rem; color: var(--ink-soft); margin: 0;">A $50 bench barometer logged <strong>104,939 pressure readings</strong>. The Welch power spectrum below (a standard technique for finding repeating rhythms in noisy data) shows a sharp line at <strong>11.99 hours</strong> standing ~580,000x above the noise floor. That is the S2 semidiurnal atmospheric tide &mdash; the whole atmosphere's twice-a-day rise and fall in pressure &mdash; resolved from scratch by OMEGA's own hardware without any external data.</p>
+            <img src="images/proofs/tide-spectrum.svg" loading="lazy" alt="Atmospheric tide spectrum from OMEGA barometer" style="max-width: 100%; border-radius: 8px; margin-top: 1rem; border: 1px solid rgba(255,255,255,0.1);">
+        </div>
+      </section>
+
+      <section class="section section-block" id="fleet" style="background: rgba(0,0,0,0.4);">
+        <span class="section-kicker">The Fleet</span>
         <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">One Fleet, All Off-the-Shelf Parts</h2>
         <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">Instead of designing custom circuit boards (slow and expensive), OMEGA builds on <strong>off-the-shelf parts</strong> anyone can buy &mdash; the same ESP32 microcontrollers and LoRa radio boards hobbyists use (the T-Beam Supreme on an ESP32; the T3-S3 relay and the gateway on the newer ESP32-S3). The whole fleet runs one shared C++ firmware, so a fix written once works everywhere. Three roles do all the work:</p>
 
@@ -126,197 +150,52 @@
         </div>
       </section>
 
-      <section class="section">
+      <section class="section" id="how-a-reading-travels">
         <div class="section-content">
-          <span class="section-kicker">Data Pipeline</span>
-          <h2>Lossless Predictive Batching.</h2>
-          <p>Transmitting individual oceanographic measurements (e.g., a temperature reading every 3 seconds) across a low-bandwidth LoRa link introduces catastrophic overhead from packet headers, leading directly to regulatory duty-cycle violations and massive battery drain.</p>
-          <p>The trick: <strong>send the change, not the whole number.</strong> Ocean readings drift slowly &mdash; the temperature a few seconds from now is very close to the last one. So the node collects a batch of readings, sends the first one in full, then sends only the tiny difference from each reading to the next (a few bits each instead of a full 32). The gateway adds the differences back up to rebuild the exact original series &mdash; nothing lost, but far fewer bytes over the air.</p>
-          <p><strong>Result:</strong> The shore station rebuilds the exact original series of readings, nothing lost, while sending only a fraction of the bytes that one packet per reading would cost.</p>
+          <span class="section-kicker">How It Works</span>
+          <h2>How a Reading Travels.</h2>
+          <p>The clearest way to understand the mesh is to follow one reading from the water to the shore database. Six steps, each shaped by a real constraint &mdash; of the ocean, of the battery, or of radio law.</p>
+
+          <p><strong>1 &mdash; Sample.</strong> A sensor node gathers localized environmental data &mdash; say, a temperature reading every 3 seconds. Sent naively as one packet per reading over a low-bandwidth LoRa link, that stream would drown in its own packet headers: catastrophic overhead, regulatory duty-cycle violations (the law caps how long a radio may occupy the air), and massive battery drain.</p>
+
+          <p><strong>2 &mdash; Shrink it: send the change, not the whole number.</strong> Ocean readings drift slowly &mdash; the temperature a few seconds from now is very close to the last one. So the node collects a batch of readings, sends the first one in full, then sends only the tiny difference from each reading to the next (a few bits each instead of a full 32). The gateway adds the differences back up to rebuild the exact original series &mdash; nothing lost, but far fewer bytes over the air. (<a href="#predictive-coding" style="color: var(--accent);">The full encoder is below</a>.)</p>
+
+          <p><strong>3 &mdash; Listen before transmitting.</strong> Before the node fires anything, it listens to make sure the channel is clear &mdash; the same "wait for a gap" courtesy your Wi-Fi uses. (<a href="#csma-ca" style="color: var(--accent);">How that works in silicon, below</a>.)</p>
+
+          <p><strong>4 &mdash; If the air is jammed, store and wait.</strong> Buoys drift into RF dead zones, pass behind massive waves, or suffer atmospheric interference &mdash; and blindly transmitting into a network blackout loses the data permanently. So that no reading is ever lost, when the node detects a failed transmission (via missing LoRaWAN ACKs &mdash; acknowledgment replies &mdash; or CSMA-CA channel jamming), the Phase 2 firmware doesn't drop the reading: it saves the compressed reading to its on-board SD card buffer and holds on. The node can survive offline for weeks, quietly accumulating environmental history.</p>
+
+          <p><strong>5 &mdash; Bulk transfer ashore.</strong> Once a connection to the mesh is re-established (proven by receiving a network heartbeat from a passing LR1121 relay or the T-ETH-ELITE), the node automatically flushes its SD-card buffer, sequentially replaying its queue and reconstructing the historical timeline within the Federated Data Broker &mdash; the central database on shore.</p>
+
+          <p><strong>6 &mdash; Two formats, one meaning.</strong> Over the air the reading rides in a dense 84-byte binary frame; the moment it reaches the gateway, it is translated into a standard, self-describing envelope the rest of the world can read. (<a href="#dual-layer" style="color: var(--accent);">The dual-layer protocol, below</a>.)</p>
         </div>
       </section>
 
-      <section class="section">
-        <div class="section-content">
-          <span class="section-kicker">Mesh Resilience</span>
-          <h2>Store & Forward Architecture.</h2>
-          <p>Oceanographic sensor buoys frequently drift into RF dead zones, pass behind massive waves, or suffer from atmospheric interference. If an edge node attempts to blindly transmit during a network blackout, the data is permanently lost. So that no reading is ever lost, the firmware uses an autonomous Store & Forward mechanism.</p>
-          <p>Before transmitting, the node listens to make sure the channel is clear (the same "wait for a gap" courtesy your Wi-Fi uses). If the air is jammed, or a send goes unacknowledged, it doesn't just drop the reading &mdash; it writes it to an on-board SD card and holds on.</p>
-          <p>The node can survive offline for weeks, quietly accumulating environmental history. Once a connection to the mesh is re-established (proven by receiving a network heartbeat from a passing LR1121 relay or the T-ETH-ELITE), the node flushes its SD-card buffer, sequentially replaying its queue and seamlessly reconstructing the historical timeline within the Federated Data Broker.</p>
-        </div>
-      </section>
-
-      <section class="section section-block" style="background: rgba(0,0,0,0.4); margin-top: 2rem;">
-        <span class="section-kicker">Edge Operations</span>
-        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Living Within a Power Budget.</h2>
-        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">A remote sensor floating in the ocean cannot plug into a wall outlet. It must budget its own power. The documented power budget is roughly 60 mA average draw, which gives on the order of 50 hours of runtime on a single 18650 cell. Battery voltage is telemetered back to shore via the on-board ADC so operators can watch the budget in real time.</p>
+      <section class="section section-block" id="hard-problems" style="background: rgba(0,0,0,0.4);">
+        <span class="section-kicker" style="color: var(--accent);">The Hard Problems</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">The Fights That Shaped the Hardware.</h2>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 820px; line-height: 1.7;">The pipeline above reads clean. Getting there wasn't. Each of these was hit for real &mdash; at the bench, in the power budget, or in the airtime rules &mdash; and each comes with the fix that shipped.</p>
 
         <div class="grid-2" style="margin-bottom: 2rem;">
-          <div class="panel" style="padding: 1.5rem;">
-            <span class="status-label status-planned">Roadmap</span>
-            <h3 style="font-size: 1.2rem;">Deep Sleep &amp; Adaptive Sampling</h3>
-            <p style="font-size: 0.85rem;">Deep-sleep cycling between transmission windows and dynamic, battery-aware sample-rate scaling are designed as future work to stretch the budget beyond the current ~50 h figure. They are not yet shipped; today the only MOSFET on the board drives the cooling fan, not the sensor rails.</p>
+          <div class="panel" style="padding: 1.5rem; border-left: 4px solid var(--accent);">
+            <h3 style="font-size: 1.2rem;">The "Transmits but Never Receives" Bug</h3>
+            <p style="font-size: 0.85rem;"><strong>The problem:</strong> during the bring-up of the LR1121 relay node, it would transmit perfectly but receive absolutely nothing. The RX interrupt count was zero. <strong>The fix:</strong> instead of guessing, I mapped the full RX-chain IRQ set &mdash; the chip's interrupt signals for preamble/sync/header/CRC. Zero partials localized the failure to the state machine, not the RF frontend. Root cause: RadioLib's <code>startReceive()</code> only arms continuous RX cleanly from <code>STANDBY</code>. Fixing it required a single line &mdash; <code>radio.standby()</code> before arming &mdash; and RX went from 0% to 100%. <a href="engineering-journal.html" style="color: var(--accent);">Read the full journal &rarr;</a></p>
           </div>
-          <div class="panel" style="padding: 1.5rem;">
-            <span class="status-label status-implemented">Local UI Diagnostics</span>
-            <h3 style="font-size: 1.2rem;">OLED & AXP2101</h3>
-            <p style="font-size: 0.85rem;">Deploying a headless node is dangerous if operators cannot visually confirm its operational state. The firmware queries the AXP2101 PMU (Power Management Unit) via I2C, rendering real-time battery voltage, charge percentage, CPU die temperature, and acquired GNSS coordinates directly to a local SH1106 OLED screen.</p>
+          <div class="panel" style="padding: 1.5rem; border-left: 4px solid var(--accent);">
+            <h3 style="font-size: 1.2rem;">Two Chip Families, Total Silence</h3>
+            <p style="font-size: 0.85rem;"><strong>The problem:</strong> the hard part wasn't the antennas &mdash; it was getting two different radio chips to understand each other. The sensor buoys use one LoRa chip (Semtech's SX1262) and the relays use a newer one (the LR1121). They ought to be compatible, but each ships with slightly different default settings, and any mismatch means total silence. <strong>The fix:</strong> the firmware manually settles sync-word mismatches (enforcing the <code>0x34</code> public sync), explicitly declares the bandwidth and spreading-factor settings that libraries usually abstract away, and implements aggressive polling-based RX with full-chain IRQ mapping. That allowed concurrent sensing, relaying, and USB-forwarding across completely different chipset architectures.</p>
           </div>
-        </div>
-      </section>
-
-      <section class="section">
-        <div class="section-content">
-          <span class="section-kicker">Remote Lifecycle Management</span>
-          <h2>Over-The-Air (OTA) Foundation.</h2>
-          <p>Retrieving a deployed remote sensor from the environment simply to update a line of code is logistically prohibitive, so OMEGA is building toward firmware-over-mesh. What exists today is the <strong>gateway-side foundation</strong>: a firmware-image registry where each build is signed with an Ed25519 key, carries a sha256 integrity hash, and goes through explicit version negotiation before a node is offered an update.</p>
-          <p>The registry now supports a <strong>channelized stable/beta rollout</strong>: beta nodes canary a new build in the field before it is promoted to the stable channel, so a bad image is caught on a small population rather than the whole fleet.</p>
-          <p><strong>Not yet built:</strong> the on-device half of the pipeline — chunked transfer of the image over the mesh, A/B boot-partition swapping, and automatic rollback on a failed flash — is designed but not yet implemented. Until that lands, OTA is a gateway capability, not an end-to-end one.</p>
-        </div>
-      </section>
-
-    
-
-<section class="section">
-            <div class="section-content">
-              
-          <section class="section section-block" style="background: rgba(0,0,0,0.4); margin-bottom: 2rem;">
-            <span class="section-kicker">Tier 1 Proof</span>
-            <h2>OMEGA Measured It: Atmospheric Tide.</h2>
-            <p>A $50 bench barometer logged 104,939 pressure readings. The Welch power spectrum below shows a sharp line at <strong>11.99 hours</strong> standing ~580,000x above the noise floor. This is the S2 semidiurnal atmospheric tide, resolved from scratch by OMEGA's own hardware without any external data.</p>
-            <img src="images/proofs/tide-spectrum.svg" loading="lazy" alt="Atmospheric tide spectrum from OMEGA barometer" style="max-width: 100%; border-radius: 8px; margin-top: 1rem; border: 1px solid rgba(255,255,255,0.1);">
-          </section>
-
-<span class="section-kicker">Hardware Reality</span>
-              <h2>Cross-Family LoRa Interop.</h2>
-              <p><strong>The hard part wasn't the antennas &mdash; it was getting two different radio chips to understand each other.</strong> The sensor buoys use one LoRa chip (Semtech's SX1262) and the relays use a newer one (the LR1121). They ought to be compatible, but each ships with slightly different default settings, and any mismatch means total silence.</p>
-              <p><strong>Execution:</strong> To achieve seamless interop, the firmware had to manually settle sync-word mismatches (enforcing the `0x34` public sync), explicitly declare bandwidth and spreading factor settings that libraries usually abstract away, and implement aggressive polling-based RX with full-chain IRQ mapping. This allowed concurrent sensing, relaying, and USB-forwarding across completely different chipset architectures.</p>
-            </div>
-          </section>
-
-          <div class="panel" style="margin-top: 1rem; border-left: 4px solid var(--accent);">
-            <h3 style="margin: 0 0 0.5rem; color: #fff;">Physical-Layer Reception Evidence</h3>
-            <p style="font-size: 0.9rem; color: var(--ink-soft); margin: 0;">Live database querying confirms <strong>205 radio frames</strong> received by an SX1302 gateway from OMEGA nodes, logging physical RF metrics of <strong>RSSI -89 to -31 dBm (avg -38.7)</strong> and <strong>SNR -15 to +12.5 dB (avg +9.2)</strong>. These are raw radio measurements recorded by the receiver as each frame lands, not numbers a dashboard could invent.</p>
-
-            <img src="images/proofs/hardware-rssi.svg" loading="lazy" alt="Histogram of RSSI for real LoRa frames" style="max-width: 100%; border-radius: 8px; margin-top: 1rem; display: block;">
-
+          <div class="panel" style="padding: 1.5rem; border-left: 4px solid var(--accent);">
+            <h3 style="font-size: 1.2rem;">Living Within a Power Budget</h3>
+            <p style="font-size: 0.85rem;"><strong>The problem:</strong> a remote sensor floating in the ocean cannot plug into a wall outlet. It must budget its own power. <strong>Where it stands:</strong> the documented power budget is roughly <strong>60 mA average draw</strong>, which works out to on the order of <strong>50 hours of runtime on a single 18650 lithium cell</strong> before recharge. Battery voltage is sampled by the on-board ADC and reported in the telemetry stream, so operators can watch each node's state of charge from shore rather than guessing. <span class="status-label status-planned">Roadmap</span> Deep-sleep cycling between transmission windows and dynamic, battery-aware sample-rate scaling are designed as future work to stretch the budget beyond the current ~50 h figure. They are not yet shipped; today the only MOSFET on the board drives the cooling fan, not the sensor rails.</p>
           </div>
-
-
-          <div class="panel" style="margin-top: 2rem; border-left: 4px solid var(--accent);">
-            <h3 style="margin: 0 0 0.5rem; color: #fff;">Engineering Reality: The "Transmits but never Receives" Bug</h3>
-            <p style="font-size: 0.9rem; color: var(--ink-soft); margin: 0;">During the bring-up of the LR1121 relay node, it would transmit perfectly but receive absolutely nothing. The RX interrupt count was zero. Instead of guessing, I mapped the full RX-chain IRQ set (preamble/sync/header/CRC). Zero partials localized the failure to the state machine, not the RF frontend. Root cause: RadioLib's <code>startReceive()</code> only arms continuous RX cleanly from <code>STANDBY</code>. Fixing it required a single line: <code>radio.standby()</code> before arming. RX went from 0% to 100%. <a href="engineering-journal.html" style="color: var(--accent);">Read the full journal &rarr;</a></p>
-          </div>
-
-
-          <div class="panel" style="margin-top: 2rem; border-left: 4px solid var(--accent);">
-            <h3 style="margin: 0 0 0.5rem; color: #fff;">Honest Gaps: What Is and Isn't Proven</h3>
-            <p style="font-size: 0.9rem; color: var(--ink-soft); margin: 0;">Link-level reception is real and proven — 205 frames decoded by the gateway, with measured RSSI and SNR. What is <em>not</em> yet field-demonstrated is multi-hop mesh <strong>routing</strong>: relaying a frame across intermediate nodes to a destination has not been shown in the field. Much of the field-hardening firmware is written but not yet flashed to deployed hardware, and the bench RF window that produced these results was only about 6 to 7 days. The reception evidence is solid; the end-to-end mesh and long-duration field behavior are still open.</p>
-          </div>
-
-
-          <section class="section section-block" style="background: rgba(0,0,0,0.4);">
-            <span class="section-kicker">Energy Physics</span>
-            <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">The Node's Power Budget.</h2>
-            <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">A remote node has to live within a tight energy budget. The current build runs at roughly 60 mA average draw, giving on the order of 50 hours on a single 18650 cell, with battery voltage reported back to shore over the air.</p>
-
-            <div class="grid-3" style="margin-bottom: 2rem;">
-              <div class="panel" style="padding: 1.5rem;">
-                <span class="status-label status-implemented">Measured Budget</span>
-                <h3 style="font-size: 1.2rem;">~60 mA Average</h3>
-                <p style="font-size: 0.85rem;">The documented power budget is approximately 60 mA average draw, which works out to roughly 50 hours of runtime on a single 18650 lithium cell before recharge.</p>
-              </div>
-              <div class="panel" style="padding: 1.5rem;">
-                <span class="status-label status-implemented">Telemetered Voltage</span>
-                <h3 style="font-size: 1.2rem;">ADC Battery Sense</h3>
-                <p style="font-size: 0.85rem;">Battery voltage is sampled by the on-board ADC and reported in the telemetry stream, so operators can watch each node's state of charge from shore rather than guessing.</p>
-              </div>
-              <div class="panel" style="padding: 1.5rem;">
-                <span class="status-label status-planned">Roadmap</span>
-                <h3 style="font-size: 1.2rem;">Deep Sleep &amp; Adaptive Rates</h3>
-                <p style="font-size: 0.85rem;">Deep-sleep cycling and battery-aware sample-rate scaling are designed as future work to extend the budget. They are not yet shipped; the single MOSFET on the board currently drives the cooling fan, not the sensor rails.</p>
-              </div>
-            </div>
-          </section>
-
-          <section class="section">
-            <div class="section-content">
-              <span class="section-kicker">Network Resilience</span>
-              <h2>Offline Survival & Store-and-Forward.</h2>
-              <p>Oceanographic buoys frequently drift into RF dead zones or experience severe atmospheric interference. If an edge node cannot reach the gateway, it must not drop its critical telemetry.</p>
-<p><strong>Execution:</strong> To solve this, Phase 2 firmware implements an autonomous <strong>Store & Forward</strong> architecture. When a node detects that a transmission has failed (via missing LoRaWAN ACKs or CSMA-CA channel jamming), it saves the compressed reading to its on-board SD card buffer instead of dropping it. The node can survive offline for weeks, quietly accumulating data. When connection to the mesh is re-established, the node automatically flushes its queue, seamlessly reconstructing the timeline in the central database.</p>
-            </div>
-          </section>
-
-
-
-      <section class="section">
-        <div class="section-content">
-          <span class="section-kicker">RF Power &amp; PA Thermal Management</span>
-          <h2>The High-Power Amplifier Path.</h2>
-          <p>To push through ocean swells, OMEGA pairs the <strong>LilyGo T-Beam 1W</strong> board (which carries its own on-board amplifier) with an external High Power Amplifier (HPA) stage. The hardware is <strong>+30 dBm-capable</strong>, but the firmware runs it conservatively — the transmit-power setting ships at <strong>+20 dBm</strong> in normal operation rather than driving the chain flat out.</p>
-          <p><strong>How the chain is driven:</strong> the SX1262 is hard-clamped at <strong>+22 dBm</strong> and the external HPA does the rest. The PA is switched in over the radio's <code>DIO2</code> RF-switch control line, and the firmware applies an <strong>800 µs PA ramp</strong> so the amplifier settles before the burst rather than slamming on. This keeps the silicon inside its safe operating area while still feeding the HPA a clean drive level.</p>
-          <p><strong>Proactive fan cooling:</strong> the firmware spins up a GPIO/MOSFET-driven cooling fan before each transmit burst and runs a short post-TX cooldown after the packet clears. This is straightforward proactive PA thermal management — keeping the amplifier stage in a comfortable temperature band during back-to-back bursts — not a response to any thermal emergency.</p>
-        </div>
-        
-        <div class="section-visual">
-          <span class="panel-kicker">TX-Burst Cooling Sequence</span>
-          <div class="mermaid">
-            graph TD
-              A[TX Burst Scheduled] --> B[Spin up Cooling Fan]
-              B --> C[800µs PA Ramp via DIO2 RF-switch]
-              C --> D[SX1262 driven, clamped +22dBm]
-              D --> E[External HPA stage]
-              E --> F[LoRa Packet TX at ~+20dBm operational]
-              F --> G[Post-TX Cooldown]
-              G --> H[Spin down Fan]
-
-              classDef node fill:#101529,stroke:#3b82f6,stroke-width:2px,color:#fff;
-              class A,B,C,D,E,F,G,H node;
+          <div class="panel" style="padding: 1.5rem; border-left: 4px solid var(--accent);">
+            <h3 style="font-size: 1.2rem;">Fitting the Ocean Into Legal Airtime</h3>
+            <p style="font-size: 0.85rem;"><strong>The problem:</strong> transmitting raw JSON over a 900MHz LoRa link is catastrophic. At 1200bps, a standard 283-byte JSON telemetry envelope would exceed the strict LoRa airtime regulations (duty cycle) and cause massive packet collisions across the fleet. <strong>The fix:</strong> replace JSON on the air entirely with a custom versioned <strong>Mesh Binary TLV (Type-Length-Value) protocol</strong>. By utilizing bit-packed fields and custom scaling (e.g., deci-Celsius, milligees), a full Sensor + GPS + Health frame is crushed from 283 bytes down to just 84 bytes (a 70% savings). This outperforms even standard CBOR and Protobuf on the wire, ensuring massive Time-on-Air (ToA) reductions, extending battery life, and creating the necessary headroom for Store-Carry-Forward operations. <a href="#dual-layer" style="color: var(--accent);">Protocol details below &rarr;</a></p>
           </div>
         </div>
       </section>
 
-<section class="section">
-        <div class="section-content">
-          <span class="section-kicker">Bandwidth &amp; Airtime</span>
-          <h2>Delay Tolerant Networks (DTN).</h2>
-          <p>Transmitting raw JSON over a 900MHz LoRa link is catastrophic. At 1200bps, a standard 283-byte JSON
-            telemetry envelope would exceed the strict LoRa airtime regulations (duty cycle) and cause massive packet
-            collisions across the fleet.</p>
-          <p><strong>How the frame gets smaller:</strong> OMEGA replaces standard JSON-over-LoRa entirely with a custom
-            versioned <strong>Mesh Binary TLV (Type-Length-Value) Protocol</strong> for the air interface. By utilizing bit-packed fields and
-            custom scaling (e.g., deci-Celsius, milligees), a full Sensor + GPS + Health frame is crushed from 283 bytes
-            down to just 84 bytes (a 70% savings). This outperforms even standard CBOR and Protobuf on the wire, ensuring massive Time-on-Air
-            (ToA) reductions, extending battery life, and creating the necessary headroom for Store-Carry-Forward operations.</p>
-
-        </div>
-          <span class="panel-kicker">gateway/mesh_binary_codec.py</span>
-          <pre><code class="language-python">def decode_mesh_frame(packet_bytes: bytes) -> dict[str, Any]:
-    # 1. Parse the 11-byte OMEGA Binary Routing Header
-    version, origin_id, dest_id, hops, frame_type, sequence = struct.unpack(
-        "<BHHBBII", packet_bytes[:11]
-    )
-    
-    payload = {"origin": NODE_ID_REGISTRY.get(origin_id, "urn:OA:node:unknown"),
-               "sequence": sequence, "hops": hops}
-               
-    # 2. Extract Phase 1-4 Binary TLVs
-    offset = 11
-    while offset < len(packet_bytes):
-        tlv_type = packet_bytes[offset]
-        length = packet_bytes[offset + 1]
-        value = packet_bytes[offset + 2 : offset + 2 + length]
-        
-        # 3. Predictor reconstruction & fixed-point scaling
-        payload.update(decode_tlv_value(tlv_type, value))
-        offset += 2 + length
-        
-    return payload</code></pre>
-        </div>
-      </section>
-
-      <section class="section section-block" style="background: rgba(0,0,0,0.4);">
+      <section class="section section-block" id="predictive-coding" style="background: rgba(0,0,0,0.4);">
         <span class="section-kicker">Educational Deep Dive: Signal Processing</span>
         <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Lossless Predictive Coding.
         </h2>
@@ -361,18 +240,18 @@
             </ol>
             <pre style="margin: 0; border: 1px solid var(--line); border-radius: 8px;"><code class="language-python">def encode_batch(values: list[float], scale: int = 10) -> bytes:
     if not values: return b""
-    
+
     # 1. Scale to integers
     int_vals = [int(round(v * scale)) for v in values]
-    
+
     # 2. Calculate residual deltas
     deltas = []
     for i in range(1, len(int_vals)):
         deltas.append(int_vals[i] - int_vals[i-1])
-        
+
     # 3. Check variance bounds for 8-bit packing
     max_delta = max((abs(d) for d in deltas), default=0)
-    
+
     if max_delta <= 127:
         # Pack: [Header Byte] [Initial Value (2B)] [Deltas...]
         payload = bytearray()
@@ -381,10 +260,180 @@
         for d in deltas:
             payload.append(d & 0xFF) # Pack as 8-bit signed
         return bytes(payload)
-        
+
     else:
         # Fallback to uncompressed array if variance is too high
         raise ValueError("Variance exceeded bounds for lossless packing.")</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="dual-layer">
+        <div class="section-content">
+          <span class="section-kicker">Dual-Layer Protocol</span>
+          <h2>One Format for the Air, Another for Shore.</h2>
+          <p>A major design decision in OMEGA was determining how to balance <strong>massive hardware heterogeneity</strong> (satellites, cell modems, LoRa radios, acoustic modems) with <strong>extreme bandwidth constraints</strong>. The solution is a dual-layer protocol architecture.</p>
+          <p><strong>The Air Interface (Layer 1):</strong> Over 900MHz LoRa, every byte is expensive. Standard formats like CBOR, MessagePack, and Cayenne LPP carry too much structural overhead (~150B per frame). So, OMEGA uses a <strong>Custom Mesh Binary TLV Protocol</strong>. This drops the payload to 84B, requires zero external firmware parsing libraries, and enables trivial relay paths where intermediary nodes simply bump a single <code>hop_count</code> byte without deserializing the payload.</p>
+          <p><strong>The Federation Interface (Layer 2):</strong> When that 84B binary packet hits a gateway, it is instantly translated into the <strong>OMEGA Envelope Protocol v1.0</strong>. This is a self-describing, globally standard format (using <em>Canonical UTF-8 JSON</em> or <em>SenML CBOR</em> for constrained IP bearers). Because "identity and meaning travel with the data", external databases, web portals, and federated science platforms never need to know the raw binary structure of the mesh. The Envelope Protocol ensures that a reading from a LoRa node and a reading from a NATO JANUS acoustic buoy look exactly the same to the backend.</p>
+        </div>
+        <div class="section-visual" style="max-height: 800px; overflow-y: auto;">
+          <span class="panel-kicker">gateway/mesh_binary_codec.py</span>
+          <pre><code class="language-python">def decode_mesh_frame(packet_bytes: bytes) -> dict[str, Any]:
+    # 1. Parse the 11-byte OMEGA Binary Routing Header
+    version, origin_id, dest_id, hops, frame_type, sequence = struct.unpack(
+        "<BHHBBII", packet_bytes[:11]
+    )
+
+    payload = {"origin": NODE_ID_REGISTRY.get(origin_id, "urn:OA:node:unknown"),
+               "sequence": sequence, "hops": hops}
+
+    # 2. Extract Phase 1-4 Binary TLVs
+    offset = 11
+    while offset < len(packet_bytes):
+        tlv_type = packet_bytes[offset]
+        length = packet_bytes[offset + 1]
+        value = packet_bytes[offset + 2 : offset + 2 + length]
+
+        # 3. Predictor reconstruction & fixed-point scaling
+        payload.update(decode_tlv_value(tlv_type, value))
+        offset += 2 + length
+
+    return payload</code></pre>
+        </div>
+      </section>
+
+      <section class="section" id="csma-ca">
+        <div class="section-content">
+          <span class="section-kicker">RF Physics</span>
+          <h2>CSMA-CA Collision Avoidance.</h2>
+          <p>When deploying 50+ floating sensor nodes in a small coastal bay, transmitting simultaneously on the 915MHz
+            LoRa band guarantees catastrophic packet collisions. OMEGA firmware implements low-level Carrier Sense
+            Multiple Access with Collision Avoidance (CSMA-CA).</p>
+          <p><strong>Execution:</strong> Before any node fires a transmission, it drops its SX1262 transceiver into
+            <code>CAD (Channel Activity Detection)</code> mode. The silicon mathematically scans the physical RF
+            spectrum for existing LoRa preamble chirps. If the channel is active, the node backs off for a randomized
+            exponential interval (slotted ALOHA). This decentralized coordination allows dense mesh networks to
+            self-regulate without a master polling node.</p>
+        </div>
+      </section>
+
+      <section class="section section-block" style="background: rgba(0,0,0,0.4);">
+        <span class="section-kicker">Mathematical Physics</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">The Mathematics of LoRa.</h2>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">
+          OMEGA's edge node is a LilyGo T-Beam 1W-class LoRa node. How far it actually reaches comes down to the Link
+          Budget and Chirp Spread Spectrum (CSS) modulation — with the important caveat that the antenna gain and the
+          real-world field range have not yet been characterized.</p>
+
+        <div class="grid-2" style="margin-bottom: 2rem;">
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">The Link Budget</span>
+            <h3 style="font-size: 1.2rem;">Rx = Tx + Gains - Losses</h3>
+            <p style="font-size: 0.85rem;">The Link Budget determines whether a packet survives the journey:
+              <code>Rx</code> (receiver sensitivity) must beat the <code>Tx</code> (transmit power) plus antenna gains
+              minus path loss. In normal builds the firmware ships at roughly <strong>+13 to +17 dBm</strong>. The
+              antenna gain is not yet characterized, so the gain term — and the resulting field range — remain open.</p>
+          </div>
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">Chirp Spread Spectrum</span>
+            <h3 style="font-size: 1.2rem;">Spreading Factor 12 (SF12)</h3>
+            <p style="font-size: 0.85rem;">By spreading the signal across a wider band over a longer symbol duration
+              (SF12), the bit rate drops (to ~1200 bps) but the processing gain rises. The documented decode floor at
+              SF12 is about <strong>-134 dBm</strong>, letting the SX1262 pull a signal out from near the thermal noise
+              floor.</p>
+          </div>
+        </div>
+
+        <div class="section-visual" style="max-height: 800px; overflow-y: auto;">
+          <span class="panel-kicker">CSMA-CA Algorithmic Logic</span>
+          <pre><code class="language-python">async def transmit_with_csmaca(payload: bytes):
+    """Carrier Sense Multiple Access with Collision Avoidance"""
+    max_retries = 5
+    for attempt in range(max_retries):
+        # 1. Channel Activity Detection (CAD)
+        if radio.is_channel_free():
+            radio.transmit(payload)
+            return True
+
+        # 2. Mathematical Random Backoff (Exponential)
+        backoff_ms = random.randint(100, 500 * (2 ** attempt))
+        await asyncio.sleep(backoff_ms / 1000.0)
+
+    raise ChannelBusyError("RF environment completely saturated.")</code></pre>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-content">
+          <span class="section-kicker">RF Power &amp; PA Thermal Management</span>
+          <h2>The High-Power Amplifier Path.</h2>
+          <p>To push through ocean swells, OMEGA pairs the <strong>LilyGo T-Beam 1W</strong> board (which carries its own on-board amplifier) with an external High Power Amplifier (HPA) stage. The hardware is <strong>+30 dBm-capable</strong>, but the firmware runs it conservatively — the transmit-power setting ships at <strong>+20 dBm</strong> in normal operation rather than driving the chain flat out.</p>
+          <p><strong>How the chain is driven:</strong> the SX1262 is hard-clamped at <strong>+22 dBm</strong> and the external HPA does the rest. The PA is switched in over the radio's <code>DIO2</code> RF-switch control line, and the firmware applies an <strong>800 µs PA ramp</strong> so the amplifier settles before the burst rather than slamming on. This keeps the silicon inside its safe operating area while still feeding the HPA a clean drive level.</p>
+          <p><strong>Proactive fan cooling:</strong> the firmware spins up a GPIO/MOSFET-driven cooling fan before each transmit burst and runs a short post-TX cooldown after the packet clears. This is straightforward proactive PA thermal management — keeping the amplifier stage in a comfortable temperature band during back-to-back bursts — not a response to any thermal emergency.</p>
+        </div>
+
+        <div class="section-visual">
+          <span class="panel-kicker">TX-Burst Cooling Sequence</span>
+          <div class="mermaid">
+            graph TD
+              A[TX Burst Scheduled] --> B[Spin up Cooling Fan]
+              B --> C[800µs PA Ramp via DIO2 RF-switch]
+              C --> D[SX1262 driven, clamped +22dBm]
+              D --> E[External HPA stage]
+              E --> F[LoRa Packet TX at ~+20dBm operational]
+              F --> G[Post-TX Cooldown]
+              G --> H[Spin down Fan]
+
+              classDef node fill:#101529,stroke:#3b82f6,stroke-width:2px,color:#fff;
+              class A,B,C,D,E,F,G,H node;
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-content">
+          <span class="section-kicker">RF Physics & Firmware</span>
+          <h2>Hardware PA Clamping & RX Boost.</h2>
+          <p>Achieving absolute maximum range requires hardware-level tuning of the silicon. OMEGA firmware interfaces
+            directly with the Semtech SX126x radio registers to bypass standard defaults.</p>
+          <p><strong>Execution:</strong> The firmware enables <code>RxBoostedGainMode</code>, physically increasing the
+            Low-Noise Amplifier (LNA) gain by ~3 dB at the cost of ~2 mA extra RX current. For short-duty mesh nodes,
+            this provides a massive mathematical advantage, allowing them to decode marginal cross-family packets that
+            previously failed at the noise floor. Concurrently, internal Power Amplifiers (PA) are strictly clamped at
+            +22 dBm to prevent silicon burnout when driving external 1-Watt High Power Amplifiers (HPA).</p>
+        </div>
+      </section>
+
+      <section class="section section-block" style="background: rgba(0,0,0,0.4);">
+        <span class="section-kicker">Edge Operations</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Watching a Headless Node's Vitals.</h2>
+        <div class="panel" style="padding: 1.5rem; max-width: 800px;">
+          <span class="status-label status-implemented">Local UI Diagnostics</span>
+          <h3 style="font-size: 1.2rem;">OLED &amp; AXP2101</h3>
+          <p style="font-size: 0.85rem;">Deploying a headless node is dangerous if operators cannot visually confirm its operational state. The firmware queries the AXP2101 PMU (Power Management Unit) via I2C, rendering real-time battery voltage, charge percentage, CPU die temperature, and acquired GNSS coordinates directly to a local SH1106 OLED screen.</p>
+        </div>
+      </section>
+
+      <section class="section section-block" style="background: rgba(0,0,0,0.4);">
+        <span class="section-kicker">Resilient Telemetry</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">The "Mule" Store & Forward Model.</h2>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">A true Delay Tolerant Network (DTN) assumes that end-to-end paths may never exist simultaneously. OMEGA shifts from connection-oriented routing to self-contained <strong>bundle</strong> routing.</p>
+
+        <div class="grid-3" style="margin-bottom: 2rem;">
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">Bounded Spread</span>
+            <h3 style="font-size: 1.2rem;">Store & Carry</h3>
+            <p style="font-size: 0.85rem;">When a node captures a mesh frame, it deduplicates the payload via its origin/sequence and places it in a finite <strong>carry buffer</strong>. Mobile nodes (like boats or ASVs) physically <em>carry</em> these stored bundles as they travel, physically acting as network links across disconnected regions.</p>
+          </div>
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">Identity</span>
+            <h3 style="font-size: 1.2rem;">ed25519 Trust Model</h3>
+            <p style="font-size: 0.85rem;">Trust lives entirely in the data, not the carrier. Because each bundle is cryptographically signed with the origin node's <code>ed25519</code> public key, anyone can run an OMEGA gateway or act as a mule. A malicious carrier can delay a bundle, but they can never forge or tamper with the payload.</p>
+          </div>
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">Delivery</span>
+            <h3 style="font-size: 1.2rem;">Opportunistic Offload</h3>
+            <p style="font-size: 0.85rem;">The instant any mule or relay detects IP reachability—whether via its own cellular modem, a Wi-Fi HaLow link to shore, or an open hotspot—it completely flushes its buffered bundles to the central <code>POST /v1/ingest/frame</code> contract, completing the data's journey home.</p>
           </div>
         </div>
       </section>
@@ -421,11 +470,25 @@
 
       <section class="section">
         <div class="section-content">
-          <span class="section-kicker">Dual-Layer Protocol</span>
-          <h2>One Format for the Air, Another for Shore.</h2>
-          <p>A major design decision in OMEGA was determining how to balance <strong>massive hardware heterogeneity</strong> (satellites, cell modems, LoRa radios, acoustic modems) with <strong>extreme bandwidth constraints</strong>. The solution is a dual-layer protocol architecture.</p>
-          <p><strong>The Air Interface (Layer 1):</strong> Over 900MHz LoRa, every byte is expensive. Standard formats like CBOR, MessagePack, and Cayenne LPP carry too much structural overhead (~150B per frame). So, OMEGA uses a <strong>Custom Mesh Binary TLV Protocol</strong>. This drops the payload to 84B, requires zero external firmware parsing libraries, and enables trivial relay paths where intermediary nodes simply bump a single <code>hop_count</code> byte without deserializing the payload.</p>
-          <p><strong>The Federation Interface (Layer 2):</strong> When that 84B binary packet hits a gateway, it is instantly translated into the <strong>OMEGA Envelope Protocol v1.0</strong>. This is a self-describing, globally standard format (using <em>Canonical UTF-8 JSON</em> or <em>SenML CBOR</em> for constrained IP bearers). Because "identity and meaning travel with the data", external databases, web portals, and federated science platforms never need to know the raw binary structure of the mesh. The Envelope Protocol ensures that a reading from a LoRa node and a reading from a NATO JANUS acoustic buoy look exactly the same to the backend.</p>
+          <span class="section-kicker">Distributed Systems</span>
+          <h2>DTN Command Versioning.</h2>
+          <p>Uplink telemetry is inherently order-independent, but bidirectional <em>downlink commands</em> (like telling a node to change its transmission power) are stateful. In a store-and-forward network, a delayed command might arrive at a node days after a newer command was already applied.</p>
+          <p><strong>The Newest-Wins Rule:</strong> OMEGA solves this by enforcing declarative, versioned commands. Every command carries a monotonic operator version and a target key. The node tracks the applied version per-key in Non-Volatile Storage (NVS). When a command arrives, it only executes if <code>cmd.version > applied[key]</code>. Older arrivals are instantly dropped as stale, completely eliminating rollback issues under extreme packet loss or reordering.</p>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-content">
+          <span class="section-kicker">Bidirectional Mesh</span>
+          <h2>Cloud-to-Node Command Architecture.</h2>
+          <p>In Phase 1, edge nodes were purely telemetry broadcasters. With the new binary protocol, OMEGA implements a
+            fully bidirectional mesh. The shore gateway can now construct binary <code>COMMAND</code> frames and route
+            them over the mesh directly to specific nodes.</p>
+          <p><strong>Execution:</strong> By injecting a <code>dest_id</code> into the binary header, commands like
+            <code>restart</code>, <code>set-telemetry-interval</code>, or <code>set-tx-power</code> are routed across
+            the ocean. Intermediary nodes receive the packet, check the destination, and automatically re-transmit
+            (relay) the packet if it is not meant for them. This creates a true, self-healing bidirectional mesh
+            network.</p>
 
         </div>
 
@@ -480,186 +543,13 @@ build_flags =
           <p>Field operations often rely on marine cellular routers, which are trapped behind massive Carrier-Grade NAT
             (CGNAT) firewalls. The <code>scripts/tunnel-up.ps1</code> daemon automates the execution of Cloudflared or
             Ngrok. It securely punches a reverse TCP tunnel from the edge node gateway out to the public internet,
-            securely exposing the local React Mission Portal to oceanographic teams thousands of miles away.</p>
+            exposing the local React Mission Portal to oceanographic teams thousands of miles away.</p>
 
         </div>
 
       </section>
 
       <section class="section">
-        <div class="section-content">
-          <span class="section-kicker">Bidirectional Mesh</span>
-          <h2>Cloud-to-Node Command Architecture.</h2>
-          <p>In Phase 1, edge nodes were purely telemetry broadcasters. With the new binary protocol, OMEGA implements a
-            fully bidirectional mesh. The shore gateway can now construct binary <code>COMMAND</code> frames and route
-            them over the mesh directly to specific nodes.</p>
-          <p><strong>Execution:</strong> By injecting a <code>dest_id</code> into the binary header, commands like
-            <code>restart</code>, <code>set-telemetry-interval</code>, or <code>set-tx-power</code> are routed across
-            the ocean. Intermediary nodes receive the packet, check the destination, and automatically re-transmit
-            (relay) the packet if it is not meant for them. This creates a true, self-healing bidirectional mesh
-            network.</p>
-
-        </div>
-
-      </section>
-
-      <section class="section">
-        <div class="section-content">
-          <span class="section-kicker">RF Physics & Firmware</span>
-          <h2>Hardware PA Clamping & RX Boost.</h2>
-          <p>Achieving absolute maximum range requires hardware-level tuning of the silicon. OMEGA firmware interfaces
-            directly with the Semtech SX126x radio registers to bypass standard defaults.</p>
-          <p><strong>Execution:</strong> The firmware enables <code>RxBoostedGainMode</code>, physically increasing the
-            Low-Noise Amplifier (LNA) gain by ~3 dB at the cost of ~2 mA extra RX current. For short-duty mesh nodes,
-            this provides a massive mathematical advantage, allowing them to decode marginal cross-family packets that
-            previously failed at the noise floor. Concurrently, internal Power Amplifiers (PA) are strictly clamped at
-            +22 dBm to prevent silicon burnout when driving external 1-Watt High Power Amplifiers (HPA).</p>
-
-        </div>
-
-      </section>
-
-      <section class="section section-block" style="background: rgba(0,0,0,0.4);">
-        <span class="section-kicker">Resilient Telemetry</span>
-        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">The "Mule" Store & Forward Model.</h2>
-        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">A true Delay Tolerant Network (DTN) assumes that end-to-end paths may never exist simultaneously. OMEGA shifts from connection-oriented routing to self-contained <strong>bundle</strong> routing.</p>
-
-        <div class="grid-3" style="margin-bottom: 2rem;">
-          <div class="panel" style="padding: 1.5rem;">
-            <span class="status-label status-implemented">Bounded Spread</span>
-            <h3 style="font-size: 1.2rem;">Store & Carry</h3>
-            <p style="font-size: 0.85rem;">When a node captures a mesh frame, it deduplicates the payload via its origin/sequence and places it in a finite <strong>carry buffer</strong>. Mobile nodes (like boats or ASVs) physically <em>carry</em> these stored bundles as they travel, physically acting as network links across disconnected regions.</p>
-          </div>
-          <div class="panel" style="padding: 1.5rem;">
-            <span class="status-label status-implemented">Identity</span>
-            <h3 style="font-size: 1.2rem;">ed25519 Trust Model</h3>
-            <p style="font-size: 0.85rem;">Trust lives entirely in the data, not the carrier. Because each bundle is cryptographically signed with the origin node's <code>ed25519</code> public key, anyone can run an OMEGA gateway or act as a mule. A malicious carrier can delay a bundle, but they can never forge or tamper with the payload.</p>
-          </div>
-          <div class="panel" style="padding: 1.5rem;">
-            <span class="status-label status-implemented">Delivery</span>
-            <h3 style="font-size: 1.2rem;">Opportunistic Offload</h3>
-            <p style="font-size: 0.85rem;">The instant any mule or relay detects IP reachability—whether via its own cellular modem, a Wi-Fi HaLow link to shore, or an open hotspot—it completely flushes its buffered bundles to the central <code>POST /v1/ingest/frame</code> contract, completing the data's journey home.</p>
-          </div>
-        </div>
-      </section>
-      
-      <section class="section">
-        <div class="section-content">
-          <span class="section-kicker">Distributed Systems</span>
-          <h2>DTN Command Versioning.</h2>
-          <p>Uplink telemetry is inherently order-independent, but bidirectional <em>downlink commands</em> (like telling a node to change its transmission power) are stateful. In a store-and-forward network, a delayed command might arrive at a node days after a newer command was already applied.</p>
-          <p><strong>The Newest-Wins Rule:</strong> OMEGA solves this by enforcing declarative, versioned commands. Every command carries a monotonic operator version and a target key. The node tracks the applied version per-key in Non-Volatile Storage (NVS). When a command arrives, it only executes if <code>cmd.version > applied[key]</code>. Older arrivals are instantly dropped as stale, completely eliminating rollback issues under extreme packet loss or reordering.</p>
-        </div>
-      </section>
-
-      <section class="section">
-        <div class="section-content">
-          <span class="section-kicker">RF Physics</span>
-          <h2>CSMA-CA Collision Avoidance.</h2>
-          <p>When deploying 50+ floating sensor nodes in a small coastal bay, transmitting simultaneously on the 915MHz
-            LoRa band guarantees catastrophic packet collisions. OMEGA firmware implements low-level Carrier Sense
-            Multiple Access with Collision Avoidance (CSMA-CA).</p>
-          <p><strong>Execution:</strong> Before any node fires a transmission, it drops its SX1262 transceiver into
-            <code>CAD (Channel Activity Detection)</code> mode. The silicon mathematically scans the physical RF
-            spectrum for existing LoRa preamble chirps. If the channel is active, the node backs off for a randomized
-            exponential interval (slotted ALOHA). This decentralized coordination allows dense mesh networks to
-            self-regulate without a master polling node.</p>
-        </div>
-      </section>
-
-      
-
-      <section class="section section-block" style="background: rgba(0,0,0,0.4);">
-        <span class="section-kicker">Mathematical Physics</span>
-        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">The Mathematics of LoRa.</h2>
-        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">
-          OMEGA's edge node is a LilyGo T-Beam 1W-class LoRa node. How far it actually reaches comes down to the Link
-          Budget and Chirp Spread Spectrum (CSS) modulation — with the important caveat that the antenna gain and the
-          real-world field range have not yet been characterized.</p>
-
-        <div class="grid-2" style="margin-bottom: 2rem;">
-          <div class="panel" style="padding: 1.5rem;">
-            <span class="status-label status-implemented">The Link Budget</span>
-            <h3 style="font-size: 1.2rem;">Rx = Tx + Gains - Losses</h3>
-            <p style="font-size: 0.85rem;">The Link Budget determines whether a packet survives the journey:
-              <code>Rx</code> (receiver sensitivity) must beat the <code>Tx</code> (transmit power) plus antenna gains
-              minus path loss. In normal builds the firmware ships at roughly <strong>+13 to +17 dBm</strong>. The
-              antenna gain is not yet characterized, so the gain term — and the resulting field range — remain open.</p>
-          </div>
-          <div class="panel" style="padding: 1.5rem;">
-            <span class="status-label status-implemented">Chirp Spread Spectrum</span>
-            <h3 style="font-size: 1.2rem;">Spreading Factor 12 (SF12)</h3>
-            <p style="font-size: 0.85rem;">By spreading the signal across a wider band over a longer symbol duration
-              (SF12), the bit rate drops (to ~1200 bps) but the processing gain rises. The documented decode floor at
-              SF12 is about <strong>-134 dBm</strong>, letting the SX1262 pull a signal out from near the thermal noise
-              floor.</p>
-          </div>
-        </div>
-
-        <div class="section-visual" style="max-height: 800px; overflow-y: auto;">
-          <span class="panel-kicker">CSMA-CA Algorithmic Logic</span>
-          <pre><code class="language-python">async def transmit_with_csmaca(payload: bytes):
-    """Carrier Sense Multiple Access with Collision Avoidance"""
-    max_retries = 5
-    for attempt in range(max_retries):
-        # 1. Channel Activity Detection (CAD)
-        if radio.is_channel_free():
-            radio.transmit(payload)
-            return True
-            
-        # 2. Mathematical Random Backoff (Exponential)
-        backoff_ms = random.randint(100, 500 * (2 ** attempt))
-        await asyncio.sleep(backoff_ms / 1000.0)
-        
-    raise ChannelBusyError("RF environment completely saturated.")</code></pre>
-        </div>
-      </section>
-
-      <section class="section section-block" style="background: rgba(0,0,0,0.4);">
-        <span class="section-kicker">Mesh Phases 3 & 4</span>
-        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Machine Learning over LoRa.
-        </h2>
-        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">
-          Beyond basic scalar telemetry, OMEGA's binary mesh protocol reserves namespace and command slots for moving
-          complex spectral features — and eventually whole ML models — across ultra-low-bandwidth links. These are
-          forward-compatible protocol provisions (Phases 3 &amp; 4): defined in the codec, not yet running on edge
-          hardware.</p>
-
-        <div class="grid-2" style="margin-bottom: 2rem;">
-          <div class="panel" style="padding: 1.5rem;">
-            <span class="status-label" style="background: rgba(154,162,177,0.15); color: var(--ink-soft);">Phase 3 — Designed</span>
-            <h3 style="font-size: 1.2rem;">FFT Spectral Feature Bags</h3>
-            <p style="font-size: 0.85rem;">Streaming raw acoustic or high-frequency vibration data over a 250bps LoRa
-              link is impossible, so the protocol reserves a <code>DERIVED-namespace</code> TLV for on-edge spectral
-              features: a node would run a local FFT and transmit only the critical frequency-bin peaks. The TLV slot is
-              reserved in the codec; the on-edge FFT compute is a forward-compatible hook, not yet wired to a sensor.</p>
-          </div>
-          <div class="panel" style="padding: 1.5rem;">
-            <span class="status-label" style="background: rgba(154,162,177,0.15); color: var(--ink-soft);">Phase 4 — Designed</span>
-            <h3 style="font-size: 1.2rem;">Over-The-Air Edge AI</h3>
-            <p style="font-size: 0.85rem;">To update an edge node's classification model without retrieving the buoy, the
-              codec can fragment a quantized TensorFlow Lite Micro model into small TLV chunks for OTA transmission. The
-              chunk-encoder exists in <code>mesh_binary_codec.py</code> (below); on-node reconstruction and activation
-              are designed but not yet wired in firmware.</p>
-          </div>
-        </div>
-
-        <div class="section-visual" style="max-height: 800px; overflow-y: auto;">
-          <span class="panel-kicker">gateway/mesh_binary_codec.py (Phase 4 Model Loading)</span>
-          <pre><code class="language-python">def build_ota_model_chunk(model_id: str, chunk_index: int, payload_bytes: bytes) -> bytes:
-    """Encodes a single chunk of an ML model for OTA LoRa transmission."""
-    # 1. Header with Model ID and Chunk Offset
-    header = struct.pack("&lt;8sH", model_id.encode('utf-8')[:8], chunk_index)
-    
-    # 2. Append compressed model weights
-    chunk_data = zlib.compress(payload_bytes, level=9)
-    
-    # 3. Wrap in Mesh Phase 4 TLV Envelope
-    return tlv_encode(TAG_OTA_MODEL_CHUNK, header + chunk_data)</code></pre>
-        </div>
-      </section>
-
-<section class="section">
         <div class="section-content">
           <span class="section-kicker">Acoustic Physics (Experimental)</span>
           <h2>Snell's Law & Refraction.</h2>
@@ -729,17 +619,17 @@ build_flags =
     # Mathematically construct the analog audio wave
     t = np.arange(0, 1/baud, 1/fs)
     audio_wave = np.array([])
-    
+
     for bit in binary_string:
         # 0 = Space (11.0 kHz), 1 = Mark (12.0 kHz)
         freq = f_mark if bit == '1' else f_space
-        
+
         # S(t) = A * sin(2π * f * t)
         chirp = np.sin(2 * np.pi * freq * t)
-        
+
         # Append the continuous wave
         audio_wave = np.concatenate((audio_wave, chirp))
-        
+
     return audio_wave</code></pre>
         </div>
       </section>
@@ -829,6 +719,76 @@ build_flags =
 }</code></pre>
         </div>
       </section>
+
+      <section class="section">
+        <div class="section-content">
+          <span class="section-kicker">Remote Lifecycle Management</span>
+          <h2>Over-The-Air (OTA) Foundation.</h2>
+          <p>Retrieving a deployed remote sensor from the environment simply to update a line of code is logistically prohibitive, so OMEGA is building toward firmware-over-mesh. What exists today is the <strong>gateway-side foundation</strong>: a firmware-image registry where each build is signed with an Ed25519 key, carries a sha256 integrity hash, and goes through explicit version negotiation before a node is offered an update.</p>
+          <p>The registry now supports a <strong>channelized stable/beta rollout</strong>: beta nodes canary a new build in the field before it is promoted to the stable channel, so a bad image is caught on a small population rather than the whole fleet.</p>
+          <p><strong>Not yet built:</strong> the on-device half of the pipeline — chunked transfer of the image over the mesh, A/B boot-partition swapping, and automatic rollback on a failed flash — is designed but not yet implemented. Until that lands, OTA is a gateway capability, not an end-to-end one.</p>
+        </div>
+      </section>
+
+      <section class="section section-block" style="background: rgba(0,0,0,0.4);">
+        <span class="section-kicker">Mesh Phases 3 & 4</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Machine Learning over LoRa.
+        </h2>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">
+          Beyond basic scalar telemetry, OMEGA's binary mesh protocol reserves namespace and command slots for moving
+          complex spectral features — and eventually whole ML models — across ultra-low-bandwidth links. These are
+          forward-compatible protocol provisions (Phases 3 &amp; 4): defined in the codec, not yet running on edge
+          hardware.</p>
+
+        <div class="grid-2" style="margin-bottom: 2rem;">
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label" style="background: rgba(154,162,177,0.15); color: var(--ink-soft);">Phase 3 — Designed</span>
+            <h3 style="font-size: 1.2rem;">FFT Spectral Feature Bags</h3>
+            <p style="font-size: 0.85rem;">Streaming raw acoustic or high-frequency vibration data over a 250bps LoRa
+              link is impossible, so the protocol reserves a <code>DERIVED-namespace</code> TLV for on-edge spectral
+              features: a node would run a local FFT and transmit only the critical frequency-bin peaks. The TLV slot is
+              reserved in the codec; the on-edge FFT compute is a forward-compatible hook, not yet wired to a sensor.</p>
+          </div>
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label" style="background: rgba(154,162,177,0.15); color: var(--ink-soft);">Phase 4 — Designed</span>
+            <h3 style="font-size: 1.2rem;">Over-The-Air Edge AI</h3>
+            <p style="font-size: 0.85rem;">To update an edge node's classification model without retrieving the buoy, the
+              codec can fragment a quantized TensorFlow Lite Micro model into small TLV chunks for OTA transmission. The
+              chunk-encoder exists in <code>mesh_binary_codec.py</code> (below); on-node reconstruction and activation
+              are designed but not yet wired in firmware.</p>
+          </div>
+        </div>
+
+        <div class="section-visual" style="max-height: 800px; overflow-y: auto;">
+          <span class="panel-kicker">gateway/mesh_binary_codec.py (Phase 4 Model Loading)</span>
+          <pre><code class="language-python">def build_ota_model_chunk(model_id: str, chunk_index: int, payload_bytes: bytes) -> bytes:
+    """Encodes a single chunk of an ML model for OTA LoRa transmission."""
+    # 1. Header with Model ID and Chunk Offset
+    header = struct.pack("&lt;8sH", model_id.encode('utf-8')[:8], chunk_index)
+
+    # 2. Append compressed model weights
+    chunk_data = zlib.compress(payload_bytes, level=9)
+
+    # 3. Wrap in Mesh Phase 4 TLV Envelope
+    return tlv_encode(TAG_OTA_MODEL_CHUNK, header + chunk_data)</code></pre>
+        </div>
+      </section>
+
+      <section class="section section-block" style="background: rgba(0,0,0,0.4);">
+        <span class="section-kicker" style="color: var(--accent);">Engineering Reality</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">What Is and Isn't Proven.</h2>
+
+        <div class="panel" style="border-left: 4px solid var(--accent);">
+          <h3 style="margin: 0 0 0.5rem; color: #fff;">Honest Gaps</h3>
+          <p style="font-size: 0.9rem; color: var(--ink-soft); margin: 0;">Link-level reception is real and proven — 205 frames decoded by the gateway, with measured RSSI and SNR. What is <em>not</em> yet field-demonstrated is multi-hop mesh <strong>routing</strong>: relaying a frame across intermediate nodes to a destination has not been shown in the field. Much of the field-hardening firmware is written but not yet flashed to deployed hardware, and the bench RF window that produced these results was only about 6 to 7 days. The reception evidence is solid; the end-to-end mesh and long-duration field behavior are still open.</p>
+        </div>
+
+        <div class="hero-actions" style="margin-top: 2rem;">
+          <a class="btn btn-primary" href="gateway.html">Next: The Backend Gateway &rarr;</a>
+          <a class="btn btn-secondary" href="engineering-journal.html">Read the Engineering Journal</a>
+        </div>
+      </section>
+
 </div>
   </main>
 
