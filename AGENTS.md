@@ -39,6 +39,7 @@ This repo is **Jonathan Capone's portfolio website** (jonathancapone.com). Read 
 3. **Meaningful over vanity.** Don't headline lines-of-code, commit counts, or "hardware targets" — they're meaningless to a reader. Prefer real validation and capability (e.g. "0.97 correlation with NOAA buoys", "runs offline for days at sea") — explained in context, never as bare stat tiles.
 4. **Never sell build speed.** Do not pitch "built in ~4 weeks / about a month / X days" anywhere — fast reads as rushed, not impressive (Jonathan's explicit rule). Depth of ownership is fine ("one engineer designed and built every layer, end to end"); duration is not.
 5. **Plain-language voice.** For any feature: a plain hook → how it works in human terms → the hard part & how it was solved. **Define jargon the first time it appears.** A smart non-specialist should understand it; a technical reader should still respect it.
+   **Every project page must answer, on its first screen: what is this, why does it exist, and who is it for** — before any architecture or feature list. A reader who stops after the hero should still walk away knowing the point of the project.
 6. **Status must be truthful.** Use the status labels to distinguish shipped vs designed. The only CSS classes that exist are:
    - `status-implemented` — shipped / working
    - `status-partial` — partly built / in development
@@ -79,7 +80,7 @@ Always run `gh repo list aminalnam` first — repos get renamed.
 | `planetaria.html` | Planetaria (Earth desk display) | `aminalnam/planetaria` (was `ai_eye_globe` / "Weather Globe") | sold at cosnfx.store/planetaria |
 | `lunaria.html` | Lunaria (Moon desk display) | LUNA project | **coming soon / waitlist** |
 | `past-time.html` | Past Time (e-paper timer) | `aminalnam/past-time` (was "Visual Timer") | shipped |
-| `slime.html` | Slime in the Coconut (store) | `aminalnam/slimer-store` | live at slimer.store |
+| `slime.html` | Slime in the Coconut (store) | `aminalnam/slimer-store` | live at **slimeinthecoconut.com** (the `slimer.store` domain is dead — never link it) |
 | `beta-overview.html` + `omega-beta-site/` | BETA (evaluation tracker) | `aminalnam/BETA` | `omega-beta-site/` is a static export |
 
 Do **not** add CosNFX iOS / Apple Watch to the site — that port is parked, not in development.
