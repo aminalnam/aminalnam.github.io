@@ -4,16 +4,16 @@
 <head>
   <meta charset="utf-8" />
   <meta content="width=device-width, initial-scale=1" name="viewport" />
-  <title>Jonathan Capone — Architecture & Design</title>
+  <title>Jonathan Capone — OMEGA</title>
 
-  <meta name="description" content="OMEGA's bearer-agnostic observation protocol and 4-layer architecture — a LoRa mesh fleet, a signed envelope, a federated gateway, and a 3D WebGL digital twin." />
-  <meta property="og:title" content="Jonathan Capone — Architecture & Design" />
-  <meta property="og:description" content="OMEGA's bearer-agnostic observation protocol and 4-layer architecture — a LoRa mesh fleet, a signed envelope, a federated gateway, and a 3D WebGL digital twin." />
+  <meta name="description" content="OMEGA — an ocean-sensing network built solo in about a month: cheap off-the-shelf radios riding the waves, a mesh that carries readings ashore, and a live 3D globe. Validated against NOAA buoys (r ≈ 0.97), with every reading cryptographically signed." />
+  <meta property="og:title" content="Jonathan Capone — OMEGA" />
+  <meta property="og:description" content="An ocean observatory from off-the-shelf parts: signed readings, a radio mesh, a shore gateway, and a 3D globe — validated against NOAA buoys (r ≈ 0.97). Built solo, end to end." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://jonathancapone.com/omega/" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Jonathan Capone — Architecture & Design" />
-  <meta name="twitter:description" content="OMEGA's bearer-agnostic observation protocol and 4-layer architecture — a LoRa mesh fleet, a signed envelope, a federated gateway, and a 3D WebGL digital twin." />
+  <meta name="twitter:title" content="Jonathan Capone — OMEGA" />
+  <meta name="twitter:description" content="An ocean observatory from off-the-shelf parts: signed readings, a radio mesh, a shore gateway, and a 3D globe — validated against NOAA buoys (r ≈ 0.97). Built solo, end to end." />
 
   <link rel="icon"
     href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌊</text></svg>">
@@ -91,124 +91,117 @@
   </header>
 
   <section class="hero wrap">
-    <span class="eyebrow">System Design</span>
-    <h1>Architecture & Design.</h1>
-    <p>OMEGA is an open network of low-cost floating sensors that watches the ocean and streams it to a 3D globe you can explore. This page follows a single reading from a wave to the screen &mdash; and the hard problems solved along the way.</p>
+    <span class="eyebrow">Flagship Project</span>
+    <h1>OMEGA.</h1>
+    <p>An ocean observatory built from parts anyone can buy. Solar-charged sensors ride the waves, a radio mesh carries their readings ashore, and a live 3D globe lets you explore it all &mdash; with every reading cryptographically signed, and results that track NOAA's official buoys almost perfectly. One person built the whole stack in about a month.</p>
     <div class="hero-actions">
-      <a class="btn btn-primary" href="#core-axiom">Read the System Manifesto</a>
-</div>
+      <a class="btn btn-primary" href="#how-it-works">How It Works</a>
+      <a class="btn btn-secondary" href="#hard-problems">The Hard Problems</a>
+    </div>
   </section>
 
   <main class="main-shell wrap" role="main" id="main">
     <div class="main-inner">
 
       <section class="section section-block" style="padding-top: 0; padding-bottom: 2rem;">
-        <span class="section-kicker" style="color: var(--accent);">The Engineering Reality</span>
-        <h2 style="font-family: var(--font-serif); font-size: 2.2rem; margin: 0 0 1.5rem;">Designing for the Extremes.
-        </h2>
-        <p
-          style="color: var(--ink-soft); font-size: 1.15rem; margin-bottom: 2.5rem; max-width: 850px; line-height: 1.7;">
-          Deploying delicate silicon and lithium into the ocean demands extreme adaptation. Saltwater corrodes hardware,
-          rolling waves physically block RF signals, and winter storms severely limit solar charging budgets. Standard
-          IoT frameworks instantly collapse under these conditions. To survive and operate autonomously, OMEGA relies on
-          hyper-resilient, bare-metal engineering:
+        <span class="section-kicker" style="color: var(--accent);">Not a Mockup</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.2rem; margin: 0 0 1.5rem;">Three Things It Has Actually Done.</h2>
+        <p style="color: var(--ink-soft); font-size: 1.15rem; margin-bottom: 2.5rem; max-width: 850px; line-height: 1.7;">
+          Plenty of dashboards look like they measure the ocean. Before diving into how OMEGA works, here's the evidence that it really does &mdash; all of it produced by this system's own hardware and pipeline, and detailed on the pages that follow.
         </p>
 
-        <div class="grid-3" style="margin-bottom: 4rem;">
+        <div class="grid-3" style="margin-bottom: 2rem;">
           <div class="panel" style="padding: 2rem;">
-            <span class="status-label status-implemented">Power</span>
-            <h3 style="font-size: 1.4rem;">Solar-Charged Endurance</h3>
-            <p style="font-size: 0.95rem;">Edge nodes run on a solar-charged 18650 cell at roughly 60&nbsp;mA average draw,
-              with battery voltage telemetered back to shore. Aggressive deep-sleep duty-cycling to extend winter runtime is on the roadmap.</p>
+            <span class="status-label status-implemented">Validation</span>
+            <h3 style="font-size: 1.4rem;">It Agrees With NOAA</h3>
+            <p style="font-size: 0.95rem;">When OMEGA's science pipeline and the government's official buoys watched the same ocean, they matched with a correlation of <strong>0.965&ndash;0.971 across 12 stations</strong> &mdash; near-perfect agreement, from hardware that costs a tiny fraction of an official mooring.</p>
           </div>
           <div class="panel" style="padding: 2rem;">
-            <span class="status-label status-implemented">Compression</span>
-            <h3 style="font-size: 1.4rem;">Binary TLV Frames</h3>
-            <p style="font-size: 0.95rem;">A radio link at sea trickles only a few hundred bits per second, so every byte counts. Each reading is packed into a tight 84-byte binary frame &mdash; down from 283 bytes as plain JSON, a 70% cut &mdash; and several readings are batched into a single transmission to save precious airtime.</p>
+            <span class="status-label status-implemented">Detection</span>
+            <h3 style="font-size: 1.4rem;">It Caught a Storm Turning</h3>
+            <p style="font-size: 0.95rem;">Running its own statistics over wave data at NOAA buoy 46013, OMEGA pinpointed the exact moment the sea state shifted &mdash; <strong>June 8, 2026, a 0.77&nbsp;m drop in wave height</strong> &mdash; the kind of change a harbormaster actually cares about. <a href="/gateway.html" style="color: var(--accent);">See the detection &rarr;</a></p>
           </div>
           <div class="panel" style="padding: 2rem;">
-            <span class="status-label status-implemented">Resilience</span>
-            <h3 style="font-size: 1.4rem;">SQLite WAL Routing</h3>
-            <p style="font-size: 0.95rem;">When packets arrive in bursts, the gateway writes them to a single-file database in "write-ahead" mode, so reading and writing never block each other &mdash; no lockups under load, and the entire dataset is one file you can copy to back up.</p>
+            <span class="status-label status-implemented">Sensitivity</span>
+            <h3 style="font-size: 1.4rem;">It Heard the Atmosphere Breathe</h3>
+            <p style="font-size: 0.95rem;">The whole atmosphere rises and falls twice a day &mdash; a planet-scale "tide" of air. A <strong>$50 OMEGA barometer</strong> logged 104,939 readings, and the pipeline resolved that tide at its textbook 11.99-hour period, standing ~580,000&times; above the noise. <a href="/hardware.html" style="color: var(--accent);">See the spectrum &rarr;</a></p>
           </div>
         </div>
 
-        <span class="section-kicker">Data Flow</span>
-        <h3 style="font-family: var(--font-serif); font-size: 2.2rem; margin: 0 0 2rem;">The Telemetry Pipeline.</h3>
-
-        <div class="section-visual" style="margin-bottom: 2rem;">
-          <div class="mermaid">
-            flowchart TD
-            subgraph L1 [Stage 1: Physical / Hardware]
-            E1(Buoy: T-Beam Supreme / SX1262)
-            E3(Node: T-Beam 1W / SX1262)
-            E2(Relay: T3-S3 / LR1121)
-            end
-            subgraph L2 [Stage 2: Mesh Transport]
-            DTN{DTN: Binary TLV + Batching}
-            end
-            subgraph L3 [Stage 3: Gateway]
-            UDP(USB-CDC / Semtech-UDP Ingest)
-            ASGI[FastAPI / Envelope Protocol v1.0]
-            end
-            subgraph L4 [Stage 4: Presentation]
-            UI((3D WebGL Glass Bridge))
-            end
-
-            E1 <-->|LoRa 900MHz| L2
-              E3 <-->|LoRa 900MHz| L2
-              E2 <-->|LoRa 900MHz| L2
-                L2 <-->|LoRa / CSMA-CA| UDP
-                  UDP <-->|JSON| ASGI
-                    ASGI <-->|HTTP Long-Polling| UI
-
-                      classDef default fill:#0a0f1d,stroke:#9aa2b1,stroke-width:1px,color:#9aa2b1;
-                      classDef node fill:#101529,stroke:#3b82f6,stroke-width:2px,color:#fff;
-                      class E1,E2,E3,UDP,ASGI,UI node;
-          </div>
+        <div class="panel" style="border-left: 4px solid var(--accent);">
+          <h3 style="margin: 0 0 0.5rem; color: #fff;">Built solo, in about a month</h3>
+          <p style="font-size: 0.9rem; color: var(--ink-soft); margin: 0;">One person, roughly four weeks, the entire stack &mdash; the buoy firmware, the radio mesh that carries the data, the shore gateway that makes sense of it, the science tools, and the 3D globe you explore it in. Everything on these pages was designed and built end to end.</p>
         </div>
       </section>
 
       <section class="section section-block" id="core-axiom" style="background: rgba(0,0,0,0.4);">
-        <span class="section-kicker">The Core Axiom</span>
+        <span class="section-kicker">The Core Idea</span>
         <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">A Reading Means the Same Thing, However It Arrives.</h2>
         <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">
 <strong>The one idea everything else hangs on:</strong> a reading should mean the same thing no matter how it reached you &mdash; by radio, by cable, or over the internet. In the program's words, "the standard is the protocol, not the box." The data's meaning (its <em>envelope</em>) is kept separate from the exact format it happens to travel in (its <em>wire form</em>).
         </p>
         <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">
-          This design decision is what allowed an SX1302 concentrator, SignalK marine bridges, and TTN (The Things Network) adapters to all join the mesh with absolutely zero protocol changes. The envelope standardizes identity, time, location, and payload, while the exact format it travels in changes to fit each link &mdash; a dense 84-byte packet over radio, plain JSON over the internet, and other formats for specialized receivers.
+          That single decision is what makes OMEGA open: an 8-channel radio receiver, a sailboat's SignalK navigation feed, and The Things Network all joined the mesh with <strong>zero protocol changes</strong> &mdash; they just feed the same ingest contract, and boats and third-party networks instantly become first-class OMEGA stations. The envelope standardizes identity, time, location, and payload, while the format shifts to fit each link: a dense 84-byte packet over radio, plain JSON over the internet, other formats for specialized receivers.
         </p>
       </section>
 
-      <section class="section">
+      <section class="section" id="how-it-works">
         <div class="section-content">
-          <span class="section-kicker">System Architecture</span>
-          <h2>The 4-Layer Architecture.</h2>
+          <span class="section-kicker">How It Works</span>
+          <h2>Follow One Reading, Wave to Screen.</h2>
 
+          <p>The clearest way to understand OMEGA is to follow a single water-temperature reading on its journey &mdash; from a probe bobbing offshore to a 3D globe on someone's laptop. Four layers, each doing exactly one job and handing off cleanly to the next.</p>
 
-          <p>The clearest way to understand OMEGA is to follow one reading on its journey &mdash; from a probe bobbing in the water to a 3D globe on someone's laptop. It passes through four layers, each doing exactly one job and handing off cleanly to the next, so a failure in any one never takes down the others:</p>
-          <p><strong>Layer 1: The Physical / Surface Mesh.</strong> Raw hardware—ESP32 microcontrollers, GPS trackers, and physical probes riding the waves. These devices acquire signals, execute edge ML, and communicate via the Delay Tolerant Network (DTN) over 900MHz LoRa. They have no concept of "the internet" or HTTP. This is the layer with real field evidence.</p>
-          <p><strong>Layer 2: The Mesh Transport.</strong> The Delay Tolerant Network itself, carrying Custom Binary TLV frames with multi-sample batching and CSMA-CA collision avoidance over LoRa.</p>
-          <p><strong>Layer 3: The Gateway Normalizers.</strong> Software routers acting as the vital bridge. They ingest disjointed, highly compressed binary formats (Binary TLV) from the edge and "inflate" them into the globally standard <strong>Envelope Protocol v1.0</strong> (JSON). The gateway normalizes these packets into unified, queryable SQLite WAL records.</p>
+          <p><strong>1 &mdash; A probe takes the reading.</strong> A solar-charged buoy &mdash; an ESP32 microcontroller with GPS and sensors, sipping about 60&nbsp;mA from a single 18650 cell &mdash; samples the water and writes the reading to its own flash <em>first</em>. It never waits on the network: at sea, waiting for a reply that never comes would hang the node, so the firmware makes no blocking network calls at all. Saltwater corrodes contacts, waves physically block radio, winter starves the solar panel &mdash; the firmware is written assuming all of it.</p>
+
+          <p><strong>2 &mdash; The mesh carries it ashore.</strong> The reading is packed into an <strong>84-byte binary frame</strong> (it would be 283 bytes as plain JSON &mdash; a 70% cut), batched with its neighbors, and moved by <strong>store-and-forward</strong>: each node holds data until a real route appears &mdash; a relay on a headland, a passing node acting as a "data mule" &mdash; then hands it off. Urgency picks the radio: a critical alarm goes out instantly over whatever's fastest (cellular, Wi-Fi HaLow), while routine readings wait for the cheap, low-power LoRa link. If every native path fails, frames can even ride foreign open meshes like Meshtastic, under a firmware-enforced airtime guardrail that keeps it legal and polite.</p>
+
+          <p><strong>3 &mdash; The shore gateway makes sense of it.</strong> A Python service on a Raspberry-Pi-class box catches the frame, checks its cryptographic signature, and "inflates" those 84 bytes back into the full standard envelope. It lands in a single-file SQLite database running in write-ahead mode &mdash; bursts of packets can't lock it up, and the entire deployment's data is one file you can copy to a USB stick for a complete backup. The same gateway pulls NOAA buoys, tide gauges, and public marine models into the identical format, so public data and OMEGA's own hardware sit side by side, queryable the same way.</p>
+
+          <p><strong>4 &mdash; The globe shows it.</strong> In the browser, a 3D Earth: scrub time backward, slice the ocean by depth, click any buoy. Real measurements render solid and sharp; forecasts render as soft, flowing particles &mdash; you can always tell them apart at a glance. And the layers protect each other: if the portal goes down the gateway keeps buffering, if the gateway goes down the buoys keep logging to flash. No failure cascades.</p>
+
+          <div class="callout"><strong>Decoupled by design</strong>
+            <p>Each layer only knows about its neighbor. That's why a dead laptop on shore never costs you a night of ocean data &mdash; the buoys and the gateway carry on alone until it returns.</p>
+          </div>
+
           <div class="panel" style="margin-top: 1.5rem; border-left: 4px solid var(--ink-soft);">
             <span class="status-label" style="background: rgba(154,162,177,0.15); color: var(--ink-soft);">Experimental</span>
             <h3 style="margin: 0.5rem 0 0.5rem; color: #fff;">Acoustic / JANUS Bearer (Designed, Not Deployed)</h3>
             <p style="font-size: 0.9rem; color: var(--ink-soft); margin: 0;">A software-defined, JANUS-interop acoustic bearer is scaffolded as an opt-in transport for subsurface relays (~11.5 kHz, under 5 km range, ~80 bps). Unlike the LoRa mesh, gateway, and portal layers, it has <strong>no field evidence</strong>: it has only been exercised in simulation, and no ADCP, sonde, or acoustic-modem hardware has been deployed. It is presented here as a designed extension to the bearer-agnostic envelope, not as built infrastructure.</p>
           </div>
-
-          <div class="panel" style="margin-top: 2rem; border-left: 4px solid var(--accent);">
-            <h3 style="margin: 0 0 0.5rem; color: #fff;">Built solo, in about a month</h3>
-            <p style="font-size: 0.9rem; color: var(--ink-soft); margin: 0;">One person, roughly four weeks, the entire stack &mdash; the buoy firmware, the radio mesh that carries the data, the shore gateway that makes sense of it, the science tools, and the 3D globe you explore it in. Everything on this page was designed and built end to end.</p>
-          </div>
-
-          <p><strong>Layer 4: The Mission Portal.</strong> The 3D Digital Twin consumed by human operators. The portal is entirely decoupled from the hardware layer; it interacts exclusively with the Gateway APIs via standard HTTP/REST and WebSockets.</p>
-          <p>This strict division ensures that if the portal server goes offline, the gateway safely continues buffering telemetry into its WAL database. Conversely, if the gateway loses connection to the internet, the edge nodes continue to safely execute their firmware loops and hold data in their DTN carry buffers without crashing due to network timeouts.</p>
-          <div class="callout"><strong>Decoupled State</strong>
-            <p>This 4-layer division ensures that if the portal server goes offline, the gateway continues buffering telemetry, and if the gateway dies, the edge node continues to operate safely in its firmware loop.</p>
-          </div>
         </div>
         <div class="section-visual" style="max-height: 800px; overflow-y: auto;">
-          <span class="panel-kicker">OMEGA Architecture Diagram</span>
+          <span class="panel-kicker">The Journey, as a Diagram</span>
+          <div class="mermaid">
+            flowchart TD
+                subgraph L1 [Layer 1: Physical / Hardware]
+                    E1(Buoy: T-Beam Supreme / SX1262)
+                    E3(Node: T-Beam 1W / SX1262)
+                    E2(Relay: T3-S3 / LR1121)
+                end
+                subgraph L2 [Layer 2: Mesh Transport]
+                    DTN{DTN: Binary TLV + Batching}
+                end
+                subgraph L3 [Layer 3: Shore Gateway]
+                    USB(USB-CDC / Semtech-UDP Ingest)
+                    ASGI[FastAPI / Envelope Protocol v1.0]
+                end
+                subgraph L4 [Layer 4: Spatial Twin]
+                    UI((3D WebGL Glass Bridge))
+                end
+
+                E1 <-->|LoRa 900MHz| L2
+                E3 <-->|LoRa 900MHz| L2
+                E2 <-->|LoRa 900MHz| L2
+                L2 <-->|LoRa / CSMA-CA| USB
+                USB <-->|JSON Stream| ASGI
+                ASGI <-->|HTTP Long-Polling| UI
+
+                classDef default fill:#0a0f1d,stroke:#9aa2b1,stroke-width:1px,color:#9aa2b1;
+                classDef node fill:#101529,stroke:#3b82f6,stroke-width:2px,color:#fff;
+                class E1,E2,E3,USB,ASGI,UI node;
+          </div>
+          <span class="panel-kicker" style="margin-top: 1.5rem; display: block;">Inside Each Layer</span>
           <pre><code class="language-mermaid">graph TD
     subgraph Layer 1: Surface Mesh
         B0[Sensor Probe] -->|UART| B1[Surface Buoy Relay]
@@ -234,213 +227,44 @@
         </div>
       </section>
 
-      <section class="section">
-        <div class="section-content">
-          <span class="section-kicker">Failure Modeling</span>
-          <h2>Resilient Architectures.</h2>
-          <p>Marine sensors exist in a state of continuous degradation. Batteries drain unexpectedly in cold water,
-            thermoclines bend and absorb acoustic communications, and salt aggressively corrodes IP67 seals. A brittle,
-            tightly coupled architecture will inevitably collapse when a single critical node vanishes from the network.
-          </p>
-          <p><strong>The fix is to never wait.</strong> A phone app assumes a reliable connection: send a request, wait for a reply. At sea that assumption is fatal &mdash; wait for an acknowledgment that never comes and the whole node hangs. So OMEGA's firmware makes <em>no</em> blocking network calls; nothing freezes just because a reply got lost in the radio noise. (This is the idea behind a <strong>Delay Tolerant Network</strong>, or DTN.)</p>
-          <p>Instead, each node saves its readings to on-board flash and sends them only when a real route actually appears &mdash; a passing node acting as a "data mule," or a satellite overhead. This <strong>store-and-forward</strong> approach makes the most of brief connectivity windows to offload the important data, while sipping battery through the long stretches with no signal at all.</p>
+      <section class="section section-block" id="hard-problems" style="background: rgba(0,0,0,0.4);">
+        <span class="section-kicker" style="color: var(--accent);">The Hard Problems</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">What Actually Made This Difficult.</h2>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 820px; line-height: 1.7;">The architecture above reads clean. Getting there wasn't. These are the fights that shaped the design &mdash; each one a real problem, hit in practice, with the fix that shipped.</p>
 
-        </div>
-
-      </section>
-
-    
-
-<section class="section section-block" style="background: rgba(0,0,0,0.4);">
-        <span class="section-kicker">Network Topology</span>
-        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">The 4-Layer Stack.</h2>
-        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">OMEGA is built upon a rigid, decoupled 4-layer architecture. From extreme physical environments at the edge to high-performance data visualization in the cloud, each layer sticks to one job and hands off cleanly to the next.</p>
-        
-        <div class="section-visual" style="margin-bottom: 3rem;">
-          <div class="mermaid">
-            flowchart TD
-                subgraph L1 [Layer 1: Physical / Hardware]
-                    E1(Buoy: T-Beam Supreme / SX1262)
-                    E3(Node: T-Beam 1W / SX1262)
-                    E2(Relay: T3-S3 / LR1121)
-                end
-                subgraph L2 [Layer 2: Mesh Transport]
-                    DTN{DTN: Binary TLV + Batching}
-                end
-                subgraph L3 [Layer 3: Gateway & Broker]
-                    USB(USB-CDC / Semtech-UDP Ingest)
-                    ASGI[FastAPI / Federated Broker]
-                end
-                subgraph L4 [Layer 4: Spatial Twin]
-                    UI((3D WebGL Glass Bridge))
-                end
-
-                E1 <-->|LoRa 900MHz| L2
-                E3 <-->|LoRa 900MHz| L2
-                E2 <-->|LoRa 900MHz| L2
-                L2 <-->|LoRa / CSMA-CA| USB
-                USB <-->|JSON Stream| ASGI
-                ASGI <-->|HTTP Long-Polling| UI
-
-                classDef default fill:#0a0f1d,stroke:#9aa2b1,stroke-width:1px,color:#9aa2b1;
-                classDef node fill:#101529,stroke:#3b82f6,stroke-width:2px,color:#fff;
-                class E1,E2,E3,USB,ASGI,UI node;
-          </div>
-        </div>
-
-        <div class="grid-3" style="margin-bottom: 2rem;">
-          <div class="panel" style="padding: 1.5rem;">
-            <span class="status-label status-implemented">Layer 1</span>
-            <h3 style="font-size: 1.2rem;">Physical / Hardware</h3>
-            <p style="font-size: 0.85rem;">Edge Nodes, T-Beam Supremes, and LR1121 modules operating in cross-family synchronization. The T-Beam 1W adds a +30&nbsp;dBm-capable amp (run conservatively at +20&nbsp;dBm) with a cooling fan for proactive PA thermal management.</p>
-          </div>
-          <div class="panel" style="padding: 1.5rem;">
-            <span class="status-label status-implemented">Layer 2</span>
-            <h3 style="font-size: 1.2rem;">Mesh Transport</h3>
-            <p style="font-size: 0.85rem;">Delay Tolerant Network (DTN) running a Custom Binary TLV protocol. Features lossless predictive coding, multi-sample batching, and CSMA-CA collision avoidance over LoRa.</p>
-          </div>
-          <div class="panel" style="padding: 1.5rem;">
-            <span class="status-label status-implemented">Layer 3</span>
-            <h3 style="font-size: 1.2rem;">Federated Data Broker</h3>
-            <p style="font-size: 0.85rem;">A Python service on a small Linux board (think Raspberry Pi) that catches the incoming frames, translates them into the standard envelope, and stores them in a single-file SQLite database. Heavy satellite and map data is pre-fetched and cached so the 3D globe stays snappy.</p>
-          </div>
-          <div class="panel" style="padding: 1.5rem;">
-            <span class="status-label status-implemented">Layer 4</span>
-            <h3 style="font-size: 1.2rem;">Spatial Digital Twin</h3>
-            <p style="font-size: 0.85rem;">The 3D globe where operators explore the fleet's data, plotting each reading by location, depth, and time. It runs independently of the hardware, so the two never take each other down.</p>
-          </div>
-        </div>
-      </section>
-
-      <section class="section">
-        <div class="section-content">
-          <span class="section-kicker">Layer 1: Physical</span>
-          <h2>Cross-Family Hardware Interoperability.</h2>
-          <p><strong>The hard part:</strong> OMEGA's fleet mixes two different radio chips &mdash; the Semtech SX1262 (on the sensor buoys) and the LR1121 (on the relays). In theory they speak the same LoRa "language"; in practice the two chips default to subtly different settings, and getting them to actually hear each other was a genuine fight.</p>
-          <p><strong>Execution:</strong> Out of the box, the SX1262 and LR1121 nodes could not hear each other at all &mdash; the cross-family link decoded 0% of frames because of mismatched sync-word, CRC, LDRO, and IQ-inversion settings. By enforcing a <code>PUBLIC 0x34</code> Sync Word, disabling Low Data Rate Optimization (<code>forceLDRO(false)</code>), and aligning CRC and IQ-inversion across both radio families, the link was raised from non-functional to a working link decoding roughly half of frames (~50% measured) in bench testing. Closing the remaining gap is ongoing work.</p>
-        </div>
-      </section>
-
-      <section class="section">
-        <div class="section-content">
-          <span class="section-kicker">Layer 2: Transport</span>
-          <h2>Two-Way Messaging, and Choosing the Right Radio.</h2>
-          <p>Standard IoT relies on persistent MQTT or HTTP connections. Over the ocean, those connections do not exist. OMEGA operates a <strong>Delay Tolerant Network (DTN)</strong> utilizing a Custom Binary TLV Protocol that crushes a 283B JSON payload into a highly dense 84B frame.</p>
-          <p><strong>Picking the right radio for the moment:</strong> a node often has more than one way to phone home &mdash; LoRa, Wi-Fi HaLow, cellular. Rather than hard-wiring one, OMEGA chooses based on urgency: a critical alarm goes out instantly over whatever's fastest, while routine bulk readings wait for the cheap, low-power LoRa link.</p>
-          <p><strong>Foreign-Mesh Last Resort:</strong> When OMEGA's native bearers fail, the network can route envelopes over foreign open meshes (like Meshtastic). To ensure legal compliance and protect shared airtime, a strict, firmware-enforced duty-cycle guardrail governs exactly how much traffic is permitted over these external channels.</p>
-        </div>
-      </section>
-
-      <section class="section">
-        <div class="section-content">
-          <span class="section-kicker">Layer 3: Gateway</span>
-          <h2>The Shore Gateway, Defined by a Format, Not a Box.</h2>
-          <p>The OMEGA Gateway acts as the translation boundary between the physical RF mesh and the 3D Digital Twin. Crucially, the gateway is defined by a <strong>protocol contract</strong>, not a physical hardware box. Any community member can safely deploy their own gateway that simply captures raw frames and forwards them via IP.</p>
-          <p><strong>Universal Ingest:</strong> The network layer handles all deduplication and identity resolution centrally. The gateway accepts observations from an array of heterogeneous networks—including a native SignalK bridge for cruising vessels, TTN/LoRaWAN integrations, and the SX1302 concentrator. They all feed into the same unified <code>/v1/ingest/frame</code> contract, instantly turning boats and third-party meshes into first-class OMEGA stations.</p>
-          <p><strong>High-Throughput Caching & IO:</strong> To keep the 3D globe fast, the gateway pre-fetches heavy map and satellite imagery and stores it in a form built for quick loading. Furthermore, to prevent database locking when edge nodes are spamming telemetry, the backend enforces <strong>Write-Ahead Logging (WAL)</strong> on its SQLite storage, completely decoupling read/write locks.</p>
-        </div>
-      </section>
-
-<section class="section section-block" style="background: rgba(0,0,0,0.4);">
-        <span class="section-kicker">Language Choice</span>
-        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Why Python over Go or Rust?</h2>
-        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">For an extreme-scale telemetry gateway handling raw binary bytes over UART, high-performance compiled languages like Rust or Go seem like the obvious choice. So why does OMEGA run on Python?</p>
-        
         <div class="grid-2" style="margin-bottom: 2rem;">
           <div class="panel" style="padding: 1.5rem;">
-            <span class="status-label status-implemented">The Trade-off</span>
-            <h3 style="font-size: 1.2rem;">Speed vs Science</h3>
-            <p style="font-size: 0.85rem;">Python is mathematically slower than C++ or Rust due to its Global Interpreter Lock (GIL). However, the target audience for OMEGA isn't elite backend software engineers—it's marine biologists, climatologists, and university researchers. By writing the entire gateway in Python, researchers can natively inject <code>pandas</code>, <code>scipy</code>, and <code>numpy</code> models directly into the pipeline without needing to learn a low-level systems language.</p>
+            <span class="status-label status-partial">Radio</span>
+            <h3 style="font-size: 1.2rem;">Two Radios, Total Silence</h3>
+            <p style="font-size: 0.85rem;"><strong>The problem:</strong> the buoys use one LoRa chip (Semtech SX1262), the relays a newer one (LR1121). On paper they speak the same language; out of the box they decoded <strong>0%</strong> of each other's frames &mdash; the chips default to subtly different sync words, checksums, and signal-inversion settings, and any one mismatch means dead air. <strong>The fix:</strong> force every radio onto the public <code>0x34</code> sync word, disable Low Data Rate Optimization, and align CRC and IQ-inversion across both chip families. That took the link from nothing to ~50% of frames decoding on the bench &mdash; honestly a working link, not a solved problem; closing the gap is ongoing.</p>
           </div>
           <div class="panel" style="padding: 1.5rem;">
-            <span class="status-label status-implemented">The Mitigation</span>
-            <h3 style="font-size: 1.2rem;">FastAPI & ASGI</h3>
-            <p style="font-size: 0.85rem;">To offset Python's speed penalty, the Gateway is built entirely on FastAPI and the <code>asyncio</code> event loop. By strictly enforcing non-blocking I/O operations (using <code>await</code> for all database queries and HTTP requests), the Gateway achieves concurrency levels more than adequate for handling thousands of 50-baud LoRa packets.</p>
+            <span class="status-label status-implemented">Bandwidth</span>
+            <h3 style="font-size: 1.2rem;">Fitting the Ocean Into 84 Bytes</h3>
+            <p style="font-size: 0.85rem;"><strong>The problem:</strong> a marine radio link trickles a few hundred bits per second, and the law limits how long you may transmit. A reading as ordinary JSON is 283 bytes &mdash; too fat to send every few seconds. <strong>The fix:</strong> a custom binary format that carries the same reading in <strong>84 bytes</strong>, plus batching that sends the first value in full and then only each tiny <em>change</em> from reading to reading &mdash; rebuilt losslessly on shore. Same science, a fraction of the airtime.</p>
+          </div>
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">Trust</span>
+            <h3 style="font-size: 1.2rem;">Signing Numbers Two Computers Agree On</h3>
+            <p style="font-size: 0.85rem;"><strong>The problem:</strong> to sign a reading, sender and verifier must produce byte-identical text &mdash; but decimals break that. Python writes a coordinate as <code>1e-07</code>, JavaScript as <code>0.0000001</code>: same number, different bytes, signature dead. <strong>The fix:</strong> ban decimals from the signed form entirely. Time in whole seconds, position in millionths of a degree, depth in millimeters &mdash; whole numbers only, reproduced identically by a $30 microcontroller and a cloud server. Full story in the <a href="#trust-model" style="color: var(--accent);">trust model below</a>.</p>
+          </div>
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">Survival</span>
+            <h3 style="font-size: 1.2rem;">Nothing Is Allowed to Wait</h3>
+            <p style="font-size: 0.85rem;"><strong>The problem:</strong> normal networking assumes a reply is coming. At sea, batteries die in cold water, waves eat radio signals, and salt corrodes seals &mdash; nodes <em>will</em> vanish mid-conversation, and any code waiting on them hangs forever. <strong>The fix:</strong> a Delay Tolerant Network. No blocking calls anywhere in the firmware; every reading is safe in flash before any transmission is attempted; data moves only when a route genuinely exists. Brief connectivity windows get fully used, and the long silent stretches cost nothing but patience.</p>
           </div>
         </div>
-      </section>
 
-      <section class="section section-block" style="background: rgba(0,0,0,0.4); margin-top: 2rem;">
-        <span class="section-kicker">Database Choice</span>
-        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Why SQLite over PostgreSQL?</h2>
-        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">Conventional wisdom says a serious backend needs a "real" database server (like PostgreSQL) running in its own container. OMEGA deliberately uses a single SQLite file instead &mdash; here's why that's the safer bet at sea.</p>
-        <p style="color: var(--ink-soft); font-size: 1rem; line-height: 1.6; max-width: 800px;">
-          <strong>The Constraint:</strong> The central Federated Data Broker is often deployed on an embedded Linux SBC (e.g., Raspberry Pi 5) operating on a constantly pitching vessel in a highly corrosive marine environment. Power is frequently lost without warning when waves crash over solar panels. SD cards in these environments are notorious for catastrophic sector corruption under heavy write loads or sudden power loss.
-          <br><br>
-          <strong>The Decision:</strong> Running a heavy Docker daemon with a PostgreSQL volume is a massive operational risk on a fragile SD card. SQLite compiles directly into the Python process, eliminating the daemon dependency. A SQLite database is a single, physical <code>.db</code> file on the filesystem. This means field operators can literally unplug a USB stick, copy <code>omega.db</code>, and instantly have a 100% complete, air-gapped backup of their entire deployment. By enabling Write-Ahead Logging (<code>PRAGMA journal_mode=WAL</code>), we bypass SQLite's concurrent locking limitations, achieving the safety of a flat file with the speed of a networked database.
-        </p>
-      </section>
-
-      <section class="section section-block" style="background: rgba(0,0,0,0.4); margin-top: 2rem;">
-        <span class="section-kicker">Frontend Choice</span>
-        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Why a 3D WebGL Digital Twin?</h2>
-        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">A normal web map (like Leaflet) draws every dot as its own little web-page element. That's fine for a handful of pins &mdash; but pile on thousands of historical readings and the browser grinds to a halt. The fix is to render the map the way a video game does: hand all the points to the graphics card (the GPU) at once.</p>
-        
-        <div class="section-visual" style="padding: 1.5rem;">
-            <div class="mermaid">
-            graph LR
-                subgraph DOM Rendering
-                    L[Leaflet.js] -->|Generates| D1[SVG Node 1]
-                    L -->|Generates| D2[SVG Node N]
-                    D2 --> Crash[Browser Bogs Down]
-                end
-                subgraph GPU Rendering
-                    R[React State] -->|Array Buffer| W[CesiumJS / WebGL]
-                    W -->|Direct Write| G[GPU Canvas]
-                    G --> Fast[Render-On-Change]
-                end
-
-                classDef bad fill:#3f1010,stroke:#ef4444,stroke-width:2px,color:#fff;
-                classDef good fill:#101529,stroke:#3b82f6,stroke-width:2px,color:#fff;
-                class Crash bad;
-                class Fast good;
-            </div>
-        </div>
-        
-        <p style="color: var(--ink-soft); font-size: 1rem; line-height: 1.6; max-width: 800px;">
-          <strong>The Decision:</strong> The 3D Glass Bridge is built explicitly to manage the high-frequency state updates pumping through the WebSocket firehose. For geospatial rendering, we abandoned DOM-based SVGs and adopted a self-hosted <strong>CesiumJS</strong> 3D globe that bypasses the browser's DOM, passing coordinate buffers directly into the GPU via WebGL. To keep a laptop responsive it uses <strong>on-demand rendering</strong> (render-on-change rather than a fixed frame loop) and time-stepped overlays for 4D temporal playback.
-          <br><br>
-          <strong>Honest status:</strong> the 3D digital twin (DTO v3) is <strong>partial and in-flight</strong> &mdash; first load is currently on the order of 30&ndash;60 seconds. Pushing into the millions-of-points regime via a Deck.gl layer is a roadmap goal, not shipped today.
-        </p>
-
-        <div class="section-visual" style="max-height: 800px; overflow-y: auto;">
-          <span class="panel-kicker">Roadmap: Deck.gl Point Layer Sketch</span>
-          <pre><code class="language-javascript">import { DeckGL } from '@deck.gl/react';
-import { ScatterplotLayer } from '@deck.gl/layers';
-
-// Roadmap sketch: a GPU point layer for dense historical telemetry
-function TelemetryMap({ data }) {
-  const layer = new ScatterplotLayer({
-    id: 'telemetry-layer',
-    data,
-    // WebGL bypasses the DOM and injects directly to the GPU
-    getPosition: d => [d.longitude, d.latitude],
-    getFillColor: d => {
-      // Color map based on raw temperature
-      if (d.temperature > 25) return [239, 68, 68]; // Red
-      return [59, 130, 246]; // Blue
-    },
-    getRadius: d => 10,
-    radiusUnits: 'pixels',
-    pickable: true
-  });
-
-  return (
-    &lt;DeckGL
-      initialViewState={{ longitude: -157, latitude: 21, zoom: 6 }}
-      controller={true}
-      layers={[layer]}
-    /&gt;
-  );
-}</code></pre>
+        <div class="callout"><strong>More war stories</strong>
+          <p>The relay that transmitted perfectly but never received (fixed by one line), the route-planner that sent a boat 13,000 miles the wrong way around the planet, the map that hung because the browser ran out of connections &mdash; each is written up honestly in the <a href="/engineering-journal.html" style="color: var(--accent);">Engineering Journal &rarr;</a></p>
         </div>
       </section>
 
-      <section class="section section-block" style="background: rgba(0,0,0,0.4); margin-top: 2rem;">
+      <section class="section section-block" id="trust-model" style="background: rgba(0,0,0,0.4); margin-top: 2rem;">
         <span class="section-kicker">Trust Model</span>
         <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Only Real Measurements, Each One Signed.</h2>
         <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">An ocean instrument that conflates a forecast with a measurement is scientifically useless. OMEGA enforces an "Absolute Data Purity" rule: the live map shows <strong>only</strong> real, deployed hardware and real measurements. Missing data renders as an honest gap, never quietly filled in with a forecast. And so nobody can slip fake readings into the network, each measurement is cryptographically <strong>signed</strong> at the source &mdash; a tamper-proof seal that travels with the data.</p>
-        
+
         <div class="grid-2" style="margin-bottom: 2rem;">
           <div class="panel" style="padding: 1.5rem;">
             <span class="status-label status-implemented">The Problem</span>
@@ -481,6 +305,95 @@ function TelemetryMap({ data }) {
       </section>
 
       <section class="section section-block" style="background: rgba(0,0,0,0.4); margin-top: 2rem;">
+        <span class="section-kicker">Design Decisions</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Why Python over Go or Rust?</h2>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">For a telemetry gateway handling raw binary bytes, compiled languages like Rust or Go seem like the obvious choice. So why does OMEGA run on Python?</p>
+
+        <div class="grid-2" style="margin-bottom: 2rem;">
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">The Trade-off</span>
+            <h3 style="font-size: 1.2rem;">Speed vs Science</h3>
+            <p style="font-size: 0.85rem;">Python is slower than C++ or Rust. But OMEGA's target audience isn't backend engineers &mdash; it's marine biologists, climatologists, and university researchers. With the entire gateway in Python, researchers can plug <code>pandas</code>, <code>scipy</code>, and <code>numpy</code> models directly into the pipeline without learning a systems language. The network exists <em>for</em> them; the language choice follows.</p>
+          </div>
+          <div class="panel" style="padding: 1.5rem;">
+            <span class="status-label status-implemented">The Mitigation</span>
+            <h3 style="font-size: 1.2rem;">Async Everywhere</h3>
+            <p style="font-size: 0.85rem;">To offset the speed penalty, the gateway is built on FastAPI and Python's <code>asyncio</code> event loop, with strictly non-blocking I/O &mdash; every database query and web request yields instead of stalling. For a network whose radios deliver bytes at a trickle, that concurrency is more than enough.</p>
+          </div>
+        </div>
+
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 2rem 0 1rem;">Why SQLite over PostgreSQL?</h2>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">Conventional wisdom says a serious backend needs a "real" database server running in its own container. OMEGA deliberately uses a single SQLite file instead &mdash; here's why that's the safer bet at sea.</p>
+        <p style="color: var(--ink-soft); font-size: 1rem; line-height: 1.6; max-width: 800px;">
+          <strong>The Constraint:</strong> the gateway often runs on a Raspberry-Pi-class board on a pitching vessel, where waves over the solar panel can cut power without warning &mdash; and SD cards are notorious for corrupting under exactly that abuse.
+          <br><br>
+          <strong>The Decision:</strong> a Docker daemon with a PostgreSQL volume is a lot of moving machinery to trust to a fragile SD card. SQLite compiles directly into the Python process &mdash; no daemon at all &mdash; and the whole database is one physical <code>.db</code> file, so a field operator can copy <code>omega.db</code> to a USB stick and hold a complete, air-gapped backup of the entire deployment. Write-ahead mode (<code>PRAGMA journal_mode=WAL</code>) removes SQLite's classic locking limits: the safety of a flat file with the speed of a networked database.
+        </p>
+
+        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 2rem 0 1rem;">Why a 3D Globe on the GPU?</h2>
+        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">A normal web map (like Leaflet) draws every dot as its own little web-page element. That's fine for a handful of pins &mdash; but pile on thousands of historical readings and the browser grinds to a halt. The fix is to render the map the way a video game does: hand all the points to the graphics card (the GPU) at once.</p>
+
+        <div class="section-visual" style="padding: 1.5rem;">
+            <div class="mermaid">
+            graph LR
+                subgraph DOM Rendering
+                    L[Leaflet.js] -->|Generates| D1[SVG Node 1]
+                    L -->|Generates| D2[SVG Node N]
+                    D2 --> Crash[Browser Bogs Down]
+                end
+                subgraph GPU Rendering
+                    R[React State] -->|Array Buffer| W[CesiumJS / WebGL]
+                    W -->|Direct Write| G[GPU Canvas]
+                    G --> Fast[Render-On-Change]
+                end
+
+                classDef bad fill:#3f1010,stroke:#ef4444,stroke-width:2px,color:#fff;
+                classDef good fill:#101529,stroke:#3b82f6,stroke-width:2px,color:#fff;
+                class Crash bad;
+                class Fast good;
+            </div>
+        </div>
+
+        <p style="color: var(--ink-soft); font-size: 1rem; line-height: 1.6; max-width: 800px;">
+          <strong>The Decision:</strong> the portal uses a self-hosted <strong>CesiumJS</strong> 3D globe that bypasses the browser's DOM, passing coordinate buffers directly to the GPU via WebGL. To keep a laptop responsive it renders on-change rather than in a fixed loop, with time-stepped overlays for playing history back.
+          <br><br>
+          <strong>Honest status:</strong> the 3D digital twin (DTO v3) is <strong>partial and in-flight</strong> &mdash; first load is currently on the order of 30&ndash;60 seconds. Pushing into the millions-of-points regime via a Deck.gl layer is a roadmap goal, not shipped today.
+        </p>
+
+        <div class="section-visual" style="max-height: 800px; overflow-y: auto;">
+          <span class="panel-kicker">Roadmap: Deck.gl Point Layer Sketch</span>
+          <pre><code class="language-javascript">import { DeckGL } from '@deck.gl/react';
+import { ScatterplotLayer } from '@deck.gl/layers';
+
+// Roadmap sketch: a GPU point layer for dense historical telemetry
+function TelemetryMap({ data }) {
+  const layer = new ScatterplotLayer({
+    id: 'telemetry-layer',
+    data,
+    // WebGL bypasses the DOM and injects directly to the GPU
+    getPosition: d => [d.longitude, d.latitude],
+    getFillColor: d => {
+      // Color map based on raw temperature
+      if (d.temperature > 25) return [239, 68, 68]; // Red
+      return [59, 130, 246]; // Blue
+    },
+    getRadius: d => 10,
+    radiusUnits: 'pixels',
+    pickable: true
+  });
+
+  return (
+    &lt;DeckGL
+      initialViewState={{ longitude: -157, latitude: 21, zoom: 6 }}
+      controller={true}
+      layers={[layer]}
+    /&gt;
+  );
+}</code></pre>
+        </div>
+      </section>
+
+      <section class="section section-block" style="background: rgba(0,0,0,0.4); margin-top: 2rem;">
         <span class="section-kicker">Operator Self-Service</span>
         <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Let Operators Add Their Own Formulas, Safely.</h2>
         <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">Operators frequently need custom derived metrics (e.g., dewpoint, heat index, density) calculated on the fly without writing backend code. The naive approach is running Python's <code>eval()</code> on the server, which is a massive code-injection vulnerability on a public gateway.</p>
@@ -496,6 +409,11 @@ function TelemetryMap({ data }) {
 
         <div class="callout"><strong>Honest Gaps</strong>
           <p>Multi-hop mesh <strong>routing</strong> is implemented but <strong>not yet field-demonstrated</strong>; cross-family RF interop is a working ~50% link rather than a solved problem; firmware field-hardening is written but unflashed; and the 3D twin is partial. The single-hop LoRa link, the gateway, and the portal are where the real field evidence lives.</p>
+        </div>
+
+        <div class="hero-actions" style="margin-top: 2rem;">
+          <a class="btn btn-primary" href="/hardware.html">Next: The Hardware &amp; Mesh &rarr;</a>
+          <a class="btn btn-secondary" href="/engineering-journal.html">Read the Engineering Journal</a>
         </div>
       </section>
 </div>
