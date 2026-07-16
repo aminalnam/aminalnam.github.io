@@ -36,15 +36,16 @@ This repo is **Jonathan Capone's portfolio website** (jonathancapone.com). Read 
 
 1. **Accuracy is sacred.** Every claim, metric, and feature must match the project's **actual GitHub repo / source code** — *not* the markdown docs, which lag. Verify with `gh repo clone` / `gh api`. If you can't verify it, **omit it**. Never fabricate a number or a feature. This site was explicitly purged of invented metrics once; don't reintroduce any.
 2. **Honest framing, no fluff.** No marketing superlatives ("cutting-edge", "revolutionary", "seamless", "powerful", "leverage"). Say what a thing *does* and *why it matters*.
-3. **Meaningful over vanity.** Don't headline lines-of-code, commit counts, or "hardware targets" — they're meaningless to a reader. Prefer real validation and capability (e.g. "0.97 correlation with NOAA buoys", "runs offline for days at sea").
-4. **Plain-language voice.** For any feature: a plain hook → how it works in human terms → the hard part & how it was solved. **Define jargon the first time it appears.** A smart non-specialist should understand it; a technical reader should still respect it.
-5. **Status must be truthful.** Use the status labels to distinguish shipped vs designed. The only CSS classes that exist are:
+3. **Meaningful over vanity.** Don't headline lines-of-code, commit counts, or "hardware targets" — they're meaningless to a reader. Prefer real validation and capability (e.g. "0.97 correlation with NOAA buoys", "runs offline for days at sea") — explained in context, never as bare stat tiles.
+4. **Never sell build speed.** Do not pitch "built in ~4 weeks / about a month / X days" anywhere — fast reads as rushed, not impressive (Jonathan's explicit rule). Depth of ownership is fine ("one engineer designed and built every layer, end to end"); duration is not.
+5. **Plain-language voice.** For any feature: a plain hook → how it works in human terms → the hard part & how it was solved. **Define jargon the first time it appears.** A smart non-specialist should understand it; a technical reader should still respect it.
+6. **Status must be truthful.** Use the status labels to distinguish shipped vs designed. The only CSS classes that exist are:
    - `status-implemented` — shipped / working
    - `status-partial` — partly built / in development
    - `status-planned` — designed / roadmap / not built yet
    (There is **no** `status-in-progress`.) Muted "planned" inline style: `background: rgba(154,162,177,0.15); color: var(--ink-soft);`
-6. **No LinkedIn** anywhere (Jonathan doesn't use it).
-7. **Do not re-add the "63/100 readiness audit"** — it was removed deliberately. The factual "honest gaps" caveats (kept without any score) are fine.
+7. **No LinkedIn** anywhere (Jonathan doesn't use it).
+8. **Do not re-add the "63/100 readiness audit"** — it was removed deliberately. The factual "honest gaps" caveats (kept without any score) are fine.
 
 ---
 
