@@ -216,24 +216,15 @@
         <h2 style="font-family: var(--font-serif); font-size: 2.2rem; margin: 0 0 1.5rem;">The Journey, End to End.</h2>
         <div class="mermaid">
           flowchart LR
-              E1(Buoy<br/>T-Beam Supreme)
-              E3(Node<br/>T-Beam 1W)
-              E2(Relay<br/>T3-S3 / LR1121)
-              DTN{Mesh<br/>binary TLV + batching}
-              USB(Ingest<br/>USB-CDC / Semtech-UDP)
-              ASGI[Gateway<br/>envelope v1.0]
-              UI((3D globe))
-
-              E1 <-->|LoRa| DTN
-              E3 <-->|LoRa| DTN
-              E2 <-->|LoRa| DTN
-              DTN <-->|CSMA-CA| USB
-              USB <-->|JSON| ASGI
-              ASGI <-->|HTTP| UI
+              E1(Buoy) -->|LoRa| DTN
+              E3(Node) -->|LoRa| DTN
+              E2(Relay) -->|LoRa| DTN
+              DTN{Mesh<br/>84-byte frames} -->|CSMA-CA| GW
+              GW[Shore gateway<br/>verify · store] -->|HTTP| UI((3D globe))
 
               classDef default fill:#0a0f1d,stroke:#9aa2b1,stroke-width:1px,color:#9aa2b1;
               classDef node fill:#101529,stroke:#3b82f6,stroke-width:2px,color:#fff;
-              class E1,E2,E3,USB,ASGI,UI node;
+              class E1,E2,E3,GW,UI node;
         </div>
       </section>
 
@@ -346,8 +337,8 @@
         <div class="section-visual" style="padding: 1.5rem;">
             <div class="mermaid">
             graph LR
-                L[Leaflet.js] -->|one SVG node per point| D[Thousands of DOM nodes] --> Crash[Browser bogs down]
-                R[React state] -->|array buffer| W[CesiumJS / WebGL] --> G[GPU canvas] --> Fast[Render-on-change]
+                L[Leaflet.js] -->|a node per point| D[Thousands<br/>of DOM nodes] --> Crash[Browser<br/>bogs down]
+                R[React state] -->|array buffer| W[WebGL] --> G[GPU canvas] --> Fast[Render<br/>on change]
 
                 classDef default fill:#0a0f1d,stroke:#9aa2b1,stroke-width:1px,color:#9aa2b1;
                 classDef bad fill:#3f1010,stroke:#ef4444,stroke-width:2px,color:#fff;
