@@ -281,7 +281,7 @@
           <pre><code class="language-python">def decode_mesh_frame(packet_bytes: bytes) -> dict[str, Any]:
     # 1. Parse the 11-byte OMEGA Binary Routing Header
     version, origin_id, dest_id, hops, frame_type, sequence = struct.unpack(
-        "<BHHBBII", packet_bytes[:11]
+        "&lt;BHHBBII", packet_bytes[:11]
     )
 
     payload = {"origin": NODE_ID_REGISTRY.get(origin_id, "urn:OA:node:unknown"),
@@ -289,7 +289,7 @@
 
     # 2. Extract Phase 1-4 Binary TLVs
     offset = 11
-    while offset < len(packet_bytes):
+    while offset &lt; len(packet_bytes):
         tlv_type = packet_bytes[offset]
         length = packet_bytes[offset + 1]
         value = packet_bytes[offset + 2 : offset + 2 + length]
