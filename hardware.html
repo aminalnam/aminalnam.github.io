@@ -92,8 +92,8 @@
 
   <section class="hero wrap">
     <span class="eyebrow">Physical Layer</span>
-    <h1>Hardware & Mesh.</h1>
-        <p>A rugged ocean radio fleet built entirely from off-the-shelf hobbyist parts &mdash; the same ESP32 boards and LoRa radios anyone can buy. The proof is real: 205 radio frames caught out of the air with their signal strength measured as they landed, and a planet-scale atmospheric tide resolved by a $50 barometer. Below: the receipts first, then how a reading travels ashore, then the fights that made it work &mdash; a relay that transmitted but never received, two radio chip families that wouldn't speak, and a power budget measured in milliamps.</p>
+    <h1>Ocean Sensors That Get Their Data Home.</h1>
+        <p>OMEGA's buoys sit out at sea where there's no cell signal and no Wi-Fi, taking ocean readings &mdash; temperature, pressure, position &mdash; and passing them buoy-to-buoy over radio until they reach a station on shore, so the researchers who need that data can actually get it. The fleet is built entirely from off-the-shelf hobbyist parts &mdash; the same ESP32 boards and LoRa radios anyone can buy. The proof is real: 205 radio frames caught out of the air with their signal strength measured as they landed, and a planet-scale atmospheric tide resolved by a $50 barometer. Below: the receipts first, then how a reading travels ashore, then the fights that made it work &mdash; a relay that transmitted but never received, two radio chip families that wouldn't speak, and a power budget measured in milliamps.</p>
     <div class="hero-actions">
       <a class="btn btn-primary" href="#receipts">See the Proof</a>
       <a class="btn btn-secondary" href="#hard-problems">The Hard Problems</a>
@@ -156,13 +156,13 @@
           <h2>How a Reading Travels.</h2>
           <p>The clearest way to understand the mesh is to follow one reading from the water to the shore database. Six steps, each shaped by a real constraint &mdash; of the ocean, of the battery, or of radio law.</p>
 
-          <p><strong>1 &mdash; Sample.</strong> A sensor node gathers localized environmental data &mdash; say, a temperature reading every 3 seconds. Sent naively as one packet per reading over a low-bandwidth LoRa link, that stream would drown in its own packet headers: catastrophic overhead, regulatory duty-cycle violations (the law caps how long a radio may occupy the air), and massive battery drain.</p>
+          <p><strong>1 &mdash; Sample.</strong> A sensor node gathers localized environmental data &mdash; say, a temperature reading every 3 seconds. Sent naively as one packet per reading over a low-bandwidth LoRa link, that stream would drown in its own packet headers: runaway overhead, regulatory duty-cycle violations (the law caps how long a radio may occupy the air), and heavy battery drain.</p>
 
-          <p><strong>2 &mdash; Shrink it: send the change, not the whole number.</strong> Ocean readings drift slowly &mdash; the temperature a few seconds from now is very close to the last one. So the node collects a batch of readings, sends the first one in full, then sends only the tiny difference from each reading to the next (a few bits each instead of a full 32). The gateway adds the differences back up to rebuild the exact original series &mdash; nothing lost, but far fewer bytes over the air. (<a href="#predictive-coding" style="color: var(--accent);">The full encoder is below</a>.)</p>
+          <p><strong>2 &mdash; Shrink it: send the change, not the whole number.</strong> Ocean readings drift slowly &mdash; the temperature a few seconds from now is very close to the last one. So the node collects a batch of readings, sends the first one in full, then sends only the tiny difference from each reading to the next (a few bits each instead of a full 32). The gateway adds the differences back up to rebuild the exact original series &mdash; nothing lost, but far fewer bytes over the air. (<a href="#predictive-coding" style="color: var(--accent);">How the encoder works, below</a>.)</p>
 
           <p><strong>3 &mdash; Listen before transmitting.</strong> Before the node fires anything, it listens to make sure the channel is clear &mdash; the same "wait for a gap" courtesy your Wi-Fi uses. (<a href="#csma-ca" style="color: var(--accent);">How that works in silicon, below</a>.)</p>
 
-          <p><strong>4 &mdash; If the air is jammed, store and wait.</strong> Buoys drift into RF dead zones, pass behind massive waves, or suffer atmospheric interference &mdash; and blindly transmitting into a network blackout loses the data permanently. So that no reading is ever lost, when the node detects a failed transmission (via missing LoRaWAN ACKs &mdash; acknowledgment replies &mdash; or CSMA-CA channel jamming), the Phase 2 firmware doesn't drop the reading: it saves the compressed reading to its on-board SD card buffer and holds on. The node can survive offline for weeks, quietly accumulating environmental history.</p>
+          <p><strong>4 &mdash; If the air is jammed, store and wait.</strong> Buoys drift into RF dead zones, pass behind large swells, or suffer atmospheric interference &mdash; and blindly transmitting into a network blackout loses the data permanently. So that no reading is ever lost, when the node detects a failed transmission (via missing LoRaWAN ACKs &mdash; acknowledgment replies &mdash; or CSMA-CA channel jamming), the Phase 2 firmware doesn't drop the reading: it saves the compressed reading to its on-board SD card buffer and holds on. The node can survive offline for weeks, quietly accumulating environmental history.</p>
 
           <p><strong>5 &mdash; Bulk transfer ashore.</strong> Once a connection to the mesh is re-established (proven by receiving a network heartbeat from a passing LR1121 relay or the T-ETH-ELITE), the node automatically flushes its SD-card buffer, sequentially replaying its queue and reconstructing the historical timeline within the Federated Data Broker &mdash; the central database on shore.</p>
 
@@ -190,13 +190,13 @@
           </div>
           <div class="panel" style="padding: 1.5rem; border-left: 4px solid var(--accent);">
             <h3 style="font-size: 1.2rem;">Fitting the Ocean Into Legal Airtime</h3>
-            <p style="font-size: 0.85rem;"><strong>The problem:</strong> transmitting raw JSON over a 900MHz LoRa link is catastrophic. At 1200bps, a standard 283-byte JSON telemetry envelope would exceed the strict LoRa airtime regulations (duty cycle) and cause massive packet collisions across the fleet. <strong>The fix:</strong> replace JSON on the air entirely with a custom versioned <strong>Mesh Binary TLV (Type-Length-Value) protocol</strong>. By utilizing bit-packed fields and custom scaling (e.g., deci-Celsius, milligees), a full Sensor + GPS + Health frame is crushed from 283 bytes down to just 84 bytes (a 70% savings). This outperforms even standard CBOR and Protobuf on the wire, ensuring massive Time-on-Air (ToA) reductions, extending battery life, and creating the necessary headroom for Store-Carry-Forward operations. <a href="#dual-layer" style="color: var(--accent);">Protocol details below &rarr;</a></p>
+            <p style="font-size: 0.85rem;"><strong>The problem:</strong> raw JSON simply doesn't fit over a 900MHz LoRa link. At 1200bps, a standard 283-byte JSON telemetry envelope would exceed the strict LoRa airtime regulations (duty cycle) and cause packet collisions across the fleet. <strong>The fix:</strong> replace JSON on the air entirely with a custom versioned <strong>Mesh Binary TLV (Type-Length-Value) protocol</strong>. By utilizing bit-packed fields and custom scaling (e.g., deci-Celsius, milligees), a full Sensor + GPS + Health frame is crushed from 283 bytes down to just 84 bytes (a 70% savings). This beats even standard CBOR and Protobuf on the wire, cutting Time-on-Air (ToA) sharply, extending battery life, and creating the necessary headroom for Store-Carry-Forward operations. <a href="#dual-layer" style="color: var(--accent);">Protocol details below &rarr;</a></p>
           </div>
         </div>
       </section>
 
       <section class="section section-block" id="predictive-coding" style="background: rgba(0,0,0,0.4);">
-        <span class="section-kicker">Educational Deep Dive: Signal Processing</span>
+        <span class="section-kicker">The Encoder</span>
         <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Lossless Predictive Coding.
         </h2>
         <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">
@@ -221,58 +221,13 @@
               truncate it. It dynamically falls back to sending verbatim scalar values.</p>
           </div>
         </div>
-
-        <div
-          style="background: var(--bg); border: 1px solid var(--line); border-radius: 8px; margin: 2rem 0; overflow: hidden;">
-          <div
-            style="display: flex; align-items: center; background: rgba(255,255,255,0.03); padding: 0.5rem 1rem; border-bottom: 1px solid var(--line);">
-            <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-ocean);">Step-by-Step
-              Implementation: Building a Python Encoder</span>
-          </div>
-          <div style="padding: 1.5rem; color: var(--ink-soft); font-size: 0.95rem; line-height: 1.6;">
-            <ol style="margin: 0 0 1rem; padding-left: 1.2rem;">
-              <li style="margin-bottom: 0.5rem;"><strong>Scaling:</strong> Floating point math is slow and hard to pack.
-                First, scale the floats into integers (e.g., $24.5^\circ\text{C} \times 10 = 245$).</li>
-              <li style="margin-bottom: 0.5rem;"><strong>Calculate Deltas:</strong> Iterate through the batch. Store the
-                absolute first value, then calculate the residuals.</li>
-              <li><strong>Determine Bit Width:</strong> Find the maximum absolute residual. If $max(|R|) < 8$, you can
-                  pack the deltas into 4-bit signed nibbles. If $< 128$, use 8-bit bytes.</li>
-            </ol>
-            <pre style="margin: 0; border: 1px solid var(--line); border-radius: 8px;"><code class="language-python">def encode_batch(values: list[float], scale: int = 10) -> bytes:
-    if not values: return b""
-
-    # 1. Scale to integers
-    int_vals = [int(round(v * scale)) for v in values]
-
-    # 2. Calculate residual deltas
-    deltas = []
-    for i in range(1, len(int_vals)):
-        deltas.append(int_vals[i] - int_vals[i-1])
-
-    # 3. Check variance bounds for 8-bit packing
-    max_delta = max((abs(d) for d in deltas), default=0)
-
-    if max_delta <= 127:
-        # Pack: [Header Byte] [Initial Value (2B)] [Deltas...]
-        payload = bytearray()
-        payload.append(0x01) # Header indicating 8-bit deltas
-        payload.extend(struct.pack("&gt;h", int_vals[0]))
-        for d in deltas:
-            payload.append(d & 0xFF) # Pack as 8-bit signed
-        return bytes(payload)
-
-    else:
-        # Fallback to uncompressed array if variance is too high
-        raise ValueError("Variance exceeded bounds for lossless packing.")</code></pre>
-          </div>
-        </div>
       </section>
 
       <section class="section" id="dual-layer">
         <div class="section-content">
           <span class="section-kicker">Dual-Layer Protocol</span>
           <h2>One Format for the Air, Another for Shore.</h2>
-          <p>A major design decision in OMEGA was determining how to balance <strong>massive hardware heterogeneity</strong> (satellites, cell modems, LoRa radios, acoustic modems) with <strong>extreme bandwidth constraints</strong>. The solution is a dual-layer protocol architecture.</p>
+          <p>A major design decision in OMEGA was determining how to balance <strong>a wide mix of hardware</strong> (satellites, cell modems, LoRa radios, acoustic modems) with <strong>tight bandwidth constraints</strong>. The solution is a dual-layer protocol architecture.</p>
           <p><strong>The Air Interface (Layer 1):</strong> Over 900MHz LoRa, every byte is expensive. Standard formats like CBOR, MessagePack, and Cayenne LPP carry too much structural overhead (~150B per frame). So, OMEGA uses a <strong>Custom Mesh Binary TLV Protocol</strong>. This drops the payload to 84B, requires zero external firmware parsing libraries, and enables trivial relay paths where intermediary nodes simply bump a single <code>hop_count</code> byte without deserializing the payload.</p>
           <p><strong>The Federation Interface (Layer 2):</strong> When that 84B binary packet hits a gateway, it is instantly translated into the <strong>OMEGA Envelope Protocol v1.0</strong>. This is a self-describing, globally standard format (using <em>Canonical UTF-8 JSON</em> or <em>SenML CBOR</em> for constrained IP bearers). Because "identity and meaning travel with the data", external databases, web portals, and federated science platforms never need to know the raw binary structure of the mesh. The Envelope Protocol ensures that a reading from a LoRa node and a reading from a NATO JANUS acoustic buoy look exactly the same to the backend.</p>
         </div>
@@ -307,7 +262,7 @@
           <span class="section-kicker">RF Physics</span>
           <h2>CSMA-CA Collision Avoidance.</h2>
           <p>When deploying 50+ floating sensor nodes in a small coastal bay, transmitting simultaneously on the 915MHz
-            LoRa band guarantees catastrophic packet collisions. OMEGA firmware implements low-level Carrier Sense
+            LoRa band guarantees a storm of packet collisions. OMEGA firmware implements low-level Carrier Sense
             Multiple Access with Collision Avoidance (CSMA-CA).</p>
           <p><strong>Execution:</strong> Before any node fires a transmission, it drops its SX1262 transceiver into
             <code>CAD (Channel Activity Detection)</code> mode. The silicon mathematically scans the physical RF
@@ -392,7 +347,7 @@
             directly with the Semtech SX126x radio registers to bypass standard defaults.</p>
           <p><strong>Execution:</strong> The firmware enables <code>RxBoostedGainMode</code>, physically increasing the
             Low-Noise Amplifier (LNA) gain by ~3 dB at the cost of ~2 mA extra RX current. For short-duty mesh nodes,
-            this provides a massive mathematical advantage, allowing them to decode marginal cross-family packets that
+            this is a decisive advantage, letting them decode marginal cross-family packets that
             previously failed at the noise floor. Concurrently, internal Power Amplifiers (PA) are strictly clamped at
             +22 dBm to prevent silicon burnout when driving external 1-Watt High Power Amplifiers (HPA).</p>
         </div>
@@ -534,7 +489,7 @@ build_flags =
         <div class="section-content">
           <span class="section-kicker">Remote Operations</span>
           <h2>Cloud CGNAT Tunneling.</h2>
-          <p>Field operations often rely on marine cellular routers, which are trapped behind massive Carrier-Grade NAT
+          <p>Field operations often rely on marine cellular routers, which are trapped behind Carrier-Grade NAT
             (CGNAT) firewalls. The <code>scripts/tunnel-up.ps1</code> daemon automates the execution of Cloudflared or
             Ngrok. It securely punches a reverse TCP tunnel from the edge node gateway out to the public internet,
             exposing the local React Mission Portal to oceanographic teams thousands of miles away.</p>
@@ -545,11 +500,11 @@ build_flags =
 
       <section class="section">
         <div class="section-content">
-          <span class="section-kicker">Acoustic Physics (Experimental)</span>
-          <h2>Snell's Law & Refraction.</h2>
+          <span class="section-kicker">Underwater Link (Experimental)</span>
+          <h2>The Acoustic Bridge — What's Real, What Isn't.</h2>
           <p>Standard radio frequencies cannot penetrate water. The NATO-standard JANUS protocol (STANAG 4748) is the
-            intended way to reach Remotely Operated Vehicles (ROVs) and benthic sensors. The physics below is why
-            acoustic links are hard; the OMEGA side of it is currently a message format and a software bridge, not an
+            intended way to reach Remotely Operated Vehicles (ROVs) and benthic sensors. Being honest about scope: the
+            OMEGA side of it is currently a message format and a software bridge, not an
             on-device modem.</p>
           <p><strong>Where OMEGA actually sits:</strong> sound travels at ~1,500 m/s underwater, subject to heavy
             multi-path and thermocline refraction, and JANUS uses Frequency-Shift Keying (FSK) to carry data over that
@@ -602,58 +557,8 @@ build_flags =
           <div class="panel" style="padding: 1.5rem;">
             <span class="status-label status-implemented">Step 3</span>
             <h3 style="font-size: 1.2rem;">FSK Modulation</h3>
-            <p style="font-size: 0.85rem;">The encoded bits are fired out of the hydrophone as Frequency-Shift Keyed
+            <p style="font-size: 0.85rem;">The external acoustic modem fires the encoded bits out of the hydrophone as Frequency-Shift Keyed
               audio chirps centered at 11.5 kHz.</p>
-          </div>
-        </div>
-
-        <div class="section-visual" style="max-height: 800px; overflow-y: auto;">
-          <span class="panel-kicker">Frequency-Shift Keying (FSK) Math</span>
-          <pre><code class="language-python">def modulate_fsk(binary_string: str, f_space=11000, f_mark=12000, baud=50, fs=44100):
-    # Mathematically construct the analog audio wave
-    t = np.arange(0, 1/baud, 1/fs)
-    audio_wave = np.array([])
-
-    for bit in binary_string:
-        # 0 = Space (11.0 kHz), 1 = Mark (12.0 kHz)
-        freq = f_mark if bit == '1' else f_space
-
-        # S(t) = A * sin(2π * f * t)
-        chirp = np.sin(2 * np.pi * freq * t)
-
-        # Append the continuous wave
-        audio_wave = np.concatenate((audio_wave, chirp))
-
-    return audio_wave</code></pre>
-        </div>
-      </section>
-
-      <section class="section section-block" style="background: rgba(0,0,0,0.4);">
-        <span class="section-kicker">Acoustic Refraction Physics</span>
-        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 1rem;">Snell's Law & The Sonar
-          Equation.</h2>
-        <p style="color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; line-height: 1.7;">
-          Transmitting data underwater is exponentially harder than RF. We must physically fight the ocean's
-          thermodynamics and the physics of wave attenuation.</p>
-
-        <div class="grid-2" style="margin-bottom: 2rem;">
-          <div class="panel" style="padding: 1.5rem;">
-            <span class="status-label status-implemented">The Sonar Equation</span>
-            <h3 style="font-size: 1.2rem;">TL = 20 log(r) + αr</h3>
-            <p style="font-size: 0.85rem;">Transmission Loss (TL) dictates that sound energy decays via spherical
-              spreading <code>20 log(r)</code> and chemical absorption <code>αr</code>. Because higher frequencies (like
-              100kHz) have a massive absorption coefficient <code>α</code>, high-bandwidth data physically cannot travel
-              more than a few hundred meters. This mathematically forces OMEGA to use low-frequency 11.5kHz chirps to
-              achieve kilometers of range, crushing our data rate to a mere 50 bps.</p>
-          </div>
-          <div class="panel" style="padding: 1.5rem;">
-            <span class="status-label status-implemented">Thermocline Refraction</span>
-            <h3 style="font-size: 1.2rem;">Snell's Law: sin(θ₁)/c₁ = sin(θ₂)/c₂</h3>
-            <p style="font-size: 0.85rem;">Ocean water is not uniform. Sound travels faster in warm surface water and
-              slower in the freezing depths. As the JANUS wave passes through the thermocline layer, Snell's Law
-              mathematically proves the wave will refract (bend) downwards towards the slower water. This creates
-              massive "Shadow Zones" near the surface where receiving buoys are physically blocked from hearing the
-              signal, regardless of transmit power.</p>
           </div>
         </div>
       </section>
@@ -662,8 +567,8 @@ build_flags =
         <div class="section-content">
           <span class="section-kicker">Acoustic Subsea Frames</span>
           <h2>JANUS Initialization.</h2>
-          <p>Because underwater acoustic physics are incredibly hostile, bandwidth is severely limited—often maxing out
-            at a mere 80 bits per second (bps). Therefore, OMEGA cannot stream complex JSON over a hydrophone.</p>
+          <p>Because the underwater acoustic channel is so hostile, bandwidth is severely limited—often only tens of
+            bits per second. Therefore, OMEGA cannot stream complex JSON over a hydrophone.</p>
           <p><strong>How it works:</strong> The JSON structure below represents the <em>source representation</em> of
             the simulated NATO-standard JANUS initialization frame before it undergoes SenML CBOR serialization per the Envelope Protocol v1.0 specifications. The
             payload explicitly defines the <code>center_frequency_hz</code> and the <code>rx_level_db</code>. The
