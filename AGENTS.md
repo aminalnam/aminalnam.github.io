@@ -63,6 +63,15 @@ This repo is **Jonathan Capone's portfolio website** (jonathancapone.com). Read 
 - **Never cap `.mermaid svg { max-height }`.** The SVG scales via its viewBox, so a height cap shrinks the *entire diagram* — a cap at 400px produced a **3.7px font**. Fix the diagram's shape/labels instead.
 - Sanity target: natural size ≲ 700×250 → renders ~90% scale, ~11–12px text.
 
+### Adding a code sample? escape `<` as `&lt;`
+There is no build step and no escaping layer — `<pre><code>` content is parsed as raw HTML. A Python struct format string (`struct.unpack("<BHHBBII", …)`) was read as an HTML start tag that never closed, so the inline `<code>` swallowed the following **19 `<section>`s** and, because inline boxes shrink-to-fit, stretched the document to **4747px wide**. It looked like a diagram bug, not a markup bug.
+
+`< ` followed by a space (`while offset < len(x)`) happens to survive — a `<` before whitespace isn't a tag start — but don't rely on it. **Escape every `<` in code samples.** To check the whole site:
+```
+python -c "from html.parser import HTMLParser; ..."   # parse each .html, flag unknown start tags
+```
+A quick proxy: no page should scroll horizontally — `document.documentElement.scrollWidth` must equal `clientWidth`.
+
 ### Changing CSS? bump the cache-buster
 `style.css`/JS are served with `expires 30d` by nginx, so returning visitors keep the old file. When you edit `style.css`, bump the version query on the stylesheet link across all pages (currently `style.css?v=2`) or the change won't reach anyone. HTML is `no-cache`, so the new link is picked up immediately.
 
