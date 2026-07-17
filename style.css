@@ -1459,12 +1459,11 @@ body {
   margin: 1.5rem 0;
   box-shadow: inset 0 0 30px rgba(0,0,0,0.5);
 }
-/* Diagrams are supporting visuals, not the main event: cap their height so a tall
-   top-down flowchart can't eat a whole screen. The viewBox scales content to fit. */
+/* Keep diagrams wide-and-short by authoring them left-to-right (see the page source);
+   never cap height here — it scales the whole SVG down and makes labels unreadable. */
 .mermaid svg {
   max-width: 100%;
   height: auto;
-  max-height: 400px;
   display: block;
   margin: 0 auto;
 }
