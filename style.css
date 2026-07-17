@@ -757,7 +757,11 @@ pre code {
 ------------------------------------- */
 .main-shell.has-toc {
   display: grid;
-  grid-template-columns: 1fr 280px;
+  /* minmax(0, ...) is load-bearing: a bare `1fr` track has an automatic minimum of
+     min-content, so one long code line or URN widens the column and shoves the TOC
+     off-screen. (.main-inner's `overflow: clip` does NOT opt out of that — only a
+     real scroll container like auto/hidden would.) */
+  grid-template-columns: minmax(0, 1fr) 280px;
   gap: 2rem;
   align-items: start;
 }
@@ -912,7 +916,7 @@ pre code {
 /* Table of Contents */
 main.has-toc {
   display: grid;
-  grid-template-columns: 1fr 250px;
+  grid-template-columns: minmax(0, 1fr) 250px;
   gap: 3rem;
   align-items: start;
 }
