@@ -375,17 +375,11 @@
         <div class="section-visual">
           <span class="panel-kicker">TX-Burst Cooling Sequence</span>
           <div class="mermaid">
-            graph TD
-              A[TX Burst Scheduled] --> B[Spin up Cooling Fan]
-              B --> C[800µs PA Ramp via DIO2 RF-switch]
-              C --> D[SX1262 driven, clamped +22dBm]
-              D --> E[External HPA stage]
-              E --> F[LoRa Packet TX at ~+20dBm operational]
-              F --> G[Post-TX Cooldown]
-              G --> H[Spin down Fan]
+            flowchart LR
+              A[Burst<br/>scheduled] --> B[Fan on] --> C[800 µs<br/>PA ramp] --> D[TX burst<br/>~+20 dBm] --> E[Cooldown] --> F[Fan off]
 
               classDef node fill:#101529,stroke:#3b82f6,stroke-width:2px,color:#fff;
-              class A,B,C,D,E,F,G,H node;
+              class A,B,C,D,E,F node;
           </div>
         </div>
       </section>
