@@ -185,29 +185,7 @@
           </div>
         </div>
         <div class="section-visual" style="max-height: 800px; overflow-y: auto;">
-          <span class="panel-kicker">The Journey, as a Diagram</span>
-          <div class="mermaid">
-            flowchart LR
-                E1(Buoy: T-Beam Supreme / SX1262)
-                E3(Node: T-Beam 1W / SX1262)
-                E2(Relay: T3-S3 / LR1121)
-                DTN{DTN: Binary TLV + Batching}
-                USB(USB-CDC / Semtech-UDP Ingest)
-                ASGI[FastAPI / Envelope Protocol v1.0]
-                UI((3D WebGL Glass Bridge))
-
-                E1 <-->|LoRa 900MHz| DTN
-                E3 <-->|LoRa 900MHz| DTN
-                E2 <-->|LoRa 900MHz| DTN
-                DTN <-->|LoRa / CSMA-CA| USB
-                USB <-->|JSON Stream| ASGI
-                ASGI <-->|HTTP Long-Polling| UI
-
-                classDef default fill:#0a0f1d,stroke:#9aa2b1,stroke-width:1px,color:#9aa2b1;
-                classDef node fill:#101529,stroke:#3b82f6,stroke-width:2px,color:#fff;
-                class E1,E2,E3,USB,ASGI,UI node;
-          </div>
-          <span class="panel-kicker" style="margin-top: 1.5rem; display: block;">Inside Each Layer</span>
+          <span class="panel-kicker">Inside Each Layer</span>
           <pre><code class="language-mermaid">graph TD
     subgraph Layer 1: Surface Mesh
         B0[Sensor Probe] -->|UART| B1[Surface Buoy Relay]
@@ -230,6 +208,32 @@
         D1 -->|WebSockets| D2[React DOM Client]
         D2 -->|Throttle Hooks| D3[3D WebGL Digital Twin]
     end</code></pre>
+        </div>
+      </section>
+
+      <section class="section section-block" style="padding-top: 0; padding-bottom: 2rem;">
+        <span class="section-kicker">Data Flow</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.2rem; margin: 0 0 1.5rem;">The Journey, End to End.</h2>
+        <div class="mermaid">
+          flowchart LR
+              E1(Buoy<br/>T-Beam Supreme)
+              E3(Node<br/>T-Beam 1W)
+              E2(Relay<br/>T3-S3 / LR1121)
+              DTN{Mesh<br/>binary TLV + batching}
+              USB(Ingest<br/>USB-CDC / Semtech-UDP)
+              ASGI[Gateway<br/>envelope v1.0]
+              UI((3D globe))
+
+              E1 <-->|LoRa| DTN
+              E3 <-->|LoRa| DTN
+              E2 <-->|LoRa| DTN
+              DTN <-->|CSMA-CA| USB
+              USB <-->|JSON| ASGI
+              ASGI <-->|HTTP| UI
+
+              classDef default fill:#0a0f1d,stroke:#9aa2b1,stroke-width:1px,color:#9aa2b1;
+              classDef node fill:#101529,stroke:#3b82f6,stroke-width:2px,color:#fff;
+              class E1,E2,E3,USB,ASGI,UI node;
         </div>
       </section>
 
