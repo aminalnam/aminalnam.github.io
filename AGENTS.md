@@ -57,6 +57,15 @@ This repo is **Jonathan Capone's portfolio website** (jonathancapone.com). Read 
 - **The OMEGA page lives at `/omega/`** (`omega/index.html`). Because it's in a subfolder, **all its asset/link refs are root-absolute** (`/style.css`, `/main.js`, `/hardware.html`, …). Don't use relative paths there.
 - **Renames** leave a redirect stub at the old filename: a `noindex` meta-refresh page with a `<link rel="canonical">` to the new URL (see `architecture.html`, `weather-globe*.html`, `visual-timer.html`).
 
+### Mermaid diagrams (measured 2026-07-17 — don't relearn this the hard way)
+- **Author them `LR` (left-to-right) with SHORT labels.** A `flowchart TD` with subgraphs renders ~700–1000px **tall** and eats a whole screen.
+- **The usable content column is only ~670px** — `main.js` injects a table-of-contents sidebar (`.main-shell.has-toc`), so `.main-inner` is ~800px, not the full 1135px. A diagram wider than ~700px natural gets scaled down and its text becomes unreadable.
+- **Never cap `.mermaid svg { max-height }`.** The SVG scales via its viewBox, so a height cap shrinks the *entire diagram* — a cap at 400px produced a **3.7px font**. Fix the diagram's shape/labels instead.
+- Sanity target: natural size ≲ 700×250 → renders ~90% scale, ~11–12px text.
+
+### Changing CSS? bump the cache-buster
+`style.css`/JS are served with `expires 30d` by nginx, so returning visitors keep the old file. When you edit `style.css`, bump the version query on the stylesheet link across all pages (currently `style.css?v=2`) or the change won't reach anyone. HTML is `no-cache`, so the new link is picked up immediately.
+
 ### Adding a project page — checklist
 1. Create `<name>.html` from the shared template (copy an existing page's head/nav/footer verbatim so it matches).
 2. Add its link to the `<nav>` on **every** page.
